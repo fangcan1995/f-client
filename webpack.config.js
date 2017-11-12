@@ -69,7 +69,7 @@ const config = {
             name: 'vendor',
         }),
         new HtmlWebpackPlugin({
-            title: 'REACT JS IS BEST JS!',
+            title: 'BBH-CLIENT',
             filename: path.join(BUILD_PATH, '/index.html'),
             template: path.join(SRC_PATH, '/index.html'),
             inject: true,

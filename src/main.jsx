@@ -1,9 +1,16 @@
 import React from 'react';
-import { render } from 'react-dom';
+import ReactDOM, { render } from 'react-dom';
 // import 'normalize.css';
 import './main.less';
-import App from './components/app';
+
+import { Route, BrowserRouter } from 'react-router-dom';
+import App from './components/app/app';
+import routes from './routes';
 render(
-	<App />,
+	<BrowserRouter>
+		<App>
+			{routes}
+		</App>
+	</BrowserRouter>,
   	document.body.appendChild(document.createElement('div'))
 );
