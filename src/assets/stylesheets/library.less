@@ -1,0 +1,41 @@
+@color-default: #fff;
+@color-bg: #f0f1f2;
+@color-primary: #2aa4ea;
+@color-secondary: #ff721f;
+@color-page-btn: #f5f7fa;
+@color-page-btn-active: #3793df;
+@text-color-default: #45484c;
+@text-color-help: #8a8f99;
+@text-color-primary: #2aa4ea;
+
+@content-width: 1180px;
+@floor-mb: 38px;
+
+.clearfix() {
+    &:after {
+        content: '';
+        display: block;
+        clear: both;
+        height: 0;
+        line-height: 0;
+        visibility: hidden;
+    }
+}
+
+.te() {
+    // text ellipsis 文字省略
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.floorMb() {
+	margin-bottom: @floor-mb;
+}
+
+.dynamicImg() {
+    transition: transform 1500ms;
+    &:hover {
+        transform: scale(1.05);
+    }
+}

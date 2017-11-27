@@ -1,0 +1,198 @@
+@import './library';
+@import './global';
+@import './top';
+@import './footer';
+@import './navbar';
+@import './member';
+
+.main{
+  //红包
+  .redBagList{
+    width:100%;
+    li{
+      height:118px;
+      margin-bottom:20px;
+      overflow:hidden;
+      position:relative;
+      .img {
+        display: inline-block;
+        width: 249px;
+        height: 118px;
+        background: url(../images/account/redbg.png) top left no-repeat;
+        position: absolute;
+        top: 0;
+        left: 0;
+        .denomination{
+          font-size:62px;
+          color:#fff283;
+          padding:0px 0 0 50px
+        }
+        .remark{
+          display:inline-block;
+          width:80px;
+          height:81px;
+          position:absolute;
+          top:0;
+          left:190px;
+        }
+      }
+      .txt {
+        width: 600px;
+        height: 80px;
+        border: 1px dashed #e6eaf0;
+        float: right;
+        padding: 18px 20px 18px 74px;
+        p {
+          height: 36px;
+          line-height: 36px
+        }
+        strong {
+          color: #81868f
+        }
+        .fl {
+          width: 190px;
+          float: left
+        }
+        .fr {
+          width: 410px;
+          float: right
+        }
+      }
+      &.used{
+        .img{
+          background:url(../images/account/redbg2.png) top left no-repeat;
+          .remark{
+          }
+          .denomination{
+            color:#fff
+          }
+        }
+      }
+      &.expired{
+        .img{
+          background:url(../images/account/redbg2.png) top left no-repeat;
+          .remark{
+            background:url(../images/account/expired.png) top left no-repeat;
+          }
+          .denomination{
+            color:#fff
+          }
+        }
+      }
+
+      &.notActive{
+        .img{
+          background:url(../images/account/redbg2.png) top left no-repeat;
+          .remark{
+            background:url(../images/account/notActive.png) top left no-repeat;
+          }
+          .denomination{
+            color:#fff
+          }
+        }
+
+      }
+
+
+    }
+  }
+  //加息券
+  .couponList{
+    width:100%;
+    li{
+      height:118px;
+      margin-bottom:20px;
+      overflow:hidden;
+      position:relative;
+      .img {
+        display: inline-block;
+        width: 249px;
+        height: 118px;
+        background: url(../images/account/Couponbg.png) top left no-repeat;
+        position: absolute;
+        top: 0;
+        left: 0;
+        .denomination{
+          font-size:62px;
+          color:#fff;
+          padding:10px 65px 0 0;
+          text-align: right
+        }
+        .remark{
+          display:inline-block;
+          width:80px;
+          height:81px;
+          position:absolute;
+          top:0;
+          left:190px;
+        }
+      }
+      .txt {
+        width: 600px;
+        height: 80px;
+        border: 1px dashed #e6eaf0;
+        float: right;
+        padding: 18px 20px 18px 74px;
+        p {
+          height: 36px;
+          line-height: 36px
+        }
+        strong {
+          color: #81868f
+        }
+        .fl {
+          width: 190px;
+          float: left
+        }
+        .fr {
+          width: 410px;
+          float: right
+        }
+      }
+      &.used{
+        .img{
+          background:url(../images/account/Couponbg2.png) top left no-repeat;
+          .remark{
+          }
+          .denomination{
+            color:#fff
+          }
+        }
+      }
+      &.expired{
+        .img{
+          background:url(../images/account/Couponbg2.png) top left no-repeat;
+          .remark{
+            background:url(../images/account/expired.png) top left no-repeat;
+          }
+          .denomination{
+            color:#fff
+          }
+        }
+      }
+
+      &.notActive{
+        .img{
+          background:url(../images/account/Couponbg2.png) top left no-repeat;
+          .remark{
+            background:url(../images/account/notActive.png) top left no-repeat;
+          }
+          .denomination{
+            color:#fff
+          }
+        }
+
+      }
+
+
+    }
+  }
+  //温馨提示
+  .m-wxts{
+    p{
+      padding:30px 10px;
+      line-height:2.2;
+      color:#81868f
+    }
+  }
+}

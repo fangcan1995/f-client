@@ -14,7 +14,7 @@ const config = {
     output: {
         path: BUILD_PATH,
         filename: '[name].[hash].js',
-        publicPath: '',
+        publicPath: '/',
         chunkFilename: '[name].[hash].js',
     },
     module: {
@@ -30,10 +30,10 @@ const config = {
                             polyfill: false,
                             regenerator: true
                         }],
-                        ['import', {  
+                        /*['import', {  
                             'libraryName': 'antd',  
                             'style': true,  
-                        }]
+                        }]*/
                     ]
                 },
             },
@@ -47,17 +47,17 @@ const config = {
                 loader: 'url-loader',
                 query: {
                     limit: 40960,
-                    name: 'img/[name].[hash:7].[ext]',
+                    name: 'images/[name].[hash:7].[ext]',
 
                 }
             },
             {
                 test: /\.css$/,
-                loaders: ['style-loader', 'css-loader'],
+                loaders: ['style-loader', 'css-loader', 'postcss-loader'],
             },
             {
                 test: /\.less$/,
-                loaders: ['style-loader', 'css-loader', 'less-loader']
+                loaders: ['style-loader', 'css-loader', 'postcss-loader', 'less-loader'],
             },
         ],
     },

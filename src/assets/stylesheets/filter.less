@@ -1,0 +1,45 @@
+@import './library';
+.filter {
+	overflow: auto;
+	width: 100%;
+	background-color: @color-default;
+	
+}
+.filter__outer {
+	padding: 7px 5px;
+}
+.filter__inner {
+	display: table;
+	overflow: scroll;
+}
+
+.filter__row {
+    display: table-row;
+}
+
+.filter__cell {
+	display: table-cell;
+
+	padding: 7px 15px;
+	white-space: nowrap;
+}
+
+.filter__tit {
+	display: inline-block;
+	padding: 4.5px 0;
+	width: 140px;
+	font-size: 14px;
+	text-align: center;
+	background-color: #f0f1f2;
+}
+.filter__opt {
+	display: inline-block;
+	padding: 3px 12px;
+	font-size: 14px;
+	color: @text-color-help;
+}
+.filter__opt--active {
+	color: @color-default;
+	background-color: @color-primary;
+	border-radius: 3px;
+}
