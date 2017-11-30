@@ -55,7 +55,7 @@ export default ({ location, match, history, ...props }) => {
                     </ul>
                     <h3><i className="icon icon-invitation"></i>奖励管理</h3>
                     <ul>
-                      <ListItemLink to="/member/super-partner">超级合伙人</ListItemLink>
+                      <ListItemLink to="/my-reward/super-partner">超级合伙人</ListItemLink>
                       <li><a href="/#">我的红包</a></li>
                       <li><a href="#">我的加息券</a></li>
                     </ul>

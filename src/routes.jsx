@@ -13,7 +13,7 @@ import LoanIndex from './containers/loan-index/loan-index';
 import AccountOverview from './containers/account-overview/account-overview';
 import TransactionRecord from './containers/transaction-record/transaction-record';
 import SuperPartner from './containers/super-partner/super-partner';
-
+import PartnerList from './containers/partner-list/partner-list';
 export default (
     <App>
       <Switch>
@@ -21,7 +21,7 @@ export default (
         <Route path="/invest-index" component={InvestIndex} />
         <Route path="/invest-list" component={InvestList} />
         <Route path="/loan-index" component={LoanIndex} />
-        <Route path="/my-account" render={(props) => {
+        <Route strict path="/my-account" render={(props) => {
           const { match } = props;
           return (
             <MemberSidebar {...props}>
@@ -29,16 +29,19 @@ export default (
                 <Redirect exact from={`${match.url}`} to={`${match.url}/account-overview`} />
                 <Route path={`${match.url}/account-overview`} component={AccountOverview} />
                 <Route path={`${match.url}/transaction-record`} component={TransactionRecord} />
+                <Redirect to="/" />
               </Switch>
             </MemberSidebar>
             )
         }} />
-        <Route path="/member2" render={(props) => {
+        <Route strict path="/my-reward" render={(props) => {
           const { match } = props;
           return (
             <MemberSidebar {...props}>
               <Switch>
                 <Route path={`${match.url}/super-partner`} component={SuperPartner} />
+                <Route path={`${match.url}/partner-list`} component={PartnerList} />
+                <Redirect to="/" />
               </Switch>
             </MemberSidebar>
             )

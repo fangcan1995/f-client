@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './super-partner.less';
-
+import { Link } from 'react-router-dom';
 export default ({ location, match, history }) => {
   return (
     <div className="member__main super-partner">
@@ -31,7 +31,7 @@ export default ({ location, match, history }) => {
                 </div>
             </div>
             <div className="inviteControl">
-                <button className="inviteControl__button">我要邀请</button>
+                <Link to="/my-reward/partner-list" className="inviteControl__button">我要邀请</Link>
                 <a href="" className="inviteControl__link">查看邀请详细</a>
             </div>
         </div>
