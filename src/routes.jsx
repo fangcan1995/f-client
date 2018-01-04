@@ -7,6 +7,7 @@ import Footer from './components/footer/footer';
 import MemberSidebar from './components/member-sidebar/member-sidebar';
 
 import HomePage from './containers/home-page/home-page';
+import Login from './containers/login/login';
 import InvestIndex from './containers/invest-index/invest-index';
 import InvestList from './containers/invest-list/invest-list';
 import LoanIndex from './containers/loan-index/loan-index';
@@ -18,6 +19,7 @@ export default (
     <App>
       <Switch>
         <Route exact path="/" component={HomePage} />
+        <Route path="/login" component={Login} />
         <Route path="/invest-index" component={InvestIndex} />
         <Route path="/invest-list" component={InvestList} />
         <Route path="/loan-index" component={LoanIndex} />
