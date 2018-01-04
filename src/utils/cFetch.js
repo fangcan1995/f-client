@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch';
+import fetch, { Response } from 'isomorphic-fetch';
 require('es6-promise').polyfill();
 
 import cookie from 'js-cookie';
@@ -10,7 +10,7 @@ const errorMessages = (res) => `${res.status} ${res.statusText}`;
 
 function check401(res) {
   // 登陆界面不需要做401校验
-  if (res.status === 401 && !res.url.match('auth')) {
+  if (res.status === 401 && !res.url.match('uaa/oauth/token')) {
     Modal.error({
       title: "登陆验证过期",
       content: "您的登陆验证已过期，请重新登陆",
@@ -33,17 +33,25 @@ function check404(res) {
   return res;
 }
 
-function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
+function checkStatus(res) {
+  if (res.status >= 200 && res.status < 300) {
+    return res;
   } else {
-    // 这里补充更多错误参数
-    return response.text().then(errorMsg => {
+    if (  res instanceof Response ) {
+      // 这里补充更多错误参数
+      return res.json().then(error => {
+        return new StandardError({
+          statusCode: res.status,
+          msg: error.message ? error.msg ? error.msg : error.message : JSON.stringify(error),
+        });
+      }).then(err => { throw err; });
+    } else {
       return new StandardError({
-        statusCode: response.status,
-        msg: errorMsg
+        statusCode: -1,
+        msg: res,
       });
-    }).then(err => { throw err; });
+    }
+    
   }
 }
 

@@ -9,7 +9,7 @@ const BUILD_PATH = path.resolve(__dirname, 'build');
 const config = {
     entry: {
         main: path.join(SRC_PATH, '/main.jsx'),
-        vendor: ['react', 'react-dom']
+        vendor: ['react', 'react-dom', 'redux', 'react-redux']
     },
     output: {
         path: BUILD_PATH,
