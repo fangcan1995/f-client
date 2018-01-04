@@ -13,17 +13,19 @@ import LoanIndex from './containers/loan-index/loan-index';
 import SuperPartner from './containers/super-partner/super-partner';
 import PartnerList from './containers/partner-list/partner-list';
 import AccountOverview from './containers/account-overview/account-overview';
+import TransactionRecord from './containers/transaction-record/transaction-record'
 /*import CardInfo from './containers/member/overview/cardInfo/cardInfo'
-import TransactionRecord from './containers/member/overview/transaction-record/transaction-record';
+;*/
 
 import About from './components/about/aboutus-common'
 import Team from './containers/about/team/team'
 import Partners from './containers/about/partners/partners'
-import ArticleList from './containers/about/list/list'*/
+import ArticleList from './containers/about/list/list'
 export default (
     <App>
         <Switch>
             <Route exact path="/" component={HomePage} />
+            <Route path="/login" component={Login} />
             <Route path="/invest-list" component={InvestList} />
             <Route path="/loan-index" component={LoanIndex} />
             <Route strict path="/my-account" render={(props) => {
@@ -34,7 +36,7 @@ export default (
                             <Redirect exact from={`${match.url}`} to={`${match.url}/account-overview`} />
                             {/*<Route path={`${match.url}/my-account/cardInfo`} component={CardInfo} />*/}
                             <Route path={`${match.url}/account-overview`} component={AccountOverview} />
-                            {/*<Route path={`${match.url}/my-account/transaction-record`} component={TransactionRecord} />*/}
+                            <Route path={`${match.url}/transaction-record`} component={TransactionRecord} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>
@@ -52,19 +54,19 @@ export default (
                     </MemberSidebar>
                 )
             }} />
-            {/*<Route path="/about/" render={(props) => {
+            {<Route path="/about/" render={(props) => {
                 const { match } = props;
                 return(
                     <About>
                         <Switch>
-                            <Route path={`${match.url}/aboutus/team`} component={Team} />
-                            <Route path={`${match.url}/aboutus/partners`} component={Partners} />
-                            <Route path={`${match.url}/news/mediaReport`} component={ArticleList} />
+                            <Route path={`${match.url}/team`} component={Team} />
+                            <Route path={`${match.url}/partners`} component={Partners} />
+                            {/*<Route path={`${match.url}/news/mediaReport`} component={ArticleList} />*/}
                             <Redirect to="/" />
                         </Switch>
                     </About>
                 )
-            }} />*/}
+            }} />}
             <Redirect to="/" />
         </Switch>
     </App>
