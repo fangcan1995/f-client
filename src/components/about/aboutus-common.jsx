@@ -64,7 +64,6 @@ export default class About extends Component{
                                 <TitleParent title="关于我们" to="/about/aboutus/" />
                             </dt>
                             <dd>
-
                                 <ul>
                                     <ListItemLink to="/about/aboutus/introduce" >公司简介</ListItemLink>
                                     <ListItemLink to="/about/aboutus/team" >管理团队</ListItemLink>
@@ -72,7 +71,6 @@ export default class About extends Component{
                                     <ListItemLink to="/about/aboutus/partners" >合作伙伴</ListItemLink>
                                     <ListItemLink to="/about/aboutus/history" >发展历程</ListItemLink>
                                 </ul>
-
                             </dd>
                         </dl>
                         <dl key="2" onClick = { this.collapse.bind(this,2)} className = { this.state.current === 2? "showChildren":""}>
