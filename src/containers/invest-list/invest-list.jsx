@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './invest-list.less';
-
+import Pagination from '../../components/pagination/pagination';
 export default ({ location, match, history }) => {
   return (
     <main className="main invest-list" id="invest-list">
@@ -121,20 +121,16 @@ export default ({ location, match, history }) => {
                   </tbody>
                 </table>
 
-                <div className="pagination">
-                  <div className="paginationController">
-                      <a href="" className="active">1</a>
-                      <a href="">2</a>
-                      <a href="">3</a>
-                      <a>...</a>
-                      <a href="">249</a>
-                      <a href="">&gt;</a>
-                      <span>到第</span>&nbsp;
-                      <input type="text" />&nbsp;
-                      <span>页</span>&nbsp;
-                      <button>确定</button>
-                  </div>
-                </div>
+                <Pagination config = {
+                    {
+                        currentPage:1,
+                        pageSize:10,
+                        totalPage:5,
+                        paging:(obj)=>{
+                            this.loadData(obj.currentPage,obj.pageCount);
+                        }
+                    }
+                } ></Pagination>
               </div>
             </div>
           </div>
