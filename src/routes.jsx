@@ -12,7 +12,7 @@ import LoanIndex from './containers/loan-index/loan-index';
 
 import SuperPartner from './containers/super-partner/super-partner';
 import PartnerList from './containers/partner-list/partner-list';
-import AccountOverview from './containers/account-overview/account-overview';
+import AccountOverview from './containers/member/overview/account-overview/account-overview';
 /*import CardInfo from './containers/member/overview/cardInfo/cardInfo'
 import TransactionRecord from './containers/member/overview/transaction-record/transaction-record';
 
