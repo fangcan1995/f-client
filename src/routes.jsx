@@ -13,13 +13,15 @@ import LoanIndex from './containers/loan-index/loan-index';
 import SuperPartner from './containers/super-partner/super-partner';
 import PartnerList from './containers/partner-list/partner-list';
 import AccountOverview from './containers/member/overview/account-overview/account-overview';
-/*import CardInfo from './containers/member/overview/cardInfo/cardInfo'
+import CardInfo from './containers/member/overview/cardInfo/cardInfo'
 import TransactionRecord from './containers/member/overview/transaction-record/transaction-record';
+import redEnvelopes from './containers/member/reward/redEnvelopes/redEnvelopes';
 
 import About from './components/about/aboutus-common'
 import Team from './containers/about/team/team'
 import Partners from './containers/about/partners/partners'
-import ArticleList from './containers/about/list/list'*/
+import ArticleList from './containers/about/list/list'
+
 export default (
     <App>
         <Switch>
@@ -32,9 +34,10 @@ export default (
                     <MemberSidebar {...props}>
                         <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/account-overview`} />
-                            {/*<Route path={`${match.url}/my-account/cardInfo`} component={CardInfo} />*/}
-                            <Route path={`${match.url}/account-overview`} component={AccountOverview} />
-                            {/*<Route path={`${match.url}/my-account/transaction-record`} component={TransactionRecord} />*/}
+                            <Route path={`${match.url}/overview/cardInfo`} component={CardInfo} />
+                            <Route path={`${match.url}/overview/account-overview`} component={AccountOverview} />
+                            <Route path={`${match.url}/overview/transaction-record`} component={TransactionRecord} />
+                            <Route path={`${match.url}/reward/redEnvelopes`} component={redEnvelopes} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>
