@@ -2,51 +2,57 @@
 .tablist {
 	.tabs__nav {
 		.clearfix();
-	}
-
-	.tabs__content {
-
-	}
-	.tab {
-		position: relative;
-		float: left;
-		width: 180px;
-		height: 60px;
-		line-height: 60px;
-		font-size: 18px;
-		color: @text-color-help;
-		text-align: center;
-		background-color: #f7f9fa;
-		margin-right: 1px;
-		margin-bottom: 1px;
-		&:before {
-			position: absolute;
-			top: 0;
-			width: 181px;
-			height: 0;
-			border-top: 2px solid @color-primary
-		}
-		&:last-child {
-			margin-right: 0;
+		.tab {
+			position: relative;
+			float: left;
+			width: 180px;
+			height: 60px;
+			line-height: 60px;
+			font-size: 18px;
+			color: @text-color-help;
+			text-align: center;
+			background-color: #f7f9fa;
+			margin-right: 1px;
+			margin-bottom: 1px;
+			list-style: none;
+			cursor:pointer;
 			&:before {
-				width: 180px;
+				position: absolute;
+				top: 0;
+				width: 181px;
+				height: 0;
+				border-top: 2px solid @color-primary
+			}
+			&:last-child {
+				margin-right: 0;
+				&:before {
+					width: 180px;
+				}
+			}
+			&.tab--active {
+				margin-bottom: 0;
+				padding-bottom: 1px;
+				color: @text-color-default;
+				&:before {
+					content: '';
+					display: block;
+				}
 			}
 		}
 
-		
 	}
-	&.tab--active {
-		margin-bottom: 0;
-		padding-bottom: 1px;
-		color: @text-color-default;
-		&:before {
-			content: '';
-			display: block;
+
+	.tabs__content {
+		.tab__panel {
+			display: none;
+			&.tab__panel--active {
+				display: block;
+			}
 		}
+
 	}
-	.tab__panel {
-		
-	}
+
+
 }
 
 
