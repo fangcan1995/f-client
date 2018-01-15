@@ -64,7 +64,7 @@
 
       }
 		//分页
-		.pagination {
+		/*.pagination {
 			padding: 35px 10px 10px 10px;
 			text-align: center;
 			ul {
@@ -136,7 +136,7 @@
 			.jump {
 				padding-left: 20px
 			}
-		}
+		}*/
 		//数据表格
 		.record {
 			table {
@@ -208,16 +208,28 @@
 		.input-date {
 			width: 100px;
 			padding: 0 10px;
-			margin-right: 10px;
 			height: 30px;
 			line-height: 30px;
 			border: 1px solid #e6eaf0;
-			color: #45484c
+			color: #45484c;
+			margin:0 10px 0 5px;
+			&:focus{
+				border: 1px solid @color-page-btn;
+				outline: none;
+
+			}
 		}
 		.select {
 			height: 30px;
 			border: 1px solid #e6eaf0;
-			color: #45484c
+
+			color: #45484c;
+			margin:0 10px 0 5px;
+		}
+		.select:focus{
+			border: 1px solid @color-page-btn;
+			outline: none;
+
 		}
 	}
 
