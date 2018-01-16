@@ -59,8 +59,8 @@ export default (props) => {
                 <div className="dropdown__menu">
                   <ul>
                     <li><Link to="/member2">我的投资</Link></li>
-                    <li><Link to="/member">我的借款</Link></li>
-                    <li><Link to="/member">基本设置</Link></li>
+                    <li><Link to="/my-account/loans/myLoans">我的借款</Link></li>
+                    <li><Link to="/my-account/settings/authInfo">基本设置</Link></li>
                     <li><Link to="/member">奖励管理</Link></li>
                   </ul>
                 </div>

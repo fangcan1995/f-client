@@ -51,19 +51,18 @@ export default ({ location, match, history, ...props }) => {
                         </ul>
                         <h3><i className="iconfont icon-myloan"></i>我的借款</h3>
                         <ul>
-                            <li><a href="#">我的借款</a></li>
+                            <ListItemLink to="/my-account/loans/myLoans">我的借款</ListItemLink>
                             <li><a href="#" >还款计划</a></li>
                         </ul>
                         <h3><i className="iconfont icon-invitation"></i>奖励管理</h3>
                         <ul>
                             <ListItemLink to="/my-reward/super-partner">超级合伙人</ListItemLink>
-                            <li><a href="/my-account/reward/redEnvelopes">我的红包</a></li>
-                            <li><a href="/my-account/reward/rateCoupons">我的加息券</a></li>
+                            <ListItemLink to="/my-account/reward/redEnvelopes">我的红包</ListItemLink>
+                        <ListItemLink to="/my-account/reward/rateCoupons">我的加息券</ListItemLink>
                         </ul>
                         <h3><i className="iconfont icon-setting"></i>基本设置</h3>
                         <ul>
-                            <li><a href="/my-account/settings/authInfo">个人资料</a></li>
-                            {/*<li><a href="#">认证中心</a></li>*/}
+                            <ListItemLink to="/my-account/settings/authInfo">个人资料</ListItemLink>
                             <li><a href="#">风险评估</a></li>
                             <li><a href="#">站内信箱</a></li>
                         </ul>

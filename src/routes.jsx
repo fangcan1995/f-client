@@ -15,10 +15,12 @@ import PartnerList from './containers/partner-list/partner-list';
 import AccountOverview from './containers/member/overview/account-overview/account-overview';
 import CardInfo from './containers/member/overview/cardInfo/cardInfo'
 import TransactionRecord from './containers/member/overview/transaction-record/transaction-record';
-import redEnvelopes from './containers/member/reward/redEnvelopes/redEnvelopes';
-import rateCoupons from './containers/member/reward/rateCoupons/rateCoupons';
+import RedEnvelopes from './containers/member/reward/redEnvelopes/redEnvelopes';
+import RateCoupons from './containers/member/reward/rateCoupons/rateCoupons';
 
-import authInfo from './containers/member/settings/authInfo/authInfo';
+import AuthInfo from './containers/member/settings/authInfo/authInfo';
+
+import MyLoans from './containers/member/loans/myLoans/myLoans';
 
 import About from './components/about/aboutus-common'
 import Team from './containers/about/team/team'
@@ -40,9 +42,10 @@ export default (
                             <Route path={`${match.url}/overview/cardInfo`} component={CardInfo} />
                             <Route path={`${match.url}/overview/account-overview`} component={AccountOverview} />
                             <Route path={`${match.url}/overview/transaction-record`} component={TransactionRecord} />
-                            <Route path={`${match.url}/reward/redEnvelopes`} component={redEnvelopes} />
-                            <Route path={`${match.url}/reward/rateCoupons`} component={rateCoupons} />
-                            <Route path={`${match.url}/settings/authInfo`} component={authInfo} />
+                            <Route path={`${match.url}/reward/redEnvelopes`} component={RedEnvelopes} />
+                            <Route path={`${match.url}/reward/rateCoupons`} component={RateCoupons} />
+                            <Route path={`${match.url}/settings/authInfo`} component={AuthInfo} />
+                            <Route path={`${match.url}/loans/myLoans`} component={MyLoans} />
 
                             <Redirect to="/" />
                         </Switch>
