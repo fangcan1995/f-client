@@ -1,5 +1,5 @@
 import React,{ Component } from "react";
-
+import './tab.less';
 export default class Tab extends Component {
     constructor(props){
         super(props);
