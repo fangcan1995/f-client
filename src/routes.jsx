@@ -16,6 +16,9 @@ import AccountOverview from './containers/member/overview/account-overview/accou
 import CardInfo from './containers/member/overview/cardInfo/cardInfo'
 import TransactionRecord from './containers/member/overview/transaction-record/transaction-record';
 import redEnvelopes from './containers/member/reward/redEnvelopes/redEnvelopes';
+import rateCoupons from './containers/member/reward/rateCoupons/rateCoupons';
+
+import authInfo from './containers/member/settings/authInfo/authInfo';
 
 import About from './components/about/aboutus-common'
 import Team from './containers/about/team/team'
@@ -38,6 +41,9 @@ export default (
                             <Route path={`${match.url}/overview/account-overview`} component={AccountOverview} />
                             <Route path={`${match.url}/overview/transaction-record`} component={TransactionRecord} />
                             <Route path={`${match.url}/reward/redEnvelopes`} component={redEnvelopes} />
+                            <Route path={`${match.url}/reward/rateCoupons`} component={rateCoupons} />
+                            <Route path={`${match.url}/settings/authInfo`} component={authInfo} />
+
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>

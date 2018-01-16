@@ -58,12 +58,12 @@ export default ({ location, match, history, ...props }) => {
                         <ul>
                             <ListItemLink to="/my-reward/super-partner">超级合伙人</ListItemLink>
                             <li><a href="/my-account/reward/redEnvelopes">我的红包</a></li>
-                            <li><a href="#">我的加息券</a></li>
+                            <li><a href="/my-account/reward/rateCoupons">我的加息券</a></li>
                         </ul>
                         <h3><i className="iconfont icon-setting"></i>基本设置</h3>
                         <ul>
-                            <li><a href="#">个人资料</a></li>
-                            <li><a href="#">认证中心</a></li>
+                            <li><a href="/my-account/settings/authInfo">个人资料</a></li>
+                            {/*<li><a href="#">认证中心</a></li>*/}
                             <li><a href="#">风险评估</a></li>
                             <li><a href="#">站内信箱</a></li>
                         </ul>

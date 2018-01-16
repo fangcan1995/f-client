@@ -1,0 +1,50 @@
+@import './library';
+@import './global';
+@import './top';
+@import './footer';
+@import './navbar';
+@import './member';
+
+.member__main {
+  .authInfo{
+    tr{
+      th{
+        text-align:left;
+        width:180px;
+        border-bottom:1px solid #f0f0f0;
+        .iconfont{
+          padding:0 15px 0 10px;
+          color:#56d197;
+          font-size:24px;
+          position:relative;
+          top:3px;
+          &.icon-user:before { content: "\e630"; }
+          &.icon-phone:before{ content: "\e69a"; }
+          &.icon-id:before { content: "\e61b"; }
+          &.icon-card:before { content: "\e618"; }
+          &.icon-Pass:before { content: "\e61a"; }
+        }
+      }
+      td{
+        height:59px;
+        border-bottom:1px solid #f0f0f0;
+        text-align:center;
+        &.Result{
+          width:190px
+        }
+        &.detail{
+          width:380px
+        }
+        .importantTxt{
+          color:#ffab52
+        }
+      }
+      &.no{
+        .iconfont{
+          color:#cad5e0
+        }
+      }
+    }
+
+  }
+}
