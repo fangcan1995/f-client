@@ -5,7 +5,6 @@
 @import './navbar';
 @import './member';
 
-
 .member__main{
   //红包
   .redBagList{
@@ -20,7 +19,7 @@
         display: inline-block;
         width: 249px;
         height: 118px;
-        background: url(../images/account/redbg.png) top left no-repeat;
+
         position: absolute;
         top: 0;
         left: 0;
@@ -36,6 +35,12 @@
           position:absolute;
           top:0;
           left:190px;
+        }
+        &.fxhb{
+          background: url(../images/account/redbg_fx.png) top left no-repeat;
+        }
+        &.xjhb{
+          background: url(../images/account/redbg_xj.png) top left no-repeat;
         }
       }
       .txt {
@@ -60,10 +65,14 @@
           float: right
         }
       }
-
       &.reStatus-0{
         .img{
-          background:url(../images/account/redbg2.png) top left no-repeat;
+          &.fxhb{
+            background: url(../images/account/redbg_fx2.png) top left no-repeat;
+          }
+          &.xjhb{
+            background: url(../images/account/redbg_xj2.png) top left no-repeat;
+          }
           .remark{
             background:url(../images/account/notActive.png) top left no-repeat;
           }
@@ -74,9 +83,7 @@
       }
       &.reStatus-1{
         .img{
-          background: url(../images/account/redbg.png) top left no-repeat;
           .remark{
-
           }
           .denomination{
             color:#fff
@@ -85,18 +92,29 @@
       }
       &.reStatus-2{
         .img{
-          background:url(../images/account/redbg2.png) top left no-repeat;
+          &.fxhb{
+            background: url(../images/account/redbg_fx2.png) top left no-repeat;
+          }
+          &.xjhb{
+            background: url(../images/account/redbg_xj2.png) top left no-repeat;
+          }
           .remark{
-
           }
           .denomination{
             color:#fff
           }
         }
+
       }
       &.reStatus-3{
         .img{
-          background:url(../images/account/redbg2.png) top left no-repeat;
+          &.fxhb{
+            background: url(../images/account/redbg_fx2.png) top left no-repeat;
+          }
+          &.xjhb{
+            background: url(../images/account/redbg_xj2.png) top left no-repeat;
+          }
+
           .remark{
             background:url(../images/account/expired.png) top left no-repeat;
           }
@@ -105,14 +123,12 @@
           }
         }
       }
-
-
-
     }
   }
   //加息券
   .couponList{
     width:100%;
+    margin: 20px 0 0 0;
     li{
       height:118px;
       margin-bottom:20px;
@@ -163,31 +179,9 @@
           float: right
         }
       }
-      &.used{
+      &.reStatus-0{
         .img{
-          background:url(../images/account/Couponbg2.png) top left no-repeat;
-          .remark{
-          }
-          .denomination{
-            color:#fff
-          }
-        }
-      }
-      &.expired{
-        .img{
-          background:url(../images/account/Couponbg2.png) top left no-repeat;
-          .remark{
-            background:url(../images/account/expired.png) top left no-repeat;
-          }
-          .denomination{
-            color:#fff
-          }
-        }
-      }
-
-      &.notActive{
-        .img{
-          background:url(../images/account/Couponbg2.png) top left no-repeat;
+          background: url(../images/account/Couponbg2.png) top left no-repeat;
           .remark{
             background:url(../images/account/notActive.png) top left no-repeat;
           }
@@ -195,7 +189,37 @@
             color:#fff
           }
         }
+      }
+      &.reStatus-1{
+        .img{
+          .remark{
+          }
+          .denomination{
+            color:#fff
+          }
+        }
+      }
+      &.reStatus-2{
+        .img{
+          background: url(../images/account/Couponbg2.png) top left no-repeat;
+          .remark{
+          }
+          .denomination{
+            color:#fff
+          }
+        }
 
+      }
+      &.reStatus-3{
+        .img{
+          background: url(../images/account/Couponbg2.png) top left no-repeat;
+          .remark{
+            background:url(../images/account/expired.png) top left no-repeat;
+          }
+          .denomination{
+            color:#fff
+          }
+        }
       }
 
 
