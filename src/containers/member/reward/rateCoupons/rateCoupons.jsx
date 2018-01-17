@@ -2,63 +2,54 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Pagination from '../../../../components/pagination/pagination';
 import './rateCoupons.less';
-import jQuery from 'jquery';
 import moment from "moment";
-class RateCoupons extends React.Component{
+export default class RateCoupons extends React.Component{
     constructor(props){
         super(props);
         this.state={
             dataSetting:{},  //数据
             rcStatus: 0  //默认显示全部
         }
-
     }
-    dataSet={
-        "url":`http://172.16.1.221:9090/members/memberRateCoupons?access_token=137c6472-22ba-4dde-aa15-e1dff2436641`,
-        "pageNum":1,
-        "pageSize":10,
-        "filter":{
-            rcStatus:0,
-        }
-    };
     filterClassName = (index) => {
         return index === this.state.rcStatus ? "filter__opt filter__opt--active" : "filter__opt"
     }
     loadData(currentPage,pageSize,filter){
         let conditions = "";
-        for(var item in filter){
-            conditions += "&"+item+"="+filter[item];
-        }
-        const _this = this;
-        jQuery.ajax({
-            url:`${this.dataSet.url}&pageNum=${currentPage}&pageSize=${pageSize}${conditions}`,
-            type:'GET',
-            data:{},
-            dataType:'json',
-            cache: false
-        }).done(function (data){
-            if(data){
-                _this.setState({
-                    dataSetting:data.data
-                });
-            } else{
-                console.log('连接成功但没有数据返回');
+        if(filter){
+            for(var item in filter){
+                conditions += "&"+item+"="+filter[item];
             }
-        }).catch(()=>{
-            console.log('服务器连接错误,后者token过期');
+        }
+        let url = `http://172.16.1.221:9090/members/memberRateCoupons?access_token=137c6472-22ba-4dde-aa15-e1dff2436641&pageNum=${currentPage}&pageSize=${pageSize}${conditions}`;
+        fetch(url,{
+            method:"get"
         })
+            .then(function (response){
+                if (response.status == 200){
+                    return response;
+                }
+            })
+            .then((data) => data.json())
+            .then((data) => {
+                    this.setState({ dataSetting:data.data });
+                }
+
+            )
+            .catch(function(err){
+                console.log("Fetch错误:"+err);
+            });
     }
     componentDidMount () {
-        this.loadData(this.dataSet.pageNum,this.dataSet.pageSize,this.dataSet.filter);
+        this.loadData(1,10);
     }
     filter(pram){
         this.setState({ rcStatus: pram });
-        this.loadData(this.dataSet.pageNum,this.dataSet.pageSize,{rcStatus:pram});
+        this.loadData(1,10,{rcStatus:pram});
     }
     render(){
         const {list,pageNum,total,pageSize}=this.state.dataSetting;
         const totalPage=Math.ceil(total/pageSize);
-        console.log(list);
         return(
             <div className="member__main">
                 <div className="crumb">
@@ -154,8 +145,6 @@ class RateCoupons extends React.Component{
                                         </div>
                                         : <div>暂无加息券</div>
                             }
-
-
                         </div>
                     </div>
                 </div>
@@ -176,6 +165,5 @@ class RateCoupons extends React.Component{
 
     }
 }
-export default RateCoupons;
 
 

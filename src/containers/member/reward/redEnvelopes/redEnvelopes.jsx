@@ -2,59 +2,51 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Pagination from '../../../../components/pagination/pagination';
 import './redEnvelopes.less';
-import jQuery from 'jquery';
 import moment from "moment";
 export default class RedEnvelopes extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            dataSetting:{},  //红包数据
-            reStatus: 0  //默认显示全部红包
+            dataSetting:{},
+            reStatus: 0
         }
     }
-    //数据设置
-    dataSet={
-        "url":`http://172.16.1.221:9090/members/memberRedEnvelopes?access_token=137c6472-22ba-4dde-aa15-e1dff2436641`,
-        "pageNum":1,
-        "pageSize":10,
-        "filter":{
-            reStatus:0,
-        }
-    };
     filterClassName = (index) => {
         return index === this.state.reStatus ? "filter__opt filter__opt--active" : "filter__opt"
     }
     loadData(currentPage,pageSize,filter){
         let conditions = "";
-        for(var item in filter){
-            conditions += "&"+item+"="+filter[item];
-        }
-        const _this = this;
-        jQuery.ajax({
-            url:`${this.dataSet.url}&pageNum=${currentPage}&pageSize=${pageSize}${conditions}`,
-            type:'GET',
-            data:{},
-            dataType:'json',
-            cache: false
-        }).done(function (data){
-            if(data){
-                _this.setState({
-                    dataSetting:data.data
-                });
-            } else{
-                console.log('连接成功但没有数据返回');
+        if(filter){
+            for(var item in filter){
+                conditions += "&"+item+"="+filter[item];
             }
-        }).catch(()=>{
-            console.log('服务器连接错误,后者token过期');
+        }
+        let url = `http://172.16.1.221:9090/members/memberRedEnvelopes?access_token=137c6472-22ba-4dde-aa15-e1dff2436641&pageNum=${currentPage}&pageSize=${pageSize}${conditions}`;
+        fetch(url,{
+            method:"get"
         })
+            .then(function (response){
+                if (response.status == 200){
+                    return response;
+                }
+            })
+            .then((data) => data.json())
+            .then((data) => {
+                    this.setState({ dataSetting:data.data });
+                }
+
+            )
+            .catch(function(err){
+                console.log("Fetch错误:"+err);
+            });
+
     }
     componentDidMount () {
-        this.loadData(this.dataSet.pageNum,this.dataSet.pageSize,this.dataSet.filter);
+        this.loadData(1,10);
     }
-    //条件查询
     filter(pram){
         this.setState({ reStatus: pram });
-        this.loadData(this.dataSet.pageNum,this.dataSet.pageSize,{reStatus:pram});
+        this.loadData(1,10,{reStatus:pram});
     }
     render(){
         const {list,pageNum,total,pageSize}=this.state.dataSetting;
@@ -160,8 +152,6 @@ export default class RedEnvelopes extends React.Component{
                                         </div>
                                         : <div>暂无红包</div>
                             }
-
-
                         </div>
                     </div>
                 </div>
