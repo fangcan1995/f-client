@@ -37,7 +37,7 @@ export default class InvestDetailMaster extends React.Component {
                 this.setState({
                 })
             ).catch((err) => {
-                console.log("Fetch错误:"+err);
+                //console.log("Fetch错误:"+err);
                 console.log('跳转到404页面');
                 }
             );
@@ -62,7 +62,7 @@ export default class InvestDetailMaster extends React.Component {
             hkDateTemp:'',                         //还款日期
         };
         let memberInfo={
-            token:'aaaa',
+            user:1,//是否登录
             isGreen:true, //是否新手
             isOpenAccount:true,             //是否开户
             isFxpg:true,
@@ -78,13 +78,14 @@ export default class InvestDetailMaster extends React.Component {
         })
     }
     render(){
-        console.log(this.state);
+        //console.log(this.state);
         let {project,member,investAmount}=this.state;
         return (
             <div>
                 {
                     JSON.stringify(this.state) == "{}" ? <div>loading</div>
                         :
+
                         <div className="wrapper">
                             <div className="master">
                                 <dl className="info">
@@ -138,7 +139,6 @@ export default class InvestDetailMaster extends React.Component {
                                                 max:(project.maxMoneyTemp<project.restMoneyTemp)?project.maxMoneyTemp:project.restMoneyTemp,
                                                 step:project.rangeMoneyTemp,
                                                 cost:(obj)=>{
-                                                    //console.log(`计算投资${obj.value}元的收益`);
                                                     this.setState({
                                                         investAmount:obj.value
                                                     });
@@ -149,24 +149,25 @@ export default class InvestDetailMaster extends React.Component {
                                         </StepperInput>
                                         <ul className="others">
                                             <li>
-                                                <i className="iconfonticon-user"></i> <strong>我的可用余额：</strong>
+                                                <i className="iconfonticon-user"></i> <strong>
+                                                我的可用余额：</strong>
                                                 {
-                                                    (member.token!='')? `${member.accountBalance} 元`
-                                                        : <a href="#">登陆查看</a>
+                                                    (member.user='')? <a href="#">登陆查看</a>
+                                                        : `${member.accountBalance} 元`
                                                 }
                                             </li>
                                             <li>
                                                 <strong>可用红包总计：</strong>
                                                 {
-                                                    (member.token!='')? `${member.redAmount} 元`
-                                                        : <a href="#">登陆查看</a>
+                                                    (member.user='')? <a href="#">登陆查看</a>
+                                                        : `${member.redAmount} 元`
                                                 }
                                             </li>
                                             <li>
                                                 <strong>可用加息券：</strong>
                                                 {
-                                                    (member.token!='')? `${member.rateNum} 张`
-                                                        : <a href="#">登陆查看</a>
+                                                    (member.user='')? <a href="#">登陆查看</a>
+                                                        : `${member.rateNum} 张`
                                                 }
                                             </li>
                                             <li><strong>预期可赚取：</strong> <i id="money">
@@ -175,10 +176,10 @@ export default class InvestDetailMaster extends React.Component {
                                         </ul>
                                         <div className="form_bar">
                                             {
-                                                (member.token='')? <a className="btn" href="#">我要登录</a>
+                                                (member.user='')? <a className="btn" href="#">我要登录</a>
                                                     : (!member.isOpenAccount)?<a className="btn" href="#">立即开户</a>
                                                     :(!member.isFxpg)?<a className="btn" href="#">立即风险评估</a>
-                                                        :(member.accountBalance<1000)? <a className="btn" href="#">立即充值</a>
+                                                        :(member.accountBalance<investAmount)? <a className="btn" href="#">立即充值</a>
                                                             :<a className="btn" href="#">立即投资</a>
                                             }
 
