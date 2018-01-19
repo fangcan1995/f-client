@@ -85,18 +85,18 @@ export default class About extends Component{
                             </dd>
                         </dl>
                         <dl key="3" onClick = { this.collapse.bind(this,3)} className = { this.state.current === 3? "showChildren":""}>
-                            <dt><TitleParent title="官方公告" to="/about/news/mediaReport" /></dt>
+                            <dt><TitleParent title="官方公告" to="/about/news/notice" /></dt>
                             <dd>
                                 <ul>
-                                    <ListItemLink to="/about/news/mediaReport">网站公告</ListItemLink>
+                                    <ListItemLink to="/about/news/notice">网站公告</ListItemLink>
                                 </ul>
                             </dd>
                         </dl>
                         <dl key="4" onClick = { this.collapse.bind(this,4)} className = { this.state.current === 4? "showChildren":""}>
-                            <dt><TitleParent title="运营报告" to="/about/news/mediaReport" /></dt>
+                            <dt><TitleParent title="运营报告" to="/about/news/report" /></dt>
                             <dd>
                                 <ul>
-                                    <ListItemLink to="/plus/list.php?tid=26">运营报告</ListItemLink>
+                                    <ListItemLink to="/about/news/report">运营报告</ListItemLink>
                                 </ul>
                             </dd>
                         </dl>
