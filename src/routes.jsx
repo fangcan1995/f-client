@@ -9,6 +9,8 @@ import Login from './containers/login/login';
 import InvestIndex from './containers/invest-index/invest-index';
 import InvestList from './containers/invest/invest-list/invest-list';
 import InvestDetail from './containers/invest/invest-detail/invest-detail';
+import TransferDetail from './containers/invest/invest-detail/transfer-detail';
+
 import LoanIndex from './containers/loan-index/loan-index';
 
 import SuperPartner from './containers/super-partner/super-partner';
@@ -23,10 +25,11 @@ import AuthInfo from './containers/member/settings/authInfo/authInfo';
 
 import MyLoans from './containers/member/loans/myLoans/myLoans';
 
-import About from './components/about/aboutus-common'
-import Team from './containers/about/team/team'
-import Partners from './containers/about/partners/partners'
-import ArticleList from './containers/about/list/list'
+import About from './components/about/aboutus-common';
+import Team from './containers/about/team/team';
+import Partners from './containers/about/partners/partners';
+import ArticleList from './containers/about/list/list';
+import MobileApp from './containers/about/mobile-app/mobileApp'
 
 export default (
     <App>
@@ -34,7 +37,9 @@ export default (
             <Route exact path="/" component={HomePage} />
             <Route path="/invest/invest-list" component={InvestList} />
             <Route path="/invest/invest-detail" component={InvestDetail} />
+            <Route path="/invest/transfer-detail" component={TransferDetail} />
             <Route path="/loan-index" component={LoanIndex} />
+            <Route path='/mobileApp' component={MobileApp} />
             <Route strict path="/my-account" render={(props) => {
                 const { match } = props;
                 return (
@@ -66,7 +71,7 @@ export default (
                     </MemberSidebar>
                 )
             }} />
-            {/*<Route path="/about/" render={(props) => {
+            <Route path="/about/" render={(props) => {
                 const { match } = props;
                 return(
                     <About>
@@ -74,11 +79,12 @@ export default (
                             <Route path={`${match.url}/aboutus/team`} component={Team} />
                             <Route path={`${match.url}/aboutus/partners`} component={Partners} />
                             <Route path={`${match.url}/news/mediaReport`} component={ArticleList} />
+
                             <Redirect to="/" />
                         </Switch>
                     </About>
                 )
-            }} />*/}
+            }} />
             <Redirect to="/" />
         </Switch>
     </App>
