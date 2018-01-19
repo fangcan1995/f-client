@@ -28,8 +28,11 @@ import MyLoans from './containers/member/loans/myLoans/myLoans';
 import About from './components/about/aboutus-common';
 import Team from './containers/about/team/team';
 import Partners from './containers/about/partners/partners';
+import Honor from './containers/about/honor/honor';
 import ArticleList from './containers/about/list/list';
 import MobileApp from './containers/about/mobile-app/mobileApp'
+import Constant  from  './containers/about/constant/constant'
+import Contact  from  './containers/about/contact/contact'
 
 export default (
     <App>
@@ -40,6 +43,7 @@ export default (
             <Route path="/invest/transfer-detail" component={TransferDetail} />
             <Route path="/loan-index" component={LoanIndex} />
             <Route path='/mobileApp' component={MobileApp} />
+
             <Route strict path="/my-account" render={(props) => {
                 const { match } = props;
                 return (
@@ -76,10 +80,12 @@ export default (
                 return(
                     <About>
                         <Switch>
+                            <Route path={`${match.url}/constant`} component={Constant} />
                             <Route path={`${match.url}/aboutus/team`} component={Team} />
                             <Route path={`${match.url}/aboutus/partners`} component={Partners} />
+                            <Route path={`${match.url}/aboutus/honor`} component={Honor} />
                             <Route path={`${match.url}/news/mediaReport`} component={ArticleList} />
-
+                            <Route path={`${match.url}/help/contact`} component={Contact} />
                             <Redirect to="/" />
                         </Switch>
                     </About>

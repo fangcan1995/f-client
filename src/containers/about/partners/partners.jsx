@@ -21,7 +21,7 @@ export default ({ location, match, history }) => {
                                     <h3><strong>富友集团</strong></h3>
                                 </dt>
                                 <dd className="photo">
-                                    <img src="/images/aboutUs/logo_fy.jpg" />
+                                    <img src={require('../../../assets/images/about/logo_fy.jpg')} />
                                 </dd>
                                 <dd className="intro">
                                     <p>
@@ -37,7 +37,7 @@ export default ({ location, match, history }) => {
                                     <h3><strong>鹏元征信</strong></h3>
                                 </dt>
                                 <dd className="photo">
-                                    <img src="/images/aboutUs/logo_pyzx.jpg" />
+                                    <img src={require('../../../assets/images/about/logo_pyzx.jpg')} />
                                 </dd>
                                 <dd className="intro">
                                     <p>
