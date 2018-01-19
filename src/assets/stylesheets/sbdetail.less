@@ -3,7 +3,7 @@
 @import './top';
 @import './footer';
 @import './navbar';
-@import './member';
+/*@import './member';*/
 
 .main{
   //总览
@@ -183,15 +183,15 @@
         position: absolute;
         top: -20px;
         left: 170px;
-        background: url(../images/index_tips.png) 0px bottom no-repeat;
-        padding-bottom: 4px
+        background: url(../images/invest/index_tips.png) 0px bottom no-repeat;
+        padding-bottom: 1px
       }
       .addtips strong {
         background: #32a9f2;
         color: #fff;
         font-size: 12px;
         padding: 2px 5px;
-        border-radius: 5px
+        border-radius: 4px
       }
 
     }
@@ -200,7 +200,7 @@
       width: 310px;
       height: 320px;
       float: right;
-      padding: 30px 35px 0 0;
+      padding: 25px 35px 0 0;
       .btn {width: 100%;
         height: 48px;
         line-height: 48px;
@@ -217,11 +217,11 @@
         color: #3793df;
       }
       li {
-        line-height: 30px;
+        line-height: 28px;
       }
       .m-amount li {
-        height: 30px;
-        line-height: 30px;
+        height: 28px;
+        line-height: 28px;
         font-size: 14px;
         color: #45484c
       }
@@ -229,85 +229,26 @@
         font-size: 14px;
         color: #81868f
       }
-      .form_bar {
-        margin: 15px auto 5px auto;
-        position: relative
-      }
-      .form_bar input {
-        display: block;
-        width: 310px;
-        height: 48px;
-        line-height: 48px;
-        padding: 0 75px 0 50px;
-        border: 1px solid #e6eaf0;
-        font-size: 24px;
-        text-align: right;
-        color: #2aa4ea;
-        box-sizing: border-box
-      }
-      .form_bar span {
-        display: inline-block;
-        width: 30px;
-        height: 30px;
-        position: absolute;
-        top: 20px;
-        left: 240px;
-        color: #2aa4ea
-      }
-      .form_bar .btn_minus,
-      .form_bar .btn_add {
-        display: inline-block;
-        width: 38px;
-        height: 47px;
-        background: #dce1e6;
-        position: absolute;
-        border: none;
-        color: #fff;
-        font-size: 30px;
-        line-height: 36px
-      }
-      .form_bar .btn_minus {
-        top: 0px;
-        left: 0;
-        border-top-left-radius: 3px;
-        border-bottom-left-radius: 3px
-      }
-      .form_bar .btn_add {
-        top: 0px;
-        right: 0;
-        border-top-right-radius: 3px;
-        border-bottom-right-radius: 3px;
-        background: #ff7e33;
-      }
-      .others {
-        margin-bottom: 20px;
-        font-size: 14px;
-      }
-      .others li {
-        text-align: right
-      }
-      .others li strong {
-        color: #81868f
-      }
-      .others li .iconfont {
-        font-size: 15px;
-        color: #81868f
-      }
-      #money {
-        color: #2aa4ea;
-        font-style: normal
-      }
 
-    }
-    .tips {
-      line-height: 30px;
-      font-size: 14px;
-      color: #ff6666;
-      display: none ;
-      &:before { content: "\e614";
-        padding-right: 10px;
-        font-family: iconfont;
-        font-size: 14px; }
+
+      .others {
+        margin-bottom: 15px;
+        font-size: 14px;
+        li {
+          text-align: right
+        }
+        strong {
+          color: #81868f
+        }
+        .iconfont {
+          font-size: 15px;
+          color: #81868f
+        }
+        #money {
+          color: #2aa4ea;
+          font-style: normal
+        }
+      }
     }
     a.btn{
       display:block;
@@ -383,7 +324,13 @@
     background: #fff;
     border-bottom: 1px solid #e6eaf0;
     margin-bottom: 60px;
-    .tab_info_t {
+    .tabs__nav{
+      background: #f7f9fa;
+      .tab--active{
+        background: #fff;
+      }
+    }
+    /*.tab_info_t {
       height: 70px;
       line-height: 70px;
       background: #f7f9fa;
@@ -410,7 +357,7 @@
           }
         }
       }
-    }
+    }*/
     .tab_info_c {
       border-right: 1px solid #e6eaf0;
       border-left: 1px solid #e6eaf0;
@@ -480,6 +427,20 @@
         }
         .clearfix();
       }
+      .authentication{
+        height: 30px;
+        padding: 20px;
+        li{
+          width:25%;
+          height: 30px;
+          line-height: 30px;
+          float: left;
+          img{
+            float: left;
+            padding:0 10px 0 40px;
+          }
+        }
+      }
       .imglist ul {
         padding: 10px 0;
         li {
@@ -524,104 +485,5 @@
   //投资记录/还款记录
   .m-record {
     padding: 30px 40px 0 40px;
-    table {
-      border-collapse : collapse;
-      margin-bottom: 50px ;
-      caption{
-        padding:15px 0;
-        text-align:left;
-        li{
-          float:left;
-          margin-right:30px;
-          font-size:16px;
-          color:#9db3db;
-          strong{
-            color:#81868f
-          }
-          i{
-            font-size:14px;
-            color:#81868f;
-            font-style: normal
-          }
-        }
-      }
-      tr{
-        &:nth-child(odd) {
-          background: #f5f7fa;
-        }
-        &:hover {
-          background: #f5f7fa;
-        }
-      }
-      th {
-        height: 50px;
-        background: #f5f7fa;
-        color: #45484c;
-        text-align: center ;
-        font-size: 14px;
-      }
-      td {
-        padding: 18px 10px;
-        text-align: center;
-        color: #81868f;
-        font-size: 14px
-      }
-    }
-    .noRecord{
-      text-align:left;
-      font-size:16px
-    }
   }
-
-  //分页
-  .pagination {
-    padding: 35px 10px 10px 10px;
-    text-align: center;
-    ul {
-      display: inline-block;
-      li {
-        display: inline;
-        line-height: 24px;
-        &.rows {
-          line-height: 30px;
-          padding-left: 5px;
-        }
-        a,span{
-          float: left;
-          padding: 4px 12px;
-          line-height: 20px;
-          text-decoration: none;
-          background-color: #fff;
-          border: 1px solid #d2d2d2;
-          margin-left: 10px;
-          color: #4c4c4c;
-          border-radius: 3px
-        }
-        a:hover{
-          color: #fff;
-          background: #0088cc;
-        }
-        &.disabled span,&.disabled a,&.disabled a:hover{
-          color: #999;
-          cursor: default;
-          background-color: transparent;
-        }
-        &.active a,&.active span{
-          color: #fff;
-          cursor: default;
-          border: 1px solid #0f91dd;
-        }
-        a:hover,&.active a,&.active span{
-          background-color: #0f91dd;
-        }
-        &.current a {
-          color: #f00;
-          font-weight: bold;
-          background: #ddd
-        }
-      }
-    }
-
-
-}
 }

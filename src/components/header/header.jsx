@@ -48,7 +48,7 @@ export default (props) => {
             <nav className="nav">
               <ul>
                 <li><Link to="/">首页</Link></li>
-                <li><Link to="/invest-list">我要投资</Link></li>
+                <li><Link to="/invest/invest-list">我要投资</Link></li>
                 <li><Link to="/loan-index">我要借款</Link></li>
                 <li><Link to="/constantTable">信息披露</Link></li>
               </ul>

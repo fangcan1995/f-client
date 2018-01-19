@@ -7,7 +7,8 @@ import MemberSidebar from './components/member-sidebar/member-sidebar';
 import HomePage from './containers/home-page/home-page';
 import Login from './containers/login/login';
 import InvestIndex from './containers/invest-index/invest-index';
-import InvestList from './containers/invest-list/invest-list';
+import InvestList from './containers/invest/invest-list/invest-list';
+import InvestDetail from './containers/invest/invest-detail/invest-detail';
 import LoanIndex from './containers/loan-index/loan-index';
 
 import SuperPartner from './containers/super-partner/super-partner';
@@ -31,7 +32,8 @@ export default (
     <App>
         <Switch>
             <Route exact path="/" component={HomePage} />
-            <Route path="/invest-list" component={InvestList} />
+            <Route path="/invest/invest-list" component={InvestList} />
+            <Route path="/invest/invest-detail" component={InvestDetail} />
             <Route path="/loan-index" component={LoanIndex} />
             <Route strict path="/my-account" render={(props) => {
                 const { match } = props;

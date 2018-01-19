@@ -106,24 +106,24 @@ export default class RateCoupons extends React.Component{
                                         <div>
                                             <ul className="couponList">
                                                 {
-                                                    list.map((entry, rowIndex) => (
+                                                    list.map((item, index) => (
 
-                                                        <li className={`reStatus-${entry['rcStatus']}`} key={`row-${rowIndex}`}>
+                                                        <li className={`reStatus-${item.rcStatus}`} key={`row-${index}`}>
                                                             <div className='img'>
-                                                                <p className="denomination">{entry['rcAmount']}</p>
+                                                                <p className="denomination">{item.rcAmount}</p>
                                                                 <p className="remark"></p>
                                                             </div>
                                                             <div className="txt">
                                                                 <p>
-                                                                    <strong>使用规则：</strong>{entry['productCategoryName']}满{entry['useMinAmount']}元可用
+                                                                    <strong>使用规则：</strong>{item.productCategoryName}满{item.useMinAmount}元可用
                                                                 </p>
                                                                 <p><strong>有效期：</strong>
                                                                     {
-                                                                        !entry['beginTime']?'' :moment(entry['beginTime']).format('YYYY-MM-DD')
+                                                                        !item.beginTime?'' :moment(item.beginTime).format('YYYY-MM-DD')
                                                                     }
                                                                     --
                                                                     {
-                                                                        !entry['endTime']?'' :moment(entry['endTime']).format('YYYY-MM-DD')
+                                                                        !item.endTime?'' :moment(item.endTime).format('YYYY-MM-DD')
                                                                     }
                                                                 </p>
                                                             </div>

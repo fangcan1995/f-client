@@ -1,0 +1,117 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import Pagination from '../../../../components/pagination/pagination';
+export default () => {
+    return (
+    <ul  className="m-record">
+        <li>
+            <div className="table__wrapper">
+                <table className="tableList">
+                    <thead>
+                    <tr>
+                        <th>还款期数</th>
+                        <th>还款日期</th>
+                        <th>应还本金（元）</th>
+                        <th>应还利息（元）</th>
+                        <th>应还本息（元）</th>
+                        <th>还款状态</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>2017-07-08</td>
+                        <td>0.00</td>
+                        <td>860.00</td>
+                        <td>860.00</td>
+                        <td>已经还款</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>2017-08-08</td>
+                        <td>0.00</td>
+                        <td>860.00</td>
+                        <td>860.00</td>
+                        <td>已经还款</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>2017-09-08</td>
+                        <td>0.00</td>
+                        <td>860.00</td>
+                        <td>860.00</td>
+                        <td>已经还款</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>2017-10-08</td>
+                        <td>0.00</td>
+                        <td>860.00</td>
+                        <td>860.00</td>
+                        <td>已经还款</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>2017-11-08</td>
+                        <td>0.00</td>
+                        <td>860.00</td>
+                        <td>860.00</td>
+                        <td>已经还款</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>2017-12-08</td>
+                        <td>0.00</td>
+                        <td>860.00</td>
+                        <td>860.00</td>
+                        <td>已经还款</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>2018-01-08</td>
+                        <td>0.00</td>
+                        <td>860.00</td>
+                        <td>860.00</td>
+                        <td>等待还款</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>2018-02-08</td>
+                        <td>0.00</td>
+                        <td>860.00</td>
+                        <td>860.00</td>
+                        <td>等待还款</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>2018-03-08</td>
+                        <td>0.00</td>
+                        <td>860.00</td>
+                        <td>860.00</td>
+                        <td>等待还款</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>2018-04-08</td>
+                        <td>0.00</td>
+                        <td>860.00</td>
+                        <td>860.00</td>
+                        <td>等待还款</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <Pagination config = {
+                    {
+                        currentPage:1,
+                        pageSize:10,
+                        totalPage:3,
+                        paging:(obj)=>{
+                            this.loadData(obj.currentPage,obj.pageCount,this.state.dataSetting.filter);
+                        }
+                    }
+                } ></Pagination>
+            </div>
+        </li>
+    </ul>
+    );
+};

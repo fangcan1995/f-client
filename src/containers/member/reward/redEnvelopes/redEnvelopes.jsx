@@ -107,30 +107,29 @@ export default class RedEnvelopes extends React.Component{
                                         <div>
                                             <ul className="redBagList">
                                                 {
-                                                    list.map((entry, rowIndex) => (
-
-                                                        <li className={`reStatus-${entry['reStatus']}`} key={`row-${rowIndex}`}>
+                                                    list.map((item, index) => (
+                                                        <li className={`reStatus-${item.reStatus}`} key={`row-${index}`}>
                                                             <div className=
                                                                 {
-                                                                entry['reTypeName']=='返现红包'?
+                                                                    item.reTypeName=='返现红包'?
                                                                     'img fxhb'
                                                                     : 'img xjhb'
                                                                     }
                                                             >
-                                                                <p className="denomination">{entry['reAmount']}</p>
+                                                                <p className="denomination">{item.reAmount}</p>
                                                                 <p className="remark"></p>
                                                             </div>
                                                             <div className="txt">
                                                                 <p>
-                                                                    <strong>使用规则：</strong>{entry['productCategoryName']}满{entry['useMinAmount']}元可用
+                                                                    <strong>使用规则：</strong>{item.productCategoryName}满{item.useMinAmount}元可用
                                                                 </p>
                                                                 <p><strong>有效期：</strong>
                                                                     {
-                                                                        !entry['beginTime']?'' :moment(entry['beginTime']).format('YYYY-MM-DD')
+                                                                        !item.beginTime?'' :moment(item.beginTime).format('YYYY-MM-DD')
                                                                     }
                                                                     --
                                                                     {
-                                                                        !entry['endTime']?'' :moment(entry['endTime']).format('YYYY-MM-DD')
+                                                                        !item.endTime?'' :moment(item.endTime).format('YYYY-MM-DD')
                                                                     }
                                                                 </p>
                                                             </div>
