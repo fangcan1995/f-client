@@ -90,7 +90,7 @@ export default ({ location, match, history }) => {
                     <dl className="partnerReward">
                         <dt>合伙人奖励</dt>
                         <dd>
-                            <img src="images/account/lcs_pt3.jpg" />
+                            <img  src="images/account/lcs_pt3.jpg" />
                             <img src="images/account/lcs_pt4.jpg" />
                         </dd>
                     </dl>

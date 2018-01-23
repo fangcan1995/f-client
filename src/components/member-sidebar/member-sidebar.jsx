@@ -31,8 +31,8 @@ export default ({ location, match, history, ...props }) => {
                             <i className="iconfont icon-fxcp unable"></i>
                         </div>
                         <div className="memberControl">
-                            <a href="#" className="btn btn_recharge">充值</a>
-                            <a href="#" className="btn btn_withdrawals">提现</a>
+                            <a href="/my-account/overview/recharge" className="btn btn_recharge">充值</a>
+                            <a href="/my-account/overview/withdrawPage" className="btn btn_withdrawals">提现</a>
                         </div>
                     </div>
                     <div className="sideMenu__nav">
@@ -40,8 +40,8 @@ export default ({ location, match, history, ...props }) => {
                         <ul>
                             <ListItemLink to="/my-account/overview/account-overview">我的账户</ListItemLink>
                             <ListItemLink to="/my-account/overview/cardInfo">银行卡</ListItemLink>
-                            <li><a href="#">充值</a></li>
-                            <li><a href="#">提现</a></li>
+                            <ListItemLink to="/my-account/overview/recharge">充值</ListItemLink>
+                            <ListItemLink to="/my-account/overview/withdrawPage">提现</ListItemLink>
                             <ListItemLink to="/my-account/overview/transaction-record">交易记录</ListItemLink>
                         </ul>
                         <h3><i className="iconfont icon-invest"></i>我的投资</h3>
@@ -57,14 +57,15 @@ export default ({ location, match, history, ...props }) => {
                         <h3><i className="iconfont icon-invitation"></i>奖励管理</h3>
                         <ul>
                             <ListItemLink to="/my-reward/super-partner">超级合伙人</ListItemLink>
-                            <ListItemLink to="/my-account/reward/redEnvelopes">我的红包</ListItemLink>
-                        <ListItemLink to="/my-account/reward/rateCoupons">我的加息券</ListItemLink>
+                            <ListItemLink to="/my-reward/partner">注册理财师</ListItemLink>
+                            <ListItemLink to="/my-reward/redEnvelopes">我的红包</ListItemLink>
+                            <ListItemLink to="/my-reward/rateCoupons">我的加息券</ListItemLink>
                         </ul>
                         <h3><i className="iconfont icon-setting"></i>基本设置</h3>
                         <ul>
                             <ListItemLink to="/my-account/settings/authInfo">个人资料</ListItemLink>
-                            <li><a href="#">风险评估</a></li>
-                            <li><a href="#">站内信箱</a></li>
+                            <ListItemLink to="/my-account/settings/riskAssess">风险评估</ListItemLink>
+                            <ListItemLink to="/my-account/settings/message">站内信箱</ListItemLink>
                         </ul>
                     </div>
                 </div>

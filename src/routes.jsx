@@ -13,17 +13,23 @@ import TransferDetail from './containers/invest/invest-detail/transfer-detail';
 
 import LoanIndex from './containers/loan-index/loan-index';
 
-import SuperPartner from './containers/super-partner/super-partner';
-import PartnerList from './containers/partner-list/partner-list';
+
+
 import AccountOverview from './containers/member/overview/account-overview/account-overview';
-import CardInfo from './containers/member/overview/cardInfo/cardInfo'
+import CardInfo from './containers/member/overview/cardInfo/cardInfo';
+import Recharge from './containers/member/overview/recharge/recharge';
+import WithdrawPage from './containers/member/overview/withdrawPage/withdrawPage';
 import TransactionRecord from './containers/member/overview/transaction-record/transaction-record';
 import RedEnvelopes from './containers/member/reward/redEnvelopes/redEnvelopes';
 import RateCoupons from './containers/member/reward/rateCoupons/rateCoupons';
-
-import AuthInfo from './containers/member/settings/authInfo/authInfo';
-
+import SuperPartner from './containers/member/reward/super-partner/super-partner';
+import Partner from './containers/member/reward/partner/master/master';
+import PartnerDetail from './containers/member/reward/partner/detail/detail';
 import MyLoans from './containers/member/loans/myLoans/myLoans';
+import AuthInfo from './containers/member/settings/authInfo/authInfo';
+import RiskAssess from './containers/member/settings/riskAssess/riskAssess';
+import Message from './containers/member/settings/message/message';
+
 
 import About from './components/about/aboutus-common';
 import Team from './containers/about/team/team';
@@ -52,11 +58,17 @@ export default (
                             <Redirect exact from={`${match.url}`} to={`${match.url}/account-overview`} />
                             <Route path={`${match.url}/overview/cardInfo`} component={CardInfo} />
                             <Route path={`${match.url}/overview/account-overview`} component={AccountOverview} />
+                            <Route path={`${match.url}/overview/recharge`} component={Recharge} />
+                            <Route path={`${match.url}/overview/withdrawPage`} component={WithdrawPage} />
                             <Route path={`${match.url}/overview/transaction-record`} component={TransactionRecord} />
-                            <Route path={`${match.url}/reward/redEnvelopes`} component={RedEnvelopes} />
-                            <Route path={`${match.url}/reward/rateCoupons`} component={RateCoupons} />
-                            <Route path={`${match.url}/settings/authInfo`} component={AuthInfo} />
+
                             <Route path={`${match.url}/loans/myLoans`} component={MyLoans} />
+                            <Route path={`${match.url}/settings/authInfo`} component={AuthInfo} />
+                            <Route path={`${match.url}/settings/riskAssess`} component={RiskAssess} />
+                            <Route path={`${match.url}/settings/message`} component={Message} />
+
+
+
 
                             <Redirect to="/" />
                         </Switch>
@@ -69,7 +81,10 @@ export default (
                     <MemberSidebar {...props}>
                         <Switch>
                             <Route path={`${match.url}/super-partner`} component={SuperPartner} />
-                            <Route path={`${match.url}/partner-list`} component={PartnerList} />
+                            <Route path={`${match.url}/partner`} component={Partner} />
+                            <Route path={`${match.url}/partner-detail`} component={PartnerDetail} />
+                            <Route path={`${match.url}/redEnvelopes`} component={RedEnvelopes} />
+                            <Route path={`${match.url}/rateCoupons`} component={RateCoupons} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>
