@@ -38,7 +38,7 @@ export default ({ location, match, history }) => {
         
         <div className="member__cbox">
 
-            <div className="tab">
+            <div className="title__list">
                 <div className="tab_title">
                     <ul><li className="on"><h3>活动规则</h3></li></ul>
                 </div>
@@ -98,7 +98,7 @@ export default ({ location, match, history }) => {
             </div>
         </div>
         <div className="member__cbox">
-            <div className="tab">
+            <div className="title__list">
                 <div className="tab_title">
                     <ul><li className="on"><h3>邀请方式</h3></li></ul>
                 </div>

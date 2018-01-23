@@ -5,7 +5,7 @@ import './constant.less'
 export default ({ location, match, history }) => {
     return(
         <div>
-            <div className="tab">
+            <div className="title__list">
                 <div className="content">
                         <div className="viewBlock platformInfo">
                             <div className="viewTitle">

@@ -1,26 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Crumbs from '../../../../components/crumbs/crumbs';
+import Tab from '../../../../components/tab/tab';
 import './riskAssess.less';
 
 export default ({ location, match, history }) => {
     return (
         <div className="member__main">
-            <div className="crumb">
-                <div>
-                    <b>您所在的位置：</b>
-                    <a href="/">首页</a>&nbsp;&gt;
-                    <a href="" >基本设置</a>&nbsp;&gt;
-                    <a  className="actice">风险评估</a>
-                </div>
-            </div>
+            <Crumbs/>
             <div className="member__cbox">
-                <div className="tab">
-                    <div className="tab_title">
-                        <ul>
-                            <li className="on"><h3>风险评估</h3></li>
-                        </ul>
-                    </div>
-                    <div className="tab_content">
+                <Tab>
+                    <div name="风险评估">
                         {/*如果已经评估过*/}
                         <div className="record">
                             <ul className="result">
@@ -96,7 +86,7 @@ export default ({ location, match, history }) => {
                             </form>
                         </div>
                     </div>
-                </div>
+                </Tab>
             </div>
 
         </div>

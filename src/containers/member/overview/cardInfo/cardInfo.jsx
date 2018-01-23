@@ -15,7 +15,7 @@ export default ({ location, match, history }) => {
                 </div>
             </div>
             <div className="member__cbox">
-                <div className="tab">
+                <div className="title__list">
                     <div className="tab_title">
                         <ul>
                             <li className="on"><h3>我的银行卡</h3></li>
@@ -42,7 +42,7 @@ export default ({ location, match, history }) => {
                 </div>
             </div>
             <div className="member__cbox m-wxts">
-                <div className="tab">
+                <div className="title__list">
                     <div className="tab_title">
                         <ul>
                             <li className="on"><h3>温馨提示</h3></li>

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Pagination from '../pagination/pagination'
-import jQuery from 'jquery';
+import Pagination from '../pagination/pagination';
+import moment from "moment";
 import './table.less';
 class Table extends React.Component{
     constructor(props){
@@ -15,83 +15,111 @@ class Table extends React.Component{
     }
     //装载完成后获取数据
     //获取数据
-    loadData(currentPage=1,pageSize=10){
-
-        console.log('后台获取第'+currentPage+'页数据，每页'+pageSize+'条');
-        jQuery.ajax({
-            url:`${this.props.source}/currentPage/${currentPage}/pageSize/${pageSize}`,
-            type:'GET',
-            data:{},
-            dataType:'json',
-            cache: false
-        }).done(function (data){
-            if(data){
-                console.log('成功');
+    loadData(currentPage=1,pageSize=10,filter){
+        let conditions = "";
+        if(filter){
+            for(var item in filter){
+                conditions += "&"+item+"="+filter[item];
             }
-            else{
-                console.log('错误');
-            }
-        }).catch(()=>{
-            //以下是获取假数据
-            console.log('数据获取失败，使用假数据');
-            let data=[];
-            let dataPart={};
-            this.columnOpts.map((opt, colIndex) => {
-                    //Object.assign(dataPart,{[opt.key]:opt.name});
-                    switch (opt.type) {
-                        case 'date':
-                            Object.assign(dataPart,{[opt.key]:'2017-12-12'});
-                            break;
-                        case 'date-time':
-                            Object.assign(dataPart,{[opt.key]:'2017-12-12 18:00:00'});
-                            break;
-                        case 'money':
-                            Object.assign(dataPart,{[opt.key]:'10,000.00'});
-                            break;
-                        case 'tradeType':
-                            var tradeType = ['充值','提现','投资'];
-                            Object.assign(dataPart,{[opt.key]:tradeType[Math.floor(Math.random()*(tradeType.length+1))]});
-                            break;
-                        default:
-                            Object.assign(dataPart,{[opt.key]:opt.name});
-                            break;
-                    }
-                }
-            );
-            for(let i=1;i<=pageSize;i++){
-                let target = {key:`${pageSize*(currentPage-1)+i}`};
-                data.push(
-                    Object.assign(target,dataPart)
-                )
-            };
-            let dataSetting={
-                data:data,
-                currentPage: currentPage, // 当前页数
-                totalCount: 80, // 总条数
-                pageSize:pageSize,//每页记录数
-            }
-            this.setState({
-                dataSetting:dataSetting
-            });
+        }
+        let url = `${this.props.source}?pageNum=${currentPage}&pageSize=${pageSize}${conditions}`;
+        fetch(url,{
+            method:"get"
         })
+            .then(function (response){
+                if (response.status == 200){
+                    return response;
+                }
+            })
+            .then((data) => data.json())
+            .then((data) => {
+                    this.setState({ dataSetting:data.data });
+                }
+            )
+            .catch(function(err){
+                console.log("Fetch错误:"+err);
+
+            });
+        let mockDate={
+            code: "0",
+            data:{
+                list:[
+                    {id:1,col1:'aaabbb',col2:'2017-12-18 16:00:00',col3:'2017-12-18 16:00:00',col4:'3',col5:''},
+                    {id:1,col1:'ccc',col2:'汇车贷-HCD20180116005',col3:'200000.00',col4:'3',col5:''},
+                    {id:1,col1:'ddd',col2:'汇车贷-HCD20180116005',col3:'200000.00',col4:'3',col5:''},
+                    {id:1,col1:50,col2:'汇车贷-HCD20180116005',col3:'200000.00',col4:'3',col5:''},
+                    {id:1,col1:50,col2:'汇车贷-HCD20180116005',col3:'200000.00',col4:'3',col5:''},
+                    {id:1,col1:50,col2:'汇车贷-HCD20180116005',col3:'200000.00',col4:'3',col5:''},
+                    {id:1,col1:50,col2:'汇车贷-HCD20180116005',col3:'200000.00',col4:'3',col5:''},
+                    {id:1,col1:50,col2:'汇车贷-HCD20180116005',col3:'200000.00',col4:'3',col5:''},
+                    {id:1,col1:50,col2:'汇车贷-HCD20180116005',col3:'200000.00',col4:'3',col5:''},
+                    {id:1,col1:50,col2:'汇车贷-HCD20180116005',col3:'200000.00',col4:'3',col5:''},
+                ],
+                pageNum: 1,
+                pageSize: 10,
+                total:13
+            },
+            message: "SUCCESS",
+            time: "2018-01-17 11:49:39"
+        }
+        this.setState({
+            dataSetting:mockDate.data
+        });
+        console.log(this.state);
+        /*let data=[];
+        let dataPart={};
+        this.columnOpts.map((opt, colIndex) => {
+                //Object.assign(dataPart,{[opt.key]:opt.name});
+                switch (opt.type) {
+                    case 'date':
+                        Object.assign(dataPart,{[opt.key]:'2017-12-12'});
+                        break;
+                    case 'date-time':
+                        Object.assign(dataPart,{[opt.key]:'2017-12-12 18:00:00'});
+                        break;
+                    case 'money':
+                        Object.assign(dataPart,{[opt.key]:'10,000.00'});
+                        break;
+                    case 'tradeType':
+                        var tradeType = ['充值','提现','投资'];
+                        Object.assign(dataPart,{[opt.key]:tradeType[Math.floor(Math.random()*(tradeType.length+1))]});
+                        break;
+                    default:
+                        Object.assign(dataPart,{[opt.key]:opt.name});
+                        break;
+                }
+            }
+        );
+        for(let i=1;i<=pageSize;i++){
+            let target = {key:`${pageSize*(currentPage-1)+i}`};
+            data.push(
+                Object.assign(target,dataPart)
+            )
+        };*/
+        /*let dataSetting={
+            data:data,
+            currentPage: currentPage, // 当前页数
+            totalCount: 80, // 总条数
+            pageSize:pageSize,//每页记录数
+        }
+        this.setState({
+            dataSetting:dataSetting
+        });*/
+
     }
     componentDidMount () {
-        //var dataSetting={};
-
         this.loadData();
     }
     render(){
         const columnOpts=this.columnOpts;
-        const data=this.state.dataSetting.data;
-        const currentPage=this.state.dataSetting.currentPage;
-        const totalCount=this.state.dataSetting.totalCount;
-        const pageSize=this.state.dataSetting.pageSize;
-        const totalPage=Math.ceil(totalCount/pageSize);
-        if(!this.state.dataSetting.data){
+        const {list,pageNum,total,pageSize}=this.state.dataSetting;
+        const totalPage=Math.ceil(total/pageSize);
+
+        if(JSON.stringify(this.state.dataSetting) == "{}"){
             return(
                 <div>loading</div>
             )
-        }else if(this.state.dataSetting.data.length>0){
+        }else if(list.length>0){
             return(
                 <div>
                     <table  className="tableList">
@@ -106,11 +134,15 @@ class Table extends React.Component{
                         </thead>
                         <tbody>
                         {
-                            data.map((entry, rowIndex) => (
+                            list.map((entry, rowIndex) => (
                                     <tr key={`row-${rowIndex}`}>
                                         {
                                             columnOpts.map((opt, colIndex) => (
-                                                <td key={`col-${colIndex}`}>{entry[opt.key]}</td>
+                                                <td key={`col-${colIndex}`} className={`type-${opt.type}`}
+                                                >
+                                                    {opt.type=='date'? moment(entry[opt.key]).format('YYYY-MM-DD')
+                                                         :entry[opt.key]}
+                                                </td>
                                             ))
                                         }
                                     </tr>
@@ -122,8 +154,8 @@ class Table extends React.Component{
                         this.config.showPager?
                             <Pagination config = {
                                 {
-                                    currentPage:this.state.dataSetting.currentPage,
-                                    pageSize:this.state.dataSetting.pageSize,
+                                    currentPage:pageNum,
+                                    pageSize:pageSize,
                                     totalPage:totalPage,
                                     paging:(obj)=>{
                                         this.loadData(obj.currentPage,obj.pageCount);

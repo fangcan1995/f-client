@@ -8,7 +8,7 @@ export default ({ location, match, history }) => {
                     <b>您所在的位置：</b><a href="/">首页</a> > 关于我们 > 管理团队
                 </div>
             </div>
-            <div className="tab">
+            <div className="title__list">
                 <div className="tab_title">
                     <ul>
                         <li className="on"><h3>团队管理</h3>

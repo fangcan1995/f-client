@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Pagination from '../../../../components/pagination/pagination';
+import Crumbs from '../../../../components/crumbs/crumbs';
+import Tab from '../../../../components/tab/tab';
 import './message.less';
 import moment from "moment";
 export default class Message extends React.Component{
@@ -88,22 +90,10 @@ export default class Message extends React.Component{
         const totalPage=Math.ceil(total/pageSize);
         return(
             <div className="member__main">
-                <div className="crumb">
-                    <div>
-                        <b>您所在的位置：</b>
-                        <a href="/">首页</a>&nbsp;&gt;
-                        奖励管理&nbsp;&gt;
-                        <a className="actice">站内邮箱</a>
-                    </div>
-                </div>
+                <Crumbs/>
                 <div className="member__cbox">
-                    <div className="tab">
-                        <div className="tab_title">
-                            <ul>
-                                <li className="on"><h3>系统消息</h3></li>
-                            </ul>
-                        </div>
-                        <div className="tab_content">
+                    <Tab>
+                        <div name="系统消息">
                             <div className="filter">
                                 <div className="filter__outer">
                                     <div className="filter__inner">
@@ -139,7 +129,7 @@ export default class Message extends React.Component{
                                 JSON.stringify(this.state.dataSetting) == "{}"? <div>连接错误,请稍后再试</div>
                                     :
                                     list.length>0 ?
-                                        <div>
+                                        <div className="tab_content">
                                             <table id="table">
                                                 <thead>
                                                 <tr>
@@ -172,7 +162,7 @@ export default class Message extends React.Component{
                                                             </td>
                                                         </tr>
                                                     ))
-                                                    }
+                                                }
                                                 </tbody>
                                             </table>
 
@@ -191,7 +181,7 @@ export default class Message extends React.Component{
                                         : <div>暂无消息</div>
                             }
                         </div>
-                    </div>
+                    </Tab>
                 </div>
 
             </div>

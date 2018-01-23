@@ -7,7 +7,7 @@ export default ({ location, match, history }) => {
             <div className="m-crumb">
                 <div>您所在的位置： 合作伙伴</div>
             </div>
-            <div className="tab">
+            <div className="title__list">
                 <div className="tab_title">
                     <ul>
                         <li className="on"><h3>合作伙伴</h3></li>

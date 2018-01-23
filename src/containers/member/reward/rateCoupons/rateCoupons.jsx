@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Crumbs from '../../../../components/crumbs/crumbs';
+import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
 import './rateCoupons.less';
 import moment from "moment";
@@ -52,22 +54,10 @@ export default class RateCoupons extends React.Component{
         const totalPage=Math.ceil(total/pageSize);
         return(
             <div className="member__main">
-                <div className="crumb">
-                    <div>
-                        <b>您所在的位置：</b>
-                        <a href="/">首页</a>&nbsp;&gt;
-                        奖励管理&nbsp;&gt;
-                        <a className="actice">我的加息券</a>
-                    </div>
-                </div>
+                <Crumbs/>
                 <div className="member__cbox">
-                    <div className="tab">
-                        <div className="tab_title">
-                            <ul>
-                                <li className="on"><h3>我的加息券</h3></li>
-                            </ul>
-                        </div>
-                        <div className="tab_content">
+                    <Tab>
+                        <div name="我的加息券">
                             <div className="filter">
                                 <div className="filter__outer">
                                     <div className="filter__inner">
@@ -146,19 +136,19 @@ export default class RateCoupons extends React.Component{
                                         : <div>暂无加息券</div>
                             }
                         </div>
-                    </div>
+                    </Tab>
+
                 </div>
                 <div className="member__cbox">
-                    <div className="tab m-wxts">
-                        <div className="tab_title">
-                            <ul>
-                                <li className="on"><h3>温馨提示</h3></li>
-                            </ul>
+                    <Tab>
+                        <div name="温馨提示">
+                            <div className="m-wxts">
+                                <p> 1. 投资时需满足红包使用规则，才可使用；<br/>
+                                    2. 使用过程遇到问题时，请（工作日9:00-20:00）咨询客服<br/>
+                                </p>
+                            </div>
                         </div>
-                        <p> 1. 投资时需满足红包使用规则，才可使用；<br/>
-                            2. 使用过程遇到问题时，请（工作日9:00-20:00）咨询客服<br/>
-                        </p>
-                    </div>
+                    </Tab>
                 </div>
             </div>
         )

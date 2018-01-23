@@ -110,8 +110,54 @@
         	margin-top:15px;
         	font-size:14px;
           //栏目标题
-        .tab {
-          	background: #fff;  /*margin-bottom: 60px;*/
+			.tablist{
+				margin: 0px 30px 10px 30px;
+				padding: 10px 0 0 0;
+				.tabs__nav{
+					height: 50px;
+					border-bottom: 1px solid #e6eaf0;
+					.tab {
+						width: 80px;
+						height: 30px;
+						line-height: 30px;
+						font-size: 16px;
+						text-align: center;
+						padding:10px 10px;
+						background: #fff;
+
+						&:before {
+							position: absolute;
+							top: 0;
+							width: 80px;
+							height: 49px;
+							border-top:none;
+							border-bottom: 2px solid @color-primary
+						}
+						&:last-child {
+							margin-right: 0;
+							&:before {
+								width: 80px;
+							}
+						}
+						&.tab--active {
+							margin-bottom: 0;
+							padding-bottom: 1px;
+							color: @text-color-default;
+							&:before {
+								content: '';
+								display: block;
+							}
+						}
+					}
+
+				}
+				.tab__panel{
+					padding: 20px 0;
+				}
+			}
+
+        /*.title__list {
+          	background: #fff;  !*margin-bottom: 60px;*!
           	padding: 25px 30px;
           	.tab_title {
 				height: 50px;
@@ -139,7 +185,7 @@
           	.tab_content {
             	margin-top: 35px
           	}
-        }
+        }*/
 
       }
 

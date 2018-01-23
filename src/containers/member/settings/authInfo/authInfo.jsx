@@ -1,27 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Crumbs from '../../../../components/crumbs/crumbs';
+import Tab from '../../../../components/tab/tab';
 import './authInfo.less';
 
 export default ({ location, match, history }) => {
     return (
         <div className="member__main">
-            <div className="crumb">
-                <div>
-                    <b>您所在的位置：</b>
-                    <a href="/">首页</a>&nbsp;&gt;
-                    基本设置&nbsp;&gt;
-                    <a  className="actice">个人资料</a>
-                </div>
-            </div>
+            <Crumbs/>
             <div className="member__cbox">
-                <div className="tab">
-                    <div className="tab_title">
-                        <ul>
-                            <li className="on"><h3>基本信息</h3></li>
-                            <li ><h3><a href="#">头像设置</a></h3></li>
-                        </ul>
-                    </div>
-                    <div className="tab_content">
+                <Tab>
+                    <div name="基本信息">
                         <table className="authInfo">
                             <tr>
                                 <th><i className="iconfont icon-user"></i>真实姓名</th>
@@ -57,7 +46,11 @@ export default ({ location, match, history }) => {
                             </tr>
                         </table>
                     </div>
-                </div>
+                    <div name="头像设置">
+                        2
+                    </div>
+                </Tab>
+
             </div>
 
         </div>
