@@ -13,5 +13,5 @@ export const API_CONFIG = {
   host: host,
   baseUri: baseUri,
   auth: 'uaa/oauth/token',
-  users: 'users'
+  user: 'user'
 };

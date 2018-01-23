@@ -6,6 +6,7 @@ import MemberSidebar from './components/member-sidebar/member-sidebar';
 
 import HomePage from './containers/home-page/home-page';
 import Login from './containers/login/login';
+import Signup from './containers/signup/signup';
 import InvestIndex from './containers/invest-index/invest-index';
 import InvestList from './containers/invest-list/invest-list';
 import LoanIndex from './containers/loan-index/loan-index';
@@ -13,9 +14,8 @@ import LoanIndex from './containers/loan-index/loan-index';
 import SuperPartner from './containers/super-partner/super-partner';
 import PartnerList from './containers/partner-list/partner-list';
 import AccountOverview from './containers/account-overview/account-overview';
-import TransactionRecord from './containers/transaction-record/transaction-record'
-/*import CardInfo from './containers/member/overview/cardInfo/cardInfo'
-;*/
+import TransactionRecord from './containers/transaction-record/transaction-record';
+import BankCard from './containers/bank-card/bank-card';
 
 import About from './components/about/aboutus-common'
 import Team from './containers/about/team/team'
@@ -26,6 +26,7 @@ export default (
         <Switch>
             <Route exact path="/" component={HomePage} />
             <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
             <Route path="/invest-list" component={InvestList} />
             <Route path="/loan-index" component={LoanIndex} />
             <Route strict path="/my-account" render={(props) => {
@@ -34,7 +35,7 @@ export default (
                     <MemberSidebar {...props}>
                         <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/account-overview`} />
-                            {/*<Route path={`${match.url}/my-account/cardInfo`} component={CardInfo} />*/}
+                            <Route path={`${match.url}/bank-card`} component={BankCard} />
                             <Route path={`${match.url}/account-overview`} component={AccountOverview} />
                             <Route path={`${match.url}/transaction-record`} component={TransactionRecord} />
                             <Redirect to="/" />

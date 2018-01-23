@@ -16,7 +16,7 @@ function check401(res) {
       content: "您的登陆验证已过期，请重新登陆",
       onOk: () => {
         cookie.remove('access_token');
-        location.href = '/';
+        location.href = '/login';
       }
     });
 

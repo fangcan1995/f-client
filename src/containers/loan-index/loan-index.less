@@ -109,9 +109,10 @@
       li {
         position: relative;
         float: left;
+        box-sizing: content-box;
         padding: 30px 50px;
         width: 380px - 50px * 2;
-        height: 250 - 30px * 2;
+        height: 250px - 30px * 2;
         margin-right: (@content-width - 380px * 3) / 2;
         background-color: @color-default;
         transform: translate3d(0, 0, 0);
@@ -177,9 +178,9 @@
       .clearfix();
       .faq_item {
         float: left;
+        box-sizing: content-box;
         margin-right: @content-width - 580px * 2;
         padding: 30px 38px;
-
         width: 580px - 38px * 2;
         height: 250px - 30px * 2;
         background-color: @color-default;

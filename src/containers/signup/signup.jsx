@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
 import { loginUser } from '../../actions/auth';
-import { getUser } from '../../actions/user';
+
 import { hex_md5 } from '../../utils/md5';
 import parseJson2URL from '../../utils/parseJson2URL';
 
-import './login.less';
+import './signup.less';
 
 const createForm = Form.create;
 const FormItem = Form.Item;
@@ -16,7 +16,7 @@ function noop() {
   return false;
 }
 
-class Login extends Component {
+class Signup extends Component {
   static propTypes = {
     form: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
@@ -38,8 +38,7 @@ class Login extends Component {
         grant_type: 'password',
       }
       creds = `?${parseJson2URL({...creds, ...opts})}`;
-      dispatch(loginUser(creds, this.loginFaileCallback))
-      .then(res => dispatch(getUser(this.loginFaileCallback)));
+      dispatch(loginUser(creds, this.loginFaileCallback));
     });
   }
 
@@ -95,8 +94,8 @@ class Login extends Component {
         <div className="wrapper">
           <div className="login__card">
             <div className="card__header">
-              <h3 className="card__tit">登录</h3>
-              <span className="card__tip">没有账号？<Link to="/signup">立即注册</Link></span>
+              <h3 className="card__tit">注册</h3>
+              <span className="card__tip">已有账号？<Link to="/login">立即登录</Link></span>
             </div>
             <div className="card__body">
               <Form layout="horizontal" onSubmit={this.handleSubmit}>
@@ -145,11 +144,10 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-  const { auth, user } = state;
+  const { auth } = state;
   return {
-    auth,
-    user,
+    auth
   };
 }
 
-export default connect(mapStateToProps)(createForm()(Login));
+export default connect(mapStateToProps)(createForm()(Signup));

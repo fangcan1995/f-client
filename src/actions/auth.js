@@ -1,6 +1,6 @@
 import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
-import {LOGIN } from './../constants/actionTypes';
+import { LOGIN, LOGOUT } from './../constants/actionTypes';
 import { API_CONFIG } from './../config/api';
 
 export const loginUser = (params, cbk) => {
@@ -12,3 +12,10 @@ export const loginUser = (params, cbk) => {
     })
   };
 };
+
+export const logoutUser = () => {
+	cookie.remove('access_token');
+	return {
+		type: LOGOUT,
+	}
+}

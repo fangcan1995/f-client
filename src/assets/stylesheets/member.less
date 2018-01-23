@@ -1,11 +1,204 @@
 @import './library';
 .member {
 	.wrapper {
-		margin-top: 30px;
-		margin-bottom: 30px;
 		.clearfix();
 	}
 	
+	
+
+}
+.member__sidebar {
+	@sidebar-width: 168px;
+	float: left;
+	width: @sidebar-width;
+	
+	.member__info {
+		margin-bottom: 10px;
+		padding-right: 10px;
+		padding-left: 10px;
+		background-color: #fff;
+		text-align: center;
+		.info {
+			padding-top: 20px;
+			padding-bottom: 20px;
+		}
+		//头像
+		.avatar {
+			@size: 60px;
+			position: relative;
+			margin-right: auto;
+			margin-bottom: 10px;
+			margin-left: auto;
+			display: block;
+			width: @size;
+			height: @size;
+			img {
+				display: block;
+				width: @size;
+				height: @size;
+				border-radius: 50%;
+			}
+		}
+		.username {
+			margin-bottom: 10px;
+			font-size: 14px;
+			color: #3c434c;
+		}
+		.step {
+			.iconfont {
+				margin-right: 6px;
+				margin-left: 6px;
+				font-size: 18px;
+			}
+			.able{
+				color:#2aa4ea;
+			}
+			.unable{
+				color:#cad3e0;
+			}
+			.icon-phone:before{
+				content: "\e616";
+			}
+			.icon-card:before {
+				content: "\e618";
+			}
+			.icon-fxcp:before {
+				content:"\e63b";
+			}
+
+		}
+		.action {
+			padding-top: 10px;
+			padding-bottom: 10px;
+			border-top: 1px solid #f0f1f2;
+			.clearfix();
+			.btn {
+				display: inline-block;
+				margin-right: 10px;
+				width: 66px;
+				height: 34px;
+				line-height: 34px;
+				text-align: center;
+				border-radius: 3px;
+				&:last-child {
+					margin-right: 0;
+				}
+			}
+			.btn__recharge {
+				color: #fff;
+				background-color: @color-primary;
+				border: 1px solid @color-primary;
+			}
+			.btn__withdrawals {
+				color: #ff721f;
+				background-color: transparent;
+				border: 1px solid #ff721f;
+			}
+		}
+
+	}
+	.menu {
+		background-color: @color-default;
+		.iconfont {
+			margin-right: 8px;
+			font-size: 18px;
+		}
+		.icon-all:before {
+			content: "\e633";
+		}
+		.icon-invest:before {
+			content: "\e63f";
+		}
+		.icon-invitation:before {
+			content: "\e641";
+		}
+		.icon-myloan:before {
+			content:"\e6b3";
+		}
+		.icon-setting:before {
+			content:"\e620"
+		}
+		h3 {
+			box-sizing: content-box;
+			padding-top: 14px;
+			padding-bottom: 14px;
+			height: 20px;
+			font-size: 14px;
+			color: #81868f;
+			text-align: center;
+			text-indent: -14px;
+			line-height: 20px;
+			background-color: #fafbfd;
+			border-width: 1px 0;
+			border-style: solid;
+			border-color: #eae9ee;
+
+		}
+		ul{
+			padding:10px 0 10px 0;
+			li{
+				@sidebar-item-height: 40px;
+				position: relative;
+				margin: 8px 0;
+				a {
+					@content-height: 20px;
+					@padding: (@sidebar-item-height - @content-height) / 2;
+					position: relative;
+					z-index: 2;
+					display: block;
+					box-sizing: content-box;
+					
+					padding-top: @padding;
+					padding-bottom: @padding;
+					padding-left: 56px;
+					height: @content-height;
+					line-height: @content-height;
+					color: #45484c;
+					&:hover {
+						color: @text-color-primary;
+					}
+				}
+				&:active,
+				&.active {
+					&:before {
+						content: '';
+						position: absolute;
+						z-index: 1;
+						top: 0;
+						left: 0;
+						display: block;
+
+						width: @sidebar-width + 8px;
+						height: @sidebar-item-height;
+						background-color: #3793df;
+
+					}
+					&:after {
+						content: '';
+						position: absolute;
+						z-index: 0;
+						right: -8px;
+						bottom: -8px;
+						display: block;
+
+						width: 0;
+						height: 0;
+						border-top: 8px solid #298dcc;
+						border-right: 8px solid transparent;
+					}
+					a {
+						color: #fff;
+						&:hover {
+							color: #fff;
+						}
+					}
+				}
+			}
+		}
+
+	}
+}
+
 	//右侧公共部分
 	.member__main {
 		float: right;
@@ -220,194 +413,3 @@
 			color: #45484c
 		}
 	}
-
-}
-.member__sidebar {
-	@sidebar-width: 168px;
-	float: left;
-	width: @sidebar-width;
-	
-	.member__info {
-		margin-bottom: 10px;
-		padding-right: 10px;
-		padding-left: 10px;
-		background-color: #fff;
-		text-align: center;
-		.info {
-			padding-top: 20px;
-			padding-bottom: 20px;
-		}
-		//头像
-		.avatar {
-			@size: 60px;
-			position: relative;
-			margin-right: auto;
-			margin-bottom: 10px;
-			margin-left: auto;
-			display: block;
-			width: @size;
-			height: @size;
-			img {
-				display: block;
-				width: @size;
-				height: @size;
-				border-radius: 50%;
-			}
-		}
-		.username {
-			margin-bottom: 10px;
-			font-size: 14px;
-			color: #3c434c;
-		}
-		.step {
-			.iconfont {
-				margin-right: 6px;
-				margin-left: 6px;
-				font-size: 18px;
-			}
-			.able{
-				color:#2aa4ea;
-			}
-			.unable{
-				color:#cad3e0;
-			}
-			.icon-phone:before{
-				content: "\e616";
-			}
-			.icon-card:before {
-				content: "\e618";
-			}
-			.icon-fxcp:before {
-				content:"\e63b";
-			}
-
-		}
-		.action {
-			padding-top: 10px;
-			padding-bottom: 10px;
-			border-top: 1px solid #f0f1f2;
-			.clearfix();
-			.btn {
-				display: inline-block;
-				margin-right: 10px;
-				width: 66px;
-				height: 34px;
-				line-height: 34px;
-				text-align: center;
-				border-radius: 3px;
-				&:last-child {
-					margin-right: 0;
-				}
-			}
-			.btn__recharge {
-				color: #fff;
-				background-color: @color-primary;
-				border: 1px solid @color-primary;
-			}
-			.btn__withdrawals {
-				color: #ff721f;
-				background-color: transparent;
-				border: 1px solid #ff721f;
-			}
-		}
-
-	}
-	.menu {
-		background-color: @color-default;
-		.iconfont {
-			margin-right: 8px;
-			font-size: 18px;
-		}
-		.icon-all:before {
-			content: "\e633";
-		}
-		.icon-invest:before {
-			content: "\e63f";
-		}
-		.icon-invitation:before {
-			content: "\e641";
-		}
-		.icon-myloan:before {
-			content:"\e6b3";
-		}
-		.icon-setting:before {
-			content:"\e620"
-		}
-		h3 {
-			padding-top: 14px;
-			padding-bottom: 14px;
-			height: 20px;
-			font-size: 14px;
-			color: #81868f;
-			text-align: center;
-			text-indent: -14px;
-			line-height: 20px;
-			background-color: #fafbfd;
-			border-width: 1px 0;
-			border-style: solid;
-			border-color: #eae9ee;
-
-		}
-		ul{
-			padding:10px 0 10px 0;
-			li{
-				@sidebar-item-height: 40px;
-				position: relative;
-				margin: 8px 0;
-				a {
-					@content-height: 20px;
-					@padding: (@sidebar-item-height - @content-height) / 2;
-					position: relative;
-					z-index: 2;
-					display: block;
-					padding-top: @padding;
-					padding-bottom: @padding;
-					padding-left: 56px;
-					height: @content-height;
-					line-height: @content-height;
-					color: #45484c;
-					&:hover {
-						color: @text-color-primary;
-					}
-				}
-				&:active,
-				&.active {
-					&:before {
-						content: '';
-						position: absolute;
-						z-index: 1;
-						top: 0;
-						left: 0;
-						display: block;
-
-						width: @sidebar-width + 8px;
-						height: @sidebar-item-height;
-						background-color: #3793df;
-
-					}
-					&:after {
-						content: '';
-						position: absolute;
-						z-index: 0;
-						right: -8px;
-						bottom: -8px;
-						display: block;
-
-						width: 0;
-						height: 0;
-						border-top: 8px solid #298dcc;
-						border-right: 8px solid transparent;
-					}
-					a {
-						color: #fff;
-						&:hover {
-							color: #fff;
-						}
-					}
-				}
-			}
-		}
-
-	}
-}
-
