@@ -1,27 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import Crumbs from '../../../../components/crumbs/crumbs';
+import Tab from '../../../../components/tab/tab';
 import './cardInfo.less';
 
 export default ({ location, match, history }) => {
     return (
         <div className="member__main">
-            <div className="crumb">
-                <div>
-                    <b>您所在的位置：</b>
-                    <a href="/">首页</a>&nbsp;&gt;
-                    <a href="/member/overview/account-overview" >我的账户</a>&nbsp;&gt;
-                    <a  className="actice">我的银行卡</a>
-                </div>
-            </div>
+            <Crumbs/>
             <div className="member__cbox">
-                <div className="title__list">
-                    <div className="tab_title">
-                        <ul>
-                            <li className="on"><h3>我的银行卡</h3></li>
-                        </ul>
-                    </div>
-                    <div className="tab_content">
+                <Tab>
+                    <div name="我的银行卡">
                         <div className="addCard">
                             <p>为保证账户资金安全，请绑定本人的银行卡</p>
                             <div className="grayCard">
@@ -39,19 +28,20 @@ export default ({ location, match, history }) => {
                             <a href="javascript:void(0);" className="btn_edit">更换银行卡</a>
                         </div>
                     </div>
-                </div>
+                </Tab>
             </div>
             <div className="member__cbox m-wxts">
-                <div className="title__list">
-                    <div className="tab_title">
-                        <ul>
-                            <li className="on"><h3>温馨提示</h3></li>
-                        </ul>
+                <Tab>
+                    <div name="温馨提示">
+                        <div className="m-wxts">
+                            <p>
+                                1、目前只支持储蓄卡<br/>
+                                2、不支持信用卡<br/>
+                                3、目前只能支持一张银行卡，可以修改
+                            </p>
+                        </div>
                     </div>
-                    <div className="tab_content">
-                        <p>1、目前只支持储蓄卡<br/>2、不支持信用卡<br/>3、目前只能支持一张银行卡，可以修改</p>
-                    </div>
-                </div>
+                </Tab>
             </div>
         </div>
     );

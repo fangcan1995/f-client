@@ -4,6 +4,7 @@ import './detail.less';
 import Crumbs from '../../../../../components/crumbs/crumbs';
 import Tab from '../../../../../components/tab/tab';
 import Table from '../../../../../components/table/table';
+import  {getData}  from '../../../../../assets/js/getData'
 var Yqjl={
     columnOpts:[
         { key: 'col1', name: '邀请用户',type:'' },
@@ -29,10 +30,6 @@ var Yjmx={
     showPager: true, // 是否显示分页
 }
 export default class PartnerDetail extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = {}
-    }
     render(){
         return (
 			<div className="member__main">
@@ -61,7 +58,6 @@ export default class PartnerDetail extends React.Component{
                                     config={Yqjl}
                                 />
                             </div>
-
 						</div>
 						<div name="业绩明细">
                             <div className="table__wrapper">
