@@ -61,15 +61,10 @@ export default (
                             <Route path={`${match.url}/overview/recharge`} component={Recharge} />
                             <Route path={`${match.url}/overview/withdrawPage`} component={WithdrawPage} />
                             <Route path={`${match.url}/overview/transaction-record`} component={TransactionRecord} />
-
                             <Route path={`${match.url}/loans/myLoans`} component={MyLoans} />
                             <Route path={`${match.url}/settings/authInfo`} component={AuthInfo} />
                             <Route path={`${match.url}/settings/riskAssess`} component={RiskAssess} />
                             <Route path={`${match.url}/settings/message`} component={Message} />
-
-
-
-
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>

@@ -1,41 +1,34 @@
 import React from 'react';
-
+import Crumbs from '../../../components/crumbs/crumbs';
+import Tab from '../../../components/tab/tab';
 export default ({ location, match, history }) => {
     return(
 
         <div>
-            <div className="m-crumb">
-                <div>您所在的位置： 联系我们</div>
-            </div>
-            <div className="title__list">
-                <div className="tab_title">
-                    <ul>
-                        <li className="on"><h3>联系我们</h3></li>
-                    </ul>
-                </div>
-                <div className="tab_content">
-                    <div className="contact">
-                        <iframe frameborder="0" scrolling="no" src="http://www.baba88.com/a/autofinancing/aboutUs/map.html"   className="map">
+            <Crumbs/>
+            <div className="about__box">
+                <Tab>
+                    <div name="联系我们">
+                        <div className="contact">
+                            <iframe frameborder="0" scrolling="no" src="http://www.baba88.com/a/autofinancing/aboutUs/map.html"   className="map">
 
-                        </iframe>
-                        <div className="contact_txt">
-                            <div className="tab_title">
-                                <ul><li className="on"><h3>总部地址</h3></li></ul>
+                            </iframe>
+                            <div className="contact_txt">
+                                <div className="tab_title">
+                                    <ul><li className="on"><h3>总部地址</h3></li></ul>
+                                </div>
+                                <h3>巴巴汇金服</h3>
+                                <p>地址：中国 辽宁 大连市沙河口区现代服务业大厦22层</p>
+                                <p>邮编：116000</p>
+                                <p>总机：0411-82916999</p>
                             </div>
-                            <h3>巴巴汇金服</h3>
-                            <p>地址：中国 辽宁 大连市沙河口区现代服务业大厦22层</p>
-                            <p>邮编：116000</p>
-                            <p>总机：0411-82916999</p>
                         </div>
                     </div>
-                </div>
+                </Tab>
             </div>
-            <div className="title__list">
-                <div className="tab_content">
-                    <div className="branch">
-                        <div className="tab_title">
-                            <ul><li className="on"><h3>巴巴汇金服全国分支机构服务热线</h3></li></ul>
-                        </div>
+            <div className="about__box branch">
+                <Tab>
+                    <div name="巴巴汇金服全国分支机构服务热线">
                         <table className="fengongsi">
                             <thead>
                             <tr>
@@ -258,8 +251,9 @@ export default ({ location, match, history }) => {
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </Tab>
             </div>
+
         </div>
     )
 }
