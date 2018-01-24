@@ -49,6 +49,7 @@ export default (
             <Route path="/invest/transfer-detail" component={TransferDetail} />
             <Route path="/loan-index" component={LoanIndex} />
             <Route path='/mobileApp' component={MobileApp} />
+            <Route path='/login' component={Login} />
 
             <Route strict path="/my-account" render={(props) => {
                 const { match } = props;

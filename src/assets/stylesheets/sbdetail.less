@@ -3,9 +3,16 @@
 @import './top';
 @import './footer';
 @import './navbar';
-/*@import './member';*/
 
-.main{
+
+.sbDetail{
+  .tablist{
+    .tabs__nav{
+      .tab {
+        width:160px;
+      }
+    }
+  }
   //总览
   .master{
     width: 1178px;
@@ -259,67 +266,67 @@
     .clearfix();
   }
   .steps {
-      width: 1178px;
+    width: 1178px;
+    height: 90px;
+    margin: 20px auto;
+    padding:35px 0 0 0;
+    border: 1px solid #e6eaf0;
+    background: #fff;
+    li {
+      width: 25%;
       height: 90px;
-      margin: 20px auto;
-      padding:35px 0 0 0;
-      border: 1px solid #e6eaf0;
-      background: #fff;
-      li {
-        width: 25%;
-        height: 90px;
-        float: left;
-        text-align: center;
-        line-height: 22px;
-        color: #81868f;
-        i {
-          display:inline-block;
-          float:left;
-          margin:0 20px 0 30px
-        }
-        .iconfont {
-          background: #eff7ff;
-          width: 64px;
-          height: 64px;
-          display: inline-block;
-          border-radius: 37px;
-          margin-bottom: 10px;
+      float: left;
+      text-align: center;
+      line-height: 22px;
+      color: #81868f;
+      i {
+        display:inline-block;
+        float:left;
+        margin:0 20px 0 30px
+      }
+      .iconfont {
+        background: #eff7ff;
+        width: 64px;
+        height: 64px;
+        display: inline-block;
+        border-radius: 37px;
+        margin-bottom: 10px;
 
-          &:before {
-            font-size: 36px;
-            line-height: 64px;
-            color: #557dc7; }
-        }
-        .icon-1:before{
-          content: "\e663";
-        }
-        .icon-2:before{
-          content: "\e643";
-        }
-        .icon-3:before{
-          content: "\e642";
-        }
-        .icon-4:before{
-          content: "\e615";
-        }
-        dl{
-          text-align:left;
-          padding-top:10px;
-          dt{
-            color: #45484c;
-            font-size:16px;
-            em{
-              color:#3793df;
-              font-size:12px
-            }
+        &:before {
+          font-size: 36px;
+          line-height: 64px;
+          color: #557dc7; }
+      }
+      .icon-1:before{
+        content: "\e663";
+      }
+      .icon-2:before{
+        content: "\e643";
+      }
+      .icon-3:before{
+        content: "\e642";
+      }
+      .icon-4:before{
+        content: "\e615";
+      }
+      dl{
+        text-align:left;
+        padding-top:10px;
+        dt{
+          color: #45484c;
+          font-size:16px;
+          em{
+            color:#3793df;
+            font-size:12px
           }
-          dd{
-            font-size: 14px;
-          }
+        }
+        dd{
+          font-size: 14px;
         }
       }
-
     }
+
+  }
   .tab_info {
     background: #fff;
     border-bottom: 1px solid #e6eaf0;
@@ -486,4 +493,5 @@
   .m-record {
     padding: 30px 40px 0 40px;
   }
+
 }
