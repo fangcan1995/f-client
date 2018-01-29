@@ -8,13 +8,13 @@ import HomePage from './containers/home-page/home-page';
 import Login from './containers/login/login';
 import Signup from './containers/signup/signup';
 import InvestIndex from './containers/invest-index/invest-index';
-import InvestList from './containers/invest-list/invest-list';
+import InvestList from './containers/invest/invest-list/invest-list';
 import LoanIndex from './containers/loan-index/loan-index';
 
-import SuperPartner from './containers/super-partner/super-partner';
-import PartnerList from './containers/partner-list/partner-list';
+import SuperPartner from './containers/member/reward/super-partner/super-partner';
+import PartnerList from './containers/member/reward/partner/master/master';
 import AccountOverview from './containers/account-overview/account-overview';
-import TransactionRecord from './containers/transaction-record/transaction-record';
+import TransactionRecord from './containers/member/overview/transaction-record/transaction-record';
 import BankCard from './containers/bank-card/bank-card';
 
 import About from './components/about/aboutus-common'
@@ -55,7 +55,7 @@ export default (
                     </MemberSidebar>
                 )
             }} />
-            {<Route path="/about/" render={(props) => {
+            <Route path="/about" render={(props) => {
                 const { match } = props;
                 return(
                     <About>
@@ -67,7 +67,7 @@ export default (
                         </Switch>
                     </About>
                 )
-            }} />}
+            }} />
             <Redirect to="/" />
         </Switch>
     </App>

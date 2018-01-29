@@ -25,7 +25,7 @@ export default () => {
           <dl>
             <dt>关于我们</dt>
             <dd><a href="">公司介绍</a></dd>
-            <dd><a href="">管理团队</a></dd>
+            <dd><a href="/about/aboutus/team">管理团队</a></dd>
             <dd><a href="">合作伙伴</a></dd>
             <dd><a href="">联系我们</a></dd>
           </dl>

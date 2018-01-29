@@ -59,45 +59,44 @@ export default class About extends Component{
             <main className="main">
                 <div className="wrapper">
                     <div className="about__sidebar">
+                        <h2><a href="/about/constant">信息披露</a></h2>
                         <dl key="1" onClick = { this.collapse.bind(this,1)} className = { this.state.current === 1? "showChildren":""}>
                             <dt>
                                 <TitleParent title="关于我们" to="/about/aboutus/" />
                             </dt>
                             <dd>
-
                                 <ul>
                                     <ListItemLink to="/about/aboutus/introduce" >公司简介</ListItemLink>
                                     <ListItemLink to="/about/aboutus/team" >管理团队</ListItemLink>
-                                    <ListItemLink to="/about/aboutus/aptitude" >荣誉资质</ListItemLink>
+                                    <ListItemLink to="/about/aboutus/honor" >荣誉资质</ListItemLink>
                                     <ListItemLink to="/about/aboutus/partners" >合作伙伴</ListItemLink>
                                     <ListItemLink to="/about/aboutus/history" >发展历程</ListItemLink>
                                 </ul>
-
                             </dd>
                         </dl>
                         <dl key="2" onClick = { this.collapse.bind(this,2)} className = { this.state.current === 2? "showChildren":""}>
                             <dt><TitleParent title="新闻动态" to="/about/news/" /></dt>
                             <dd>
                                 <ul>
-                                    <ListItemLink to="/plus/list.php?tid=61">公司动态</ListItemLink>
+                                    <ListItemLink to="/about/news/mediaReport">公司动态</ListItemLink>
                                     <ListItemLink to="/about/news/mediaReport">媒体报道</ListItemLink>
-                                    <ListItemLink to="/plus/list.php?tid=63">行业新闻</ListItemLink>
+                                    <ListItemLink to="/about/news/mediaReport">行业新闻</ListItemLink>
                                 </ul>
                             </dd>
                         </dl>
                         <dl key="3" onClick = { this.collapse.bind(this,3)} className = { this.state.current === 3? "showChildren":""}>
-                            <dt><TitleParent title="官方公告" to="/about/aaa/" /></dt>
+                            <dt><TitleParent title="官方公告" to="/about/news/notice" /></dt>
                             <dd>
                                 <ul>
-                                    <ListItemLink to="/plus/list.php?tid=35">网站公告</ListItemLink>
+                                    <ListItemLink to="/about/news/notice">网站公告</ListItemLink>
                                 </ul>
                             </dd>
                         </dl>
                         <dl key="4" onClick = { this.collapse.bind(this,4)} className = { this.state.current === 4? "showChildren":""}>
-                            <dt><TitleParent title="运营报告" to="/about/aaa/" /></dt>
+                            <dt><TitleParent title="运营报告" to="/about/news/report" /></dt>
                             <dd>
                                 <ul>
-                                    <ListItemLink to="/plus/list.php?tid=26">运营报告</ListItemLink>
+                                    <ListItemLink to="/about/news/report">运营报告</ListItemLink>
                                 </ul>
                             </dd>
                         </dl>
@@ -123,7 +122,7 @@ export default class About extends Component{
                             <dt><TitleParent title="活动公告" to="/about/aaa/" /></dt>
                             <dd>
                                 <ul>
-                                    <ListItemLink to="/plus/list.php?tid=59">活动公告</ListItemLink>
+                                    <ListItemLink to="/about/news/mediaReport">活动公告</ListItemLink>
                                 </ul>
                             </dd>
                         </dl>

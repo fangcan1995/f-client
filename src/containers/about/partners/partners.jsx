@@ -7,7 +7,7 @@ export default ({ location, match, history }) => {
             <div className="m-crumb">
                 <div>您所在的位置： 合作伙伴</div>
             </div>
-            <div className="tab">
+            <div className="title__list">
                 <div className="tab_title">
                     <ul>
                         <li className="on"><h3>合作伙伴</h3></li>
@@ -21,7 +21,7 @@ export default ({ location, match, history }) => {
                                     <h3><strong>富友集团</strong></h3>
                                 </dt>
                                 <dd className="photo">
-                                    <img src="/images/aboutUs/logo_fy.jpg" />
+                                    <img src={require('../../../assets/images/about/logo_fy.jpg')} />
                                 </dd>
                                 <dd className="intro">
                                     <p>
@@ -37,7 +37,7 @@ export default ({ location, match, history }) => {
                                     <h3><strong>鹏元征信</strong></h3>
                                 </dt>
                                 <dd className="photo">
-                                    <img src="/images/aboutUs/logo_pyzx.jpg" />
+                                    <img src={require('../../../assets/images/about/logo_pyzx.jpg')} />
                                 </dd>
                                 <dd className="intro">
                                     <p>
