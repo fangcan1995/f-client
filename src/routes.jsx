@@ -35,9 +35,15 @@ export default (
                     <MemberSidebar {...props}>
                         <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/account-overview`} />
-                            <Route path={`${match.url}/bank-card`} component={BankCard} />
-                            <Route path={`${match.url}/account-overview`} component={AccountOverview} />
-                            <Route path={`${match.url}/transaction-record`} component={TransactionRecord} />
+                            <Route path={`${match.url}/overview/cardInfo`} component={CardInfo} />
+                            <Route path={`${match.url}/overview/account-overview`} component={AccountOverview} />
+                            <Route path={`${match.url}/overview/recharge`} component={Recharge} />
+                            <Route path={`${match.url}/overview/withdrawPage`} component={WithdrawPage} />
+                            <Route path={`${match.url}/overview/transaction-record`} component={TransactionRecord} />
+                            <Route path={`${match.url}/loans/myLoans`} component={MyLoans} />
+                            <Route path={`${match.url}/settings/authInfo`} component={AuthInfo} />
+                            <Route path={`${match.url}/settings/riskAssess`} component={RiskAssess} />
+                            <Route path={`${match.url}/settings/message`} component={Message} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>

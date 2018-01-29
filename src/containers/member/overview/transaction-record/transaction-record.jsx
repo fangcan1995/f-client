@@ -1,15 +1,16 @@
 import React,{Component} from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import Crumbs from '../../../../components/crumbs/crumbs';
+import Tab from '../../../../components/tab/tab';
 import './transaction-record.less';
 import Table from '../../../../components/table/table';
 
 var tableSetting={
     columnOpts:[
-        { key: 'time', name: '交易时间',type:'date-time' },
-        { key: 'type', name: '交易类型',type:'tradeType' },
-        { key: 'money', name: '交易金额 (元)',type:'money' },
-        { key: 'status', name: '状态' },
+        { key: 'col1', name: '交易时间',type:'date-time' },
+        { key: 'col2', name: '交易类型',type:'tradeType' },
+        { key: 'col3', name: '交易金额 (元)',type:'money' },
+        { key: 'col4', name: '状态' },
     ],
     hasFilter:true, // 是否显示搜索过滤，为什么不直接用下面的，这里也是设计上的一个优化点
     /*onSearch: function(keyword) {
@@ -21,22 +22,10 @@ var tableSetting={
 export default ({ location, match, history }) => {
     return (
         <div className="member__main">
-            <div className="crumb">
-                <div>
-                    <b>您所在的位置：</b>
-                    <a href="/">首页</a>&nbsp;&gt;
-                    <a href="/member/overview/account-overview" >我的账户</a>&nbsp;&gt;
-                    <a  className="actice">交易记录</a>
-                </div>
-            </div>
+            <Crumbs/>
             <div className="member__cbox">
-                <div className="title__list">
-                    <div className="tab_title">
-                        <ul>
-                            <li className="on"><h3>交易记录</h3></li>
-                        </ul>
-                    </div>
-                    <div className="tab_content">
+                <Tab>
+                    <div name="交易记录">
                         <div className="query">
                             <p className="info">
                                 <strong>提示：</strong>资金历史记录了您各种交易产生的支出和收入的明细，请选择事件类型和时间。
@@ -65,7 +54,8 @@ export default ({ location, match, history }) => {
                             />
                         </div>
                     </div>
-                </div>
+                </Tab>
+
             </div>
         </div>
     );

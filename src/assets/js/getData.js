@@ -1,19 +1,33 @@
-/*import React from 'react';
-import jQuery from 'jquery';
-var commonFn = React.createClass({
+import React from 'react';
 
-    funA: function() {
-        alert('a');
-    },
+export  function getData(source='',pageNum=1,pageSize=10,filter=''){
+    let conditions = "";
+    if(filter){
+        for(var item in filter){
+            conditions += "&"+item+"="+filter[item];
+        }
+    }
+    let url = `${source}?pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
+    fetch(url,{
+        method:"get",
+        /*headers: {
+            'Content-Type': 'application/json;charset=UTF-8'
+        },
+        body: JSON.stringify(userObj),*/
+    })
+        .then(function (response){
+            if (response.status == 200){
+                return response;
+            }
+        })
+        .then((data) => data.json())
+        .then((data) => {
+                return data.data;
+            }
+        )
+        .catch(function(err){
+            console.log("Fetch错误:"+err);
+            //console.log("Fetch错误:"+err);
+        });
 
-})
-export default commonFn;*/
-import jQuery from 'jquery';
-
-export  function getData(url='',currentPage=1,pageSize=10,filter=''){
-    console.log('后台获取第'+currentPage+'页数据，每页'+pageSize+'条,查询条件：全部');
-    console.log('后台获取数据');
-    console.log(url);
-    console.log('第'+currentPage+'页数据，每页'+pageSize+'条');
-    console.log('查询条件:'+filter);
 };
