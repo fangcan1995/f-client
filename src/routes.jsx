@@ -35,6 +35,7 @@ export default (
                     <MemberSidebar {...props}>
                         <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/account-overview`} />
+                            <Route path={`${match.url}/overview/account-overview`} component={AccountOverview} />
                             <Route path={`${match.url}/overview/cardInfo`} component={CardInfo} />
                             <Route path={`${match.url}/overview/account-overview`} component={AccountOverview} />
                             <Route path={`${match.url}/overview/recharge`} component={Recharge} />
