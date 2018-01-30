@@ -26,8 +26,11 @@ export  function getData(source='',pageNum=1,pageSize=10,filter=''){
             }
         )
         .catch(function(err){
+
             console.log("Fetch错误:"+err);
+
             //console.log("Fetch错误:"+err);
         });
+
 
 };
