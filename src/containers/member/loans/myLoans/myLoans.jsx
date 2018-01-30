@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+/*import ReactEcharts from 'echarts-for-react';
+import echarts from 'echarts';*/
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';

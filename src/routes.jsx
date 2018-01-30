@@ -25,7 +25,10 @@ import RateCoupons from './containers/member/reward/rateCoupons/rateCoupons';
 import SuperPartner from './containers/member/reward/super-partner/super-partner';
 import Partner from './containers/member/reward/partner/master/master';
 import PartnerDetail from './containers/member/reward/partner/detail/detail';
+import Investments from './containers/member/invest/investments/investments';
+import Receiving from './containers/member/invest/receiving/receiving'
 import MyLoans from './containers/member/loans/myLoans/myLoans';
+import RepaymentPlans from './containers/member/loans/repaymentPlans/repaymentPlans';
 import AuthInfo from './containers/member/settings/authInfo/authInfo';
 import RiskAssess from './containers/member/settings/riskAssess/riskAssess';
 import Message from './containers/member/settings/message/message';
@@ -62,7 +65,10 @@ export default (
                             <Route path={`${match.url}/overview/recharge`} component={Recharge} />
                             <Route path={`${match.url}/overview/withdrawPage`} component={WithdrawPage} />
                             <Route path={`${match.url}/overview/transaction-record`} component={TransactionRecord} />
+                            <Route path={`${match.url}/invest/investments`} component={Investments} />
+                            <Route path={`${match.url}/invest/receiving`} component={Receiving} />
                             <Route path={`${match.url}/loans/myLoans`} component={MyLoans} />
+                            <Route path={`${match.url}/loans/RepaymentPlans`} component={RepaymentPlans} />
                             <Route path={`${match.url}/settings/authInfo`} component={AuthInfo} />
                             <Route path={`${match.url}/settings/riskAssess`} component={RiskAssess} />
                             <Route path={`${match.url}/settings/message`} component={Message} />
