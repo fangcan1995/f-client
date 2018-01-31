@@ -1,13 +1,23 @@
 import React from 'react';
 
-export  function getData(source='',pageNum=1,pageSize=10,filter=''){
+export  function getData(source='',pageNum,pageSize,filter){
+    //let url = `${source}?pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
+    let url = `${source}`
     let conditions = "";
-    if(filter){
+    if(pageNum != undefined){
+        url += `?pageNum=${pageNum}`;
+    }
+    if(pageNum != undefined){
+        url += `&pageSize=${pageSize}`;
+    }
+    if(filter != undefined){
         for(var item in filter){
             conditions += "&"+item+"="+filter[item];
-        }
+        };
+        url += `${conditions}`;
     }
-    let url = `${source}?pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
+    console.log(url);
+    //url=
     fetch(url,{
         method:"get",
         /*headers: {

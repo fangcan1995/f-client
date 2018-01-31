@@ -24,13 +24,13 @@ export default class Tab extends Component {
                     {
                         React.Children.map(this.props.children,(element,index) => {
                             return (
-                                <li onClick={ () => { this.setState({ current: index }) } } className={ this.itemNav(index) }>{ element.props.name }</li>
+                                <li onClick={ () => { this.setState({ current: index }) } } className={ this.itemNav(index) }><span className="tab__title">{ element.props.name }</span></li>
                             )
                         })
                     }
                 </div>
                 { /* Tab内容区域 */ }
-                <div className="tabs__content">
+                <div className="tabs__content" >
                     {
                         React.Children.map(this.props.children, (element,index) => {
                             return (

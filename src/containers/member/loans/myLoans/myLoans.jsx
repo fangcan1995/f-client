@@ -6,6 +6,7 @@ import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
 import './myLoans.less';
+
 import  {getData}  from '../../../../assets/js/getData'
 import  {getBeforeDate}  from '../../../../assets/js/getBeforeDate'
 
@@ -13,7 +14,7 @@ class MyLoans extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            dataSetting:{},  //红包数据
+            dataSetting:{},  //数据
             status: 0,  //申请中 招标中 还款中 已结清
             dateBegin:'',
             dateEnd:'',
