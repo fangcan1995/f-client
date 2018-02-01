@@ -1,6 +1,6 @@
 @import '../../../../assets/stylesheets/library';
 @import '../../../../assets/stylesheets/floor';
-
+@import '../../../../assets/stylesheets/modal';
 .member__cbox{
   .chart{
     .tablist{
@@ -58,4 +58,24 @@
     }
   }
 
+}
+.ant-modal-wrap{
+  .ant-modal-body{
+    .table__wrapper{
+      margin-top: 0;
+      height:500px;
+      overflow-y: auto;
+      .tableList {
+        tr{
+          height: 38px;
+        }
+        td{
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+.pop__transfer{
+  height: 400px;
 }

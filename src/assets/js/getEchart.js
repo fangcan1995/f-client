@@ -15,7 +15,6 @@ export  function getEchartPie(json){
             padding:20,
             itemGap:20,
             selectedMode:false,
-            //data:['招标中','回款中','已回款','已转出',]
             data:json.legend.data  //数据
 
         },
@@ -77,12 +76,6 @@ export  function getEchartPie(json){
                         }
                     }
                 },
-                /*data:[
-                    {value:335.00, name:'招标中'},
-                    {value:310.45, name:'回款中'},
-                    {value:234, name:'已回款'},
-                    {value:135, name:'已转出'}
-                ]*/
                 data:json.series_data.data  //数据
             }
         ]
@@ -91,42 +84,82 @@ export  function getEchartPie(json){
 
 export  function getEchartLine(json) {
     return {
-        xAxis: {
-            type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        title : {
+            show:false,
+            text: '',
+            subtext: ''
         },
-        yAxis: {
-            type: 'value'
+        tooltip : {
+            show:true,
+            trigger: 'axis',
+            formatter: "{b} : {c}元"
         },
-        series: [{
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
-            type: 'line'
-        }]
+        legend: {
+            show:false,
+            data:json.legend.data  //统计项目
+        },
+        toolbox: {
+            show : false,
+            feature : {
+                mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                magicType : {show: true, type: ['line', 'bar']},
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        calculable : false,
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                data : json.xAxis_data   //横轴标尺
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value',
+                axisLabel : {
+                    formatter: '{value} 元'
+                }
+            }
+        ],
+        series : json.series_data   //数据
     }
 }
 
 export  function getEchartBar(json) {
     return{
-        color: ['#3398DB'],
+        title : {
+            show:false,
+            text: '',  //标题
+            subtext: ''//副标题
+        },
+
         tooltip : {
+            show:false,
             trigger: 'axis',
-            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            //formatter: "{b} : {c}元"
+        },
+        legend: {
+            show:false,
+            data:json.legend.data  //统计项目
+        },
+        toolbox: {
+            show : false,
+            feature : {
+                mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                magicType : {show: true, type: ['line', 'bar']},
+                restore : {show: true},
+                saveAsImage : {show: true}
             }
         },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
+        calculable : false,
         xAxis : [
             {
                 type : 'category',
-                data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                axisTick: {
-                    alignWithLabel: true
-                }
+                data : json.xAxis_data   //横轴标尺
             }
         ],
         yAxis : [
@@ -134,13 +167,6 @@ export  function getEchartBar(json) {
                 type : 'value'
             }
         ],
-        series : [
-            {
-                name:'直接访问',
-                type:'bar',
-                barWidth: '60%',
-                data:[10, 52, 200, 334, 390, 330, 220]
-            }
-        ]
+        series : json.series_data   //数据
     }
 }

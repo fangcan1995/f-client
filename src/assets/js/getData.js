@@ -16,8 +16,6 @@ export  function getData(source='',pageNum,pageSize,filter){
         };
         url += `${conditions}`;
     }
-    console.log(url);
-    //url=
     fetch(url,{
         method:"get",
         /*headers: {
@@ -36,10 +34,8 @@ export  function getData(source='',pageNum,pageSize,filter){
             }
         )
         .catch(function(err){
-
-            console.log("Fetch错误:"+err);
-
             //console.log("Fetch错误:"+err);
+
         });
 
 

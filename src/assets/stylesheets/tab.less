@@ -1,11 +1,32 @@
 @import './library';
-.tablist {
+.tablist{
+	.tabs__nav {
+		.clearfix();
+		.tab {
+			text-align: center;
+			cursor:pointer;
+			list-style: none;
+			display: inline-block;
+
+		}
+	}
+	.tabs__content {
+		font-size: 14px;
+		.tab__panel {
+			display: none;
+			&.tab__panel--active {
+				display: block;
+			}
+		}
+	}
+}
+/*.tablist {
 	.tabs__nav {
 		.clearfix();
 		.tab {
 			position: relative;
 			float: left;
-			min-width: 100px;
+			!*min-width: 100px;*!
 			height: 60px;
 			line-height: 60px;
 			font-size: 18px;
@@ -46,6 +67,7 @@
 	.tabs__content {
 		.tab__panel {
 			display: none;
+			width:100%;
 			&.tab__panel--active {
 				display: block;
 			}
@@ -54,7 +76,7 @@
 	}
 
 
-}
+}*/
 
 
 
