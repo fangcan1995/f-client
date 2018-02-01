@@ -58,7 +58,7 @@ export default (props) => {
                 <Link to="/my-account/overview/account-overview" className="dropdown__toggle">我的账户<i className="iconfont icon-sanjiaojiantou-xia"></i></Link>
                 <div className="dropdown__menu">
                   <ul>
-                    <li><Link to="/member2">我的投资</Link></li>
+                    <li><Link to="//my-account/invest/investments">我的投资</Link></li>
                     <li><Link to="/my-account/loans/myLoans">我的借款</Link></li>
                     <li><Link to="/my-account/settings/authInfo">基本设置</Link></li>
                     <li><Link to="/member">奖励管理</Link></li>
