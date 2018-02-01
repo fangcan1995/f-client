@@ -46,13 +46,13 @@ export default ({ location, match, history, ...props }) => {
                         </ul>
                         <h3><i className="iconfont icon-invest"></i>我的投资</h3>
                         <ul>
-                            <li><a href="#">我的投资</a></li>
-                            <li><a href="#">回款记录</a></li>
+                            <ListItemLink to="/my-account/invest/investments">我的投资</ListItemLink>
+                            <ListItemLink to="/my-account/invest/receiving">回款统计</ListItemLink>
                         </ul>
                         <h3><i className="iconfont icon-myloan"></i>我的借款</h3>
                         <ul>
                             <ListItemLink to="/my-account/loans/myLoans">我的借款</ListItemLink>
-                            <li><a href="#" >还款计划</a></li>
+                            <ListItemLink to="/my-account/loans/RepaymentPlans">还款计划</ListItemLink>
                         </ul>
                         <h3><i className="iconfont icon-invitation"></i>奖励管理</h3>
                         <ul>
