@@ -40,17 +40,10 @@ let data_Chart2={
     ]
 };
 /*饼图数据*/
-let data_Chart3={
-    legend:{data:['月汇宝资产','散标资产','可用余额','冻结金额']},
-    series_data:{
-        data:[
-            {value:10000.00, name:'月汇宝资产'},
-            {value:500.00, name:'散标资产'},
-            {value:780.00, name:'可用余额'},
-            {value:100, name:'冻结金额'}
-        ]
-    }
-}
+let data_Chart3=[
+        {name:'图例1',value:10000.00 },
+        {name:'图例2',value:500.00 },
+];
 export default ({ location, match, history }) => {
   return (
     <div className="member__main">
