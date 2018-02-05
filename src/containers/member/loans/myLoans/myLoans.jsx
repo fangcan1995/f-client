@@ -7,14 +7,13 @@ import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
 import  {getData}  from '../../../../assets/js/getData';
 import { Modal } from 'antd';
-import ModalPlan from './modalPlan';
-import ModalTransfer from './modalTransfer';
+import ModalRepaymentApp from './modalRepaymentApp';
 import './myLoans.less';
 export default class MyLoans extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            modalTransfer: false,
+            modalRepaymentApp: false,
             currentId:'',
             dataSetting:{},  //项目数据
             charts:{
@@ -165,28 +164,23 @@ export default class MyLoans extends React.Component{
             this.setState({
                 charts:{
                     totalInvestment:{
-                        legend:{data:['申请中','招标中','还款中','已结清']},
-                        series_data:{
-                            data:[
-                                {value:totalInvestment.proMoneyBidding, name:'申请中'},
-                                {value:totalInvestment.proMoneyInBack, name:'招标中'},
-                                {value:totalInvestment.proMoneyBacked, name:'还款中'},
-                                {value:totalInvestment.proMoneyOut, name:'已结清'}
-                            ]
-                        }
+                        data:[
+                            {name:'申请中',value:totalInvestment.proMoneyBidding },
+                            {name:'招标中',value:totalInvestment.proMoneyInBack},
+                            {name:'还款中',value:totalInvestment.proMoneyBacked},
+                            {name:'已结清',value:totalInvestment.proMoneyOut}
+                        ]
                     },
                     accumulatedIncome:{
-                        legend:{data:['还款中','已结清']},
-                        series_data:{
                             data:[
-                                {value:accumulatedIncome.earnMoneyInBack, name:'还款中'},
-                                {value:accumulatedIncome.earnMoneyBacked, name:'已结清'},
+                                {name:'还款中',value:accumulatedIncome.earnMoneyInBack },
+                                {name:'已结清',value:accumulatedIncome.earnMoneyBacked },
                             ]
-                        }
                     },
                 }
-
             },()=>{
+
+
             });
         }
     }
@@ -207,14 +201,14 @@ export default class MyLoans extends React.Component{
                             <Tab>
                                 <div name="借款总额">
                                     <ReactEcharts
-                                        option={getEchartPie(this.state.charts.totalInvestment)}
+                                        option={getEchartPie(this.state.charts.totalInvestment.data)}
                                         style={{height: '300px', width: '100%'}}
                                         opts={{renderer: 'svg'}}
                                         className='react_for_echarts' />
                                 </div>
                                 <div name="累计利息">
                                     <ReactEcharts
-                                        option={getEchartPie(this.state.charts.accumulatedIncome)}
+                                        option={getEchartPie(this.state.charts.accumulatedIncome.data)}
                                         style={{height: '300px', width: '930px'}}
                                         opts={{renderer: 'svg'}}
                                         className='react_for_echarts' />
@@ -256,7 +250,6 @@ export default class MyLoans extends React.Component{
                                         <thead>
                                         <tr>
                                             <th>项目名称</th>
-
                                             {(this.state.status==1)? <th>项目类型</th>:''}
                                             <th>借款金额(元)</th>
                                             {(this.state.status==1)? <th>借款年利率(%)</th>:''}
@@ -305,10 +298,9 @@ export default class MyLoans extends React.Component{
                                                     {(this.state.status==4)? <td>逾期罚息</td>:''}
                                                     {(this.state.status==4)? <td>结清日期</td>:''}
                                                     {(this.state.status==1||this.state.status==2)? <td>{item.transStatus}{/*状态*/}</td>:''}
-
                                                     {(this.state.status==3||this.state.status==4)?
                                                         <td>
-                                                            {(this.state.status==3)? <a onClick={() => this.toggleModal(`modalTransfer`,true,item.proId)}>提前还款</a>:''}
+                                                            {(this.state.status==3)? <a onClick={() => this.toggleModal(`modalRepaymentApp`,true,item.proId)}>提前还款</a>:''}
                                                             <a href="">借款合同</a>
                                                         </td>
                                                         :''
@@ -334,15 +326,15 @@ export default class MyLoans extends React.Component{
                     }
                 </div>
                 <Modal
-                    title="提前还款"
+                    title="提前还款申请"
                     wrapClassName="vertical-center-modal"
-                    visible={this.state.modalTransfer}
+                    visible={this.state.modalRepaymentApp}
                     width="520px"
                     footer={null}
-                    onCancel={() => this.toggleModal(`modalTransfer`,false,'')}
+                    onCancel={() => this.toggleModal(`modalRepaymentApp`,false,'')}
                 >
-                    {this.state.modalTransfer===true?
-                        <ModalTransfer proId={this.state.currentId} />:''
+                    {this.state.modalRepaymentApp===true?
+                        <ModalRepaymentApp proId={this.state.currentId} />:''
                     }
                 </Modal>
             </div>

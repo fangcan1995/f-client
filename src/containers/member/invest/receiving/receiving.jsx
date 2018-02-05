@@ -133,24 +133,18 @@ export default class Receiving extends React.Component{
             this.setState({
                 charts:{
                     totalInvestment:{
-                        legend:{data:['已回利息','已回本金','已回罚息']},
-                        series_data:{
-                            data:[
-                                {value:totalInvestment.proMoneyBidding, name:'已回利息'},
-                                {value:totalInvestment.proMoneyInBack, name:'已回本金'},
-                                {value:totalInvestment.proMoneyBacked, name:'已回罚息'},
-                            ]
-                        }
+                        data:[
+                            {value:totalInvestment.proMoneyBidding, name:'已回利息'},
+                            {value:totalInvestment.proMoneyInBack, name:'已回本金'},
+                            {value:totalInvestment.proMoneyBacked, name:'已回罚息'},
+                        ]
                     },
                     accumulatedIncome:{
-                        legend:{data:['未回利息','未回本金','未回罚息']},
-                        series_data:{
-                            data:[
-                                {value:accumulatedIncome.earnMoneyInBack, name:'未回利息'},
-                                {value:accumulatedIncome.earnMoneyBacked, name:'未回本金'},
-                                {value:accumulatedIncome.earnMoneyOut, name:'未回罚息'},
-                            ]
-                        }
+                        data:[
+                            {value:accumulatedIncome.earnMoneyInBack, name:'未回利息'},
+                            {value:accumulatedIncome.earnMoneyBacked, name:'未回本金'},
+                            {value:accumulatedIncome.earnMoneyOut, name:'未回罚息'},
+                        ]
                     },
                 }
 
@@ -175,14 +169,14 @@ export default class Receiving extends React.Component{
                             <Tab>
                                 <div name="已回金额">
                                     <ReactEcharts
-                                        option={getEchartPie(this.state.charts.totalInvestment)}
+                                        option={getEchartPie(this.state.charts.totalInvestment.data)}
                                         style={{height: '300px', width: '100%'}}
                                         opts={{renderer: 'svg'}}
                                         className='react_for_echarts' />
                                 </div>
                                 <div name="未回金额">
                                     <ReactEcharts
-                                        option={getEchartPie(this.state.charts.accumulatedIncome)}
+                                        option={getEchartPie(this.state.charts.accumulatedIncome.data)}
                                         style={{height: '300px', width: '930px'}}
                                         opts={{renderer: 'svg'}}
                                         className='react_for_echarts' />

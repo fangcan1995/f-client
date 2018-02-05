@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import  {getData}  from '../../../../assets/js/getData';
 import  {poundage,addCommas,checkMoney}  from '../../../../assets/js/cost';
-export default class ModalTransfer extends React.Component {
+import { Checkbox,message } from 'antd';
+export default class ModalRepaymentApp extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
@@ -72,39 +73,46 @@ export default class ModalTransfer extends React.Component {
     }
     render() {
         return (
-            <div className="pop__transfer">
+            <div className="pop__repayment">
                 <form className="form__wrapper">
+                    <div className="form_bar">
+                        <dt><label>项目名称：</label></dt>
+                        <dd>汇车贷-HCD201705020001</dd>
+                    </div>
+                    <div className="form_bar">
+                        <dt><label>已还期数：</label></dt>
+                        <dd>9 期</dd>
+                    </div>
+                    <div className="form_bar">
+                        <dt><label>到期日期：</label></dt>
+                        <dd>2017-12-03</dd>
+                    </div>
+                    <div className="form_bar">
+                        <dt><label>应还本金：</label></dt>
+                        <dd><p>20000.00元</p></dd>
+                    </div>
+                    <div className="form_bar">
+                        <dt><label>应还利息：</label></dt>
+                        <dd>200.00 元</dd>
+                    </div>
                     <dl className="form_bar">
-                        <dt><label>实际投资金额:{this.props.proId}</label></dt>
-                        <dd><i id="Accountbalance" className="money">{this.state.transferInfo.transFinanced}</i> 元</dd>
+                        <dt><label>还款总额：</label></dt>
+                        <dd>200200.00 元</dd>
                     </dl>
                     <dl className="form_bar">
-                        <dt><label>转让金额:</label></dt>
+                        <dt><label>交易密码: </label></dt>
+                        <dd><input type="password" name="traderPassword" id="traderPassword" className="textInput"  autoComplete="off" maxLength="20" /></dd>
+                    </dl>
+                    {/*<dl className="form_bar" >
+                        <dt><label>验证码: </label></dt>
                         <dd>
-                            <input type="text" name="amount"  className="textInput moneyInput"  autoComplete="off" maxLength="13" onChange={this.handleChange} />
-                            <span className="unit" >元</span>
+                            <input type="text" name="imgcode" id="imgcode" className="textInput"  autoComplete="off" maxLength="6" />
+                            <img src="/images/account/pt1.png" data-url="/user/captcha" id="img-code" title="看不清？点击图片更换验证码" className="vCode" />
                         </dd>
-                    </dl>
-                    <dl className="form_bar short">
-                        <dt><label>手续费：</label></dt>
-                        <dd><i id="cost" className="money">{addCommas(poundage(this.state.value,this.state.transferInfo.proTransferFee))}</i> 元
-                        </dd>
-                    </dl>
-                    <dl className="form_bar short">
-                        <dt><label>预期到账金额：</label></dt>
-                        <dd><i id="money" className="money">
-                            {this.state.value!=0?
-                                addCommas(this.state.value-poundage(this.state.value,this.state.transferInfo.proTransferFee))
-                                : `0.00`
-                            }
-                            </i>元
-                        </dd>
-                    </dl>
+                    </dl>*/}
                     <div className="ps">
                         <p>
-                            <i className="iconfont icon-accept radio_switchbtn"></i>
-                            <input type="hidden" id="accept" value="0" />
-                            我已阅读并同意<a href="/transfer.html" target="_blank">《巴巴汇债权转让服务协议》</a>
+                            <Checkbox onChange={this.onChange}>我已阅读并同意<a href="#" target="_blank">《提前还款规则》</a></Checkbox>
                         </p>
                     </div>
                     <div className="tips__area">

@@ -6,9 +6,10 @@ import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
 import  {getData}  from '../../../../assets/js/getData';
-import { Modal } from 'antd';
+import { Modal,message } from 'antd';
 import ModalPlan from './modalPlan';
 import ModalTransfer from './modalTransfer';
+
 import './investments.less';
 export default class Investments extends React.Component{
     constructor(props){
@@ -166,25 +167,21 @@ export default class Investments extends React.Component{
             this.setState({
                 charts:{
                     totalInvestment:{
-                        legend:{data:['招标中','回款中','已回款','已转出']},
-                        series_data:{
                             data:[
-                                {value:totalInvestment.proMoneyBidding, name:'招标中'},
-                                {value:totalInvestment.proMoneyInBack, name:'回款中'},
-                                {value:totalInvestment.proMoneyBacked, name:'已回款'},
-                                {value:totalInvestment.proMoneyOut, name:'已转出'}
+                                {name:'招标中',value:totalInvestment.proMoneyBidding},
+                                {name:'回款中',value:totalInvestment.proMoneyInBack},
+                                {name:'已回款',value:totalInvestment.proMoneyBacked},
+                                {name:'已转出',value:totalInvestment.proMoneyOut}
                             ]
-                        }
+
                     },
                     accumulatedIncome:{
-                        legend:{data:['回款中','已回款','已转出']},
-                        series_data:{
                             data:[
-                                {value:accumulatedIncome.earnMoneyInBack, name:'回款中'},
-                                {value:accumulatedIncome.earnMoneyBacked, name:'已回款'},
-                                {value:accumulatedIncome.earnMoneyOut, name:'已转出'},
+                                {name:'回款中',value:accumulatedIncome.earnMoneyInBack},
+                                {name:'已回款',value:accumulatedIncome.earnMoneyBacked },
+                                {name:'已转出',value:accumulatedIncome.earnMoneyOut },
                             ]
-                        }
+
                     },
                 }
 
@@ -203,20 +200,20 @@ export default class Investments extends React.Component{
         return(
             <div className="member__main">
                 <Crumbs/>
-                <div className="member__cbox">
+                <form className="member__cbox">
                     <Tab>
                         <div name="我的投资" className="chart">
                             <Tab>
                                 <div name="投资总额">
                                     <ReactEcharts
-                                        option={getEchartPie(this.state.charts.totalInvestment)}
+                                        option={getEchartPie(this.state.charts.totalInvestment.data)}
                                         style={{height: '300px', width: '100%'}}
                                         opts={{renderer: 'svg'}}
                                         className='react_for_echarts' />
                                 </div>
                                 <div name="累计收益">
                                     <ReactEcharts
-                                        option={getEchartPie(this.state.charts.accumulatedIncome)}
+                                        option={getEchartPie(this.state.charts.accumulatedIncome.data)}
                                         style={{height: '300px', width: '930px'}}
                                         opts={{renderer: 'svg'}}
                                         className='react_for_echarts' />
@@ -224,7 +221,7 @@ export default class Investments extends React.Component{
                             </Tab>
                         </div>
                     </Tab>
-                </div>
+                </form>
                 <div className="member__cbox">
                     <div className="filter">
                         <div className="filter__outer">
@@ -377,7 +374,20 @@ export default class Investments extends React.Component{
                     onCancel={() => this.toggleModal(`modalTransfer`,false,'')}
                 >
                     {this.state.modalTransfer===true?
-                        <ModalTransfer proId={this.state.currentId} />:''
+                        <ModalTransfer
+                            config = {
+                                {
+                                    proId:this.state.currentId,
+                                    callback:(obj)=>{
+                                        this.toggleModal(`modalTransfer`,false);
+                                        this.setState({
+                                            status:1
+                                        });
+                                        this.loadData(1,10,{status:1});
+                                    }
+                                }
+                            }
+                        />:''
                     }
                 </Modal>
             </div>
