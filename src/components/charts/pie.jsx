@@ -8,7 +8,7 @@ export default class PieChart extends Component{
         super(props);
     }
     render(){
-        let {data,style,showLegend,totalTitle,color}=this.props;
+        let {data,style,showLegend,totalTitle,color,showUserLegend}=this.props;
 
         if(!color){
             color=['#79b9e8', '#f69494','#72c59e','#f6ba7b','#8b9dbc'];
@@ -20,19 +20,32 @@ export default class PieChart extends Component{
                 total+=key.value;
             });
         }
+        if(!showUserLegend){
+            showUserLegend=true;
+        }else{
+            if(showUserLegend==='false'){
+                showUserLegend=false;
+            }else{
+                showUserLegend=true;
+            }
+        }
+
 
         return(
             <div className="peiChart">
-                <div className="pei__legend">
-                    <h3 className="pei__title"><strong>{totalTitle}</strong><br/>{addCommas(total)}元</h3>
-                    <ul>
-                        {
-                        data.map((item, rowIndex) => (
-                        <li key={`row-${rowIndex}`}><i style={{backgroundColor:`${color[rowIndex]}`}}></i><strong>{item.name}:</strong>{item.instruction}</li>
-                        ))
-                    }
-                    </ul>
-                </div>
+                {showUserLegend?
+                    <div className="pei__legend">
+                        <h3 className="pei__title"><strong>{totalTitle}</strong><br/>{addCommas(total)}元</h3>
+                        <ul>
+                            {
+                                data.map((item, rowIndex) => (
+                                    <li key={`row-${rowIndex}`}><i style={{backgroundColor:`${color[rowIndex]}`}}></i><strong>{item.name}:</strong>{item.instruction}</li>
+                                ))
+                            }
+                        </ul>
+                    </div>
+                    :''}
+
                 <ReactEcharts
                     option={getEchartPie(data, color,showLegend)}
                     style={style}

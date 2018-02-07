@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
-import {getEchartPie,getEchartLine,getEchartBar} from '../../../../assets/js/getEchart';
+import {getEchartLine,getEchartBar} from '../../../../assets/js/getEchart';
+import PieChart from '../../../../components/charts/pie';
+import {addCommas} from '../../../../assets/js/cost';
 import './account-overview.less';
-/*import Crumbs from '../../../../components/crumbs/crumbs.jsx';*/
+
 //折线图数据
 let data_Chart1={
     xAxis_data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
@@ -46,8 +48,8 @@ let data_Chart2={
 };
 /*饼图数据*/
 let data_Chart3=[
-        {name:'图例1',value:10000.00 },
-        {name:'图例2',value:500.00 },
+        {name:'图例1',value:10000.00,instruction:`${addCommas(1000)}元` },
+        {name:'图例2',value:500.00,instruction:`${addCommas(1000)}元` },
 ];
 export default ({ location, match, history }) => {
   return (
@@ -152,12 +154,22 @@ export default ({ location, match, history }) => {
                 opts={{renderer: 'svg'}}
                 className='react_for_echarts'
             />
-            <ReactEcharts
+            {/*<ReactEcharts
                 option={getEchartPie(data_Chart3)}
                 style={{height: '300px', width: '100%'}}
                 opts={{renderer: 'svg'}}
                 className='react_for_echarts'
-            />
+            />*/}
+
+                    <PieChart
+                        data={data_Chart3}
+                        style={{height: '300px', width: '930px'}}
+                        totalTitle="说明"
+                        showUserLegend='false'
+                        showLegend='true'
+                    >
+                    </PieChart>
+
         </div>
     </div>
     );
