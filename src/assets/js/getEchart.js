@@ -1,12 +1,12 @@
-export  function getEchartPie(json){
+export  function getEchartPie(json,color,showLegend){
     return{
-        color:['#79b9e8', '#f69494','#72c59e','#f6ba7b','#8b9dbc'],
+        color:color,
         tooltip: {
             trigger: 'item',
-            formatter: "{a} <br/>{b}: {c}元 ({d}%)"
+            formatter: "{b}: {c}元 ({d}%)"
         },
         legend: {
-            show:true,
+            show:showLegend,
             orient : 'vertical',
             x : 'left',
             textStyle:{
@@ -56,7 +56,6 @@ export  function getEchartPie(json){
                         label : {
                             show : true,
                             formatter: "{b}",
-                            //formatter: "{b} : {c}元 ({d}%)",
                             textStyle : {
                                 fontSize : '14',
 
@@ -82,6 +81,7 @@ export  function getEchartPie(json){
         ]
     }
 }
+
 
 /*export  function getEchartPie(json){
     return{

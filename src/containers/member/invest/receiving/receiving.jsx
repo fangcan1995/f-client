@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactEcharts from 'echarts-for-react';
-import {getEchartPie} from '../../../../assets/js/getEchart';
+import PieChart from '../../../../components/charts/pie';
+import {addCommas} from '../../../../assets/js/cost';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
@@ -13,15 +13,8 @@ export default class Receiving extends React.Component{
         this.state={
             dataSetting:{},  //项目数据
             charts:{
-                totalInvestment:{
-                    legend:{},
-                    series_data:{}
-                },
-                accumulatedIncome:{
-                    legend:{},
-                    series_data:{}
-                },
-
+                totalInvestment:{},
+                accumulatedIncome:{},
             },  //统计数据
         };
     }
@@ -134,20 +127,19 @@ export default class Receiving extends React.Component{
                 charts:{
                     totalInvestment:{
                         data:[
-                            {value:totalInvestment.proMoneyBidding, name:'已回利息'},
-                            {value:totalInvestment.proMoneyInBack, name:'已回本金'},
-                            {value:totalInvestment.proMoneyBacked, name:'已回罚息'},
+                            {value:totalInvestment.proMoneyBidding, name:'已回利息',instruction:`${addCommas(totalInvestment.proMoneyBidding)}元`},
+                            {value:totalInvestment.proMoneyInBack, name:'已回本金',instruction:`${addCommas(totalInvestment.proMoneyInBack)}元`},
+                            {value:totalInvestment.proMoneyBacked, name:'已回罚息',instruction:`${addCommas(totalInvestment.proMoneyBacked)}元`},
                         ]
                     },
                     accumulatedIncome:{
                         data:[
-                            {value:accumulatedIncome.earnMoneyInBack, name:'未回利息'},
-                            {value:accumulatedIncome.earnMoneyBacked, name:'未回本金'},
-                            {value:accumulatedIncome.earnMoneyOut, name:'未回罚息'},
+                            {value:accumulatedIncome.earnMoneyInBack, name:'未回利息',instruction:`${addCommas(accumulatedIncome.earnMoneyInBack)}元`},
+                            {value:accumulatedIncome.earnMoneyBacked, name:'未回本金',instruction:`${addCommas(accumulatedIncome.earnMoneyBacked)}元`},
+                            {value:accumulatedIncome.earnMoneyOut, name:'未回罚息',instruction:`${addCommas(accumulatedIncome.earnMoneyOut)}元`},
                         ]
                     },
                 }
-
             },()=>{
             });
         }
@@ -168,18 +160,28 @@ export default class Receiving extends React.Component{
                         <div name="回款统计" className="chart">
                             <Tab>
                                 <div name="已回金额">
-                                    <ReactEcharts
-                                        option={getEchartPie(this.state.charts.totalInvestment.data)}
-                                        style={{height: '300px', width: '100%'}}
-                                        opts={{renderer: 'svg'}}
-                                        className='react_for_echarts' />
+                                    {
+                                        JSON.stringify(this.state.charts.totalInvestment) != "{}"?
+                                            <PieChart
+                                                data={this.state.charts.totalInvestment.data}
+                                                style={{height: '300px', width: '930px'}}
+                                                totalTitle="已回金额"
+                                            >
+                                            </PieChart>
+                                            :''
+                                    }
                                 </div>
                                 <div name="未回金额">
-                                    <ReactEcharts
-                                        option={getEchartPie(this.state.charts.accumulatedIncome.data)}
-                                        style={{height: '300px', width: '930px'}}
-                                        opts={{renderer: 'svg'}}
-                                        className='react_for_echarts' />
+                                    {
+                                        JSON.stringify(this.state.charts.accumulatedIncome) != "{}"?
+                                            <PieChart
+                                                data={this.state.charts.accumulatedIncome.data}
+                                                style={{height: '300px', width: '930px'}}
+                                                totalTitle="未回金额"
+                                            >
+                                            </PieChart>
+                                            :''
+                                    }
                                 </div>
                             </Tab>
                         </div>

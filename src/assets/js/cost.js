@@ -33,10 +33,10 @@ export function checkMoney(json) {
     if(reg.test(value)){
         //金额验证通过,对比上限和下限
         if(max_v){
-            if(value>max_v) return [false,value,label+'不能大于'+max_v];
+            if(value>max_v) return [false,value,label+'不能大于'+max_v+'元'];
         }
         if(min_v){
-            if(value<min_v) return [false,value,label+'不能小于'+min_v];
+            if(value<min_v) return [false,value,label+'不能小于'+min_v+'元'];
         }
         //验证是否为interval的倍数
         if(interval){
@@ -66,6 +66,7 @@ export  function income(val,y_per,time,type){
     }
     return amount.toFixed(2);
 }
+
 //金额格式化,小数点前三位加个逗号，2为小数点
 export  function addCommas(nStr){
     nStr += '';//改变成字符串

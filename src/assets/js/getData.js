@@ -12,10 +12,16 @@ export  function getData(source='',pageNum,pageSize,filter){
     }
     if(filter != undefined){
         for(var item in filter){
-            conditions += "&"+item+"="+filter[item];
+            if(filter[item]!= undefined && filter[item]!=''){
+                conditions += "&"+item+"="+filter[item];
+            }
+
         };
         url += `${conditions}`;
     }
+    console.log('******************************');
+    console.log(url);
+    console.log('******************************');
     fetch(url,{
         method:"get",
         /*headers: {
