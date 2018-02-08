@@ -154,21 +154,22 @@ export default ({ location, match, history }) => {
                 opts={{renderer: 'svg'}}
                 className='react_for_echarts'
             />
-            {/*<ReactEcharts
-                option={getEchartPie(data_Chart3)}
-                style={{height: '300px', width: '100%'}}
-                opts={{renderer: 'svg'}}
-                className='react_for_echarts'
-            />*/}
-
-                    <PieChart
-                        data={data_Chart3}
-                        style={{height: '300px', width: '930px'}}
-                        totalTitle="说明"
-                        showUserLegend='false'
-                        showLegend='true'
-                    >
-                    </PieChart>
+            <PieChart
+                data={data_Chart3}
+                style={{height: '300px', width: '930px'}}
+                totalTitle="说明"
+                showUserLegend='false'
+                showLegend='true'
+                unit='人'
+                color={['#e32323', '#498911']}
+            >
+            </PieChart>
+            <PieChart
+                data={data_Chart3}
+                style={{height: '300px', width: '930px'}}
+                totalTitle="说明"
+            >
+            </PieChart>
 
         </div>
     </div>
