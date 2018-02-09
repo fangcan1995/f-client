@@ -59,7 +59,7 @@ export default class RepaymentPlans extends React.Component{
             this.loadData(1,10,filter);
         })
     }
-    handleDateEndChange(date,dateString,aaa) {
+    handleDateEndChange(date,dateString) {
         dateString=dateString+' 23:59:59';
         this.setState({
             DateEnd:moment(dateString),
