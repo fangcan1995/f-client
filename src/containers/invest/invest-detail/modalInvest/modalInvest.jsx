@@ -9,28 +9,28 @@ import {income} from "../../../../assets/js/cost"
 export default class ModalInvest extends React.Component {
     constructor(props) {
         super(props);
-        //let {investAmount,proMinInvestAmount,proMaxInvestAmount,proIncreaseAmount,restMoney,rate,loanApplyExpiry}=props.config;
+        let {investAmount,proMinInvestAmount,proMaxInvestAmount,proIncreaseAmount,restMoney,rate,loanApplyExpiry}=props.config;
         console.log(props.config);
         this.handleChange = this.handleChange.bind(this);
         this.onChange = this.onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state={
-            value:props.config.investAmount,  //投资金额
+            value:investAmount,  //投资金额
             tips:'',  //错误提示
             info:{},  //详情
             isRead:false
         }
     }
     handleSubmit(e){
-        const {callback,investAmount} = this.props.config;
+        //const {callback,investAmount} = this.props.config;
         //1 验证输入是否正确
         let result=checkMoney({
             'value':this.state.value,
             'type':0,
-            'min_v':this.state.transferInfo.proMinInvestAmount,
-            'max_v':this.state.transferInfo.transFinanced,
-            'label':'转让金额',
-            'interval':this.state.transferInfo.proIncreaseAmount
+            'min_v':this.proMinInvestAmount,
+            'max_v':this.proMaxInvestAmount,
+            'label':'投资金额',
+            'interval':this.proIncreaseAmount
         });
         if(!result[0]){
             this.setState({
@@ -41,7 +41,7 @@ export default class ModalInvest extends React.Component {
         //2 验证是否同意协议
         if(!this.state.isRead){
             this.setState({
-                tips:`请同意债权转让服务协议！`
+                tips:`请阅读并同意《投资协议》`
             });
             return false;
         }
@@ -80,7 +80,7 @@ export default class ModalInvest extends React.Component {
         this.setState({
             isRead: e.target.checked
         });
-        if(this.state.tips===`请同意债权转让服务协议！`){
+        if(this.state.tips===`请阅读并同意《投资协议》`){
             this.setState({
                 tips: ``
             });
@@ -180,15 +180,6 @@ export default class ModalInvest extends React.Component {
                                                     value:obj.value,
                                                     tips:obj.tips
                                                 });
-                                                /*console.log(obj);
-                                                if(obj.value!='0'){
-                                                    console.log('111111111111111');
-                                                    this.setState({
-                                                        investAmount:obj.value
-                                                    });
-                                                }
-
-                                                console.log(obj.tips);*/
                                             }
                                         }
                                     }
@@ -246,12 +237,12 @@ export default class ModalInvest extends React.Component {
                             </div>
                             <div className="tips__area">
                                 {this.state.tips!=''?
-                                    <span className="tips">{this.state.tips}</span>
+                                    <span className="tips error">{this.state.tips}</span>
                                     :''
                                 }
                             </div>
                             <div className="form_bar">
-                                <button  className="btn"　onClick={this.handleSubmit}>确认</button>
+                                <button  className="btn"　onClick={this.handleSubmit}>确认投资</button>
                             </div>
                         </div>
                         :''
