@@ -9,23 +9,24 @@ export default class StepperInput extends Component{
         this.handleChange = this.handleChange.bind(this);
         this.state = {
             value:props.config.defaultValue,
-            tips:''
+            //tips:''
         }
-
     }
     handleChange(event) {
-        const {min,max,cost} = this.props.config;
+        const {min,max,callback} = this.props.config;
         this.setState({value: event.target.value}, () =>{
             let result=this.checkMoney(this.state.value);
-            this.setState({
-                tips:`${result.tips}`
-            },()=>{
-                if(result.value>1){
-                    cost({
-                        value:this.state.value
-                    })
-                }
-            })
+            if(result.value>1){
+                callback({
+                    value:this.state.value,
+                    tips:`${result.tips}`
+                })
+            }else{
+                callback({
+                    value:'0',
+                    tips:`${result.tips}`
+                })
+            }
         });
     }
     checkMoney(value){
@@ -51,35 +52,38 @@ export default class StepperInput extends Component{
         };
     }
     add() {
-        const {cost} = this.props.config;
+        const {callback} = this.props.config;
         let step=this.props.config.step;
         let result=this.checkMoney(parseInt(this.state.value)+step);
         if(result.value>1 ){
             (result.value==3)?step=0:step=step;
             this.setState({
                 value: (parseInt(this.state.value) + step),
-                tips:result.tips
+                //tips:result.tips
             },()=>{
-                cost({
-                    value:this.state.value
+                callback({
+                    value:this.state.value,
+                    tips:`${result.tips}`
                 });
             });
         }
     }
     minus(){
-        const {cost} = this.props.config;
+        const {callback} = this.props.config;
         let step=this.props.config.step;
         let result=this.checkMoney(parseInt(this.state.value)-step);
         if(result.value>1 ){
             (result.value==2)?step=0:step=step;
             this.setState({
                 value: (parseInt(this.state.value) - step),
-                tips:result.tips
+                //tips:result.tips
             },()=>{
-                cost({
-                    value:this.state.value
+                callback({
+                    value:this.state.value,
+                    tips:`${result.tips}`
                 });
             });
+
         }
     }
     cutClick(){
@@ -93,12 +97,6 @@ export default class StepperInput extends Component{
                     <input type="text"  value={this.state.value} ref="amount" maxLength={9} onClick={this.cutClick} onChange={this.handleChange}   />
                     <button className="btn_add" onClick={this.add}>+</button>
                     <span className="unit">元</span>
-                </div>
-                <div className="tips__area">
-                    {this.state.tips!=''?
-                        <span className="tips">{this.state.tips}</span>
-                        :''
-                    }
                 </div>
             </div>
         );

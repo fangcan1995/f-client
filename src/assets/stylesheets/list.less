@@ -9,13 +9,155 @@
 @import './tablelistStyle';
 
 .main {
-	.tablist {
-		margin-top: 20px;
-		.filter {
-			margin-bottom: 20px;
-		}
-		.table__wrapper {
-			background-color: @color-default;
-		}
-	}
+  .tablist{
+    margin-top: 20px;
+    .tabs__nav {
+      .clearfix();
+      .tab {
+        position: relative;
+        float: left;
+        width:160px;
+        height: 60px;
+        line-height: 60px;
+        font-size: 18px;
+        color: @text-color-help;
+        text-align: center;
+        background-color: #f7f9fa;
+        margin-right: 1px;
+        margin-bottom: 1px;
+        list-style: none;
+        cursor:pointer;
+        &:before {
+          position: absolute;
+          top: 0;
+          width: 100%;
+          height: 0;
+          border-top: 2px solid @color-primary
+        }
+        &:last-child {
+          margin-right: 0;
+          text-align: center;
+          &:before {
+            width: 100%;
+          }
+        }
+        &.tab--active {
+          margin-bottom: 0;
+          padding-bottom: 1px;
+          color: @text-color-default;
+          &:before {
+            content: '';
+            display: block;
+          }
+        }
+      }
+    }
+  }
+  .table__wrapper {
+    background-color: @color-default;
+    .tableList{
+      .order {
+        cursor:default;
+        i{
+          display:inline-block;
+          width:20px;
+          height:20px;
+          background:url(../images/invest/order.png) 5px 7px no-repeat;
+        }
+        &.asc{
+          i{
+            background:url(../images/invest/order_top.png) 5px 7px no-repeat;
+          }
+        }
+        &.desc{
+          i{
+            background:url(../images/invest/order_bottom.png) 5px 7px no-repeat;
+          }
+        }
+      }
+      .progressbar {
+        width:120px;
+        margin: 0;
+        padding: 0px;
+        border: none;
+        dt {
+          display: inline-block;
+          float: left;
+          width: 60px;
+          height: 2px;
+          background: #e5e5e5;
+          position: relative;
+          float: left;
+          margin: 5px 0 0 0;
+          .finished {
+            height: 2px;
+            background: #32a9f2;
+            border-radius: 10px;
+            position: absolute;
+            left: 0;
+            top: 0;
+          }
+        }
+        dd{
+          display:inline-block;
+          width:40px;
+          float: right;
+          height:14px;
+          line-height: 14px;
+          font-size: 14px;
+          margin: 0;
+          padding: 0;
+          strong {
+            text-align: center;
+            color: #45484c;
+
+          }
+        }
+      }
+      .rtxt{
+        text-align:right;
+        padding:0 20px 0 0;
+      }
+      td{
+        p{
+          max-width:220px;
+          padding:0 5px 0 20px;
+          text-align: left;
+          a{
+            color:#3793df;
+            text-align: left;
+            &:before {
+              content: "\e611";
+              padding-right:15px;
+              font-family: "iconfont";
+              color:#72c59e;
+              font-size:20px;
+            }
+          }
+          .te();
+        }
+        .redTxt {
+          color: #ff6666;
+        }
+        .btn{
+          display: inline-block;
+          width: 100px;
+          height: 36px;
+          line-height: 36px;
+          border-radius: 3px;
+          background: @color-page-btn-active;
+          text-align: center;
+          color: #fff;
+          font-size: 14px;
+          margin-right:10px;
+          &.end{
+            background: #b8c4cc;
+          }
+        }
+      }
+    }
+  }
+
+
 }
+
