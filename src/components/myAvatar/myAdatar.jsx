@@ -3,6 +3,9 @@ import { Upload, Icon, message,Avatar } from 'antd';
 import './myAdatar.less';
 
 export default class MyAvatar extends React.Component {
+    constructor(props) {
+        super(props);
+    }
     state = {
         loading: false,
     };
@@ -12,15 +15,15 @@ export default class MyAvatar extends React.Component {
         reader.readAsDataURL(img);
     }
     beforeUpload(file) {
-        const isJPG = file.type === 'image/jpeg'||'image/png'||'image/jpg';
-        if (!isJPG) {
+        const isImg = file.type === 'image/jpeg'||'image/png'||'image/jpg';
+        if (!isImg) {
             message.error('不支持您上次的文件格式!');
         }
         const isLt1M = file.size / 1024 / 1024 < 1;
         if (!isLt1M) {
-            message.error('图片大小不能超出1M!');
+            message.error('图片大小必须小于1M!');
         }
-        return isJPG && isLt1M;
+        return isImg && isLt1M;
     }
     handleChange = (info) => {
         if (info.file.status === 'uploading') {
@@ -42,7 +45,11 @@ export default class MyAvatar extends React.Component {
         }
     }
     render() {
-        const props = {
+       let disableChange=this.props.disableChange || false; //是否可以替换
+        /*if(this.props.disableChange){
+            disableChange=true;
+        }*/
+        /*const props = {
             name:"avatar",
             action: '//jsonplaceholder.typicode.com/posts/',
             headers: {
@@ -62,13 +69,13 @@ export default class MyAvatar extends React.Component {
                     message.error('图片大小不能超出1M!');
                 }
                 return isJPG && isLt1M;
-                /*return new Promise((resolve) => {
+                /!*return new Promise((resolve) => {
                     console.log('start check');
                     setTimeout(() => {
                         console.log('check finshed');
                         resolve(file);
                     }, 3000);
-                });*/
+                });*!/
             },
             onChange(info) {
                 if (info.file.status !== 'uploading') {
@@ -87,7 +94,7 @@ export default class MyAvatar extends React.Component {
 
                 }
             },
-        };
+        };*/
         const uploadButton = (
             <Avatar size="large" className="memberPhoto" src={require('../../assets/images/account/picture.png')} />
         );
@@ -101,6 +108,7 @@ export default class MyAvatar extends React.Component {
                 action="//jsonplaceholder.typicode.com/posts/"
                 beforeUpload={this.beforeUpload}
                 onChange={this.handleChange}
+                disabled={disableChange}
 
             >
                 {imageUrl ? <Avatar size="large" className="memberPhoto" src={imageUrl} /> : uploadButton}

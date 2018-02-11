@@ -3,7 +3,7 @@ import { Route, Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import './member-sidebar.less';
-
+import MyAdatar from '../myAvatar/myAdatar'
 
 const ListItemLink = ({ to, ...rest }) => (
   <Route path={to} children={({ match }) => (
@@ -21,9 +21,10 @@ export default ({ location, match, history, ...props }) => {
             <div className="member__sidebar">
                 <div className="menu">
                     <div className="sideMenu__memberInfo">
-                        <figure className="memberPhoto">
+                        {/*<figure className="memberPhoto">
                             <img src={require('../../assets/images/account/picture.png')} id="tx" />
-                        </figure>
+                        </figure>*/}
+                        <MyAdatar  />
                         <div className="memberId">tongxin</div>
                         <div className="memberStep">
                             <i className="iconfont icon-phone able"></i>
