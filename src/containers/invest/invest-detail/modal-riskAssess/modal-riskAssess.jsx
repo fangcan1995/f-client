@@ -21,26 +21,26 @@ export default class ModalRiskAssess extends React.Component {
         }
     }
     onChange = (e) => {
+        let newAnswer=this.state.answers;
+        newAnswer[e.target.name]=e.target.value;
         this.setState({
-            answers:{
-                [e.target.name]:e.target.value,
-            }
-
+            answers:newAnswer
         },()=>{
-            console.log(this.state);
         });
     }
-
-
     handleSubmit(e){
         //1 验证输入是否正确
-        console.log(this.state.dataSetting.list.length);
 
-        for (let index = 0; index < this.state.dataSetting.list.length; index++) {
-            //console.log(myArray[index]);
-            console.log(this.state);
+        /*for (let index = 0; index < this.state.dataSetting.list.length; index++) {
             if(!this.state[`question-${index+1}`]){
 
+                return false;
+            }
+        }*/
+        for(var key in this.state.answers){
+            /*keys.push(key);
+            values.push(obj[key]);//取得value*/
+            if(this.state.answers[key]==0){
                 return false;
             }
         }
@@ -130,9 +130,9 @@ export default class ModalRiskAssess extends React.Component {
             this.setState({
                 dataSetting:mockDate.data,
                 answers:{
-                    5:0,
-                    6:0,
-                    9:0
+                    '5':0,
+                    '6':0,
+                    '9':0
                 }
             });
         }
@@ -172,7 +172,7 @@ export default class ModalRiskAssess extends React.Component {
                                 <dl className="controls" key={`row-${rowIndex}`}>
                                     <dt><p>{rowIndex+1} .{item.title}</p>
                                         {
-                                            (this.state.answers[`${item.id}`]!=0)? <span className="errorMessages">*</span>:''}
+                                            (this.state.answers[`${item.id}`]==0)? <span className="errorMessages">*</span>:''}
                                     </dt>
                                     <dd>
                                         <RadioGroup onChange={this.onChange} value={this.state.answers[`${item.id}`]} name={`${item.id}`}>
@@ -193,7 +193,7 @@ export default class ModalRiskAssess extends React.Component {
                             </div>
                             {
                                 (this.state.alertInfo.show)?
-                                    <div className="form__wrapper">
+                                    <div className="form__wrapper" style={{padding:`50px 50px`}}>
                                         <Alert
                                             message={this.state.alertInfo.message}
                                             description={this.state.alertInfo.description}
