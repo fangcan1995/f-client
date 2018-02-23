@@ -187,7 +187,7 @@ export default class Receiving extends React.Component{
                         </div>
                     </Tab>
                 </div>
-                <div className="member__cbox">
+                <div className="member__cbox" style={{ padding:'20px 30px' }}>
 
                     {
                         JSON.stringify(this.state.dataSetting) == "{}"? <div>连接错误,请稍后再试</div>

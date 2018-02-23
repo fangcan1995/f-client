@@ -220,7 +220,7 @@ export default class MyLoans extends React.Component{
                         </div>
                     </Tab>
                 </div>
-                <div className="member__cbox">
+                <div className="member__cbox" style={{ padding:'20px 30px' }}>
                     <div className="filter">
                         <div className="filter__outer">
                             <div className="filter__inner">

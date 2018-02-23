@@ -14,26 +14,25 @@ export default ({ location, match, history }) => {
                         <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先
                             <a href="javascript:void(0);" className="btn_bindCard">绑定银行卡！</a>
                         </p>
-                        <form id="frm">
-                            <dl className="form_bar">
+                        <div className="form__wrapper">
+                            <dl className="form__bar">
                                 <dt><label>可用余额:</label></dt>
-                                <dd><p><i>1,000.00</i>元</p></dd>
+                                <dd><i>1,000.00</i>元</dd>
                             </dl>
-                            <dl className="form_bar">
+                            <dl className="form__bar">
                                 <dt><label>充值金额:</label></dt>
-                                <dd><input name="transAmt" id="transAmt" maxLength={20}  placeholder="最低充值金额10元"   type="text" className="textInput w300" />
+                                <dd><input name="transAmt" id="transAmt" maxLength={20}  placeholder="最低充值金额10元"   type="text" className="textInput moneyInput" />
                                     <span className="unit">元</span>
                                     <span className="tips error"></span>
                                 </dd>
                             </dl>
-                            <div className="form_bar">
-                                <p>充值后可用余额 <i id="money"></i>元</p>
+                            <div className="form__bar">
+                                <p>充值后可用余额: <i id="money">1,000.00</i>元</p>
                             </div>
-                            <dl className="form_bar">
-                                <dt><label>&nbsp;</label></dt>
-                                <dd><button  className="btn">确定</button></dd>
-                            </dl>
-                        </form>
+                            <div className="form__bar center">
+                                <button  className="button able">确定</button>
+                            </div>
+                        </div>
                     </div>
                 </Tab>
             </div>

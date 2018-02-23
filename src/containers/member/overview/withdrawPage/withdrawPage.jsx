@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
+import CountDownButton from '../../../../components/countDownButton/countDownButton';
 import './withdrawPage.less';
 
 export default ({ location, match, history }) => {
@@ -14,12 +15,12 @@ export default ({ location, match, history }) => {
                         <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先
                             <a href="javascript:void(0);" className="btn_bindCard">绑定银行卡！</a>
                         </p>
-                        <form id="frm">
-                            <dl className="form_bar">
+                        <div className="form__wrapper">
+                            <dl className="form__bar">
                                 <dt><label>可用余额</label></dt>
                                 <dd><p><i>1,000.00</i>元</p></dd>
                             </dl>
-                            <dl className="form_bar">
+                            <dl className="form__bar">
                                 <dt><label>提现金额</label></dt>
                                 <dd>
                                     <input name="transAmt" id="transAmt"  placeholder="请输入提现金额" maxLength={20} type="text" className="textInput w300" />
@@ -27,7 +28,7 @@ export default ({ location, match, history }) => {
                                     <span className="tips error"></span>
                                 </dd>
                             </dl>
-                            <dl className="form_bar">
+                            <dl className="form__bar">
                                 <dt><label>交易密码</label></dt>
                                 <dd>
                                     <input name="password" id="password"  placeholder="请输入交易密码" maxLength={20}  type="password" className="textInput w300" />
@@ -35,30 +36,33 @@ export default ({ location, match, history }) => {
                                 </dd>
                             </dl>
 
-                            <dl className="form_bar">
+                            <dl className="form__bar">
                                 <dt><label>验证码</label></dt>
                                 <dd>
                                     <input name="vCode" id="vCode"  type="text" className="textInput w170" placeholder="请输入验证码" maxLength={8} style={{float:`left`,marginRight:`20px`}} />
-                                    <div id="get_phone_code" className="yz_button_able vCode" style={{float:`left`}}>获取验证码</div>
-                                    <input type="hidden" id="uphone" value="13945441111" />
+                                    {/*<div id="get_phone_code" className="yz_button_able vCode" style={{float:`left`}}>获取验证码</div>*/}
+                                    <CountDownButton
+                                        phoneNumber="13945441111"
+                                        disabled={false}
+                                        interval={5}
+                                    />
                                     <span className="tips error phone_code"></span>
                                 </dd>
                             </dl>
-                            <dl className="form_bar">
+                            <dl className="form__bar">
                                 <dt><label>手续费</label></dt>
                                 <dd><p> <i id="money">0.00</i> 元</p></dd>
                             </dl>
-                            <dl className="form_bar">
+                            <dl className="form__bar">
                                 <dt><label>实际到账</label></dt>
                                 <dd><p><i id="money">0.00</i> 元</p>
                                 </dd>
 
                             </dl>
-                            <dl className="form_bar">
-                                <dt><label>&nbsp;</label></dt>
-                                <dd><button  className="btn">立即提现</button></dd>
-                            </dl>
-                        </form>
+                            <div className="form__bar">
+                                <button  className="button able">立即提现</button>
+                            </div>
+                        </div>
                     </div>
                 </Tab>
             </div>

@@ -143,23 +143,23 @@ export default class ModalTransfer extends React.Component {
         return (
             <div className="pop__transfer">
                 <div className="form__wrapper">
-                    <dl className="form_bar">
+                    <dl className="form__bar">
                         <dt><label>实际投资金额:</label></dt>
                         <dd><i id="Accountbalance" className="money">{this.state.transferInfo.transFinanced}</i> 元</dd>
                     </dl>
-                    <dl className="form_bar">
+                    <dl className="form__bar">
                         <dt><label>转让金额:</label></dt>
                         <dd>
                             <input type="text" name="amount"  className="textInput moneyInput"  autoComplete="off" maxLength="13" onChange={this.handleChange} />
                             <span className="unit" >元</span>
                         </dd>
                     </dl>
-                    <dl className="form_bar short">
+                    <dl className="form__bar short">
                         <dt><label>手续费：</label></dt>
                         <dd><i id="cost" className="money">{addCommas(poundage(this.state.value,this.state.transferInfo.proTransferFee))}</i> 元
                         </dd>
                     </dl>
-                    <dl className="form_bar short">
+                    <dl className="form__bar short">
                         <dt><label>预期到账金额：</label></dt>
                         <dd><i id="money" className="money">
                             {this.state.value!=0?
@@ -169,18 +169,18 @@ export default class ModalTransfer extends React.Component {
                             </i>元
                         </dd>
                     </dl>
-                    <div className="ps">
+                    <div className="form__bar">
                         <p>
                             <Checkbox onChange={this.onChange}>我已阅读并同意<a href="/transfer.html" target="_blank">《巴巴汇债权转让服务协议》</a></Checkbox>
                         </p>
                     </div>
-                    <div className="tips__area">
-                            <span className="tips error">
+                    <div className="form__bar">
+                            <span className="errorMessages">
                                 {this.state.tips}
                             </span>
                     </div>
-                    <div className="form_bar">
-                        <button  className="btn"　onClick={this.handleSubmit}>确认</button>
+                    <div className="form__bar">
+                        <button  className="button able"　onClick={this.handleSubmit}>确认</button>
                     </div>
                 </div>
             </div>

@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './invest-detail.less';
 import Tab from '../../../components/tab/tab';
-import InvestDetailMaster from './master/master'
+import InvestDetailMaster from './master/master';
 import BorrowerInfo from './borrowerInfo/borrowerInfo';
 import InvestRecords from './investRecords/investRecords';
 import RepayRecords from './repayRecords/repayRecords'
-
+import './invest-detail.less';
 
 export default class InvestDetail extends React.Component{
     constructor(props) {
@@ -16,9 +15,9 @@ export default class InvestDetail extends React.Component{
     render(){
         return (
             <main className="main sbDetail">
-                <InvestDetailMaster>
-                </InvestDetailMaster>
                 <div className="wrapper">
+                    <InvestDetailMaster>
+                    </InvestDetailMaster>
                     <div className="tab_info">
                         <Tab>
                             <div name="项目信息">

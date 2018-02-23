@@ -43,56 +43,56 @@ export default class ModalRepayment extends React.Component {
         return (
             <div className="pop__repayment">
                 <div className="form__wrapper">
-                    <dl className="form_bar">
+                    <dl className="form__bar">
                         <dt><label>项目名称：</label></dt>
                         <dd>汇车贷-HCD201704170002</dd>
                     </dl>
-                    <dl className="form_bar">
+                    <dl className="form__bar">
                         <dt><label>还款期数：</label></dt>
                         <dd>3 期</dd>
                     </dl>
-                    <dl className="form_bar">
+                    <dl className="form__bar">
                         <dt><label>应还日期：</label></dt>
                         <dd>2018-01-08</dd>
                     </dl>
-                    <dl className="form_bar">
+                    <dl className="form__bar">
                         <dt><label>应还本金：</label></dt>
                         <dd><p>0.00元</p></dd>
                     </dl>
-                    <dl className="form_bar">
+                    <dl className="form__bar">
                         <dt><label>应还利息：</label></dt>
                         <dd>1000.00 元</dd>
                     </dl>
-                    <dl className="form_bar">
+                    <dl className="form__bar">
                         <dt><label>应还罚息：</label></dt>
                         <dd>10.00 元</dd>
                     </dl>
-                    <dl className="form_bar">
+                    <dl className="form__bar">
                         <dt><label>应还罚金：</label></dt>
                         <dd>0.00 元</dd>
                     </dl>
-                    <dl className="form_bar">
+                    <dl className="form__bar">
                         <dt><label>还款总额：</label></dt>
                         <dd>1010.00 元</dd>
                     </dl>
-                    <dl className="form_bar">
+                    <dl className="form__bar">
                         <dt><label>交易密码: </label></dt>
                         <dd><input type="password" name="traderPassword" id="traderPassword" className="textInput"  autoComplete="off" maxLength="20" /></dd>
                     </dl>
-                    <dl className="form_bar" >
+                    <dl className="form__bar" >
                         <dt><label>验证码: </label></dt>
                         <dd>
                             <input type="text" name="imgcode" id="imgcode" className="textInput"  autoComplete="off" maxLength="6" />
                             <img src="/images/account/pt1.png" data-url="/user/captcha" id="img-code" title="看不清？点击图片更换验证码" className="vCode" />
                         </dd>
                     </dl>
-                    <div className="tips__area">
-                            <span className="tips error">
+                    <div className="form__bar">
+                            <span className="errorMessages">
                                 {this.state.tips}
                             </span>
                     </div>
-                    <div className="form_bar">
-                        <button  className="btn">确认</button>
+                    <div className="form__bar">
+                        <button  className="button able">1确认</button>
                     </div>
                 </div>
             </div>

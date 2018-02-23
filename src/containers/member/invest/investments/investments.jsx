@@ -224,7 +224,7 @@ export default class Investments extends React.Component{
                         </div>
                     </Tab>
                 </form>
-                <div className="member__cbox">
+                <div className="member__cbox"  style={{ padding:'20px 30px' }}>
                     <div className="filter">
                         <div className="filter__outer">
                             <div className="filter__inner">
