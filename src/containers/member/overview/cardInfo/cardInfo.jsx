@@ -20,12 +20,19 @@ export default ({ location, match, history }) => {
                             </div>
                         </div>
                         <div className="editCard">
-                            <div className="card">
-                                <p><strong>用户名</strong>佟鑫</p>
-                                <p><strong>银行账号</strong>6217000780022472881</p>
-                                <p><strong>开户支行</strong>中国建设银行大连香周路分理处</p>
+                            <div className="form__wrapper">
+                                <div className="card">
+                                    <p><strong>用户名</strong>佟鑫</p>
+                                    <p><strong>银行账号</strong>6217000780022472881</p>
+                                    <p><strong>开户支行</strong>中国建设银行大连香周路分理处</p>
+                                </div>
+                                <div className="form__bar center">
+                                    <button className="button able">更换银行卡</button>
+                                </div>
                             </div>
-                            <a href="javascript:void(0);" className="btn_edit">更换银行卡</a>
+
+
+
                         </div>
                     </div>
                 </Tab>

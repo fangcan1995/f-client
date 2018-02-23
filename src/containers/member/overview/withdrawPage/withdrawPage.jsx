@@ -23,7 +23,7 @@ export default ({ location, match, history }) => {
                             <dl className="form__bar">
                                 <dt><label>提现金额</label></dt>
                                 <dd>
-                                    <input name="transAmt" id="transAmt"  placeholder="请输入提现金额" maxLength={20} type="text" className="textInput w300" />
+                                    <input name="transAmt" id="transAmt"   maxLength={20} type="text" className="textInput moneyInput" />
                                     <i className="unit">元</i>
                                     <span className="tips error"></span>
                                 </dd>
@@ -31,7 +31,7 @@ export default ({ location, match, history }) => {
                             <dl className="form__bar">
                                 <dt><label>交易密码</label></dt>
                                 <dd>
-                                    <input name="password" id="password"  placeholder="请输入交易密码" maxLength={20}  type="password" className="textInput w300" />
+                                    <input name="password" id="password"   maxLength={20}  type="password" className="textInput" />
                                     <span className="tips error"></span>
                                 </dd>
                             </dl>
@@ -39,12 +39,12 @@ export default ({ location, match, history }) => {
                             <dl className="form__bar">
                                 <dt><label>验证码</label></dt>
                                 <dd>
-                                    <input name="vCode" id="vCode"  type="text" className="textInput w170" placeholder="请输入验证码" maxLength={8} style={{float:`left`,marginRight:`20px`}} />
-                                    {/*<div id="get_phone_code" className="yz_button_able vCode" style={{float:`left`}}>获取验证码</div>*/}
+                                    <input name="vCode" id="vCode"  type="text" className="textInput"  maxLength={8} style={{width:`175px`,marginRight:`10px`}} />
                                     <CountDownButton
                                         phoneNumber="13945441111"
                                         disabled={false}
-                                        interval={5}
+                                        interval={20}
+
                                     />
                                     <span className="tips error phone_code"></span>
                                 </dd>
