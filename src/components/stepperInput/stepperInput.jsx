@@ -16,15 +16,17 @@ export default class StepperInput extends Component{
         const {min,max,callback} = this.props.config;
         this.setState({value: event.target.value}, () =>{
             let result=this.checkMoney(this.state.value);
-            if(result.value>1){
+           if(result.code>1){
                 callback({
+                    code:result.code,
                     value:this.state.value,
-                    tips:`${result.tips}`
+                    tips:`${result.tips}`,
                 })
             }else{
                 callback({
+                    code:result.code,
                     value:'0',
-                    tips:`${result.tips}`
+                    tips:`${result.tips}`,
                 })
             }
         });
@@ -32,38 +34,42 @@ export default class StepperInput extends Component{
     checkMoney(value){
         const {min,max,step} = this.props.config;
         if(value.length<=0){
-            return {value:0,tips:'请输入投资金额'};
+            return {code:0,tips:'请输入投资金额'};
         }else {
             let reg=/^\+?[1-9][0-9]*$/;
             if(reg.test(value)){
                 if(value<min){
-                    return {value:2,tips: `最低可投${min}元`};
+                    return {code:2,tips: `最低可投${min}元`};
                 }else if(value>max){
-                    return {value:3,tips: `最高可投${max}元`};
+                    return {code:3,tips: `最高可投${max}元`};
                 }else{
                     if(value%step!=0){
-                        return {value:4,tips: `必须是${step}的倍数`};
+                        return {code:4,tips: `必须是${step}的倍数`};
                     }
-                    return {value:100,tips: ``};
+                    return {code:100,tips: ``};
                 }
             }else{
-                return {value:1,tips: `金额格式不正确`};
+                return {code:1,tips: `金额格式不正确`};
             };
         };
     }
     add() {
         const {callback} = this.props.config;
         let step=this.props.config.step;
-        let result=this.checkMoney(parseInt(this.state.value)+step);
-        if(result.value>1 ){
-            (result.value==3)?step=0:step=step;
+        let result=this.checkMoney(parseInt(this.state.value)+step);  //验证增加后是否合法
+        if(result.code>1 ){
+            (result.code==3)?step=0:step=step;
             this.setState({
+                code:result.code,
                 value: (parseInt(this.state.value) + step),
                 //tips:result.tips
             },()=>{
+                let code=this.checkMoney(parseInt(this.state.value)).code;
                 callback({
+                    code:code,
                     value:this.state.value,
-                    tips:`${result.tips}`
+                    tips:`${result.tips}`,
+
                 });
             });
         }
@@ -72,13 +78,16 @@ export default class StepperInput extends Component{
         const {callback} = this.props.config;
         let step=this.props.config.step;
         let result=this.checkMoney(parseInt(this.state.value)-step);
-        if(result.value>1 ){
-            (result.value==2)?step=0:step=step;
+        if(result.code>1 ){
+            (result.code==2)?step=0:step=step;
             this.setState({
+                code:result.code,
                 value: (parseInt(this.state.value) - step),
                 //tips:result.tips
             },()=>{
+                let code=this.checkMoney(parseInt(this.state.value)).code;
                 callback({
+                    code:code,
                     value:this.state.value,
                     tips:`${result.tips}`
                 });
@@ -86,6 +95,7 @@ export default class StepperInput extends Component{
 
         }
     }
+    //获取焦点即全部选中
     cutClick(){
         this.refs.amount.select();
     };

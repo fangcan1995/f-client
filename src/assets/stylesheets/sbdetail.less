@@ -3,12 +3,29 @@
 @import './top';
 @import './footer';
 @import './navbar';
-
-
+.button(){
+  width: 100%;
+  height: 48px;
+  line-height: 48px;
+  font-size: 18px;
+  border: none;
+  padding: 0;
+  outline: none;
+  color: #fff;
+  border-radius: @btn-radius;
+  &.able{
+    background: #31aaf5;
+    &:hover{
+      background: #65c0f8;
+    }
+  }
+  &.enable{
+    background: #b9c3cd;
+  }
+}
 .sbDetail{
   .tablist{
     .tabs__nav {
-      .clearfix();
       .tab {
         position: relative;
         float: left;
@@ -47,18 +64,21 @@
           }
         }
       }
+      .clearfix();
     }
   }
   //总览
   .master{
-    width: 1178px;
+/*    box-sizing: border-box;
+    width: @content-width;*/
     background: #fff;
     margin: 20px auto;
-    border: 1px solid #e6eaf0;
+    border: 1px solid @color-border;
     .info {
-      width: 799px;
+      box-sizing: border-box;
+      width: 800px;
       height: 380px;
-      border-right: 1px solid #e6eaf0;
+      border-right: 1px solid @color-border;
       float: left;
       .title {
         height: 66px;
@@ -79,7 +99,7 @@
         height: 380px;
         float: right;
         font-size: 16px;
-        color: #81868f
+        color: @text-color-help
       }
     }
     .content {
@@ -123,7 +143,7 @@
         height: 30px;
         line-height: 30px;
         float: left;
-        color: #81868f;
+        color: @text-color-help;
         font-size: 14px;
         padding: 0 60px 0 0px;
         background: url(../images/invest/safe_bg.png) left top no-repeat;
@@ -195,7 +215,7 @@
       }
       .subtitle {
         font-size: 14px;
-        color: #81868f;
+        color: @text-color-help;
         position: absolute;
         top: 90px;
         left: 0;
@@ -244,7 +264,11 @@
       height: 320px;
       float: right;
       padding: 25px 35px 0 0;
-      .btn {width: 100%;
+      .button{
+        .button();
+      }
+      .btn {
+        width: 100%;
         height: 48px;
         line-height: 48px;
         background: #31aaf5;
@@ -270,7 +294,7 @@
       }
       .m-amount li strong {
         font-size: 14px;
-        color: #81868f
+        color: @text-color-help
       }
 
       .tips__area{
@@ -295,11 +319,11 @@
           text-align: right
         }
         strong {
-          color: #81868f
+          color: @text-color-help
         }
         .iconfont {
           font-size: 15px;
-          color: #81868f
+          color: @text-color-help
         }
         #money {
           color: #2aa4ea;
@@ -316,11 +340,11 @@
     .clearfix();
   }
   .steps {
-    width: 1178px;
-    height: 90px;
+    box-sizing: border-box;
+    height: 125px;
     margin: 20px auto;
     padding:35px 0 0 0;
-    border: 1px solid #e6eaf0;
+    border: 1px solid @color-border;
     background: #fff;
     li {
       width: 25%;
@@ -328,7 +352,7 @@
       float: left;
       text-align: center;
       line-height: 22px;
-      color: #81868f;
+      color: @text-color-help;
       i {
         display:inline-block;
         float:left;
@@ -379,7 +403,7 @@
   }
   .tab_info {
     background: #fff;
-    border-bottom: 1px solid #e6eaf0;
+    border-bottom: 1px solid @color-border;
     margin-bottom: 60px;
     .tabs__nav{
       background: #f7f9fa;
@@ -391,7 +415,7 @@
       height: 70px;
       line-height: 70px;
       background: #f7f9fa;
-      border-bottom: 1px solid #e6eaf0;
+      border-bottom: 1px solid @color-border;
       li {
         width: 175px;
         height: 70px;
@@ -407,17 +431,17 @@
           height: 71px;
           background: #fff;
           color: #45484c;
-          border-left: 1px solid #e6eaf0;
+          border-left: 1px solid @color-border;
           h3 {
             border-top: 2px solid #31aaf5;
-            border-right: 1px solid #e6eaf0 ;
+            border-right: 1px solid @color-border ;
           }
         }
       }
     }*/
     .tab_info_c {
-      border-right: 1px solid #e6eaf0;
-      border-left: 1px solid #e6eaf0;
+      border-right: 1px solid @color-border;
+      border-left: 1px solid @color-border;
       min-height: 910px;
       position: relative;
       padding: 0 0px ;
@@ -427,17 +451,19 @@
   //项目详情
   .m-intro{
     clear: both;
-    dl{ margin:0 40px}
+    dl{
+      margin:0 40px
+    }
     .intro0 {
       padding: 30px 0 20px 0;
-      border-bottom: 1px dashed #e6eaf0;
+      border-bottom: 1px dashed @color-border;
       margin-bottom: 30px;
       dt {
         width: 190px;
         height: 70px;
         float: left;
         line-height: 70px;
-        color: #81868f;
+        color: @text-color-help;
         font-size: 16px;
         position: relative;
         img {
@@ -456,19 +482,19 @@
         height: 16px;
         padding: 30px 0 0px 0;
         h3 {
-          border-left: 3px solid #31aaf5;
+          border-left: 3px solid @color-primary;
           font-size: 16px;
           line-height: 16px;
-          color: #45484d;
+          color: @text-color-default;
           text-indent: 20px
         }
       }
       dd {
         padding: 10px 0 20px 0;
-        border-bottom: 1px dashed #e6eaf0;
+        border-bottom: 1px dashed @color-border;
         font-size: 14px;
         strong {
-          color: #81868f;
+          color: @text-color-help;
           padding-right: 10px;
         }
         p {
@@ -527,7 +553,7 @@
   //风险提示
   .m-notice {
     padding: 40px 40px;
-    color: #81868f;
+    color: @text-color-help;
     line-height: 26px;
     h3 {
       font-size: 16px;
@@ -536,7 +562,7 @@
     p {
       line-height: 26px;
       margin-bottom: 10px;
-      font-size: 14px
+      font-size: 14px;
     }
   }
   //投资记录/还款记录
