@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
 import auth from './auth';
-
+import riskAssess from './riskAssess'; //风险测评
 import reducersGenerate from './reducersGenerate';
 
 import {
@@ -15,7 +15,8 @@ const users = reducersGenerate(USER, initialState.users);
 const rootReducer = combineReducers({
   routing: routerReducer,
   auth,
-  users
+  users,
+    riskAssess, //风险测评
 });
 
 export default rootReducer;
