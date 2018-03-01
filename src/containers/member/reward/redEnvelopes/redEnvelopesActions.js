@@ -1,7 +1,5 @@
 import cFetch from './../../../../utils/cFetch';
 import cookie from 'js-cookie';
-const prefix = 'apple/';
-
 let actions = {
     //注意这里需要 () => ... , 不然 pickAppleAction 不是一个actionCreator, 而是一个thunk
     getData: (pageNum=1,pageSize=10,filter={}) => (dispatch, myRedEnvelopes) => {
@@ -12,8 +10,6 @@ let actions = {
             }
         }
         let url = `http://172.16.1.221:9090/members/memberRedEnvelopes?access_token=1ce9477f-f3c7-4885-90e3-5da81d368f13&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`
-        console.log('获取地址');
-        console.log(url);
         fetch(url)
             .then(response => response.json())
             .then(json => {
