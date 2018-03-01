@@ -31,22 +31,23 @@ export default function riskAssess(state=initialState.riskAssess, action) {
 
             /** 将isPicking设置true */
             console.log('开始');
-            return fromJS(state).set('isPicking', true).toJS();
+            return fromJS(state).set('loaded', true).toJS();
 
         case 'apple/DONE_PICK_APPLE':
-            console.log('开始');
+            /*console.log('开始');
             let newApple =  {
                 id: state.newAppleId,
                 weight: action.payload,
                 isEaten: false
             };
 
-            /** 在apples中新增一个newApple， 将newAppleId增加1， 将isPicking设为false*/
+            /!** 在apples中新增一个newApple， 将newAppleId增加1， 将isPicking设为false*!/
             return fromJS(state).update('apples', list => list.push(newApple))
                 .set('newAppleId', state.newAppleId + 1)
                 .set('isPicking', false)
-                .toJS();
-
+                .toJS();*/
+            console.log('');
+            return state;
         case 'apple/FAIL_PICK_APPLE':
 
             /** 将isPicking设置false */
