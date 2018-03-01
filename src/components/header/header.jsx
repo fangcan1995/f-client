@@ -21,7 +21,7 @@ class Header extends Component {
                 auth.isAuthenticated ?
                 <div className="user">
                   <Link className="welcome" to="/my-account">你好！&nbsp;<span className="username">{ auth.user.loginName }</span></Link>
-                  <a href="" className="logout" onClick={ this.handleLogoutBtnClick }>退出</a>
+                  <a className="logout" onClick={ this.handleLogoutBtnClick }>退出</a>
                 </div>
                 :
                 <div className="unlogin">

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, IndexRoute, Switch, Redirect } from 'react-router-dom';
+import { connectedRouterRedirect } from 'redux-auth-wrapper/history4/redirect';
 
 import App from './components/app/app';
 import MemberSidebar from './components/member-sidebar/member-sidebar';
@@ -26,13 +27,28 @@ import About from './components/about/aboutus-common';
 import Team from './containers/about/team/team';
 import Partners from './containers/about/partners/partners';
 import ArticleList from './containers/about/list/list';
+
+
+const userIsAuthenticated = connectedRouterRedirect({
+   // The url to redirect user to if they fail
+  redirectPath: '/login',
+   // If selector is true, wrapper will not redirect
+   // For example let's check that state contains user data
+  authenticatedSelector: state => state.getIn(['auth', 'isAuthenticated']),
+  // A nice display name for this check
+  wrapperDisplayName: 'UserIsAuthenticated'
+})
+
+console.log(userIsAuthenticated)
+
+
 export default (
     <App>
         <Switch>
             <Route exact path="/" component={HomePage} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
-            <Route path="/invest-list" component={InvestList} />
+            <Route path="/invest-list" component={userIsAuthenticated(InvestList)} />
             <Route path="/loan-index" component={LoanIndex} />
             <Route strict path="/my-account" render={(props) => {
                 const { match } = props;
