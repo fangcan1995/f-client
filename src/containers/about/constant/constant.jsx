@@ -1,5 +1,5 @@
 import React from 'react';
-import './constant.less'；
+import './constant.less';
 
 
 import fetch from 'isomorphic-fetch';
