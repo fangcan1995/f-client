@@ -59,6 +59,14 @@ const config = {
                 test: /\.less$/,
                 loaders: ['style-loader', 'css-loader', 'postcss-loader', 'less-loader'],
             },
+            {
+                test: /\.useable\.css$/,
+                loaders: ['style-loader/useable', 'css-loader', 'postcss-loader']
+            },
+            {
+                test: /\.useable\.less$/,
+                loaders: ['style-loader/useable', 'css-loader', 'postcss-loader', 'less-loader']
+            }
         ],
     },
     resolve: {

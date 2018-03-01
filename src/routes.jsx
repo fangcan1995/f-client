@@ -7,20 +7,25 @@ import MemberSidebar from './components/member-sidebar/member-sidebar';
 import HomePage from './containers/home-page/home-page';
 import Login from './containers/login/login';
 import Signup from './containers/signup/signup';
-import InvestIndex from './containers/invest-index/invest-index';
+
 import InvestList from './containers/invest/invest-list/invest-list';
-import LoanIndex from './containers/loan-index/loan-index';
+
+import LoanIndex from './containers/loan/loan-index/loan-index';
+
+import AccountOverview from './containers/member/account-overview/account-overview';
+import BankCard from './containers/member/bank-card/bank-card';
+import Recharge from './containers/member/recharge/recharge';
+import Withdrawals from './containers/member/withdrawals/withdrawals';
+import TransactionRecord from './containers/member/transaction-record/transaction-record';
+import MyLoan from './containers/member/my-loan/my-loan';
 
 import SuperPartner from './containers/member/reward/super-partner/super-partner';
 import PartnerList from './containers/member/reward/partner/master/master';
-import AccountOverview from './containers/account-overview/account-overview';
-import TransactionRecord from './containers/member/overview/transaction-record/transaction-record';
-import BankCard from './containers/bank-card/bank-card';
 
-import About from './components/about/aboutus-common'
-import Team from './containers/about/team/team'
-import Partners from './containers/about/partners/partners'
-import ArticleList from './containers/about/list/list'
+import About from './components/about/aboutus-common';
+import Team from './containers/about/team/team';
+import Partners from './containers/about/partners/partners';
+import ArticleList from './containers/about/list/list';
 export default (
     <App>
         <Switch>
@@ -35,16 +40,23 @@ export default (
                     <MemberSidebar {...props}>
                         <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/account-overview`} />
-                            <Route path={`${match.url}/overview/account-overview`} component={AccountOverview} />
-                            <Route path={`${match.url}/overview/cardInfo`} component={CardInfo} />
-                            <Route path={`${match.url}/overview/account-overview`} component={AccountOverview} />
-                            <Route path={`${match.url}/overview/recharge`} component={Recharge} />
-                            <Route path={`${match.url}/overview/withdrawPage`} component={WithdrawPage} />
-                            <Route path={`${match.url}/overview/transaction-record`} component={TransactionRecord} />
-                            <Route path={`${match.url}/loans/myLoans`} component={MyLoans} />
-                            <Route path={`${match.url}/settings/authInfo`} component={AuthInfo} />
-                            <Route path={`${match.url}/settings/riskAssess`} component={RiskAssess} />
-                            <Route path={`${match.url}/settings/message`} component={Message} />
+                            <Route path={`${match.url}/account-overview`} component={AccountOverview} />
+                            <Route path={`${match.url}/bank-card`} component={BankCard} />
+                            <Route path={`${match.url}/recharge`} component={Recharge} />
+                            <Route path={`${match.url}/withdrawals`} component={Withdrawals} />
+                            <Route path={`${match.url}/transaction-record`} component={TransactionRecord} />
+                            <Redirect to="/" />
+                        </Switch>
+                    </MemberSidebar>
+                )
+            }} />
+            <Route strict path="/my-loan" render={(props) => {
+                const { match } = props;
+                return (
+                    <MemberSidebar {...props}>
+                        <Switch>
+                            <Redirect exact from={`${match.url}`} to={`${match.url}/my-loan`} />
+                            <Route path={`${match.url}/my-loan`} component={MyLoan} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>
@@ -67,9 +79,21 @@ export default (
                 return(
                     <About>
                         <Switch>
+                            <Redirect exact from={`${match.url}`} to={`${match.url}/team`} />
                             <Route path={`${match.url}/team`} component={Team} />
                             <Route path={`${match.url}/partners`} component={Partners} />
-                            {/*<Route path={`${match.url}/news/mediaReport`} component={ArticleList} />*/}
+                            <Redirect to="/" />
+                        </Switch>
+                    </About>
+                )
+            }} />
+            <Route path="/news" render={(props) => {
+                const { match } = props;
+                return(
+                    <About>
+                        <Switch>
+                            <Redirect exact from={`${match.url}`} to={`${match.url}/media-report`} />
+                            <Route path={`${match.url}/media-report`} component={ArticleList} />
                             <Redirect to="/" />
                         </Switch>
                     </About>

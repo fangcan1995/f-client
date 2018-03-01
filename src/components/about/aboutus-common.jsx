@@ -1,24 +1,23 @@
 import React,{Component}from 'react';
 import { Route, Link} from 'react-router-dom';
-
 import './aboutus-common.less';
 
-
 const ListItemLink = ({ to, ...rest }) => (
-      <Route path={to} children={({ match }) => (
-        <li className={match ? 'active' : ''}>
-          <Link to={to} {...rest}/>
-        </li>
-      )}/>
+  <Route path={to} children={({ match }) => (
+    <li className={match ? 'active' : ''}>
+      <Link to={to} {...rest}/>
+    </li>
+  )}/>
 )
+
 //给当前菜单的父级菜单加active
-const TitleParent=({ title,to, ...rest })=>(
-    <Route   render={
-        (props)=>{
+const TitleParent=({ title, to, ...rest }) => (
+    <Route render={
+        (props) => {
             const { location } = props;
-            const url=location.pathname;
+            const url = location.pathname;
             return(
-                <h3 className={(url.toLowerCase().indexOf(to.toLowerCase())===0) ? 'active' : ''}>
+                <h3 className={(url.toLowerCase().indexOf(to.toLowerCase()) === 0) ? 'active' : ''}>
                     {title}
                 </h3>
             )
@@ -27,8 +26,8 @@ const TitleParent=({ title,to, ...rest })=>(
 )
 
 
-export default class About extends Component{
-    constructor(props){
+export default class About extends Component {
+    constructor(props) {
         super(props)
 
             this.key=1,
@@ -59,49 +58,50 @@ export default class About extends Component{
             <main className="main">
                 <div className="wrapper">
                     <div className="about__sidebar">
-                        <h2><a href="/about/constant">信息披露</a></h2>
+
+                        <h2><Link to="/about/constant">信息披露</Link></h2>
                         <dl key="1" onClick = { this.collapse.bind(this,1)} className = { this.state.current === 1? "showChildren":""}>
                             <dt>
-                                <TitleParent title="关于我们" to="/about/aboutus/" />
+                                <TitleParent title="关于我们" to="/about" />
                             </dt>
                             <dd>
                                 <ul>
-                                    <ListItemLink to="/about/aboutus/introduce" >公司简介</ListItemLink>
-                                    <ListItemLink to="/about/aboutus/team" >管理团队</ListItemLink>
-                                    <ListItemLink to="/about/aboutus/honor" >荣誉资质</ListItemLink>
-                                    <ListItemLink to="/about/aboutus/partners" >合作伙伴</ListItemLink>
-                                    <ListItemLink to="/about/aboutus/history" >发展历程</ListItemLink>
+                                    <ListItemLink to="/about/introduce" >公司简介</ListItemLink>
+                                    <ListItemLink to="/about/team" >管理团队</ListItemLink>
+                                    <ListItemLink to="/about/honor" >荣誉资质</ListItemLink>
+                                    <ListItemLink to="/about/partners" >合作伙伴</ListItemLink>
+                                    <ListItemLink to="/about/history" >发展历程</ListItemLink>
                                 </ul>
                             </dd>
                         </dl>
                         <dl key="2" onClick = { this.collapse.bind(this,2)} className = { this.state.current === 2? "showChildren":""}>
-                            <dt><TitleParent title="新闻动态" to="/about/news/" /></dt>
+                            <dt><TitleParent title="新闻动态" to="/news" /></dt>
                             <dd>
                                 <ul>
-                                    <ListItemLink to="/about/news/mediaReport">公司动态</ListItemLink>
-                                    <ListItemLink to="/about/news/mediaReport">媒体报道</ListItemLink>
-                                    <ListItemLink to="/about/news/mediaReport">行业新闻</ListItemLink>
+                                    <ListItemLink to="/news/mediaReport">公司动态</ListItemLink>
+                                    <ListItemLink to="/news/media-report">媒体报道</ListItemLink>
+                                    <ListItemLink to="/news/mediaReport">行业新闻</ListItemLink>
                                 </ul>
                             </dd>
                         </dl>
                         <dl key="3" onClick = { this.collapse.bind(this,3)} className = { this.state.current === 3? "showChildren":""}>
-                            <dt><TitleParent title="官方公告" to="/about/news/notice" /></dt>
+                            <dt><TitleParent title="官方公告" to="/news" /></dt>
                             <dd>
                                 <ul>
-                                    <ListItemLink to="/about/news/notice">网站公告</ListItemLink>
+                                    <ListItemLink to="/news/notice">网站公告</ListItemLink>
                                 </ul>
                             </dd>
                         </dl>
                         <dl key="4" onClick = { this.collapse.bind(this,4)} className = { this.state.current === 4? "showChildren":""}>
-                            <dt><TitleParent title="运营报告" to="/about/news/report" /></dt>
+                            <dt><TitleParent title="运营报告" to="/news" /></dt>
                             <dd>
                                 <ul>
-                                    <ListItemLink to="/about/news/report">运营报告</ListItemLink>
+                                    <ListItemLink to="/news/report">运营报告</ListItemLink>
                                 </ul>
                             </dd>
                         </dl>
                         <dl key="5" onClick = { this.collapse.bind(this,5)} className = { this.state.current === 5? "showChildren":""}>
-                            <dt><TitleParent title="安全保障" to="/about/safe/" /></dt>
+                            <dt><TitleParent title="安全保障" to="/about" /></dt>
                             <dd>
                                 <ul>
                                     <ListItemLink to="/plus/list.php?tid=56">风控流程</ListItemLink>
@@ -111,10 +111,10 @@ export default class About extends Component{
                             </dd>
                         </dl>
                         <dl key="6" onClick = { this.collapse.bind(this,6)} className = { this.state.current === 6? "showChildren":""}>
-                            <dt><TitleParent title="法律法规" to="/about/laws/" /></dt>
+                            <dt><TitleParent title="法律法规" to="/laws" /></dt>
                             <dd>
                                 <ul>
-                                    <ListItemLink to="/about/laws/rules">相关规则</ListItemLink>
+                                    <ListItemLink to="/laws/rules">相关规则</ListItemLink>
                                 </ul>
                             </dd>
                         </dl>

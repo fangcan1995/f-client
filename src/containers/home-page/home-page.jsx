@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import configureStore from '../../store/configureStore';
-const store = configureStore();
+
 import './home-page.less';
 import featureIcon1 from '../../assets/images/homePage/feature_icon_1.png';
 import featureIcon2 from '../../assets/images/homePage/feature_icon_2.png';

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
 import { loginUser } from '../../actions/auth';
-import { getUser } from '../../actions/user';
 import { hex_md5 } from '../../utils/md5';
 import parseJson2URL from '../../utils/parseJson2URL';
 
@@ -38,8 +37,7 @@ class Login extends Component {
         grant_type: 'password',
       }
       creds = `?${parseJson2URL({...creds, ...opts})}`;
-      dispatch(loginUser(creds, this.loginFaileCallback))
-      .then(res => dispatch(getUser(this.loginFaileCallback)));
+      dispatch(loginUser(creds, this.loginFaileCallback));
     });
   }
 
@@ -145,10 +143,9 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-  const { auth, user } = state;
+  const { auth } = state;
   return {
     auth,
-    user,
   };
 }
 

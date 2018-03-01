@@ -1,0 +1,314 @@
+@import '../../../assets/stylesheets/library';
+html {
+    background: #f1f1f1;
+}
+
+
+.member__main {
+
+    /* 右侧栏目开始 */
+    /* 广告位开始 */
+    .adver {
+        display: block;
+        width: 100%;
+        height: 84px;
+        background: url(../../../assets/images/myAccount/adverBg.jpg) center no-repeat;
+        margin-top: 20px;
+    }
+    /* 广告位结束 */
+
+
+    /* 账户总资产开始 */
+    .accountTotal {
+        padding: 16px 40px;
+        background: @color-default;
+        margin-top: 20px;
+        overflow: hidden;
+    }
+
+
+    .blockContent {
+        border-top: solid 1px #ebeff5;
+        margin-top: -1px;
+    }
+
+    .contentLeft {
+        float: left;
+    }
+
+    .totalInfo {
+        margin-top: 76px;
+        margin-left: 26px;
+    }
+
+    .totalInfo__details {
+        font-size: 14px;
+        margin: 28px 0;
+
+        em {
+            font-style: normal;
+        }
+
+        > * {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+
+    .details__color {
+        display: inline-block;
+        width: 24px;
+        height: 14px;
+        border-radius: 2px;
+    }
+    .details__color--blue {
+        background: @color-primary;
+    }
+    .details__color--green {
+        background: #54d1be;
+    }
+    .details__color--gray {
+        background: #97a8bd;
+    }
+
+    .detials__name {
+        color: #8a8f99;
+        margin-left: 20px;
+    }
+
+    .totalInfo__button {
+        width: 138px;
+        height: 36px;
+        color: #fff;
+        text-align: center;
+        line-height: 34px;
+        background: @color-primary;
+        border: 0;
+        border-radius: 4px;
+        outline: none;
+        margin-top: 86px;
+        margin-bottom: 20px;
+        margin-left: 36px;
+        cursor: pointer;
+    }
+
+    .contentRight {
+        width: 528px;
+        height: 296px;
+        background: url(../../../assets/images/myAccount/numRing.jpg) center no-repeat;
+        float: right;
+    }
+
+    /* 账户总资产结束 */
+
+
+
+    /* 账户详情开始 */
+
+    .accountDetails {
+        padding: 36px;
+        background: #fff;
+        margin-top: 20px;
+        overflow: hidden;
+    }
+
+    .accountDetails > * {
+        float: left;
+    }
+
+    .accountInfo {
+        width: 416px;
+        background: url(../../../assets/images/myAccount/borderDashed.png) center right no-repeat;
+    }
+
+
+    .infoLine:first-child {
+        margin-bottom: 16px;
+    }
+
+    .infoLine:last-child {
+        margin-top: 15px;
+    }
+
+    .infoLine {
+        > * {
+            display: inline-block;
+            font-size: 14px;
+            color: #8a8f99;
+            vertical-align: center;
+        }
+
+        > *:last-child {
+            margin-left: 80px;
+        }
+
+        > div {
+            position: relative;
+        }
+
+        span {
+            font-size: 20px;
+            color: #ff721f;
+        }
+
+        em {
+            width: 16px;
+            height: 16px;
+            font-style: normal;
+            color: #b8bfcc;
+            text-align: center;
+            line-height: 16px;
+            background: #ebf1f5;
+            border-radius: 3px;
+            position: absolute;
+            top: 7px;
+            right: -24px;
+            cursor: help;
+        }
+    }
+
+    .accountRedbag {
+        width: 268px;
+        font-size: 14px;
+        background: url(../../../assets/images/myAccount/borderDashed.png) center right no-repeat;
+
+        > * {
+            float: left;
+            margin-top: 8px;
+        }
+
+        > div:first-of-type {
+            text-align: center;
+            margin-left: 20px;
+        }
+
+        > div:last-of-type {
+            text-align: center;
+            margin-left: 30px;
+        }
+
+        i {
+            font-size: 20px;
+            color: #ff644f;
+            margin-left: 30px;
+        }
+    }
+
+
+    .accountInterests {
+        font-size: 14px;
+
+        > * {
+            float: left;
+            margin-top: 8px;
+        }
+
+        > div:first-of-type {
+            text-align: center;
+            margin-left: 20px;
+        }
+
+        > div:last-of-type {
+            text-align: center;
+            margin-left: 30px;
+        }
+
+        i {
+            font-size: 20px;
+            color: #ff644f;
+            margin-left: 30px;
+        }
+
+
+    }
+
+
+    .accountControl {
+
+        a {
+            display: block;
+            color: #b8bfcc;
+            &:hover {
+                color: @text-color-primary;
+            }
+        }
+
+    }
+
+    .numInfo {
+        span {
+            font-size: 20px;
+            color: @text-color-default;
+        }
+    }
+
+    .topM {
+        color: @text-color-help;
+        margin-bottom: 14px;
+    }
+
+    .topF {
+        margin-bottom: 20px;
+    }
+
+    /* 账户详情结束 */
+
+
+
+    /* 收益情况开始 */
+    .incomeState {
+        padding: 16px 40px;
+        background: #fff;
+        margin-top: 20px;
+        overflow: hidden;
+    }
+
+    .incomeContent {
+        border-top: solid 1px #ebeff5;
+        margin-top: -1px;
+    }
+
+    .incomeButtonLine {
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    .incomeButton {
+        float: right;
+        margin-top: 30px;
+    }
+
+    .incomeButton__button {
+        width: 98px;
+        height: 34px;
+        font-size: 14px;
+        color: @text-color-help;
+        background: #fff;
+        border: solid 1px #b8bfcc;
+        border-radius: 4px;
+        outline: none;
+        margin-right: 30px;
+        cursor: pointer;
+    }
+    .incomeButton__button--active {
+        color: #fff;
+        background: @color-primary;
+        border-color: @color-primary;
+    }
+
+    .incomeForm {
+        width: 948px;
+        height: 379px;
+        background: url(../../../assets/images/myAccount/columnTable.jpg) center center;
+    }
+
+    /* 收益情况结束 */
+
+    /* 右侧栏目结束 */
+
+
+}
+
+
+
+

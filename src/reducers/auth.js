@@ -1,59 +1,32 @@
-import { LOGIN, LOGOUT } from './../constants/actionTypes';
-import initialState from './initialState';
-import reducersGenerate from './reducersGenerate';
-// 登出功能暂时不需要提交接口
-/*export default reducersGenerate([LOGIN], initialState.auth, {
-  'LOGIN_PENDING': (state) => {
-    return Object.assign({}, state, {
-      isFetching: true,
-      isAuthenticated: false
-    });
-  },
-  'LOGIN_FULFILLED': (state, action) => {
-    return Object.assign({}, state, {
-      isFetching: false,
-      isAuthenticated: true,
-      user: action.user
-    });
-  },
-  'LOGIN_REJECTED': (state, action) => {
-    return Object.assign({}, state, {
-      isFetching: false,
-      isAuthenticated: false,
-      errorMessage: action.message
-    });
-  },
-});*/
+import { createReducer } from 'redux-immutablejs';
+import Immutable from 'immutable';
+import cookie from 'js-cookie';
 
-export default (state = initialState.auth, action) => {
-  let actionTypes = {
-    'LOGIN_PENDING': (state) => {
-      return Object.assign({}, state, {
-        isFetching: true,
-        isAuthenticated: false
-      });
-    },
-    'LOGIN_FULFILLED': (state, action) => {
-      return Object.assign({}, state, {
-        isFetching: false,
-        isAuthenticated: true,
-        user: action.user
-      });
-    },
-    'LOGIN_REJECTED': (state, action) => {
-      return Object.assign({}, state, {
-        isFetching: false,
-        isAuthenticated: false,
-        errorMessage: action.message
-      });
-    },
-    'LOGOUT': (state) => {
-      return Object.assign({}, state, {
-        isFetching: false,
-        isAuthenticated: false,
-      });
-    },
+import { LOGIN, LOGOUT } from '../constants/actions-type';
 
-  }
-  return actionTypes[action.type] && actionTypes[action.type](state, action) || state;
-}
+const initialState = Immutable.fromJS({
+  isFetching: false,
+  isAuthenticated: cookie.get('token') ? true : false,
+  user: cookie.getJSON('user') || {},
+});
+
+export default createReducer(initialState, {
+  ['LOGIN_PENDING']: (state, action) => state.merge({
+    isFetching: true,
+    isAuthenticated: false,
+  }),
+  ['LOGIN_FULFILLED']: (state, action) => state.merge({
+    isFetching: false,
+    isAuthenticated: true,
+    user: action.payload
+  }),
+  ['LOGIN_REJECTED']: (state, action) => state.merge({
+    isFetching: false,
+    isAuthenticated: false,
+    errorMessage: action.message
+  }),
+  ['LOGOUT']: (state, action) => state.merge({
+    isFetching: false,
+    isAuthenticated: false,
+  })
+})

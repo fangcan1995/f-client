@@ -14,7 +14,6 @@ const ListItemLink = ({ to, ...rest }) => (
 )
 
 export default ({ location, match, history, ...props }) => {
-
   return (
     <main className="main member">
         <div className="wrapper">
@@ -41,8 +40,8 @@ export default ({ location, match, history, ...props }) => {
                     <ul>
                         <ListItemLink to="/my-account/account-overview">我的账户</ListItemLink>
                         <ListItemLink to="/my-account/bank-card">银行卡</ListItemLink>
-                        <li><a href="#">充值</a></li>
-                        <li><a href="#">提现</a></li>
+                        <ListItemLink to="/my-account/recharge">充值</ListItemLink>
+                        <ListItemLink to="/my-account/withdrawals">提现</ListItemLink>
                         <ListItemLink to="/my-account/transaction-record">交易记录</ListItemLink>
                     </ul>
                     <h3><i className="iconfont icon-invest"></i>我的投资</h3>
@@ -52,7 +51,7 @@ export default ({ location, match, history, ...props }) => {
                     </ul>
                     <h3><i className="iconfont icon-myloan"></i>我的借款</h3>
                     <ul>
-                        <li><a href="#">我的借款</a></li>
+                        <ListItemLink to="/my-loan/my-loan">我的借款</ListItemLink>
                         <li><a href="#" >还款计划</a></li>
                     </ul>
                     <h3><i className="iconfont icon-invitation"></i>奖励管理</h3>

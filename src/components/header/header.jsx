@@ -11,7 +11,7 @@ class Header extends Component {
     dispatch(logoutUser());
   }
   render() {
-    const { auth, user } = this.props;
+    const { auth } = this.props;
     return (
       <header className="header">
         <div className="top">
@@ -20,7 +20,7 @@ class Header extends Component {
               {
                 auth.isAuthenticated ?
                 <div className="user">
-                  <Link className="welcome" to="/my-account">你好！&nbsp;<span className="username">15940804086</span></Link>
+                  <Link className="welcome" to="/my-account">你好！&nbsp;<span className="username">{ auth.user.loginName }</span></Link>
                   <a href="" className="logout" onClick={ this.handleLogoutBtnClick }>退出</a>
                 </div>
                 :
@@ -67,7 +67,7 @@ class Header extends Component {
                   <li><Link to="/">首页</Link></li>
                   <li><Link to="/invest-list">我要投资</Link></li>
                   <li><Link to="/loan-index">我要借款</Link></li>
-                  <li><Link to="/constantTable">信息披露</Link></li>
+                  <li><Link to="/about">信息披露</Link></li>
                 </ul>
               </nav>
               <div className="account">
@@ -76,7 +76,7 @@ class Header extends Component {
                   <div className="dropdown__menu">
                     <ul>
                       <li><Link to="/member2">我的投资</Link></li>
-                      <li><Link to="/member">我的借款</Link></li>
+                      <li><Link to="/my-loan">我的借款</Link></li>
                       <li><Link to="/member">基本设置</Link></li>
                       <li><Link to="/member">奖励管理</Link></li>
                     </ul>
@@ -93,12 +93,11 @@ class Header extends Component {
   
 };
 
-function mapStateToProps(state) {
-  const { auth, user } = state;
+function select(state) {
+  const { auth } = state.toJS();
   return {
     auth,
-    user
   };
 }
 
-export default connect(mapStateToProps)(Header);
+export default connect(select)(Header);

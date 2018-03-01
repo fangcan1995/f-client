@@ -8,9 +8,10 @@ import { Route, BrowserRouter } from 'react-router-dom';
 
 import routes from './routes';
 
-import configureStore from './store/configureStore';
+/*import configureStore from './store/configureStore';
 
-const store = configureStore();
+const store = configureStore();*/
+import store from './store/store';
 render(
   <Provider store={store}>
     <BrowserRouter>

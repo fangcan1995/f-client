@@ -15,7 +15,8 @@ function check401(res) {
       title: "登陆验证过期",
       content: "您的登陆验证已过期，请重新登陆",
       onOk: () => {
-        cookie.remove('access_token');
+        cookie.remove('token');
+        cookie.remove('user');
         location.href = '/login';
       }
     });
@@ -114,7 +115,7 @@ function toQueryString(object) {
 }
 
 
-function cFetch(url, options) {
+function cFetch(url, options, ignoreAuth) {
   let mergeUrl = API_CONFIG.baseUri + url;
   const defaultOptions = {
     method: 'GET'
@@ -127,9 +128,10 @@ function cFetch(url, options) {
     mergeUrl = mergeUrl + '?' + toQueryString(opts['params']);
   }
 
+  const { token_type, access_token } = cookie.getJSON('token') || {};
   opts.headers = {
     ...opts.headers,
-    'Authorization': cookie.get('access_token') || ''
+    'Authorization': ignoreAuth ? '' : `${token_type} ${access_token}`,
   };
 
   return fetch(mergeUrl, opts)

@@ -1,0 +1,215 @@
+@import '../../../assets/stylesheets/library';
+.main.loan-index {
+  .banner {
+    @banner-height: 260px;
+    position: relative;
+    margin-bottom: 20px;
+    min-width: @content-width;
+    .carousel {
+      min-width: @content-width;
+      width: 100%;
+      height: @banner-height;
+
+    }
+    .carousel__img {
+      min-width: @content-width;
+      width: 100%;
+      height: @banner-height;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+    }
+  }
+  .steplist {
+    .floorMb();
+    padding: 40px;
+    background-color: @color-default;
+    .steps {
+      .clearfix();
+      li {
+        position: relative;
+        float: left;
+        width: 20%;
+        font-size: 14px;
+        color: @text-color-help;
+        text-align: center;
+
+        &:after {
+          content: '';
+          position: absolute;
+          display: block;
+          top: 50%;
+          right: -(60px / 2) + 10px;
+          margin-top: -(20px / 2) - 14px;
+          width: 60px;
+          height: 20px;
+          background-image: url(../../../assets/images/loanIndex/step_arrow.png);
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+        }
+        &:last-child {
+          &:after {
+            content: none;
+            display: none;
+
+          }
+        }
+        i {
+          margin: 0 auto 12px;
+          display: block;
+          width: 74px;
+          height: 74px;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: 40px 40px;
+          border-radius: 50%;
+          
+        }
+        span {
+
+        }
+        &.step__1 {
+          i {
+            background-image: url(../../../assets/images/loanIndex/step_icon_1.png);
+            background-color: #a1e6a9;
+          }
+          
+        }
+        &.step__2 {
+         i {
+           background-image: url(../../../assets/images/loanIndex/step_icon_2.png);
+           background-color: #ffd7a8;
+         }
+        }
+        &.step__3 {
+          i {
+            background-image: url(../../../assets/images/loanIndex/step_icon_3.png);
+            background-color: #84c6f5;
+          }
+        }
+        &.step__4 {
+          i {
+            background-image: url(../../../assets/images/loanIndex/step_icon_4.png);
+            background-color: #ffa8b2;
+          }
+        }
+        &.step__5 {
+          i {
+            background-image: url(../../../assets/images/loanIndex/step_icon_5.png);
+            background-color: #a1aff3;
+          }
+        }
+      }
+    }
+  }
+
+  .loanType {
+    .loanType__list {
+      .clearfix();
+      li {
+        position: relative;
+        float: left;
+        box-sizing: content-box;
+        padding: 30px 50px;
+        width: 380px - 50px * 2;
+        height: 250px - 30px * 2;
+        margin-right: (@content-width - 380px * 3) / 2;
+        background-color: @color-default;
+        transform: translate3d(0, 0, 0);
+        transition: transform 300ms ease,box-shadow 300ms ease;
+        &:last-child {
+          margin-right: 0;
+        }
+        &:hover {
+          transform: translate3d(0, -2px, 0);
+          box-shadow: 0px 8px 30px 0 rgba(0, 0, 0, .14);
+          p {
+            color: #a1e6a9;
+            em {
+              color: #a1e6a9;
+            }
+          }
+        }
+        h4 {
+          margin-bottom: 20px;
+          font-size: 24px;
+          color: @color-primary;
+        }
+        p {
+          font-size: 14px;
+          color: @text-color-help;
+          line-height: 24px;
+          em {
+            font-size: 16px;
+            color: @text-color-default;
+          }
+        }
+        a {
+          position: absolute;
+          bottom: 30px;
+          left: 50px;
+          font-size: 14px;
+          color: @text-color-help;
+        }
+      }
+      .loanType__1 {
+        background-image: url(../../../assets/images/loanIndex/car.png);
+        background-repeat: no-repeat;
+        background-position: right 33px bottom 22px;
+        background-size: 158px 62px;
+      }
+      .loanType__2 {
+        background-image: url(../../../assets/images/loanIndex/house.png);
+        background-repeat: no-repeat;
+        background-position: right 23px bottom 15px;
+        background-size: 155px 98px;
+      }
+      .loanType__3 {
+        background-image: url(../../../assets/images/loanIndex/shield.png);
+        background-repeat: no-repeat;
+        background-position: right 57px bottom 18px;
+        background-size: 78px 93px;
+      }
+    }
+  }
+
+  .faq {
+    .faq__list {
+      .clearfix();
+      .faq_item {
+        float: left;
+        box-sizing: content-box;
+        margin-right: @content-width - 580px * 2;
+        padding: 30px 38px;
+        width: 580px - 38px * 2;
+        height: 250px - 30px * 2;
+        background-color: @color-default;
+        &:last-child {
+          margin-right: 0;
+        }
+        h4 {
+          margin-bottom: 14px;
+          font-size: 16px;
+          i {
+            margin-right: 24px;
+            font-size: 24px;
+            color: @color-primary;
+          }
+        }
+        ol {
+
+          padding-left: 24px + 24px;
+          font-size: 14px;
+          color: @text-color-help;
+          list-style: decimal inside;
+          li {
+            margin-bottom: 30px - 14px * 1.5;
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

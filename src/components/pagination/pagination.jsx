@@ -1,7 +1,7 @@
 import React,{ Component } from "react";
 import './pagination.less';
 export default class Pagination extends Component{
-    constructor(props){
+    constructor(props) {
         super(props)
         // 设置当前页码，默认为第一页
         this.state = {
@@ -17,8 +17,8 @@ export default class Pagination extends Component{
             pageCountEle:document.querySelector("#pageCount"),
         });
 
-        setTimeout(()=>{
-            document.addEventListener("click",(e)=>{
+        setTimeout(() => {
+            document.addEventListener("click",(e) => {
                 if(e.target.id !== "pageCount"){
                     this.state.pageCountEle.parentNode.className = "hide";
                 }
@@ -29,7 +29,7 @@ export default class Pagination extends Component{
         const parentUI = this.state.pageCountEle.parentNode;
         parentUI.className = (parentUI.className === "hide")?"":"hide";
     }
-    confirmPageCount(pageCount){
+    confirmPageCount(pageCount) {
         const {
             pageCountEle,
             currentPage,
@@ -42,7 +42,7 @@ export default class Pagination extends Component{
         pageCountEle.innerHTML = pageCount;
         pageCountEle.parentNode.className = "hide";
 
-        setTimeout(()=>{
+        setTimeout(() => {
             this.go(currentPage, true);
         },0);
     }

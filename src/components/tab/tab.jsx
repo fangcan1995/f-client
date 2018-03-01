@@ -1,7 +1,7 @@
-import React,{ Component } from "react";
+import React, { Component } from 'react';
 import './tab.less';
 export default class Tab extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             current: 0
@@ -9,11 +9,11 @@ export default class Tab extends Component {
     }
 
     itemNav = (index) => {
-        return index === this.state.current ? "tab tab--active" : "tab"
+        return index === this.state.current ? 'tab--active' : ''
     }
 
     itemCon = (index) => {
-        return index === this.state.current ? "tab__panel tab__panel--active" : "tab__panel"
+        return index === this.state.current ? 'tab__panel--active' : ''
     }
 
     render(){
@@ -22,9 +22,9 @@ export default class Tab extends Component {
                 { /* 动态生成Tab导航 */ }
                 <div className="tabs__nav">
                     {
-                        React.Children.map(this.props.children,(element,index) => {
+                        React.Children.map(this.props.children, (element, index) => {
                             return (
-                                <li onClick={ () => { this.setState({ current: index }) } } className={ this.itemNav(index) }>{ element.props.name }</li>
+                                <li onClick={ () => { this.setState({ current: index }) } } className={ `tab ${this.itemNav(index)}` }>{ element.props.name }</li>
                             )
                         })
                     }
@@ -32,9 +32,9 @@ export default class Tab extends Component {
                 { /* Tab内容区域 */ }
                 <div className="tabs__content">
                     {
-                        React.Children.map(this.props.children, (element,index) => {
+                        React.Children.map(this.props.children, (element, index) => {
                             return (
-                                <div onClick={ () => { this.setState({ current: index }) } } className={ this.itemCon(index) }>{ element }</div>
+                                <div onClick={ () => { this.setState({ current: index }) } } className={ `tab__panel ${this.itemCon(index)}` }>{ element }</div>
                             )
                         })
                     }
