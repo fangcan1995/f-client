@@ -1,46 +1,45 @@
-import React,{Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import Crumbs from '../../../components/crumbs/crumbs';
-import Tab from '../../../components/tab/tab';
-import Pagination from '../../../components/pagination/pagination';
-import  {getData}  from '../../../assets/js/getData';
-import './transaction-record.less';
+import PieChart from '../../../../components/charts/pie'
+import Crumbs from '../../../../components/crumbs/crumbs';
+import Tab from '../../../../components/tab/tab';
+import Pagination from '../../../../components/pagination/pagination';
+import  {getData}  from '../../../../assets/js/getData';
+import {addCommas} from '../../../../assets/js/cost';
 import { Modal,Select,DatePicker } from 'antd';
-import moment from 'moment';
-/*var tableSetting={
->>>>>>> 22fbb944d7c336a85fa8d4a6ce95546f2b19ad01:src/containers/member/overview/transaction-record/transaction-record.jsx
-    columnOpts:[
-        { key: 'col1', name: '交易时间',type:'date-time' },
-        { key: 'col2', name: '交易类型',type:'tradeType' },
-        { key: 'col3', name: '交易金额 (元)',type:'money' },
-        { key: 'col4', name: '状态',type:'default' },
-    ],
-    hasFilter:true, // 是否显示搜索过滤
-    /!*onSearch: function(keyword) {
-        doSearch(keyword)
-    }, // 搜索时的回调*!/
-    showPager: true, // 是否显示分页
-}*/
+import ModalRepayment from './modalRepayment';
+import './repaymentPlans.less';
 
-export default class TransactionRecord extends React.Component{
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
+const Option = Select.Option;
+
+export default class RepaymentPlans extends React.Component{
     constructor(props){
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.handleDateStartChange = this.handleDateStartChange.bind(this);
         this.handleDateEndChange = this.handleDateEndChange.bind(this);
         this.state={
-            dataList:{},  //数据
-            status:0,
+            modalRepayment: false,
+            dataList:{},  //项目数据
+            charts:{
+                totalInvestment:{},
+                accumulatedIncome:{},
+                accumulatedIncome2:{},
+            },  //统计数据
+            pid:0,
             DateStart:'',
             DateEnd:'',
         };
     }
     handleChange(value) {
         this.setState({
-            status:value
+            pid:value
         },()=>{
             let filter={
-                status:this.state.status,
+                pid:this.state.pid,
                 DateStart:this.state.DateStart,
                 DateEnd:this.state.DateEnd,
             };
@@ -230,61 +229,178 @@ export default class TransactionRecord extends React.Component{
         }
 
     }
-    componentDidMount () {
-        this.loadData(1,10,{status:0});
+    loadChartsData(){
+        let data=getData(`http://localhost:9002/members`);
+        if (data){
+            /*this.setState({
+                charts:{
+                    totalInvestment:{
+                        legend:{data:['招标中','回款中','已回款','已转出']},
+                        series_data:{
+                            data:[
+                                {value:data.data.totalInvestment.proMoneyBidding, name:'招标中'},
+                                {value:data.data.totalInvestment.proMoneyInBack, name:'回款中'},
+                                {value:data.data.totalInvestment.proMoneyBacked, name:'已回款'},
+                                {value:data.data.totalInvestment.proMoneyOut, name:'已转出'}
+                            ]
+                        }
+                    },
+                    accumulatedIncome:{
+                        legend:{data:['招标中','回款中','已回款','已转出']},
+                        series_data:{
+                            data:[
+                                {value:data.data.totalInvestment.proMoneyBidding, name:'招标中'},
+                                {value:data.data.totalInvestment.proMoneyInBack, name:'回款中'},
+                                {value:data.data.totalInvestment.proMoneyBacked, name:'已回款'},
+                                {value:data.data.totalInvestment.proMoneyOut, name:'已转出'}
+                            ]
+                        }
+                    }
+                }
+            });*/
+        }else{
+            let mockDate={
+                data: {
+                    totalInvestment: {
+                        proMoneyBidding:5000.00,
+                        proMoneyInBack:2000.00,
+                        proMoneyBacked:3000.00,
+                        proMoneyOut:1000.00,
+                    },  //投资总额
+                    accumulatedIncome: {
+                        earnMoneyInBack:5000.00,
+                        earnMoneyBacked:5000.00,
+                        earnMoneyOut:2000.00,
+                    },  //累计收益
+                },
+                code: "0",
+                message: "SUCCESS",
+            };
+            let {totalInvestment,accumulatedIncome}=mockDate.data;
+            this.setState({
+                charts:{
+                    totalInvestment:{
+                        data:[
+                            {name:'逾期未还',value:totalInvestment.proMoneyBidding,instruction:`5期 ${addCommas(totalInvestment.proMoneyBidding)}元` },
+                            {name:'待还款',value:totalInvestment.proMoneyInBack,instruction:`5期 ${addCommas(totalInvestment.proMoneyInBack)}元`},
+                            {name:'逾期已还',value:totalInvestment.proMoneyBacked,instruction:`5期 ${addCommas(totalInvestment.proMoneyBacked)}元`},
+                            {name:'已提前还款',value:totalInvestment.proMoneyOut,instruction:`5期 ${addCommas(totalInvestment.proMoneyOut)}元`},
+                            {name:'已正常还款',value:totalInvestment.proMoneyOut,instruction:`5期 ${addCommas(totalInvestment.proMoneyOut)}元`}
+                        ]
+                    },
+                    accumulatedIncome:{
+                        data:[
+                            {name:'未还本金',value:1000,instruction:`${addCommas(1000)}元` },
+                            {name:'未还利息',value:1000,instruction:`${addCommas(1000)}元` },
+                            {name:'未还罚息',value:1000,instruction:`${addCommas(1000)}元` },
+                            {name:'未还罚金',value:1000,instruction:`${addCommas(1000)}元` },
+                        ]
+                    },
+                    accumulatedIncome2:{
+                        data:[
+                            {name:'已还本金',value:20000,instruction:`${addCommas(20000)}元` },
+                            {name:'已还利息',value:1000.85,instruction:`${addCommas(1000.85)}元` },
+                            {name:'已还罚息',value:0,instruction:`${addCommas(0)}元` },
+                            {name:'已还罚金',value:0,instruction:`${addCommas(0)}元` },
+                        ]
+                    },
+                }
+            },()=>{
+            });
+        }
     }
+    componentDidMount () {
+        this.loadChartsData();
+        this.loadData(1,10,{status:1});
+
+    }
+    toggleModal=(modal,visile,id)=>{
+        if(visile){
+            this.setState({
+                [modal]: true,
+                currentId:id,
+            });
+        }else{
+            this.setState({
+                [modal]: false,
+                currentId:'',
+            });
+        }
+    };
     render(){
         const {list,pageNum,total,pageSize}=this.state.dataList;
         const totalPage=Math.ceil(total/pageSize);
-        return (
+        return(
             <div className="member__main" id="area">
                 <Crumbs/>
                 <div className="member__cbox">
                     <Tab>
-                        <div name="交易记录">
-                            <p className="info">
-                                <strong>提示：</strong>资金历史记录了您各种交易产生的支出和收入的明细，请选择事件类型和时间。
-                            </p>
+                        <div name="还款统计" className="chart">
+                            <Tab>
+                                <div name="还款总额">
+                                    {
+                                        JSON.stringify(this.state.charts.totalInvestment) != "{}"?
+                                            <PieChart
+                                                data={this.state.charts.totalInvestment.data}
+                                                style={{height: '300px', width: '930px'}}
+                                                totalTitle="还款总额"
+                                                >
+                                            </PieChart>
+                                            :''
+                                    }
+                                </div>
+                                <div name="未还金额">
+                                    {
+                                        JSON.stringify(this.state.charts.accumulatedIncome) != "{}"?
+                                            <PieChart
+                                                data={this.state.charts.accumulatedIncome.data}
+                                                style={{height: '300px', width: '930px'}}
+                                                totalTitle="未还金额"
+                                                >
+                                            </PieChart>
+                                            :''
+                                    }
+                                </div>
+                                <div name="已还金额">
+                                    {
+                                        JSON.stringify(this.state.charts.accumulatedIncome2) != "{}"?
+                                            <PieChart
+                                                data={this.state.charts.accumulatedIncome2.data}
+                                                style={{height: '300px', width: '930px'}}
+                                                totalTitle="已还金额"
+                                                >
+                                            </PieChart>
+                                            :''
+                                    }
+                                </div>
+                            </Tab>
+                        </div>
+                    </Tab>
+                </div>
+                <div className="member__cbox repayRecord">
+                    <Tab>
+                        <div name="还款记录">
                             <div className="filter">
                                 <div className="filter__outer">
                                     <div className="filter__inner">
                                         <div className="filter__row">
                                             <div className="filter__cell">
-                                                <h5>交易类型:</h5>
+                                                <h5>项目名称:</h5>
                                             </div>
                                             <div className="filter__cell">
                                                 <Select
                                                     defaultValue="0"
-                                                    style={{ width: 100 }}
+                                                    style={{ width: 210 }}
                                                     onChange={this.handleChange}
                                                     getPopupContainer={() => document.getElementById('area')}
                                                 >
-                                                    <option value="0">全部</option>
-                                                    <option value="1">充值</option>
-                                                    <option value="2">提现</option>
-                                                    <option value="3">投资</option>
-                                                    <option value="4">回款</option>
-                                                    <option value="5">费用</option>
-                                                    <option value="6">奖励</option>
+                                                    <Option value="0">全部</Option>
+                                                    <Option value="1">汇车贷-HCD201704170001</Option>
+                                                    <Option value="2">汇车贷-HCD201704170002</Option>
                                                 </Select>
                                             </div>
                                             <div className="filter__cell">
-                                                <h5>状态:</h5>
-                                            </div>
-                                            <div className="filter__cell">
-                                                <Select
-                                                    defaultValue="0"
-                                                    style={{ width: 100 }}
-                                                    onChange={this.handleChange}
-                                                    getPopupContainer={() => document.getElementById('area')}
-                                                >
-                                                    <option value="">全部</option>
-                                                    <option value="1">成功</option>
-                                                    <option value="0">失败</option>
-                                                </Select>
-                                            </div>
-                                            <div className="filter__cell">
-                                                <h5>交易时间:</h5>
+                                                <h5>应还日期:</h5>
                                             </div>
                                             <div className="filter__cell">
                                                 <DatePicker
@@ -310,12 +426,7 @@ export default class TransactionRecord extends React.Component{
                                     </div>
                                 </div>
                             </div>
-                            {/*<div className="table__wrapper">
-                                <Table
-                                    source='http://localhost:9002'
-                                    config={tableSetting}
-                                />
-                            </div>*/}
+
                             {
                                 JSON.stringify(this.state.dataList) == "{}"? <div>连接错误,请稍后再试</div>
                                     :
@@ -324,22 +435,44 @@ export default class TransactionRecord extends React.Component{
                                             <table className={`tableList table${this.state.status}`}>
                                                 <thead>
                                                 <tr>
-                                                    <th>交易时间</th>
-                                                    <th>交易类型</th>
-                                                    <th>交易金额 (元)</th>
-                                                    <th>状态</th>
+                                                    <th>项目名称</th>
+                                                    <th>应还日期</th>
+                                                    <th>还款期数</th>
+                                                    <th>应还本金(元)</th>
+                                                    <th>应还利息(元)</th>
+                                                    <th>应还罚息(元)</th>
+                                                    <th>已还罚金(元)</th>
+                                                    <th>还款总额(元)</th>
+                                                    <th>还款状态</th>
+                                                    <th>操作</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 {
                                                     list.map((item, rowIndex) => (
                                                         <tr key={`row-${rowIndex}`}>
-                                                            <td>{item.col1}</td>
-                                                            <td>{item.col2}</td>
-                                                            <td>{item.col3}</td>
-                                                            <td>{item.col4}</td>
+                                                            <td>
+                                                                <p><a href='${item.proId}'>{item.col1}</a>{/*项目名称*/}</p>
+                                                            </td>
+                                                            <td>{item.col2}{/*应还日期*/}</td>
+                                                            <td>{item.col3}{/*还款期数*/}</td>
+                                                            <td>{item.col4}{/*应还本金*/}</td>
+                                                            <td>{item.col5}{/*应还利息*/}</td>
+                                                            <td>{item.col6}{/*应还罚息*/}</td>
+                                                            <td>{item.col7}{/*已还罚金*/}</td>
+                                                            <td>{item.col8}{/*还款总额*/}</td>
+                                                            <td>{item.col9}{/*还款状态*/}</td>
+                                                            <td>
+                                                                {
+                                                                    (item.proStatus==4)? '还款':''
+                                                                }
+                                                                {
+                                                                    (item.proStatus==7||item.proStatus==6)? <a onClick={() => this.toggleModal(`modalRepayment`,true,item.proId)}>还款</a>:''
+                                                                }
+                                                            </td>
                                                         </tr>
-                                                    ))}
+                                                    ))
+                                                }
                                                 </tbody>
                                             </table>
                                             <Pagination config = {
@@ -349,20 +482,31 @@ export default class TransactionRecord extends React.Component{
                                                     totalPage:2,
                                                     filter:this.state.status,
                                                     paging:(obj)=>{
-                                                        this.loadData(obj.currentPage,obj.pageCount,{status:obj.filter});
+                                                        this.loadData(obj.currentPage,obj.pageCount,{re_status:obj.filter});
                                                     }
                                                 }
                                             } ></Pagination>
                                         </div>
-                                        :''
-                                }
-
+                                        : <div>暂无记录</div>
+                            }
                         </div>
                     </Tab>
-
                 </div>
+                <Modal
+                    title="还款"
+                    wrapClassName="vertical-center-modal"
+                    visible={this.state.modalRepayment}
+                    width="520px"
+                    footer={null}
+                    onCancel={() => this.toggleModal(`modalRepayment`,false,'')}
+                >
+                    {this.state.modalRepayment===true?
+                        <ModalRepayment proId={this.state.currentId} />:''
+                    }
+                </Modal>
             </div>
+
         )
+
     }
 }
-

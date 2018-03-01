@@ -5,55 +5,17 @@ import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
 import './redEnvelopes.less';
 import moment from "moment";
-export default class RedEnvelopes extends React.Component{
-    constructor(props){
-        super(props);
-        this.state={
-            dataSetting:{},
-            reStatus: 0
+import { connect } from 'react-redux';
+import actions from './redEnvelopesActions';
+import { bindActionCreators, } from 'redux';
+class RedEnvelopes extends React.Component {
+    render() {
+        let {myRedEnvelopes, actions} = this.props;
+        let {reStatus,data,loaded}=myRedEnvelopes;
+        if (!loaded) {
+            actions.getData();
         }
-    }
-    filterClassName = (index) => {
-        return index === this.state.reStatus ? "filter__opt filter__opt--active" : "filter__opt"
-    }
-    loadData(currentPage,pageSize,filter){
-        let conditions = "";
-        if(filter){
-            for(var item in filter){
-                conditions += "&"+item+"="+filter[item];
-            }
-        }
-        let url = `http://172.16.1.221:9090/members/memberRedEnvelopes?access_token=137c6472-22ba-4dde-aa15-e1dff2436641&pageNum=${currentPage}&pageSize=${pageSize}${conditions}`;
-        fetch(url,{
-            method:"get"
-        })
-            .then(function (response){
-                if (response.status == 200){
-                    return response;
-                }
-            })
-            .then((data) => data.json())
-            .then((data) => {
-                    this.setState({ dataSetting:data.data });
-                }
-
-            )
-            .catch(function(err){
-                console.log("Fetch错误:"+err);
-            });
-
-    }
-    componentDidMount () {
-        this.loadData(1,10);
-    }
-    filter(pram){
-        this.setState({ reStatus: pram });
-        this.loadData(1,10,{reStatus:pram});
-    }
-    render(){
-        const {list,pageNum,total,pageSize}=this.state.dataSetting;
-        const totalPage=Math.ceil(total/pageSize);
-        return(
+        return (
             <div className="member__main">
                 <Crumbs/>
                 <div className="member__cbox">
@@ -67,99 +29,109 @@ export default class RedEnvelopes extends React.Component{
                                                 <h5>类型:</h5>
                                             </div>
                                             <div className="filter__cell">
-                                                <p className={this.filterClassName(0)} onClick={() => {
-                                                    this.filter(0)
-                                                }}>全部</p>
+                                                <p className={(reStatus===0)?'filter__opt filter__opt--active':'filter__opt'}
+                                                   onClick={() => {actions.filter(0)}}>全部
+                                                </p>
                                             </div>
                                             <div className="filter__cell">
-                                                <p className={this.filterClassName(1)} onClick={() => {
-                                                    this.filter(1)
-                                                }}>未使用</p>
+                                                <p className={(reStatus===1)?'filter__opt filter__opt--active':'filter__opt'}
+                                                   onClick={() => {actions.filter(1)}}>未使用
+                                                </p>
                                             </div>
                                             <div className="filter__cell">
-                                                <p className={this.filterClassName(2)} onClick={() => {
-                                                    this.filter(2)
-                                                }}>已使用</p>
+                                                <p className={(reStatus===2)?'filter__opt filter__opt--active':'filter__opt'}
+                                                   onClick={() => {actions.filter(2)}}>已使用
+                                                </p>
                                             </div>
                                             <div className="filter__cell">
-                                                <p className={this.filterClassName(3)} onClick={() => {
-                                                    this.filter(3)
-                                                }}>已过期</p>
+                                                <p className={(reStatus===3)?'filter__opt filter__opt--active':'filter__opt'}
+                                                   onClick={() => {actions.filter(3)}}>已过期
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {
-                                JSON.stringify(this.state.dataSetting) == "{}"? <div>连接错误,请稍后再试</div>
-                                    :
-                                    list.length>0 ?
-                                        <div>
-                                            <ul className="redBagList">
-                                                {
-                                                    list.map((item, index) => (
-                                                        <li className={`reStatus-${item.reStatus}`} key={`row-${index}`}>
-                                                            <div className=
-                                                                     {
-                                                                         item.reTypeName=='返现红包'?
-                                                                             'img fxhb'
-                                                                             : 'img xjhb'
-                                                                     }
-                                                            >
-                                                                <p className="denomination">{item.reAmount}</p>
-                                                                <p className="remark"></p>
-                                                            </div>
-                                                            <div className="txt">
-                                                                <p>
-                                                                    <strong>使用规则：</strong>{item.productCategoryName}满{item.useMinAmount}元可用
-                                                                </p>
-                                                                <p><strong>有效期：</strong>
-                                                                    {
-                                                                        !item.beginTime?'' :moment(item.beginTime).format('YYYY-MM-DD')
-                                                                    }
-                                                                    --
-                                                                    {
-                                                                        !item.endTime?'' :moment(item.endTime).format('YYYY-MM-DD')
-                                                                    }
-                                                                </p>
-                                                            </div>
-                                                        </li>
-                                                    ))
-                                                }
-                                            </ul>
-                                            <Pagination config = {
-                                                {
-                                                    currentPage:pageNum,
-                                                    pageSize:pageSize,
-                                                    totalPage:totalPage,
-                                                    paging:(obj)=>{
-                                                        this.loadData(obj.currentPage,obj.pageCount,{reStatus:this.state.reStatus});
+                            {loaded ? (
+                                    <div>
+                                        {data.total>0?(<div>
+                                                <ul className="redBagList">
+                                                    {
+                                                        data.list.map((l, i) => (
+                                                            <li className={`reStatus-${l.reStatus}`} key={`row-${i}`}>
+                                                                <div className=
+                                                                         {
+                                                                             l.reTypeName == '返现红包' ?
+                                                                                 'img fxhb'
+                                                                                 : 'img xjhb'
+                                                                         }
+                                                                >
+                                                                    <p className="denomination">{l.reAmount}</p>
+                                                                    <p className="remark"></p>
+                                                                </div>
+                                                                <div className="txt">
+                                                                    <p>
+                                                                        <strong>使用规则：</strong>{l.productCategoryName}满{l.useMinAmount}元可用
+                                                                    </p>
+                                                                    <p><strong>有效期：</strong>
+                                                                        {
+                                                                            !l.beginTime ? '' : moment(l.beginTime).format('YYYY-MM-DD')
+                                                                        }
+                                                                        --
+                                                                        {
+                                                                            !l.endTime ? '' : moment(l.endTime).format('YYYY-MM-DD')
+                                                                        }
+                                                                    </p>
+                                                                </div>
+                                                            </li>
+                                                        ))
                                                     }
-                                                }
-                                            } >
-                                            </Pagination>
-                                        </div>
-                                        : <div>暂无红包</div>
+                                                </ul>
+                                                <Pagination config={
+                                                    {
+                                                        currentPage: data.pageNum,
+                                                        pageSize: data.pageSize,
+                                                        totalPage: Math.ceil(data.total/data.pageSize),
+                                                        paging: (obj) => {
+                                                            actions.getData(obj.currentPage,obj.pageCount,{reStatus: reStatus})
+                                                        }
+                                                    }
+                                                }>
+                                                </Pagination>
+                                            </div>)
+                                            :(<div>暂无记录</div>)}
+                                    </div>)
+                                : (<div>正在加载数据...</div>)
                             }
                         </div>
                     </Tab>
                 </div>
                 <div className="member__cbox">
-                <Tab>
-                    <div name="温馨提示">
-                        <div className="m-wxts">
-                            <p> 1. 投资时需满足红包使用规则，才可使用；<br/>
-                                2. 使用过程遇到问题时，请（工作日9:00-20:00）咨询客服<br/>
-                            </p>
+                    <Tab>
+                        <div name="温馨提示">
+                            <div className="m-wxts">
+                                <p> 1. 投资时需满足红包使用规则，才可使用；<br/>
+                                    2. 使用过程遇到问题时，请（工作日9:00-20:00）咨询客服<br/>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                </Tab>
-            </div>
+                    </Tab>
+                </div>
             </div>
         )
-
     }
+    filterClassName = (index,reStatus) => {
+        return index ===reStatus ? "filter__opt filter__opt--active" : "filter__opt"
+    }
+
 }
+const mapStateToProps = state => ({
+    myRedEnvelopes: state.myRedEnvelopes,
+    auth:state.auth
+});
+const mapDispatchToProps = dispatch => ({
+    actions: bindActionCreators(actions, dispatch)
+});
 
-
+export default connect(mapStateToProps, mapDispatchToProps)(RedEnvelopes);
 

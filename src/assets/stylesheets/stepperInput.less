@@ -1,19 +1,41 @@
 @import './library';
+@btn_minus-background-color: #dce1e6;
+@btn_add-background-color: #ff7e33;
+@input-height: 48px;
+
 .stepperInput{
+  #button(){
+    display: inline-block;
+    width: 38px;
+    height: 46px;
+    position: absolute;
+    border: none;
+    color: #fff;
+    font-size: 30px;
+    line-height: 36px;
+    top: 0px;
+    &:focus{
+      outline: none;
+    }
+  }
   .input__area {
     margin: 15px auto 5px auto;
     position: relative;
     input {
       display: block;
       width: 310px;
-      height: 48px;
-      line-height: 48px;
+      height: @input-height;
+      line-height: @input-height;
       padding: 0 75px 0 50px;
       border: 1px solid #e6eaf0;
       font-size: 24px;
       text-align: right;
-      color: #2aa4ea;
-      box-sizing: border-box
+      color: @color-primary;
+      box-sizing: border-box;
+      &:focus{
+        border: 1px solid #e6eaf0;
+        outline:none
+      }
     }
     span {
       display: inline-block;
@@ -25,54 +47,21 @@
       color: #2aa4ea
     }
     .btn_minus {
-      display: inline-block;
-      width: 38px;
-      height: 47px;
-      background: #dce1e6;
-      position: absolute;
-      border: none;
-      color: #fff;
-      font-size: 30px;
-      line-height: 36px;
-      top: 0px;
+      #button();
       left: 0;
-      border-top-left-radius: 3px;
-      border-bottom-left-radius: 3px
+      border-top-left-radius: @btn-radius;
+      border-bottom-left-radius: @btn-radius;
+      background: @btn_minus-background-color;
     }
     .btn_add {
-      display: inline-block;
-      width: 38px;
-      height: 47px;
-      background: #dce1e6;
-      position: absolute;
-      border: none;
-      color: #fff;
-      font-size: 30px;
-      line-height: 36px;
-      top: 0px;
+      #button();
       right: 0;
-      border-top-right-radius: 3px;
-      border-bottom-right-radius: 3px;
-      background: #ff7e33;
+      border-top-right-radius: @btn-radius;
+      border-bottom-right-radius: @btn-radius;
+      background: @btn_add-background-color;
     }
     .clearfix();
   }
-  .tips__area{
-    min-height:28px;
-    .tips {
-      line-height: 28px;
-      font-size: 14px;
-      display: block;
-      color: #ff6666;
-      overflow: auto;
-      &:before { content: "\e614";
-        padding-right: 10px;
-        font-family: iconfont;
-        font-size: 14px; }
-    }
-    .clearfix();
-  }
-
 }
 
 

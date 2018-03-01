@@ -1,92 +1,103 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import  {getData}  from '../../../../assets/js/getData';
 import StepperInput from '../../../../components/stepperInput/stepperInput';
+import { Modal } from 'antd';
+import {income} from "../../../../assets/js/cost";
+import ModalInvest from '../modal-invest/modalInvest';
+import ModalRiskAssess from '../modal-riskAssess/modal-riskAssess';
+
 export default class InvestDetailMaster extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            project:{},
+            member:{},
+            investAmount:0,
+            modalInvest: false,
+            modalRecharge: false,
+            modalRiskAssess: false,
+            tips:'',
+            allowedInvest:true,
+            code:100
+        }
     }
-    /**
-     * 计算收益函数
-     * @param val投资额 y_per年化收益 time type
-     * @returns 收益
-     */
-    income(val,y_per,time,type){
-        //按月投资
-        let amount=0;
-        if(type=='m'){
-            amount=(val * (y_per / 100)) / 12 * time;
+    //模态框开启关闭
+    toggleModal=(modal,visile,id)=>{
+        if(visile){
+            this.setState({
+                [modal]: true,
+            });
+        }else{
+            this.setState({
+                [modal]: false,
+            });
         }
-        //按天投资
-        if(type=='d'){
-            amount=(val * (y_per / 100)) / 365 * time.toFixed(2);
+        console.log(this.state);
+    };
+    //载入数据
+    loadData(){
+        let data=getData(`http://localhost:9002/detail`);
+        if (data){
+            //与后台对接
+        }else{
+            let mockDate={
+                data: {
+                    project: {
+                        pid:'1',
+                        projectName:'汇车贷_HCD201701080001',
+                        greenHand:1,   //是否新手标
+                        greenName:'新手',
+                        applyAmt:100000,  //借款金额
+                        minMoneyTemp:1000,                  //本标的起投金额
+                        maxMoneyTemp:10000,               //单笔投资上限
+                        rangeMoneyTemp:100,              //递增金额
+                        restMoneyTemp:1980,   			//标的剩余金额
+                        process:50,
+                        rate:8,    					//年化收益，单位%
+                        raiseRate:4,//加息
+                        repayType:'按月付息，到期还本',//还款方式
+                        loanApplyExpiry:3,   				//投资期限，单位
+                        sxDateTemp:'2017-01-10',                         //上线日期
+                        jsDateTemp:'2017-01-29',                         //结束日期
+                        mjNumTemp:'19',                         //募集天数
+                        fkDateTemp:'',                         //放款日期
+                        hkDateTemp:'',                         //还款日期
+                    },  //标的
+                    memberInfo: {
+                        user:1,//是否登录
+                        isGreen:true, //是否新手
+                        isOpenAccount:true,             //是否开户
+                        isFxpg:true,
+                        accountBalance:2000, //账户余额
+                        redAmount:1548, //红包金额
+                        rateNum:3, //加息券数量
+
+                    },  //会员信息
+                },
+                code: "0",
+                message: "SUCCESS",
+            };
+            let {project,memberInfo}=mockDate.data;
+            this.setState({
+                project:project,
+                member:memberInfo,
+                investAmount:project.minMoneyTemp
+            },()=>{
+            });
         }
-        return amount.toFixed(2);
+
     }
     componentDidMount () {
-        let url = `http://172.16.1.221:9090/detail`;
-        fetch(url,{method:"get"})
-            .then( (res)=>{
-                if (res.status == 200){
-                    return res;
-                }
-            })
-            .then((res) => {
-                res.json();
-            }).then(
-                this.setState({
-                })
-            ).catch((err) => {
-                //console.log("Fetch错误:"+err);
-                console.log('跳转到404页面');
-                }
-            );
-        let data={
-            projectName:'汇车贷_HCD201701080001',
-            greenHand:1,   //是否新手标
-            greenName:'新手',
-            applyAmt:100000,  //借款金额
-            minMoneyTemp:1000,                  //本标的起投金额
-            maxMoneyTemp:200000,               //单笔投资上限
-            rangeMoneyTemp:100,              //递增金额
-            restMoneyTemp:50000,   			//标的剩余金额
-            process:50,
-            rate:8,    					//年化收益，单位%
-            raiseRate:4,//加息
-            repayType:'按月付息，到期还本',//还款方式
-            loanApplyExpiry:3,   				//投资期限，单位
-            sxDateTemp:'2017-01-10',                         //上线日期
-            jsDateTemp:'2017-01-29',                         //结束日期
-            mjNumTemp:'19',                         //募集天数
-            fkDateTemp:'',                         //放款日期
-            hkDateTemp:'',                         //还款日期
-        };
-        let memberInfo={
-            user:1,//是否登录
-            isGreen:true, //是否新手
-            isOpenAccount:true,             //是否开户
-            isFxpg:true,
-            accountBalance:1000, //账户余额
-            redAmount:1548, //红包金额
-            rateNum:3, //加息券数量
-
-        }
-        this.setState({
-            project:data,
-            member:memberInfo,
-            investAmount:data.minMoneyTemp
-        })
+        this.loadData();
     }
     render(){
-        //console.log(this.state);
         let {project,member,investAmount}=this.state;
         return (
             <div>
                 {
-                    JSON.stringify(this.state) == "{}" ? <div>loading</div>
-                        :
-
-                        <div className="wrapper">
+                    JSON.stringify(this.state.project) != "{}" ?
+                        <div>
                             <div className="master">
                                 <dl className="info">
                                     <dt className="title">
@@ -138,18 +149,27 @@ export default class InvestDetailMaster extends React.Component {
                                                 min:project.minMoneyTemp,
                                                 max:(project.maxMoneyTemp<project.restMoneyTemp)?project.maxMoneyTemp:project.restMoneyTemp,
                                                 step:project.rangeMoneyTemp,
-                                                cost:(obj)=>{
+                                                callback:(obj)=>{
+                                                    //console.log(obj);
                                                     this.setState({
-                                                        investAmount:obj.value
+                                                        tips:obj.tips,
+                                                        investAmount:parseFloat(obj.value),
+                                                        code:obj.code
                                                     });
                                                 }
                                             }
                                         }
                                         >
                                         </StepperInput>
+                                        <div className="tips__area">
+                                            {this.state.tips!=''?
+                                                <span className="tips error">{this.state.tips}</span>
+                                                :''
+                                            }
+                                        </div>
                                         <ul className="others">
                                             <li>
-                                                <i className="iconfonticon-user"></i> <strong>
+                                                <i className="iconfont icon-user"></i> <strong>
                                                 我的可用余额：</strong>
                                                 {
                                                     (member.user='')? <a href="#">登陆查看</a>
@@ -171,17 +191,50 @@ export default class InvestDetailMaster extends React.Component {
                                                 }
                                             </li>
                                             <li><strong>预期可赚取：</strong> <i id="money">
-                                                {this.income(investAmount,(project.rate+project.raiseRate),project.loanApplyExpiry,'m')}</i> 元
+                                                {income(investAmount,(project.rate+project.raiseRate),project.loanApplyExpiry,'m')}</i> 元
                                             </li>
                                         </ul>
                                         <div className="form_bar">
                                             {
-                                                (member.user='')? <a className="btn" href="#">我要登录</a>
-                                                    : (!member.isOpenAccount)?<a className="btn" href="#">立即开户</a>
-                                                    :(!member.isFxpg)?<a className="btn" href="#">立即风险评估</a>
-                                                        :(member.accountBalance<investAmount)? <a className="btn" href="#">立即充值</a>
-                                                            :<a className="btn" href="#">立即投资</a>
+                                                (member.user='')? <button className="button able" >
+                                                    我要登录
+                                                </button>:''
                                             }
+                                            {
+                                                (!member.isOpenAccount)?<button className="button able" >
+                                                    立即开户
+                                                </button>:''
+                                            }
+                                            {
+                                                (!member.isFxpg)?
+                                                    <button className="button able" onClick={() => this.toggleModal(`modalRiskAssess`,true,project.pid)}>
+                                                        立即风险评估
+                                                    </button>
+                                                    :''
+                                            }
+                                            {
+                                                (member.accountBalance<investAmount)?
+                                                    <button className="button able" onClick={() => this.toggleModal(`modalRecharge`,true,project.pid)}>
+                                                        立即充值
+                                                    </button>
+                                                    :
+                                                    (this.state.code == 100) ?
+                                                        <button className="button able" onClick={() => this.toggleModal(`modalInvest`, true, project.pid)}>
+                                                            立即投资
+                                                        </button>
+                                                        : <button className="button unable">立即投资</button>
+
+                                            }
+                                            {/*<button className="button unable">满标待审核</button>*/}
+
+
+                                            {/*{
+                                                (member.user='')? <a className="btn" href="#">我要登录</a>
+                                                    : (!member.isOpenAccount)?<a className="btn" href="#" >立即开户</a>
+                                                    :(!member.isFxpg)?<a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,project.pid)}>立即风险评估</a>
+                                                        :(member.accountBalance<investAmount)? <a className="btn" onClick={() => this.toggleModal(`modalRecharge`,true,project.pid)}>立即充值</a>
+                                                            :<a className="btn enable" onClick={() => this.toggleModal(`modalInvest`,true,project.pid)}>立即投资</a>
+                                            }*/}
 
                                         </div>
 
@@ -217,7 +270,76 @@ export default class InvestDetailMaster extends React.Component {
                                 </li>
                             </ul>
                         </div>
+                        :''
                 }
+                {/*投资弹窗*/}
+                <Modal
+                    title="投资"
+                    wrapClassName="vertical-center-modal"
+                    visible={this.state.modalInvest}
+                    width="520px"
+                    footer={null}
+                    onCancel={() => this.toggleModal(`modalInvest`,false,'')}
+                >
+                    {this.state.modalInvest===true?
+                        <ModalInvest
+                            config = {
+                                {
+                                    proId:1,
+                                    investAmount:this.state.investAmount,  //投资金额
+                                    proMinInvestAmount:1000,   //起投金额
+                                    proMaxInvestAmount:10000, //投资上限
+                                    proIncreaseAmount:100,    //递增金额
+                                    restMoney:1100,//标的剩余金额
+                                    rate:project.rate+project.raiseRate, //年化收益
+                                    loanApplyExpiry:project.loanApplyExpiry,  //投资期限
+                                    //账户余额
+
+                                    callback:(obj)=>{
+                                        this.toggleModal(`modalInvest`,false);
+                                        /*this.setState({
+                                            status:1
+                                        });*/
+                                        this.loadData();
+                                    }
+                                }
+                            }
+                        />:''
+                    }
+                </Modal>
+                {/*充值弹窗*/}
+                <Modal
+                    title="充值"
+                    wrapClassName="vertical-center-modal"
+                    visible={this.state.modalRecharge}
+                    width="520px"
+                    footer={null}
+                    onCancel={() => this.toggleModal(`modalRecharge`,false,'')}
+                >
+                    {this.state.modalRecharge===true?
+                        <div>充值</div>:''
+                    }
+                </Modal>
+                {/*风险测评弹窗*/}
+                <Modal
+                    title="风险测评"
+                    wrapClassName="vertical-center-modal"
+                    visible={this.state.modalRiskAssess}
+                    width="800px"
+                    footer={null}
+                    onCancel={() => this.toggleModal(`modalRiskAssess`,false,'')}
+                >
+                    {this.state.modalRiskAssess===true?
+                        <ModalRiskAssess
+                            config={{
+                                callback:(obj)=>{
+                                this.toggleModal(`modalRiskAssess`,false);
+                                this.loadData();
+                                }
+                            }}
+                        />:''
+                    }
+                </Modal>
             </div>
         )
     }

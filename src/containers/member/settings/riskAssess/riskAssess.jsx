@@ -33,12 +33,14 @@ export default ({ location, match, history }) => {
                                 <li><strong>剩余可投金额：</strong>
                                     <p>290000.00元</p>
                                 </li>
-                                <li className="form_bar"><a href="javascript:void(0);" className="btn btn_repeat">重新评估</a></li>
+                                <li className="form__bar">
+                                    <button className="button able">重新评估</button>
+                                </li>
                             </ul>
                         </div>
                         {/*如果未评估过，或重新评估*/}
                         <div className="riskAssessApp">
-                            <form id="frm">
+                            <div className="form__wrapper">
                                 <dl className="controls">
                                     <dt>1.您的投资目的是什么？</dt>
                                     <dd>
@@ -80,10 +82,10 @@ export default ({ location, match, history }) => {
                                     </dd>
                                 </dl>
 
-                                <div className="form_bar">
-                                    <button className="btn">立即评估</button>
+                                <div className="form__bar center">
+                                    <button className="button able">立即评估</button>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </Tab>

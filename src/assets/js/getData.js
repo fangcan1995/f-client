@@ -1,13 +1,27 @@
 import React from 'react';
 
-export  function getData(source='',pageNum=1,pageSize=10,filter=''){
+export  function getData(source='',pageNum,pageSize,filter){
+    //let url = `${source}?pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
+    let url = `${source}`
     let conditions = "";
-    if(filter){
-        for(var item in filter){
-            conditions += "&"+item+"="+filter[item];
-        }
+    if(pageNum != undefined){
+        url += `?pageNum=${pageNum}`;
     }
-    let url = `${source}?pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
+    if(pageNum != undefined){
+        url += `&pageSize=${pageSize}`;
+    }
+    if(filter != undefined){
+        for(var item in filter){
+            if(filter[item]!= undefined && filter[item]!=''){
+                conditions += "&"+item+"="+filter[item];
+            }
+
+        };
+        url += `${conditions}`;
+    }
+    console.log('******************************');
+    console.log(url);
+    console.log('******************************');
     fetch(url,{
         method:"get",
         /*headers: {
@@ -26,8 +40,9 @@ export  function getData(source='',pageNum=1,pageSize=10,filter=''){
             }
         )
         .catch(function(err){
-            console.log("Fetch错误:"+err);
             //console.log("Fetch错误:"+err);
+
         });
+
 
 };
