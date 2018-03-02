@@ -34,10 +34,8 @@ const initialState = Immutable.fromJS({
 
 export default  createReducer (initialState, {
     ['GETDATA_FULFILLED']: (state, action) => {
-        console.log(state);
-        console.log(action);
         state.merge({
-            //data: action.pa
+            constantData: action.payload
         });
 
     }

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 
 import fetch from 'isomorphic-fetch';
-import actionTest from '../../../actions/constant';
+import { actionTest } from '../../../actions/constant';
 
 
 // const constantTable = ({ location, match, history }) => {
@@ -17,13 +17,12 @@ class constantTable extends Component {
     }
 
     componentDidMount () {
-        //this.props.dispatch(actionTest);
-        console.log(this.props);
+        this.props.dispatch(actionTest());
+        console.log(this.props.testReducer);
     }
 
     render () {
-        const { constantData } = this.props;
-        console.log(constantData);
+        console.log(this.props)
         return(
             <div>
                 <div className="title__list">
@@ -167,36 +166,12 @@ class constantTable extends Component {
 }
     
 
-/* let url = `http://172.16.1.221:9090/statistics/totalData?access_token=1ce9477f-f3c7-4885-90e3-5da81d368f13`;
-
- const actionTest = {
-    type: 'GET_TOTALDATA', 
-        async payload () {
-            const constantData = await fetch(url, {
-                method: 'GET',
-            });
-            console.log(constantData);
-        }
-} 
-
-const actionTest = () => {
-    return {
-        type: 'GET_TOTALDATA', 
-        async payload () {
-            const constantData = await fetch(url, {
-                method: 'GET',
-            });
-            console.log(constantData);
-            return constantData;
-        }
-    }
-} */
 
 
-const mapStateToProps = state => {
+function mapStateToProps (state) {
     console.log(state);
     return {
-        constantData: state.constantDataReducer
+        constantData: state.testReducer
     }
 }
 
