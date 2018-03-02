@@ -6,14 +6,17 @@ import Pagination from '../../../../components/pagination/pagination';
 import './redEnvelopes.less';
 import moment from "moment";
 import { connect } from 'react-redux';
-import actions from './redEnvelopesActions';
-import { bindActionCreators, } from 'redux';
+import actionsRedEnvelopes from './actions_redEnvelopes';
+
 class MyRedEnvelopes extends React.Component {
     render() {
-        let {myRedEnvelopes, actions} = this.props;
+
+        console.log('---------------myRedEnvelopes-----------------');
+        let {myRedEnvelopes, dispatch} = this.props;
+        console.log(myRedEnvelopes);
         let {reStatus,data,loaded}=myRedEnvelopes;
         if (!loaded) {
-            actions.getData();
+            dispatch(actionsRedEnvelopes.getData())
         }
         return (
             <div className="member__main">
@@ -30,22 +33,22 @@ class MyRedEnvelopes extends React.Component {
                                             </div>
                                             <div className="filter__cell">
                                                 <p className={(reStatus===0)?'filter__opt filter__opt--active':'filter__opt'}
-                                                   onClick={() => {actions.filter(0)}}>全部
+                                                   onClick={() => {dispatch(actionsRedEnvelopes.filter(0))}}>全部
                                                 </p>
                                             </div>
                                             <div className="filter__cell">
                                                 <p className={(reStatus===1)?'filter__opt filter__opt--active':'filter__opt'}
-                                                   onClick={() => {actions.filter(1)}}>未使用
+                                                   onClick={() => {dispatch(actionsRedEnvelopes.filter(1))}}>未使用
                                                 </p>
                                             </div>
                                             <div className="filter__cell">
                                                 <p className={(reStatus===2)?'filter__opt filter__opt--active':'filter__opt'}
-                                                   onClick={() => {actions.filter(2)}}>已使用
+                                                   onClick={() => {dispatch(actionsRedEnvelopes.filter(2))}}>已使用
                                                 </p>
                                             </div>
                                             <div className="filter__cell">
                                                 <p className={(reStatus===3)?'filter__opt filter__opt--active':'filter__opt'}
-                                                   onClick={() => {actions.filter(3)}}>已过期
+                                                   onClick={() => {dispatch(actionsRedEnvelopes.filter(3))}}>已过期
                                                 </p>
                                             </div>
                                         </div>
@@ -93,7 +96,7 @@ class MyRedEnvelopes extends React.Component {
                                                         pageSize: data.pageSize,
                                                         totalPage: Math.ceil(data.total/data.pageSize),
                                                         paging: (obj) => {
-                                                            actions.getData(obj.currentPage,obj.pageCount,{reStatus: reStatus})
+                                                            dispatch(actionsRedEnvelopes.getData(obj.currentPage,obj.pageCount,{reStatus: reStatus}))
                                                         }
                                                     }
                                                 }>
@@ -120,18 +123,17 @@ class MyRedEnvelopes extends React.Component {
             </div>
         )
     }
-    filterClassName = (index,reStatus) => {
-        return index ===reStatus ? "filter__opt filter__opt--active" : "filter__opt"
-    }
+
 
 }
-const mapStateToProps = state => ({
-    myRedEnvelopes: state.myRedEnvelopes,
-    auth:state.auth
-});
-const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators(actions, dispatch)
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyRedEnvelopes);
+function mapStateToProps(state) {
+    const { auth,myRedEnvelopes } = state.toJS();
+    return {
+        auth,
+        myRedEnvelopes,
+    };
+}
+
+export default connect(mapStateToProps)(MyRedEnvelopes);
 
