@@ -38,6 +38,7 @@ import About from './components/about/aboutus-common';
 import Team from './containers/about/team/team';
 import Partners from './containers/about/partners/partners';
 import ArticleList from './containers/about/list/list';
+import Constant  from  './containers/about/constant/constant';
 
 
 
@@ -137,7 +138,8 @@ export default (
                 return(
                     <About>
                         <Switch>
-                            <Redirect exact from={`${match.url}`} to={`${match.url}/team`} />
+                            <Redirect exact from={`${match.url}`} to={`${match.url}/constant`} />
+                            <Route path={`${match.url}/constant`} component={Constant} />
                             <Route path={`${match.url}/team`} component={Team} />
                             <Route path={`${match.url}/partners`} component={Partners} />
                             <Redirect to="/" />
