@@ -7,7 +7,7 @@ const initialState = Immutable.fromJS({
         list:[],
         pageNum:1,
         total:0,
-        pageSize:10
+        pageSize:10,
     },
     loaded:false,
 });
@@ -15,6 +15,12 @@ const initialState = Immutable.fromJS({
 
 export default createReducer(initialState, {
     ['FETCH_START']: (state, action) => state.merge({
+        data:{
+            list:[],
+            pageNum:1,
+            total:0,
+            pageSize:10,
+        },
     }),
     ['FETCH_SUCCESS']: (state, action) => state.merge({
         data: action.payload,
