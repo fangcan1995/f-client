@@ -3,10 +3,9 @@ import cookie from 'js-cookie';
 import { LOGIN, LOGOUT } from './../constants/actions-type';
 import { API_CONFIG } from './../config/api';
 
-export const loginUser = (params, cbk) => {
+export const loginUser = (params) => {
   return {
     type: LOGIN,
-    fallback: cbk,
     // promise版写法
     /*payload: cFetch(API_CONFIG.auth + params, { method: 'POST', body: params }, true)
     .then(res => {
