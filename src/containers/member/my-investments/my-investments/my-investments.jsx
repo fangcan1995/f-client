@@ -11,7 +11,7 @@ import ModalPlan from './modalPlan';
 import ModalTransfer from './modalTransfer';
 
 import './investments.less';
-export default class Investments extends React.Component{
+export default class MyInvestments extends React.Component{
     constructor(props){
         super(props);
         this.state={

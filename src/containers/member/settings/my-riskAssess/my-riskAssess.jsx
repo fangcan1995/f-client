@@ -3,15 +3,24 @@ import PropTypes from 'prop-types';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import './riskAssess.less';
-
-export default ({ location, match, history }) => {
+export default class MyRiskAssess extends React.Component {
+    render(){
+        return(
+            <div>
+                风险测评
+            </div>
+        )
+    }
+}
+/*
+export default  ({ location, match, history }) => {
     return (
         <div className="member__main">
             <Crumbs/>
             <div className="member__cbox">
                 <Tab>
                     <div name="风险评估">
-                        {/*如果已经评估过*/}
+                        {/!*如果已经评估过*!/}
                         <div className="record">
                             <ul className="result">
                                 <li><strong>姓名：</strong>
@@ -38,7 +47,7 @@ export default ({ location, match, history }) => {
                                 </li>
                             </ul>
                         </div>
-                        {/*如果未评估过，或重新评估*/}
+                        {/!*如果未评估过，或重新评估*!/}
                         <div className="riskAssessApp">
                             <div className="form__wrapper">
                                 <dl className="controls">
@@ -93,4 +102,4 @@ export default ({ location, match, history }) => {
 
         </div>
     );
-};
+};*/

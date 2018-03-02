@@ -5,7 +5,7 @@ import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
 import './rateCoupons.less';
 import moment from "moment";
-export default class RateCoupons extends React.Component{
+export default class MyRateCoupons extends React.Component{
     constructor(props){
         super(props);
         this.state={

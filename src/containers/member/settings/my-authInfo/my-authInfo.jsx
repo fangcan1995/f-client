@@ -4,7 +4,17 @@ import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import './authInfo.less';
 
-export default ({ location, match, history }) => {
+export default class MyAuthInfo extends React.Component {
+    render(){
+        return(
+            <div>
+                基本信息
+            </div>
+        )
+    }
+}
+
+/*export default ({ location, match, history }) => {
     return (
         <div className="member__main">
             <Crumbs/>
@@ -55,4 +65,4 @@ export default ({ location, match, history }) => {
 
         </div>
     );
-};
+};*/
