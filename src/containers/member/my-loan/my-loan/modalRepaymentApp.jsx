@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import  {getData}  from '../../../assets/js/getData';
-import  {poundage,addCommas,checkMoney}  from '../../../assets/js/cost';
+import  {getData}  from '../../../../assets/js/getData';
+import  {poundage,addCommas,checkMoney}  from '../../../../assets/js/cost';
 import { Checkbox,message } from 'antd';
 export default class ModalRepaymentApp extends React.Component {
     constructor(props) {

@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PieChart from '../../../components/charts/pie';
-import {addCommas} from '../../../assets/js/cost';
-import Crumbs from '../../../components/crumbs/crumbs';
-import Tab from '../../../components/tab/tab';
-import Pagination from '../../../components/pagination/pagination';
-import  {getData}  from '../../../assets/js/getData';
+import PieChart from '../../../../components/charts/pie';
+import {addCommas} from '../../../../assets/js/cost';
+import Crumbs from '../../../../components/crumbs/crumbs';
+import Tab from '../../../../components/tab/tab';
+import Pagination from '../../../../components/pagination/pagination';
+import  {getData}  from '../../../../assets/js/getData';
 import { Modal } from 'antd';
 import ModalRepaymentApp from './modalRepaymentApp';
 import './my-loan.less';

@@ -46,26 +46,26 @@ export default ({ location, match, history, ...props }) => {
                     </ul>
                     <h3><i className="iconfont icon-invest"></i>我的投资</h3>
                     <ul>
-                        <li><a href="#">我的投资</a></li>
-                        <li><a href="#">回款记录</a></li>
+                        <ListItemLink to="/my-investments/my-investments">我的投资</ListItemLink>
+                        <ListItemLink to="/my-investments/receiving">回款统计</ListItemLink>
                     </ul>
                     <h3><i className="iconfont icon-myloan"></i>我的借款</h3>
                     <ul>
                         <ListItemLink to="/my-loan/my-loan">我的借款</ListItemLink>
-                        <li><a href="#" >还款计划</a></li>
+                        <ListItemLink to="/my-loan/RepaymentPlans">还款计划</ListItemLink>
                     </ul>
                     <h3><i className="iconfont icon-invitation"></i>奖励管理</h3>
                     <ul>
-                      <ListItemLink to="/my-reward/super-partner">超级合伙人</ListItemLink>
-                      <li><a href="/#">我的红包</a></li>
-                      <li><a href="#">我的加息券</a></li>
+                        <ListItemLink to="/my-reward/super-partner">超级合伙人</ListItemLink>
+                        <ListItemLink to="/my-reward/partner-list">注册理财师</ListItemLink>
+                        <ListItemLink to="/my-reward/my-redEnvelopes">我的红包</ListItemLink>
+                        <ListItemLink to="/my-reward/my-rateCoupons">我的加息券</ListItemLink>
                     </ul>
                     <h3><i className="iconfont icon-setting"></i>基本设置</h3>
                     <ul>
-                        <li><a href="#">个人资料</a></li>
-                        <li><a href="#">认证中心</a></li>
-                        <li><a href="#">风险评估</a></li>
-                        <li><a href="#">站内信箱</a></li>
+                        <ListItemLink to="/my-settings/my-authInfo">个人资料</ListItemLink>
+                        <ListItemLink to="/my-settings/my-riskAssess">风险评估</ListItemLink>
+                        <ListItemLink to="/my-settings/my-messages">站内信箱</ListItemLink>
                     </ul>
                 </div>
             </div>

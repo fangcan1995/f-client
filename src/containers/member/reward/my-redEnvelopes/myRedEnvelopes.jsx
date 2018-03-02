@@ -8,7 +8,7 @@ import moment from "moment";
 import { connect } from 'react-redux';
 import actions from './redEnvelopesActions';
 import { bindActionCreators, } from 'redux';
-class RedEnvelopes extends React.Component {
+class MyRedEnvelopes extends React.Component {
     render() {
         let {myRedEnvelopes, actions} = this.props;
         let {reStatus,data,loaded}=myRedEnvelopes;
@@ -133,5 +133,5 @@ const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(actions, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RedEnvelopes);
+export default connect(mapStateToProps, mapDispatchToProps)(MyRedEnvelopes);
 
