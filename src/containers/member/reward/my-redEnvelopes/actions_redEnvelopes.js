@@ -1,7 +1,7 @@
 import cFetch from './../../../../utils/cFetch';
 import cookie from 'js-cookie';
 let actionsRedEnvelopes = {
-    //注意这里需要 () => ... , 不然 pickAppleAction 不是一个actionCreator, 而是一个thunk
+
     getData: (pageNum=1,pageSize=10,filter={}) => (dispatch, myRedEnvelopes) => {
         let conditions='';
         if(JSON.stringify(filter)!={}){
