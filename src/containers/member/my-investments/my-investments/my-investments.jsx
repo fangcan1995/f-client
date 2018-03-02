@@ -188,15 +188,18 @@ class MyInvestments extends React.Component{
         this.loadData(1,10,{status:1});
 
     }*/
+    componentDidMount () {
+        this.props.dispatch(actionsMyInvestments.getData());
+    }
     render(){
-        /*const {list,pageNum,total,pageSize}=this.state.dataSetting;
-        const totalPage=Math.ceil(total/pageSize);*/
-        console.log('----------------');
         let {myInvestments,dispatch} = this.props;
         let {status,data,loaded,charts}=myInvestments;
-        if (!loaded) {
+        console.log('---------------data-------------');
+        console.log(status);
+        console.log('---------------/data-------------');
+        /*if (!loaded) {
             dispatch(actionsMyInvestments.getData());
-        }
+        }*/
         return(
             <div className="member__main">
                 <Crumbs/>
@@ -224,6 +227,147 @@ class MyInvestments extends React.Component{
                             </Tab>
                         </div>
                     </Tab>
+                </div>
+                <div className="member__cbox"  style={{ padding:'20px 30px' }}>
+                    <div className="filter">
+                        <div className="filter__outer">
+                            <div className="filter__inner">
+                                <div className="filter__row">
+                                    <div className="filter__cell">
+                                        <h5>类型:</h5>
+                                    </div>
+                                    <div className="filter__cell">
+                                        <p className={(status===1)?'filter__opt filter__opt--active':'filter__opt'}
+                                           onClick={ () => { dispatch(actionsMyInvestments.toggleClass(1)) } }>招标中</p>
+                                    </div>
+                                    <div className="filter__cell">
+                                        <p className={(status===2)?'filter__opt filter__opt--active':'filter__opt'}
+                                           onClick={ () => { dispatch(actionsMyInvestments.toggleClass(2)) } }>回款中</p>
+                                    </div>
+                                    <div className="filter__cell">
+                                        <p className={(status===3)?'filter__opt filter__opt--active':'filter__opt'}
+                                           onClick={ () => { dispatch(actionsMyInvestments.toggleClass(3)) } }>已回款</p>
+                                    </div>
+                                    <div className="filter__cell">
+                                        <p className={(status===4)?'filter__opt filter__opt--active':'filter__opt'}
+                                           onClick={ () => { dispatch(actionsMyInvestments.toggleClass(4)) } }>转让申请</p>
+                                    </div>
+                                    <div className="filter__cell">
+                                        <p className={(status===5)?'filter__opt filter__opt--active':'filter__opt'}
+                                           onClick={ () => { dispatch(actionsMyInvestments.toggleClass(5)) } }>转让中</p>
+                                    </div>
+                                    <div className="filter__cell">
+                                        <p className={(status===6)?'filter__opt filter__opt--active':'filter__opt'}
+                                           onClick={ () => { dispatch(actionsMyInvestments.toggleClass(6)) } }>已转出</p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    {(data.total>0)?(<div className="table__wrapper">
+                            <table className={`tableList table${status}`}>
+                                <thead>
+                                <tr>
+                                    <th>项目名称</th>
+                                    {([4,5,6].includes(status))?<th>原始项目名称</th>:''}
+                                    {([1,2,3].includes(status))? <th>投资总额(元)</th>:''}
+                                    {([1,2,3].includes(status))? <th>锁定期限</th> :''}
+                                    {([1].includes(status))? <th>还款方式</th> :''}
+                                    {([1,2,3,4].includes(status))? <th>投资金额(元)</th>:''}
+                                    {([4,5,6].includes(status))? <th>转让金额（元）</th>:''}
+                                    {([4].includes(status))? <th>手续费（元）</th>:''}
+                                    {([4].includes(status))? <th>转让申请日期</th>:''}
+                                    {([5].includes(status))? <th>当前投资额（元）</th>:''}
+                                    {([5].includes(status))? <th>投资进度</th>:''}
+                                    {([5].includes(status))? <th>转让日期</th>:''}
+                                    {([6].includes(status))? <th>转让成功日期</th>:''}
+                                    {([4,5].includes(status))? <th>状态</th>:''}
+                                    {([1,2,3].includes(status))? <th>投资时间</th>:''}
+                                    {([1].includes(status))? <th>投资进度(%)</th>:''}
+                                    {([2].includes(status))? <th>下期回款日期</th> :''}
+                                    {([2].includes(status))? <th>下期回款金额(元)</th> :''}
+                                    {([2].includes(status))? <th>回款金额(元)</th> :''}
+                                    {([3].includes(status))? <th>结清时间</th> :''}
+                                    {([2,3,6].includes(status))? <th>操作</th> :''}
+                                </tr>
+                                </thead>
+
+
+                                {(data.list.length>0)?(
+                                        <tbody>
+                                        {
+                                            data.list.map((item, rowIndex) => (
+                                                <tr key={`row-${rowIndex}`}>
+                                                    {([1,2,3].includes(status))?
+                                                        <td>
+                                                            <p><a href="#">{item.proName}</a></p>
+                                                        </td> :
+                                                        <td>
+                                                            <p>{item.transNo}</p>
+                                                        </td>
+                                                    }
+                                                    {([4,5,6].includes(status))?
+                                                        <td>
+                                                            <p><a href="">
+                                                                {item.proName}</a>
+                                                            </p>
+                                                        </td>:''}
+                                                    {([1,2,3].includes(status))? <td>{item.proMoney}</td>:''}
+                                                    {([1,2,3].includes(status))? <td>{item.loanExpiry}</td> :''}
+                                                    {([1].includes(status))? <th>{item.loanRefundWay}</th> :''}
+                                                    {([1,2,3,4].includes(status))? <td>{item.proMoneyEnd}</td>:''}
+                                                    {([4,5,6].includes(status))? <td>{item.transAmt}</td>:''}
+                                                    {([4].includes(status))? <td>{item.transFee}</td>:''}
+                                                    {([4].includes(status))? <td>{item.transApplyTime}</td>:''}
+                                                    {([5].includes(status))? <td>{item.transFinanced}</td>:''}
+                                                    {([5].includes(status))? <td>{item.transSchedule}</td>:''}
+                                                    {([5].includes(status))? <td>{item.transPutDate}</td>:''}
+                                                    {([6].includes(status))? <td>{item.transferDate}</td>:''}
+                                                    {([4,5].includes(status))? <td>{item.transStatus}</td>:''}
+                                                    {([1,2,3].includes(status))? <td>{item.inveCreateTime}</td>:''}
+                                                    {([1].includes(status))? <td>{item.proMoneyPercent}</td>:''}
+                                                    {([2].includes(status))? <td>{item.earnShdEarnDate}</td> :''}
+                                                    {([2].includes(status))? <td>{item.earnShdEarnAmou}</td> :''}
+                                                    {([3].includes(status))? <td>{item.earnRemittancAmou}</td> :''}
+                                                    {([3].includes(status))? <td>{item.earnRealEarnDate}</td> :''}
+                                                    {([2,3,6].includes(status))?
+                                                        <td>
+                                                            {(status==2||status==3)? <a onClick={() => this.toggleModal(`modalPlan`,true,item.proId)} >回款计划</a>:''}
+                                                            {(status==2)? <a onClick={() => this.toggleModal(`modalTransfer`,true,item.proId)}>债权转让</a>:''}
+                                                            {(status==2||status==3)? <a href="">投资合同</a>:''}
+                                                            {(status==6)? <a href="">转让合同</a>:''}
+                                                        </td>
+                                                        :''
+                                                    }
+                                                </tr>
+                                            ))
+                                        }
+                                        </tbody>
+                                    )
+                                    :(<tbody>loading</tbody>)
+                                }
+
+
+                            </table>
+                            <Pagination config = {
+                                {
+                                    currentPage:1,
+                                    pageSize:10,
+                                    totalPage:2,
+                                    filter:status,
+                                    paging:(obj)=>{
+                                        this.loadData(obj.currentPage,obj.pageCount,{re_status:obj.filter});
+                                    }
+                                }
+                            } ></Pagination>
+                        </div>)
+                        :(<div></div>)
+                    }
+
+
                 </div>
             </div>
 

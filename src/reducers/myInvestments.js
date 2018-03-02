@@ -12,8 +12,12 @@ const initialState = Immutable.fromJS({
         pageSize:10,
     },
     charts:{
-        totalInvestment:{},
-        accumulatedIncome:{},
+        totalInvestment:{
+            data:[],
+        },
+        accumulatedIncome:{
+            data:[],
+        },
     },
     status: 1,
 
@@ -29,7 +33,7 @@ export default createReducer(initialState, {
         },
     }),
     ['FETCH_SUCCESS']: (state, action) => state.merge({
-        data: action.payload,
+        //data: action.payload,
         loaded: true,
     }),
     ['FETCH_FAIL']: (state, action) => state.merge({
@@ -37,11 +41,11 @@ export default createReducer(initialState, {
     }),
     ['FETCH_LIST_SUCCESS']: (state, action) => state.merge({
         data: action.payload,
-        loaded: true,
+        //loaded: true,
     }),
     ['FETCH_CHARTS_SUCCESS']: (state, action) => state.merge({
         charts: action.payload,
-        loaded: true,
+        //loaded: true,
     }),
     ['TOGGLE_CLASS']: (state, action) => state.merge({
         rcStatus: action.payload,

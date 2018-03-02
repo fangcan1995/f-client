@@ -6,12 +6,12 @@ let actionsMyInvestments = {
         // 获取统计数据
         dispatch(actionsMyInvestments.createPie());
         dispatch(actionsMyInvestments.getList());
+        dispatch(actionsMyInvestments.refreshSuccess());
 
     },
     createPie:()=>(dispatch,myInvestments)=>{
         // 获取统计数据
-        console.log('获取统计数据');
-        let url = `http://172.16.4.5:8084/statistics.php`
+        let url = `http://172.16.4.5:8084/statistics.php`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -37,15 +37,15 @@ let actionsMyInvestments = {
                             data:[
                                 {name:'回款中',value:accumulatedIncome.earnMoneyInBack,instruction:`${addCommas(accumulatedIncome.earnMoneyInBack)}元`},
                                 {name:'已回款',value:accumulatedIncome.earnMoneyBacked,instruction:`${addCommas(accumulatedIncome.earnMoneyBacked)}元` },
-
                             ]
                         },
                     };
                     dispatch(actionsMyInvestments.refreshChartsSuccess(charts));
                 }, 1000);
-            }).catch(err=>{
-            dispatch(actionsMyInvestments.refreshFail('连接错误'));
-        });
+            })
+            .catch(err=>{
+                dispatch(actionsMyInvestments.refreshFail('连接错误'));
+            });
     },
     getList: (pageNum=1,pageSize=10,filter={}) => (dispatch, myInvestments) => {
         // 获取统计数据
@@ -65,6 +65,7 @@ let actionsMyInvestments = {
                     dispatch(actionsMyInvestments.refreshFail('后端代码'));
                 }
             })
+            .then((data) => data.json())
             .then(data => {
                 setTimeout(() => {
                     dispatch(actionsMyInvestments.refreshListSuccess(data.data));
