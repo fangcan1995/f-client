@@ -10,10 +10,7 @@ import actionsRedEnvelopes from './actions_redEnvelopes';
 
 class MyRedEnvelopes extends React.Component {
     render() {
-
-        console.log('---------------myRedEnvelopes-----------------');
         let {myRedEnvelopes, dispatch} = this.props;
-        console.log(myRedEnvelopes);
         let {reStatus,data,loaded}=myRedEnvelopes;
         if (!loaded) {
             dispatch(actionsRedEnvelopes.getData())
@@ -55,57 +52,54 @@ class MyRedEnvelopes extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            {loaded ? (
-                                    <div>
-                                        {data.total>0?(<div>
-                                                <ul className="redBagList">
-                                                    {
-                                                        data.list.map((l, i) => (
-                                                            <li className={`reStatus-${l.reStatus}`} key={`row-${i}`}>
-                                                                <div className=
-                                                                         {
-                                                                             l.reTypeName == '返现红包' ?
-                                                                                 'img fxhb'
-                                                                                 : 'img xjhb'
-                                                                         }
-                                                                >
-                                                                    <p className="denomination">{l.reAmount}</p>
-                                                                    <p className="remark"></p>
-                                                                </div>
-                                                                <div className="txt">
-                                                                    <p>
-                                                                        <strong>使用规则：</strong>{l.productCategoryName}满{l.useMinAmount}元可用
-                                                                    </p>
-                                                                    <p><strong>有效期：</strong>
-                                                                        {
-                                                                            !l.beginTime ? '' : moment(l.beginTime).format('YYYY-MM-DD')
-                                                                        }
-                                                                        --
-                                                                        {
-                                                                            !l.endTime ? '' : moment(l.endTime).format('YYYY-MM-DD')
-                                                                        }
-                                                                    </p>
-                                                                </div>
-                                                            </li>
-                                                        ))
-                                                    }
-                                                </ul>
-                                                <Pagination config={
-                                                    {
-                                                        currentPage: data.pageNum,
-                                                        pageSize: data.pageSize,
-                                                        totalPage: Math.ceil(data.total/data.pageSize),
-                                                        paging: (obj) => {
-                                                            dispatch(actionsRedEnvelopes.getData(obj.currentPage,obj.pageCount,{reStatus: reStatus}))
-                                                        }
-                                                    }
-                                                }>
-                                                </Pagination>
-                                            </div>)
-                                            :(<div>暂无记录</div>)}
+                            <div>
+                                {data.total>0?(<div>
+                                        <ul className="redBagList">
+                                            {
+                                                data.list.map((l, i) => (
+                                                    <li className={`reStatus-${l.reStatus}`} key={`row-${i}`}>
+                                                        <div className=
+                                                                 {
+                                                                     l.reTypeName == '返现红包' ?
+                                                                         'img fxhb'
+                                                                         : 'img xjhb'
+                                                                 }
+                                                        >
+                                                            <p className="denomination">{l.reAmount}</p>
+                                                            <p className="remark"></p>
+                                                        </div>
+                                                        <div className="txt">
+                                                            <p>
+                                                                <strong>使用规则：</strong>{l.productCategoryName}满{l.useMinAmount}元可用
+                                                            </p>
+                                                            <p><strong>有效期：</strong>
+                                                                {
+                                                                    !l.beginTime ? '' : moment(l.beginTime).format('YYYY-MM-DD')
+                                                                }
+                                                                --
+                                                                {
+                                                                    !l.endTime ? '' : moment(l.endTime).format('YYYY-MM-DD')
+                                                                }
+                                                            </p>
+                                                        </div>
+                                                    </li>
+                                                ))
+                                            }
+                                        </ul>
+                                        <Pagination config={
+                                            {
+                                                currentPage: data.pageNum,
+                                                pageSize: data.pageSize,
+                                                totalPage: Math.ceil(data.total/data.pageSize),
+                                                paging: (obj) => {
+                                                    dispatch(actionsRedEnvelopes.getData(obj.currentPage,obj.pageCount,{reStatus: reStatus}))
+                                                }
+                                            }
+                                        }>
+                                        </Pagination>
                                     </div>)
-                                : (<div>正在加载数据...</div>)
-                            }
+                                    :(<div></div>)}
+                            </div>
                         </div>
                     </Tab>
                 </div>
