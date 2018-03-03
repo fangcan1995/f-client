@@ -130,8 +130,8 @@ export default class About extends Component {
                             <dt><TitleParent title="帮助中心" to="/about/help/" /></dt>
                             <dd>
                                 <ul>
-                                    <ListItemLink to="/about/help/questions">常见问题</ListItemLink>
-                                    <ListItemLink to="/about/help/contact">联系我们</ListItemLink>
+                                    <ListItemLink to="/about/questions">常见问题</ListItemLink>
+                                    <ListItemLink to="/about/contact">联系我们</ListItemLink>
                                 </ul>
                             </dd>
                         </dl>

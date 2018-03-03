@@ -15,11 +15,15 @@ export default createReducer(initialState, {
     isFetching: true,
     isAuthenticated: false,
   }),
-  ['LOGIN_FULFILLED']: (state, action) => state.merge({
-    isFetching: false,
-    isAuthenticated: true,
-    user: action.payload
-  }),
+  ['LOGIN_FULFILLED']: (state, action) => {
+      console.log('1234567')
+      console.log(action);
+      state.merge({
+        isFetching: false,
+        isAuthenticated: true,
+        user: action.payload
+      })
+  },
   ['LOGIN_REJECTED']: (state, action) => state.merge({
     isFetching: false,
     isAuthenticated: false,

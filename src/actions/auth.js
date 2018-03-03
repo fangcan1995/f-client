@@ -27,12 +27,14 @@ export const loginUser = (params, cbk) => {
     // async/await配合promise处理异步
     async payload () {
       const token = await cFetch(API_CONFIG.auth + params, { method: 'POST', body: params }, true);
+      console.log(token);
       cookie.set('token', token)
       const res = await cFetch(API_CONFIG.user);
       const { code, data } = res;
       if ( code == 0 ) {
         const { menus, roles, ...user } = data || {};
         cookie.set('user', user);
+        console.log(user);
         return user;
       } else {
         throw res;

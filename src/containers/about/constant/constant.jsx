@@ -18,11 +18,12 @@ class constantTable extends Component {
 
     componentDidMount () {
         this.props.dispatch(actionTest());
-        console.log(this.props.testReducer);
+        console.log(this.props);
     }
 
     render () {
-        console.log(this.props)
+        const { constantData } = this.props;
+        console.log(constantData);
         return(
             <div>
                 <div className="title__list">
@@ -169,9 +170,9 @@ class constantTable extends Component {
 
 
 function mapStateToProps (state) {
-    console.log(state);
+    console.log(state.toJS());
     return {
-        constantData: state.testReducer
+        constantData: state.toJS().constantReducer
     }
 }
 
