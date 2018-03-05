@@ -18,15 +18,32 @@ import BankCard from './containers/member/bank-card/bank-card';
 import Recharge from './containers/member/recharge/recharge';
 import Withdrawals from './containers/member/withdrawals/withdrawals';
 import TransactionRecord from './containers/member/transaction-record/transaction-record';
-import MyLoan from './containers/member/my-loan/my-loan';
+
+import MyLoan from './containers/member/my-loan/my-loan/my-loan';
+import RepaymentPlans from './containers/member/my-loan/repaymentPlans/repaymentPlans';
+
+import MyInvestments from './containers/member/my-investments/my-investments/my-investments';
+import Receiving from './containers/member/my-investments/receiving/receiving';
 
 import SuperPartner from './containers/member/reward/super-partner/super-partner';
 import PartnerList from './containers/member/reward/partner/master/master';
+import MyRedEnvelopes from './containers/member/reward/my-redEnvelopes/myRedEnvelopes';
+import MyRateCoupons from './containers/member/reward/my-rateCoupons/my-rateCoupons';
 
+import MyAuthInfo from './containers/member/settings/my-authInfo/my-authInfo';
+import MyMessage from './containers/member/settings/my-messages/my-messages';
+import MyRiskAssess from './containers/member/settings/my-riskAssess/my-riskAssess';
+
+
+//信息披露&关于我们页面的模块
 import About from './components/about/aboutus-common';
 import Team from './containers/about/team/team';
 import Partners from './containers/about/partners/partners';
 import ArticleList from './containers/about/list/list';
+import Constant  from  './containers/about/constant/constant';
+import Contact from './containers/about/contact/contact';
+import Honor from './containers/about/honor/honor';
+
 
 
 const userIsAuthenticated = connectedRouterRedirect({
@@ -65,6 +82,20 @@ export default (
                         <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/my-loan`} />
                             <Route path={`${match.url}/my-loan`} component={MyLoan} />
+                            <Route path={`${match.url}/repaymentPlans`} component={RepaymentPlans} />
+                            <Redirect to="/" />
+                        </Switch>
+                    </MemberSidebar>
+                )
+            }} />
+            <Route strict path="/my-investments" render={(props) => {
+                const { match } = props;
+                return (
+                    <MemberSidebar {...props}>
+                        <Switch>
+                            <Redirect exact from={`${match.url}`} to={`${match.url}/my-investments`} />
+                            <Route path={`${match.url}/my-investments`} component={MyInvestments} />
+                            <Route path={`${match.url}/receiving`} component={Receiving} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>
@@ -77,6 +108,22 @@ export default (
                         <Switch>
                             <Route path={`${match.url}/super-partner`} component={SuperPartner} />
                             <Route path={`${match.url}/partner-list`} component={PartnerList} />
+                            <Route path={`${match.url}/my-redEnvelopes`} component={MyRedEnvelopes} />
+                            <Route path={`${match.url}/my-rateCoupons`} component={MyRateCoupons} />
+                            <Redirect to="/" />
+                        </Switch>
+                    </MemberSidebar>
+                )
+            }} />
+            <Route strict path="/my-settings" render={(props) => {
+                const { match } = props;
+                return (
+                    <MemberSidebar {...props}>
+                        <Switch>
+                            <Route path={`${match.url}/my-messages`} component={MyMessage} />
+                            <Route path={`${match.url}/my-authInfo`} component={MyAuthInfo} />
+                            <Route path={`${match.url}/my-riskAssess`} component={MyRiskAssess} />
+
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>
@@ -87,8 +134,11 @@ export default (
                 return(
                     <About>
                         <Switch>
-                            <Redirect exact from={`${match.url}`} to={`${match.url}/team`} />
+                            <Redirect exact from={`${match.url}`} to={`${match.url}/constant`} />
+                            <Route path={`${match.url}/constant`} component={Constant} />
                             <Route path={`${match.url}/team`} component={Team} />
+                            <Route path={`${match.url}/contact`} component={Contact} />
+                            <Route path={`${match.url}/honor`} component={Honor} />
                             <Route path={`${match.url}/partners`} component={Partners} />
                             <Redirect to="/" />
                         </Switch>

@@ -5,8 +5,10 @@ import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
 import './rateCoupons.less';
 import moment from "moment";
-export default class RateCoupons extends React.Component{
-    constructor(props){
+import { connect } from 'react-redux';
+import actionsRateCoupons from './actions_rateCoupons';
+class MyRateCoupons extends React.Component{
+    /*constructor(props){
         super(props);
         this.state={
             dataSetting:{},  //数据
@@ -48,10 +50,16 @@ export default class RateCoupons extends React.Component{
     filter(pram){
         this.setState({ rcStatus: pram });
         this.loadData(1,10,{rcStatus:pram});
-    }
+    }*/
     render(){
-        const {list,pageNum,total,pageSize}=this.state.dataSetting;
-        const totalPage=Math.ceil(total/pageSize);
+        /*const {list,pageNum,total,pageSize}=this.state.dataSetting;
+        const totalPage=Math.ceil(total/pageSize);*/
+        console.log(this.props);
+        let {myRateCoupons, dispatch} = this.props;
+        let {rcStatus,data,loaded}=myRateCoupons;
+        if (!loaded) {
+            dispatch(actionsRateCoupons.getData())
+        }
         return(
             <div className="member__main">
                 <Crumbs/>
@@ -66,37 +74,33 @@ export default class RateCoupons extends React.Component{
                                                 <h5>类型:</h5>
                                             </div>
                                             <div className="filter__cell">
-                                                <p className={this.filterClassName(0)} onClick={() => {
-                                                    this.filter(0)
-                                                }}>全部</p>
+                                                <p className={(rcStatus===0)?'filter__opt filter__opt--active':'filter__opt'}
+                                                   onClick={() => {dispatch(actionsRateCoupons.filter(0))}}>全部
+                                                </p>
                                             </div>
                                             <div className="filter__cell">
-                                                <p className={this.filterClassName(1)} onClick={() => {
-                                                    this.filter(1)
-                                                }}>未使用</p>
+                                                <p className={(rcStatus===1)?'filter__opt filter__opt--active':'filter__opt'}
+                                                   onClick={() => {dispatch(actionsRateCoupons.filter(1))}}>未使用
+                                                </p>
                                             </div>
                                             <div className="filter__cell">
-                                                <p className={this.filterClassName(2)} onClick={() => {
-                                                    this.filter(2)
-                                                }}>已使用</p>
+                                                <p className={(rcStatus===2)?'filter__opt filter__opt--active':'filter__opt'}
+                                                   onClick={() => {dispatch(actionsRateCoupons.filter(2))}}>已使用
+                                                </p>
                                             </div>
                                             <div className="filter__cell">
-                                                <p className={this.filterClassName(3)} onClick={() => {
-                                                    this.filter(3)
-                                                }}>已过期</p>
+                                                <p className={(rcStatus===3)?'filter__opt filter__opt--active':'filter__opt'}
+                                                   onClick={() => {dispatch(actionsRateCoupons.filter(3))}}>已过期
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {
-                                JSON.stringify(this.state.dataSetting) == "{}"? <div>连接错误,请稍后再试</div>
-                                    :
-                                    list.length>0 ?
                                         <div>
                                             <ul className="couponList">
                                                 {
-                                                    list.map((item, index) => (
+                                                    data.list.map((item, index) => (
 
                                                         <li className={`reStatus-${item.rcStatus}`} key={`row-${index}`}>
                                                             <div className='img'>
@@ -123,18 +127,16 @@ export default class RateCoupons extends React.Component{
                                             </ul>
                                             <Pagination config = {
                                                 {
-                                                    currentPage:pageNum,
-                                                    pageSize:pageSize,
-                                                    totalPage:totalPage,
+                                                    currentPage:data.pageNum,
+                                                    pageSize:data.pageSize,
+                                                    totalPage: Math.ceil(data.total/data.pageSize),
                                                     paging:(obj)=>{
-                                                        this.loadData(obj.currentPage,obj.pageCount,{reStatus:this.state.reStatus});
+                                                        dispatch(actionsRateCoupons.getData(obj.currentPage,obj.pageCount,{reStatus: reStatus}))
                                                     }
                                                 }
                                             } >
                                             </Pagination>
                                         </div>
-                                        : <div>暂无加息券</div>
-                            }
                         </div>
                     </Tab>
 
@@ -157,3 +159,12 @@ export default class RateCoupons extends React.Component{
 }
 
 
+function mapStateToProps(state) {
+    const { auth,myRateCoupons } = state.toJS();
+    return {
+        auth,
+        myRateCoupons,
+    };
+}
+
+export default connect(mapStateToProps)(MyRateCoupons);

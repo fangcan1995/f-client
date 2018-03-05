@@ -6,17 +6,14 @@ import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
 import  {getData}  from '../../../../assets/js/getData';
-import { Modal,message } from 'antd';
-import ModalPlan from './modalPlan';
-import ModalTransfer from './modalTransfer';
-
-import './investments.less';
-export default class Investments extends React.Component{
+import { Modal } from 'antd';
+import ModalRepaymentApp from './modalRepaymentApp';
+import './my-loan.less';
+export default class MyLoans extends React.Component {
     constructor(props){
         super(props);
         this.state={
-            modalPlan: false,
-            modalTransfer: false,
+            modalRepaymentApp: false,
             currentId:'',
             dataSetting:{},  //项目数据
             charts:{
@@ -140,44 +137,43 @@ export default class Investments extends React.Component{
             });*/
         }else{
             let mockDate={
-                    data: {
-                        totalInvestment: {
-                            proMoneyBidding:5000.00,
-                            proMoneyInBack:2000.00,
-                            proMoneyBacked:3000.00,
-                            proMoneyOut:1000.00,
-                        },  //投资总额
-                        accumulatedIncome: {
-                            earnMoneyInBack:5000.00,
-                            earnMoneyBacked:5000.00,
-                            earnMoneyOut:2000.00,
-                        },  //累计收益
-                    },
-                    code: "0",
-                    message: "SUCCESS",
-                };
+                data: {
+                    totalInvestment: {
+                        proMoneyBidding:5000.00,
+                        proMoneyInBack:2000.00,
+                        proMoneyBacked:3000.00,
+                        proMoneyOut:1000.00,
+                    },  //投资总额
+                    accumulatedIncome: {
+                        earnMoneyInBack:5000.00,
+                        earnMoneyBacked:5000.00,
+                        earnMoneyOut:2000.00,
+                    },  //累计收益
+                },
+                code: "0",
+                message: "SUCCESS",
+            };
             let {totalInvestment,accumulatedIncome}=mockDate.data;
             this.setState({
                 charts:{
                     totalInvestment:{
-                            data:[
-                                {name:'招标中',value:totalInvestment.proMoneyBidding,instruction:`${addCommas(totalInvestment.proMoneyBidding)}元`},
-                                {name:'回款中',value:totalInvestment.proMoneyInBack,instruction:`${addCommas(totalInvestment.proMoneyInBack)}元`},
-                                {name:'已回款',value:totalInvestment.proMoneyBacked,instruction:`${addCommas(totalInvestment.proMoneyBacked)}元`},
-                                {name:'已转出',value:totalInvestment.proMoneyOut,instruction:`${addCommas(totalInvestment.proMoneyOut)}元`}
-                            ]
-
+                        data:[
+                            {name:'申请中',value:totalInvestment.proMoneyBidding,instruction:`${addCommas(totalInvestment.proMoneyBidding)}元`  },
+                            {name:'招标中',value:totalInvestment.proMoneyInBack,instruction:`${addCommas(totalInvestment.proMoneyInBack)}元`},
+                            {name:'还款中',value:totalInvestment.proMoneyBacked,instruction:`${addCommas(totalInvestment.proMoneyBacked)}元`},
+                            {name:'已结清',value:totalInvestment.proMoneyOut,instruction:`${addCommas(totalInvestment.proMoneyOut)}元`}
+                        ]
                     },
                     accumulatedIncome:{
                             data:[
-                                {name:'回款中',value:accumulatedIncome.earnMoneyInBack,instruction:`${addCommas(accumulatedIncome.earnMoneyInBack)}元`},
-                                {name:'已回款',value:accumulatedIncome.earnMoneyBacked,instruction:`${addCommas(accumulatedIncome.earnMoneyBacked)}元` },
+                                {name:'还款中',value:accumulatedIncome.earnMoneyInBack,instruction:`${addCommas(accumulatedIncome.earnMoneyInBack)}元`  },
+                                {name:'已结清',value:accumulatedIncome.earnMoneyBacked,instruction:`${addCommas(accumulatedIncome.earnMoneyBacked)}元`  },
                             ]
-
                     },
                 }
-
             },()=>{
+
+
             });
         }
     }
@@ -192,29 +188,29 @@ export default class Investments extends React.Component{
         return(
             <div className="member__main">
                 <Crumbs/>
-                <form className="member__cbox">
+                <div className="member__cbox">
                     <Tab>
-                        <div name="我的投资" className="chart">
+                        <div name="我的借款" className="chart">
                             <Tab>
-                                <div name="投资总额">
+                                <div name="借款总额">
                                     {
                                         JSON.stringify(this.state.charts.totalInvestment) != "{}"?
                                             <PieChart
                                                 data={this.state.charts.totalInvestment.data}
                                                 style={{height: '300px', width: '930px'}}
-                                                totalTitle="投资总额"
+                                                totalTitle="借款总额"
                                             >
                                             </PieChart>
                                             :''
                                     }
                                 </div>
-                                <div name="累计收益">
+                                <div name="累计利息">
                                     {
                                         JSON.stringify(this.state.charts.accumulatedIncome) != "{}"?
                                             <PieChart
                                                 data={this.state.charts.accumulatedIncome.data}
                                                 style={{height: '300px', width: '930px'}}
-                                                totalTitle="累计收益"
+                                                totalTitle="累计利息"
                                             >
                                             </PieChart>
                                             :''
@@ -223,8 +219,8 @@ export default class Investments extends React.Component{
                             </Tab>
                         </div>
                     </Tab>
-                </form>
-                <div className="member__cbox"  style={{ padding:'20px 30px' }}>
+                </div>
+                <div className="member__cbox" style={{ padding:'20px 30px' }}>
                     <div className="filter">
                         <div className="filter__outer">
                             <div className="filter__inner">
@@ -233,29 +229,20 @@ export default class Investments extends React.Component{
                                         <h5>类型:</h5>
                                     </div>
                                     <div className="filter__cell">
-                                        <p className={ this.switchFilterStyle('status',1) } onClick={ () => { this.filter('status',1) } }>招标中</p>
+                                        <p className={ this.switchFilterStyle('status',1) } onClick={ () => { this.filter('status',1) } }>申请中</p>
                                     </div>
                                     <div className="filter__cell">
-                                        <p className={  this.switchFilterStyle('status',2) } onClick={ () => { this.filter('status',2) } }>回款中</p>
+                                        <p className={  this.switchFilterStyle('status',2) } onClick={ () => { this.filter('status',2) } }>招标中</p>
                                     </div>
                                     <div className="filter__cell">
-                                        <p className={  this.switchFilterStyle('status',3)  } onClick={ () => { this.filter('status',3) } }>已回款</p>
+                                        <p className={  this.switchFilterStyle('status',3)  } onClick={ () => { this.filter('status',3) } }>还款中</p>
                                     </div>
                                     <div className="filter__cell">
-                                        <p className={  this.switchFilterStyle('status',4) } onClick={ () => { this.filter('status',4) } }>转让申请</p>
+                                        <p className={  this.switchFilterStyle('status',4) } onClick={ () => { this.filter('status',4) } }>已结清</p>
                                     </div>
-                                    <div className="filter__cell">
-                                        <p className={  this.switchFilterStyle('status',5) } onClick={ () => { this.filter('status',5) } }>转让中</p>
-                                    </div>
-                                    <div className="filter__cell">
-                                        <p className={  this.switchFilterStyle('status',6) } onClick={ () => { this.filter('status',6) } }>已转出</p>
-                                    </div>
-
                                 </div>
-
                             </div>
                         </div>
-
                     </div>
                     {
                         JSON.stringify(this.state.dataSetting) == "{}"? <div>连接错误,请稍后再试</div>
@@ -266,77 +253,63 @@ export default class Investments extends React.Component{
                                         <thead>
                                         <tr>
                                             <th>项目名称</th>
-                                            {(this.state.status==4||this.state.status==5||this.state.status==6)? <th>原始项目名称</th>:''}
-                                            {(this.state.status==1||this.state.status==2||this.state.status==3)? <th>投资总额(元)</th>:''}
-                                            {(this.state.status==1||this.state.status==2||this.state.status==3)? <th>锁定期限</th> :''}
-                                            {(this.state.status==1)? <th>还款方式</th> :''}
-                                            {(this.state.status==1||this.state.status==2||this.state.status==3||this.state.status==4)? <th>投资金额(元)</th>:''}
-                                            {(this.state.status==4||this.state.status==5||this.state.status==6)? <th>转让金额（元）</th>:''}
-                                            {(this.state.status==4)? <th>手续费（元）</th>:''}
-                                            {(this.state.status==4)? <th>转让申请日期</th>:''}
-                                            {(this.state.status==5)? <th>当前投资额（元）</th>:''}
-                                            {(this.state.status==5)? <th>投资进度</th>:''}
-                                            {(this.state.status==5)? <th>转让日期</th>:''}
-                                            {(this.state.status==6)? <th>转让成功日期</th>:''}
-                                            {(this.state.status==4||this.state.status==5)? <th>状态</th>:''}
-
-
-                                            {(this.state.status==1||this.state.status==2||this.state.status==3)? <th>投资时间</th>:''}
-                                            {(this.state.status==1)? <th>投资进度(%)</th>:''}
-                                            {(this.state.status==2)? <th>下期回款日期</th> :''}
-                                            {(this.state.status==2)? <th>下期回款金额(元)</th> :''}
-                                            {(this.state.status==3)? <th>回款金额(元)</th> :''}
-                                            {(this.state.status==3)? <th>结清时间</th> :''}
-                                            {(this.state.status==2||this.state.status==3||this.state.status==6)? <th>操作</th> :''}
+                                            {(this.state.status==1)? <th>项目类型</th>:''}
+                                            <th>借款金额(元)</th>
+                                            {(this.state.status==1)? <th>借款年利率(%)</th>:''}
+                                            <th>借款期限</th>
+                                            {(this.state.status==1)? <th>还款方式</th>:''}
+                                            {(this.state.status==1)? <th>申请日期</th>:''}
+                                            {(this.state.status==2)? <th>发布日期</th>:''}
+                                            {(this.state.status==2)? <th>当前投资金额(元)</th>:''}
+                                            {(this.state.status==2)? <th>投资进度(%)</th>:''}
+                                            {(this.state.status==2)? <th>募集结束日期</th>:''}
+                                            {(this.state.status==3||this.state.status==4)? <th>放款日期</th>:''}
+                                            {(this.state.status==3)? <th>下期还款日期</th>:''}
+                                            {(this.state.status==3)? <th>下期还款金额</th>:''}
+                                            {(this.state.status==4)? <th>还款本金</th>:''}
+                                            {(this.state.status==4)? <th>还款利息</th>:''}
+                                            {(this.state.status==4)? <th>逾期罚金</th>:''}
+                                            {(this.state.status==4)? <th>逾期罚息</th>:''}
+                                            {(this.state.status==4)? <th>结清日期</th>:''}
+                                            {(this.state.status==1||this.state.status==2)? <th>状态</th>:''}
+                                            {(this.state.status==3||this.state.status==4)? <th>操作</th> :''}
                                         </tr>
                                         </thead>
                                         <tbody>
                                         {
                                             list.map((item, rowIndex) => (
                                                 <tr key={`row-${rowIndex}`}>
-                                            {(this.state.status==1||this.state.status==2||this.state.status==3)?
-                                                <td>
-                                                    <p><a href="#">{item.proName}{/*债转标项目名称*/}</a></p>
-                                                </td> :
-                                                <td>
-                                                    <p>{item.transNo}{/*项目名称*/}</p>
-                                                </td>
-                                            }
-                                            {(this.state.status==4||this.state.status==5||this.state.status==6)?
-                                                <td>
-                                                    <p><a href="">
-                                                        {item.proName}{/*项目名称*/}</a>
-                                                    </p>
-                                                </td>:''}
-                                            {(this.state.status==1||this.state.status==2||this.state.status==3)? <td>{item.proMoney}{/*投资总额*/}</td>:''}
-                                            {(this.state.status==1||this.state.status==2||this.state.status==3)? <td>{item.loanExpiry}{/*锁定期限*/}</td> :''}
-                                            {this.state.status==1? <th>{item.loanRefundWay}{/*还款方式*/}</th> :''}
-                                            {(this.state.status==1||this.state.status==2||this.state.status==3||this.state.status==4)? <td>{item.proMoneyEnd}{/*投资金额*/}</td>:''}
-                                            {(this.state.status==4||this.state.status==5||this.state.status==6)? <td>{item.transAmt}{/*转让金额*/}</td>:''}
-                                            {(this.state.status==4)? <td>{item.transFee}{/*手续费*/}</td>:''}
-                                            {(this.state.status==4)? <td>{item.transApplyTime}{/*转让申请日期*/}</td>:''}
-                                            {(this.state.status==5)? <td>{item.transFinanced}{/*当前投资额*/}</td>:''}
-                                            {(this.state.status==5)? <td>{item.transSchedule}{/*转让进度*/}</td>:''}
-                                            {(this.state.status==5)? <td>{item.transPutDate}{/*转让日期*/}</td>:''}
-                                            {(this.state.status==6)? <td>{item.transferDate}{/*转让成功日期*/}</td>:''}
-                                            {(this.state.status==4||this.state.status==5)? <td>{item.transStatus}{/*状态*/}</td>:''}
-                                            {(this.state.status==1||this.state.status==2||this.state.status==3)? <td>{item.inveCreateTime}{/*投资时间*/}</td>:''}
-                                            {(this.state.status==1)? <td>{item.proMoneyPercent}{/*投资进度*/}</td>:''}
-                                            {(this.state.status==2)? <td>{item.earnShdEarnDate}{/*下期回款日期*/}</td> :''}
-                                            {(this.state.status==2)? <td>{item.earnShdEarnAmou}{/*下期回款金额*/}</td> :''}
-                                            {(this.state.status==3)? <td>{item.earnRemittancAmou}{/*回款金额*/}</td> :''}
-                                            {(this.state.status==3)? <td>{item.earnRealEarnDate}{/*结清时间*/}</td> :''}
-                                            {(this.state.status==2||this.state.status==3||this.state.status==6)?
-                                                <td>
-                                                    {(this.state.status==2||this.state.status==3)? <a onClick={() => this.toggleModal(`modalPlan`,true,item.proId)} >回款计划</a>:''}
-                                                    {(this.state.status==2)? <a onClick={() => this.toggleModal(`modalTransfer`,true,item.proId)}>债权转让</a>:''}
-                                                    {(this.state.status==2||this.state.status==3)? <a href="">投资合同</a>:''}
-                                                    {(this.state.status==6)? <a href="">转让合同</a>:''}
-                                                </td>
-                                                :''
-                                            }
-                                        </tr>
-                                                ))
+                                                        <td>
+                                                            <p>{item.transNo}{/*项目名称*/}</p>
+                                                        </td>
+                                                    {(this.state.status==1)? <td>项目类型</td>:''}
+                                                    <td>借款金额</td>
+                                                    {(this.state.status==1)? <td>5%</td>:''}
+                                                    <td>借款期限</td>
+                                                    {(this.state.status==1)? <td>还款方式</td>:''}
+                                                    {(this.state.status==1)? <td>申请日期</td>:''}
+                                                    {(this.state.status==2)? <td>发布日期</td>:''}
+                                                    {(this.state.status==2)? <td>当前投资金额(元)</td>:''}
+                                                    {(this.state.status==2)? <td>投资进度</td>:''}
+                                                    {(this.state.status==2)? <td>募集结束日期</td>:''}
+                                                    {(this.state.status==3||this.state.status==4)? <td>放款日期</td>:''}
+                                                    {(this.state.status==3)? <td>下期还款日期</td>:''}
+                                                    {(this.state.status==3)? <td>下期还款金额</td>:''}
+                                                    {(this.state.status==4)? <td>还款本金</td>:''}
+                                                    {(this.state.status==4)? <td>还款利息</td>:''}
+                                                    {(this.state.status==4)? <td>逾期罚金</td>:''}
+                                                    {(this.state.status==4)? <td>逾期罚息</td>:''}
+                                                    {(this.state.status==4)? <td>结清日期</td>:''}
+                                                    {(this.state.status==1||this.state.status==2)? <td>{item.transStatus}{/*状态*/}</td>:''}
+                                                    {(this.state.status==3||this.state.status==4)?
+                                                        <td>
+                                                            {(this.state.status==3)? <a onClick={() => this.toggleModal(`modalRepaymentApp`,true,item.proId)}>提前还款</a>:''}
+                                                            <a href="">借款合同</a>
+                                                        </td>
+                                                        :''
+                                                    }
+                                                </tr>
+                                            ))
                                         }
                                         </tbody>
                                     </table>
@@ -356,40 +329,15 @@ export default class Investments extends React.Component{
                     }
                 </div>
                 <Modal
-                    title="回款计划"
+                    title="提前还款申请"
                     wrapClassName="vertical-center-modal"
-                    visible={this.state.modalPlan}
-                    width="680px"
-                    footer={null}
-                    onCancel={() => this.toggleModal(`modalPlan`,false,'')}
-                >
-                    {this.state.modalPlan===true?
-                        <ModalPlan proId={this.state.currentId} />:''
-                    }
-                </Modal>
-                <Modal
-                    title="转让申请"
-                    wrapClassName="vertical-center-modal"
-                    visible={this.state.modalTransfer}
+                    visible={this.state.modalRepaymentApp}
                     width="520px"
                     footer={null}
-                    onCancel={() => this.toggleModal(`modalTransfer`,false,'')}
+                    onCancel={() => this.toggleModal(`modalRepaymentApp`,false,'')}
                 >
-                    {this.state.modalTransfer===true?
-                        <ModalTransfer
-                            config = {
-                                {
-                                    proId:this.state.currentId,
-                                    callback:(obj)=>{
-                                        this.toggleModal(`modalTransfer`,false);
-                                        this.setState({
-                                            status:1
-                                        });
-                                        this.loadData(1,10,{status:1});
-                                    }
-                                }
-                            }
-                        />:''
+                    {this.state.modalRepaymentApp===true?
+                        <ModalRepaymentApp proId={this.state.currentId} />:''
                     }
                 </Modal>
             </div>

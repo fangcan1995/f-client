@@ -5,7 +5,7 @@ import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import './message.less';
 import moment from "moment";
-export default class Message extends React.Component{
+export default class MyMessages extends React.Component{
     constructor(props){
         super(props);
         this.state={
