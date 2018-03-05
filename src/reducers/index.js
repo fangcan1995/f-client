@@ -7,7 +7,7 @@ import myInvestments from './myInvestments'
 
 export {
     auth,
-    homePage
+    homePage,
     constantReducer,
     myRedEnvelopes,
     myRateCoupons,

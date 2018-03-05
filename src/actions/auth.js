@@ -1,7 +1,4 @@
-require('es6-promise').polyfill();
-import fetch from 'isomorphic-fetch';
 import cookie from 'js-cookie';
-
 import cFetch from './../utils/cFetch';
 import { LOGIN, LOGOUT } from './../constants/actions-type';
 import { API_CONFIG } from './../config/api';
