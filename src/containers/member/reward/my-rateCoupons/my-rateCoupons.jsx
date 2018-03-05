@@ -8,58 +8,12 @@ import moment from "moment";
 import { connect } from 'react-redux';
 import actionsRateCoupons from './actions_rateCoupons';
 class MyRateCoupons extends React.Component{
-    /*constructor(props){
-        super(props);
-        this.state={
-            dataSetting:{},  //数据
-            rcStatus: 0  //默认显示全部
-        }
-    }
-    filterClassName = (index) => {
-        return index === this.state.rcStatus ? "filter__opt filter__opt--active" : "filter__opt"
-    }
-    loadData(currentPage,pageSize,filter){
-        let conditions = "";
-        if(filter){
-            for(var item in filter){
-                conditions += "&"+item+"="+filter[item];
-            }
-        }
-        let url = `http://172.16.1.221:9090/members/memberRateCoupons?access_token=137c6472-22ba-4dde-aa15-e1dff2436641&pageNum=${currentPage}&pageSize=${pageSize}${conditions}`;
-        fetch(url,{
-            method:"get"
-        })
-            .then(function (response){
-                if (response.status == 200){
-                    return response;
-                }
-            })
-            .then((data) => data.json())
-            .then((data) => {
-                    this.setState({ dataSetting:data.data });
-                }
-
-            )
-            .catch(function(err){
-                console.log("Fetch错误:"+err);
-            });
-    }
     componentDidMount () {
-        this.loadData(1,10);
+        this.props.dispatch(actionsRateCoupons.getData());
     }
-    filter(pram){
-        this.setState({ rcStatus: pram });
-        this.loadData(1,10,{rcStatus:pram});
-    }*/
     render(){
-        /*const {list,pageNum,total,pageSize}=this.state.dataSetting;
-        const totalPage=Math.ceil(total/pageSize);*/
-        console.log(this.props);
         let {myRateCoupons, dispatch} = this.props;
         let {rcStatus,data,loaded}=myRateCoupons;
-        if (!loaded) {
-            dispatch(actionsRateCoupons.getData())
-        }
         return(
             <div className="member__main">
                 <Crumbs/>

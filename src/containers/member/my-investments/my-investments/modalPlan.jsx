@@ -2,10 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default class ModalPlan extends React.Component {
-    constructor(props) {
+    /*constructor(props) {
         super(props);
+        console.log(props);
+    }*/
+    componentDidMount () {
+        //this.props.dispatch(actionsMyInvestments.getData());
+        console.log(this.props);
+
+        console.log('能调用父级的方法吗');
+        //this.getData();
     }
+
     render() {
+        console.log('this.props-------');
+        console.log(this.props);
+
         return (
                     <div className="table__wrapper">
                         <table className="tableList">

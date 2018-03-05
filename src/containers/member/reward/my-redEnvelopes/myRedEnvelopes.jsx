@@ -9,12 +9,12 @@ import { connect } from 'react-redux';
 import actionsRedEnvelopes from './actions_redEnvelopes';
 
 class MyRedEnvelopes extends React.Component {
+    componentDidMount () {
+        this.props.dispatch(actionsRedEnvelopes.getData());
+    }
     render() {
-        let {myRedEnvelopes, dispatch} = this.props;
+        let {myRedEnvelopes,auth, dispatch} = this.props;
         let {reStatus,data,loaded}=myRedEnvelopes;
-        if (!loaded) {
-            dispatch(actionsRedEnvelopes.getData())
-        }
         return (
             <div className="member__main">
                 <Crumbs/>
