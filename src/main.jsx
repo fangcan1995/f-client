@@ -12,11 +12,13 @@ import routes from './routes';
 
 const store = configureStore();*/
 import store from './store/store';
+const oRoot = document.createElement('div');
+oRoot.className = 'root';
 render(
   <Provider store={store}>
     <BrowserRouter>
       {routes}
     </BrowserRouter>
   </Provider>,
-  document.body.appendChild(document.createElement('div'))
+  document.body.appendChild(oRoot)
 );
