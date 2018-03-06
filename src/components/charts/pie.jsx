@@ -17,7 +17,7 @@ export default class PieChart extends Component{
         let total=0;
         if(data){
             data.forEach((key) => {
-                total+=key.value;
+                total+=parseFloat(key.value);
             });
         }
         if(!showUserLegend){
