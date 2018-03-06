@@ -4,15 +4,52 @@ import { connect } from 'react-redux';
 
 
 import fetch from 'isomorphic-fetch';
-import { actionTest } from '../../../actions/constant';
+import { 
+    actionTest,
+    actionUpdateLoanMoney,
+    actionUpdateLoanCount,
+    actionUpdateLoanMemberCount,
+    actionUpdateInvestInfo
+} from '../../../actions/constant';
 
 
-// const constantTable = ({ location, match, history }) => {
+import ReactEcharts from 'echarts-for-react';
+import {getEchartLine,getEchartBar} from '../../../assets/js/getEchart';
+import PieChart from '../../../components/charts/pie';
+import {addCommas} from '../../../assets/js/cost';
+
+
+
+
+
 class constantTable extends Component {
     constructor (props) {
         super(props);
         this.state = {
             data: null
+        }
+    }
+
+    handleSelect (e) {
+        const year = e.target.value;
+        const { dispatch } = this.props;
+        let id = e.target.getAttribute('id');
+        switch (id) {
+            case 'loanMoney': 
+                dispatch(actionUpdateLoanMoney(year));
+                return;
+            case 'loanCount': 
+                dispatch(actionUpdateLoanCount(year));
+                console.log(2);
+                return;
+            case 'loanMemberCount': 
+                dispatch(actionUpdateLoanMemberCount(year));
+                console.log(3);
+                return;
+            case 'investValue': 
+                dispatch(actionUpdateInvestInfo(year));
+                console.log(4);
+                return;
         }
     }
 
@@ -24,6 +61,131 @@ class constantTable extends Component {
     render () {
         const { constantData } = this.props;
         console.log(constantData);
+        //柱状图数据
+        let loanMoneyData = {
+            xAxis_data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            legend:{data:['']},
+            series_data:[
+                {
+                    name:"",
+                    type:'bar',
+                    barWidth:30,
+                    itemStyle:{
+                        normal:{
+                            color:'#668bc1',  //柱体颜色
+                            label: {
+                                show:true,
+                                formatter: "{c}万",
+                                position:'top'
+                            }
+                        }
+                    },
+                    data:constantData.borrowInfo.loanMoney
+                }
+            ]
+        }
+
+        let loanCountData = {
+            xAxis_data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            legend:{data:['']},
+            series_data:[
+                {
+                    name:"",
+                    type:'bar',
+                    barWidth:30,
+                    itemStyle:{
+                        normal:{
+                            color:'#668bc1',  //柱体颜色
+                            label: {
+                                show:true,
+                                formatter: "{c}笔",
+                                position:'top'
+                            }
+                        }
+                    },
+                    data:constantData.borrowInfo.loanCount
+                }
+            ]
+        }
+
+        let loanMemberCountData = {
+            xAxis_data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            legend:{data:['']},
+            series_data:[
+                {
+                    name:"",
+                    type:'bar',
+                    barWidth:40,
+                    itemStyle:{
+                        normal:{
+                            color:'#668bc1',  //柱体颜色
+                            label: {
+                                show:true,
+                                formatter: "{c}笔",
+                                position:'top'
+                            }
+                        }
+                    },
+                    data:constantData.borrowInfo.loanMemberCount
+                }
+            ]
+        }
+
+        let investValueData =  {
+            xAxis_data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            legend:{data:['']},
+            series_data:[
+                {
+                    name:"",
+                    type:'bar',
+                    barWidth:40,
+                    itemStyle:{
+                        normal:{
+                            color:'#668bc1',  //柱体颜色
+                            label: {
+                                show:true,
+                                formatter: "{c}笔",
+                                position:'top'
+                            }
+                        }
+                    },
+                    data:constantData.investInfo.investValue
+                }
+            ]
+        }
+
+        /*饼图数据*/
+        const { sexDistribute } = constantData.investInfo;
+        const { ageDistribute } = constantData.investInfo;
+        let sexData = [
+            {
+                name:`男`,
+                value: sexDistribute[0],
+            },
+            {
+                name:'女',
+                value: sexDistribute[1],
+            },
+        ];
+        let ageData = [
+            {
+                name:`25以下`,
+                value: ageDistribute[0],
+            },
+            {
+                name:'25~35',
+                value: ageDistribute[1],
+            },
+            {
+                name:`35~50`,
+                value: ageDistribute[2],
+            },
+            {
+                name:'50以上',
+                value: ageDistribute[3],
+            },
+        ]
+
         return(
             <div>
                 <div className="title__list">
@@ -36,55 +198,55 @@ class constantTable extends Component {
                                 <div className="detailLine">
                                     <div className="detailCell">
                                         <p>累计撮合交易额（元）</p>
-                                        <h3>99,999</h3>
+                                        <h3>{constantData.totalData.detailAmountSum}</h3>
                                     </div>
                                     <div className="detailCell">
                                         <p>累计撮合交易笔数</p>
-                                        <h3>873</h3>
+                                        <h3>{constantData.totalData.detailCount }</h3>
                                     </div>
                                     <div className="detailCell">
                                         <p>累计为用户赚取（元）</p>
-                                        <h3>961,750</h3>
+                                        <h3>{constantData.totalData.earnAmountSum}</h3>
                                     </div>
                                     <div className="detailCell">
                                         <p>累计服务用户数</p>
-                                        <h3>984</h3>
+                                        <h3>{constantData.totalData.memberCount}</h3>
                                     </div>
                                 </div>
                                 <div className="detailLine">
                                     <div className="detailCell">
                                         <p>借贷剩余金额（元）</p>
-                                        <h3>61,750</h3>
+                                        <h3>{constantData.totalData.surplusRpmtAmountSum}</h3>
                                     </div>
                                     <div className="detailCell">
                                         <p>借贷剩余笔数</p>
-                                        <h3>9,961,750</h3>
+                                        <h3>{constantData.totalData.surplusRpmtCount}</h3>
                                     </div>
                                     <div className="detailCell">
                                         <p>逾期金额（元）</p>
-                                        <h3>1,750</h3>
+                                        <h3>{constantData.totalData.lateRpmtAmountSum}</h3>
                                     </div>
                                     <div className="detailCell">
                                         <p>逾期笔数</p>
-                                        <h3>9,961,750</h3>
+                                        <h3>{constantData.totalData.lateRpmtCount}</h3>
                                     </div>
                                 </div>
                                 <div className="detailLine">
                                     <div className="detailCell">
                                         <p>累计借款人数</p>
-                                        <h3>1750</h3>
+                                        <h3>{constantData.totalData.rpmtCount}</h3>
                                     </div>
                                     <div className="detailCell">
                                         <p>当前借款人数</p>
-                                        <h3>9120</h3>
+                                        <h3>{constantData.totalData.nowRpmtCount}</h3>
                                     </div>
                                     <div className="detailCell">
                                         <p>累计出借人数</p>
-                                        <h3>98</h3>
+                                        <h3>{constantData.totalData.earnCount}</h3>
                                     </div>
                                     <div className="detailCell">
                                         <p>当前出借人数</p>
-                                        <h3>750</h3>
+                                        <h3>{constantData.totalData.nowEarnCount}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -96,26 +258,50 @@ class constantTable extends Component {
                             <div className="borrowDetails">
                                 <div className="borrowLine">
                                     <h4>借款金额</h4>
-                                    <div className="form"></div>
-                                    <select name="" id="">
-                                        <option>2016</option>
-                                        <option>2017</option>
+                                    <div className="form">
+                                        <ReactEcharts
+                                            option={getEchartBar(loanMoneyData)}
+                                            style={{height: '300px', width: '100%'}}
+                                            opts={{renderer: 'svg'}}
+                                            className='react_for_echarts'
+                                        />
+                                    </div>
+                                    <select name="" id="loanMoney" onChange={this.handleSelect.bind(this)}>
+                                        <option value="2016">2016</option>
+                                        <option value="2017">2017</option>
+                                        <option selected value="2018">2018</option>
                                     </select>
                                 </div>
                                 <div className="borrowLine">
                                     <h4>借款笔数</h4>
-                                    <div className="form"></div>
-                                    <select name="" id="">
-                                        <option>2016</option>
-                                        <option>2017</option>
+                                    <div className="form">
+                                        <ReactEcharts
+                                            option={getEchartBar(loanCountData)}
+                                            style={{height: '300px', width: '100%'}}
+                                            opts={{renderer: 'svg'}}
+                                            className='react_for_echarts'
+                                        />
+                                    </div>
+                                    <select name="" id="loanCount" onChange={this.handleSelect.bind(this)}>
+                                        <option value="2016">2016</option>
+                                        <option value="2017">2017</option>
+                                        <option selected value="2018">2018</option>
                                     </select>
                                 </div>
                                 <div className="borrowLine">
                                     <h4>借款人数</h4>
-                                    <div className="form"></div>
-                                    <select name="" id="">
-                                        <option>2016</option>
-                                        <option>2017</option>
+                                    <div className="form">
+                                        <ReactEcharts
+                                            option={getEchartBar(loanMemberCountData)}
+                                            style={{height: '300px', width: '100%'}}
+                                            opts={{renderer: 'svg'}}
+                                            className='react_for_echarts'
+                                        />
+                                    </div>
+                                    <select name="" id="loanMemberCount" onChange={this.handleSelect.bind(this)}>
+                                        <option value="2016">2016</option>
+                                        <option value="2017">2017</option>
+                                        <option selected value="2018">2018</option>
                                     </select>
                                 </div>
                             </div>
@@ -127,33 +313,47 @@ class constantTable extends Component {
                             <div className="investDetails">
                                 <div className="investLine">
                                     <h4>出借人数</h4>
-                                    <div className="form"></div>
-                                    <select name="" id="">
-                                        <option>2016</option>
-                                        <option>2017</option>
+                                    <div className="form">
+                                        <ReactEcharts
+                                            option={getEchartBar(investValueData)}
+                                            style={{height: '300px', width: '100%'}}
+                                            opts={{renderer: 'svg'}}
+                                            className='react_for_echarts'
+                                        />
+                                    </div>
+                                    <select name="" id="investValue" onChange={this.handleSelect.bind(this)}>
+                                        <option value="2016">2016</option>
+                                        <option value="2017">2017</option>
+                                        <option selected value="2018">2018</option>
                                     </select>
                                 </div>
                                 <div className="investLine">
                                     <div className="pieChartCell">
                                         <h4>性别分布</h4>
                                         <div className="pieChart">
-                                            <div className="pie"></div>
-                                            <div className="pieChartInfo">
-                                                <p><span>男</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>35</span>%</p>
-                                                <p><span>女</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>65</span>%</p>
-                                            </div>
+                                            <PieChart
+                                                data={sexData}
+                                                style={{height: '240px', width: '404px'}}
+                                                totalTitle="说明"
+                                                showUserLegend='false'
+                                                showLegend='false'
+                                                unit='人'
+                                                /* color={['#e32323', '#498911']} */
+                                            />
                                         </div>
                                     </div>
                                     <div className="pieChartCell">
                                         <h4>年龄分布</h4>
                                         <div className="pieChart">
-                                            <div className="pie"></div>
-                                            <div className="pieChartInfo">
-                                                <p><span>25岁以下</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>10</span>%</p>
-                                                <p><span>25-35岁</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>40</span>%</p>
-                                                <p><span>35-50岁</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>25</span>%</p>
-                                                <p><span>50岁以上</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>25</span>%</p>
-                                            </div>
+                                            <PieChart
+                                                data={ageData}
+                                                style={{height: '240px', width: '404px'}}
+                                                totalTitle="说明"
+                                                showUserLegend='false'
+                                                showLegend='false'
+                                                unit='人'
+                                                /* color={['#e32323', '#498911']} */
+                                            />
                                         </div>
                                     </div>
                                 </div>

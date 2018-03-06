@@ -156,9 +156,7 @@ export default (
                             <Route path={`${match.url}/news/report`} component={ArticleList} />
 
                             {/* 安全保障 */}
-                            <Route path={`${match.url}/dangerControl/56`} component={ArticleList} />
-                            <Route path={`${match.url}/dangerControl/57`} component={ArticleList} />
-                            <Route path={`${match.url}/dangerControl/58`} component={ArticleList} />
+                            <Route path={`${match.url}/dangerControl/:id`} component={ArticleList} />
 
                             {/* 法律法规 */}
                             <Route path={`${match.url}/laws`} component={ArticleList} />
@@ -175,36 +173,6 @@ export default (
                     </About>
                 )
             }} />
-            {/* <Route path="/news" render={(props) => {
-                const { match } = props;
-                return(
-                    <About>
-                        <Switch>
-                            <Redirect exact from={`${match.url}`} to={`${match.url}/mediaReport`} />
-                            <Route path={`${match.url}/mediaCompany`} component={ArticleList} />
-                            <Route path={`${match.url}/mediaReport`} component={ArticleList} />
-                            <Route path={`${match.url}/mediaIndustry`} component={ArticleList} />
-                            <Route path={`${match.url}/notice`} component={ArticleList} />
-                            <Route path={`${match.url}/report`} component={ArticleList} />
-                            <Redirect to="/" />
-                        </Switch>
-                    </About>
-                )
-            }} />
-            <Route path="/plus" render={(props) => {
-                const { match } = props;
-                return (
-                    <About>
-                        <Switch>
-                            <Redirect exact from={`${match.url}`} to={`${match.url}/mediaReport`} />
-                            <Route path={`${match.url}/dangerControl/56`} component={ArticleList} />
-                            <Route path={`${match.url}/dangerControl/57`} component={ArticleList} />
-                            <Route path={`${match.url}/dangerControl/58`} component={ArticleList} />
-                            <Redirect to="/" />
-                        </Switch>
-                    </About>
-                );
-            }} /> */}
             <Redirect to="/" />
         </Switch>
     </App>
