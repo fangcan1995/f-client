@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import  {getData}  from '../../../../assets/js/getData';
 import  {poundage,addCommas,checkMoney}  from '../../../../assets/js/cost';
 import { Checkbox,message } from 'antd';
-export default class ModalTransfer extends React.Component {
+import { connect } from 'react-redux';
+import actionsMyInvestments from './actions_myInvestments';
+class ModalTransfer extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.amountChange = this.amountChange.bind(this)
+        /*this.handleChange = this.handleChange.bind(this);
         this.onChange = this.onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state={
@@ -15,9 +18,12 @@ export default class ModalTransfer extends React.Component {
             tips:'',  //错误提示
             transferInfo:{},  //债转详情
             isRead:false
-        }
+        }*/
     }
-    handleSubmit(e){
+    /*handleSubmit(e){
+        this.props.dispatch(actionsMyInvestments.checkTransfer());
+    }*/
+    /*handleSubmit(e){
         const {callback} = this.props.config;
         //1 验证输入是否正确
         let result=checkMoney({
@@ -59,19 +65,20 @@ export default class ModalTransfer extends React.Component {
         })
             .then((data) => data.json())
             .then((data) => {
-                    if(data.code==='0'){
-                        message.success('您的申请已经提交');
-                        callback({});
-                    }else{
-                        message.error('err,申请不通过');
-                    }
+                if(data.code==='0'){
+                    message.success('您的申请已经提交');
+                    callback({});
+                }else{
+                    message.error('err,申请不通过');
+                }
 
-             })
+            })
             .catch((err)=>{
                 message.error('连接失败，请重试');
-        });
+            });
         //4 关闭弹窗
-    }
+    }*/
+    /*
     onChange(e) {
         this.setState({
             isRead: e.target.checked
@@ -138,52 +145,123 @@ export default class ModalTransfer extends React.Component {
     }
     componentDidMount () {
         this.loadData();
+    }*/
+    checkInput(parm){
+
+    }
+    onChange(e) {
+        this.setState({
+            isRead: e.target.checked
+        });
+        if(this.state.tips===`请同意债权转让服务协议！`){
+            this.setState({
+                tips: ``
+            });
+        }
+    }
+    //改变转让金额
+    amountChange(event) {
+        console.log(event.target.value);
+        this.props.dispatch(actionsMyInvestments.changeAmount(1000));
+        console.log('修改store')
+        //修改store
+    }
+    handleSubmit(e){
+        //验证
+        //this.props.dispatch(actionsMyInvestments.checkTransfer(this.props.transferInfo.transferData));
+        let{transferData}=this.props.transferInfo;
+        let value=parseInt(this.refs.amount.value);
+        //1 验证输入是否正确
+        //console.log(value);
+        let result=checkMoney({
+            'value':value,
+            'type':0,
+            'min_v':parseInt(transferData.proMinInvestAmount),
+            'max_v':parseInt(transferData.transFinanced),
+            'label':'转让金额',
+            'interval':parseInt(transferData.proIncreaseAmount)
+        });
+        if(!result[0]){
+            //console.log(`显示错误:${result[2]}`);
+            this.props.dispatch(actionsMyInvestments.checkTransfer());
+            //this.props.dispatch(actionsMyInvestments.refreshPostSwitch(false,${result[2]}));
+            //return false;
+        }
+        //2 验证是否同意协议
+        if(!transferData.isRead){
+            //this.props.dispatch(actionsMyInvestments.refreshPostSwitch(false,`显示请同意债权转让服务协议！`));
+            //console.log(`显示请同意债权转让服务协议！`);
+            return false;
+        }
+        //console.log('通过验证');
+        //this.props.dispatch(actionsMyInvestments.refreshPostSwitch(true,``));
+        // 提交后台
+        if(this.props.transferInfo.postSwitch){
+            this.props.dispatch(actionsMyInvestments.postTransfer());
+        }
     }
     render() {
+        let {dispatch}=this.props;
+        let {currentId,transferData,value,tips}=this.props.transferInfo;
+        console.log('---------this.props--------');
+        console.log(this.props);
+        console.log('---------this.props--------');
         return (
             <div className="pop__transfer">
                 <div className="form__wrapper">
                     <dl className="form__bar">
                         <dt><label>实际投资金额:</label></dt>
-                        <dd><i id="Accountbalance" className="money">{this.state.transferInfo.transFinanced}</i> 元</dd>
+                        <dd><i id="Accountbalance" className="money">{/*{transferData.transFinanced}*/}</i> 元</dd>
                     </dl>
                     <dl className="form__bar">
                         <dt><label>转让金额:</label></dt>
                         <dd>
-                            <input type="text" name="amount"  className="textInput moneyInput"  autoComplete="off" maxLength="13" onChange={this.handleChange} />
+                            <input type="text"  className="textInput moneyInput"  autoComplete="off" maxLength="13" onChange={this.amountChange} ref="amount" />
                             <span className="unit" >元</span>
                         </dd>
                     </dl>
-                    <dl className="form__bar short">
+                    <dl className="form__bar">
                         <dt><label>手续费：</label></dt>
-                        <dd><i id="cost" className="money">{addCommas(poundage(this.state.value,this.state.transferInfo.proTransferFee))}</i> 元
+                        <dd>
+
+                            <i id="cost" className="money">{/*{addCommas(poundage(value,transferData.proTransferFee))}*/}</i> 元
                         </dd>
                     </dl>
-                    <dl className="form__bar short">
+                    <dl className="form__bar">
                         <dt><label>预期到账金额：</label></dt>
                         <dd><i id="money" className="money">
-                            {this.state.value!=0?
-                                addCommas(this.state.value-poundage(this.state.value,this.state.transferInfo.proTransferFee))
+                            {/*{value!=0?
+                                addCommas(value-poundage(value,transferData.proTransferFee))
                                 : `0.00`
-                            }
+                            }*/}
                             </i>元
                         </dd>
                     </dl>
-                    <div className="form__bar">
+                    <dl className="form__bar"></dl>
+                    <dl className="form__bar">
                         <p>
                             <Checkbox onChange={this.onChange}>我已阅读并同意<a href="/transfer.html" target="_blank">《巴巴汇债权转让服务协议》</a></Checkbox>
                         </p>
-                    </div>
+                    </dl>
                     <div className="form__bar">
-                            <span className="errorMessages">
-                                {this.state.tips}
-                            </span>
+                        <span className="errorMessages">
+                            {tips}
+                        </span>
                     </div>
                     <div className="form__bar">
                         <button  className="button able"　onClick={this.handleSubmit}>确认</button>
                     </div>
                 </div>
+
             </div>
         );
     }
 };
+function mapStateToProps(state) {
+    const { auth,myInvestments } = state.toJS();
+    return {
+        auth,
+        myInvestments,
+    };
+}
+export default connect(mapStateToProps)(ModalTransfer);

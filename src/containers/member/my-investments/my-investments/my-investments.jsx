@@ -5,29 +5,27 @@ import {addCommas} from '../../../../assets/js/cost';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
-import { Modal,message } from 'antd';
+import { Modal } from 'antd';
 import ModalPlan from './modalPlan';
 import ModalTransfer from './modalTransfer';
+import moment from "moment";
 import { connect } from 'react-redux';
 import actionsMyInvestments from './actions_myInvestments';
 import './investments.less';
 class MyInvestments extends React.Component{
     componentDidMount () {
-        this.props.dispatch(actionsMyInvestments.getData());
+        this.props.dispatch(actionsMyInvestments.getData(1));
     }
     render(){
         let {myInvestments,dispatch} = this.props;
-        let {status,myList,loaded,charts,modalPlan,modalTransfer,currentPro}=myInvestments;
-        /*console.log('----------currentPro----------');
-        console.log(currentPro);
-        console.log('----------/currentPro----------');*/
-        let head=[];
-        head[0]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>还款方式</th><th>投资金额(元)</th><th>投资时间</th><th>投资进度</th></tr>;
-        head[1]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>投资金额(元)</th><th>投资时间</th><th>下期回款日期</th><th>下期回款金额(元)</th><th>操作</th></tr>;
-        head[2]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>投资金额(元)</th><th>投资时间</th><th>回款金额(元)</th><th>结清时间</th><th>操作</th></tr>;
-        head[3]=<tr><th>项目名称</th><th>原始项目名称</th><th>投资金额（元）</th><th>转让金额（元）</th><th>手续费（元）</th><th>转让申请日期</th><th>状态</th></tr>;
-        head[4]=<tr><th>项目名称</th><th>原始项目名称</th><th>转让金额（元）</th><th>当前投资额（元）</th><th>投资进度</th><th>转让日期</th><th>状态</th></tr>;
-        head[5]=<tr><th>项目名称</th><th>原始项目名称</th><th>转让金额（元）</th><th>转让成功日期</th><th>操作</th></tr>;
+        let {status,myList,charts,modalPlan,modalTransfer,currentPro,transferInfo}=myInvestments;
+        let thead=[];
+        thead[0]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>还款方式</th><th>投资金额(元)</th><th>投资时间</th><th>投资进度</th></tr>;
+        thead[1]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>投资金额(元)</th><th>投资时间</th><th>下期回款日期</th><th>下期回款金额(元)</th><th>操作</th></tr>;
+        thead[2]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>投资金额(元)</th><th>投资时间</th><th>回款金额(元)</th><th>结清时间</th><th>操作</th></tr>;
+        thead[3]=<tr><th>项目名称</th><th>原始项目名称</th><th>投资金额（元）</th><th>转让金额（元）</th><th>手续费（元）</th><th>转让申请日期</th><th>状态</th></tr>;
+        thead[4]=<tr><th>项目名称</th><th>原始项目名称</th><th>转让金额（元）</th><th>当前投资额（元）</th><th>投资进度</th><th>转让日期</th><th>状态</th></tr>;
+        thead[5]=<tr><th>项目名称</th><th>原始项目名称</th><th>转让金额（元）</th><th>转让成功日期</th><th>操作</th></tr>;
         return(
             <div className="member__main">
                 <Crumbs/>
@@ -104,9 +102,10 @@ class MyInvestments extends React.Component{
                             <div  className="table__wrapper">
                                 <table className={`tableList table${status}`}>
                                     <thead>
-                                    {head[status-1]}
+                                        {thead[status-1]}
                                     </thead>
-                                    {(myList.data.list.length>0)?(
+
+                                    {(myList.data.total>0)?(
                                             <tbody>
                                             {
                                                 myList.data.list.map((l, i) => (
@@ -118,8 +117,8 @@ class MyInvestments extends React.Component{
                                                         <tr key={`row-${i}`}>
                                                             <td>{l.proName}</td><td>{l.proMoney}</td><td>{l.loanExpiry}</td><td>{l.proMoneyEnd}</td><td>{l.inveCreateTime}</td><td>{l.earnShdEarnDate}</td><td>{l.earnShdEarnAmou}</td>
                                                             <td>
-                                                                <a onClick={() => dispatch(actionsMyInvestments.toggleModal('modalPlan',true,l.proId))}>回款计划</a>
-                                                                <a onClick={() => dispatch(actionsMyInvestments.toggleModal('modalTransfer',true,l.proId))}>债权转让</a>
+                                                                <a onClick={() => dispatch(actionsMyInvestments.toggleModal('modalPlan',true,l.investId))}>回款计划</a>
+                                                                <a onClick={() => dispatch(actionsMyInvestments.toggleModal('modalTransfer',true,l.investId))}>债权转让</a>
                                                                 <a href="">投资合同</a>
                                                             </td>
                                                         </tr>
@@ -127,7 +126,7 @@ class MyInvestments extends React.Component{
                                                         <tr key={`row-${i}`}>
                                                             <td>{l.proName}</td><td>{l.proMoney}</td><td>{l.loanExpiry}</td><td>{l.proMoneyEnd}</td><td>{l.inveCreateTime}</td><td>{l.earnRemittancAmou}</td><td>{l.earnRealEarnDate}</td>
                                                             <td>
-                                                                <a onClick={() => dispatch(actionsMyInvestments.toggleModal('modalPlan',true,l.proId))}>回款计划</a>
+                                                                <a onClick={() => dispatch(actionsMyInvestments.toggleModal('modalPlan',true,l.investId))}>回款计划</a>
                                                                 <a href="">投资合同</a>
                                                             </td>
                                                         </tr>
@@ -156,7 +155,7 @@ class MyInvestments extends React.Component{
                                                 ))
                                             }
                                             </tbody>)
-                                        :'<tbody> 暂无记录</tbody>'
+                                        :(<tbody><p className="noRecord">暂无记录</p></tbody>)
                                     }
                                 </table>
                                 {(myList.data.total>0)?(
@@ -167,7 +166,7 @@ class MyInvestments extends React.Component{
                                                 totalPage:Math.ceil(myList.data.total/myList.data.pageSize),
                                                 filter:status,
                                                 paging:(obj)=>{
-                                                    this.loadData(obj.currentPage,obj.pageCount,{re_status:obj.filter});
+                                                    dispatch(actionsMyInvestments.getList(obj.currentPage,obj.pageCount,{status:status}));
                                                 }
                                             }
                                         } ></Pagination>)
@@ -205,22 +204,17 @@ class MyInvestments extends React.Component{
                     onCancel={() => dispatch(actionsMyInvestments.toggleModal('modalTransfer',false,''))}
                 >
                     {modalTransfer===true?
-                        <ModalTransfer
-                            config = {
-                                {
-                                    currentPro:currentPro,
-                                    //proId:currentId,
-                                    callback:(obj)=>{
-                                        //this.toggleModal(`modalTransfer`,false);
-                                        dispatch(actionsMyInvestments.toggleModal('modalTransfer',false,''))
-                                        /*this.setState({
-                                            status:1
-                                        });*/
-                                        dispatch(actionsMyInvestments.filter(4))
-                                        //this.loadData(1,10,{status:4});
-                                    }
+                        <ModalTransfer transferInfo={
+                            {
+                                currentId:transferInfo.currentId,
+                                transferData:transferInfo.transferData,
+                                value:'',
+                                callback:(obj)=>{
+                                    dispatch(actionsMyInvestments.toggleModal('modalTransfer',false,''))
+                                    dispatch(actionsMyInvestments.filter(4))
                                 }
-                            }
+                            }}
+
                         />:''
                     }
                 </Modal>
