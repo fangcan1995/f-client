@@ -152,6 +152,7 @@ let actionsMyInvestments = {
     //根据状态检索投资列表
     filter: (pram) => (dispatch, myInvestments) => {
         dispatch(actionsMyInvestments.toggleClass(pram));
+        dispatch(actionsMyInvestments.refreshListFail(''));
         dispatch(actionsMyInvestments.getList(1,10,{status:pram}));
 
     },
@@ -238,7 +239,6 @@ let actionsMyInvestments = {
         payload: errMsg,
         id:id,
     }),
-
     refreshTransferSuccess: (id,json) => ({
         type: 'FETCH_TRANSFER_SUCCESS',
         payload: json,
@@ -249,11 +249,11 @@ let actionsMyInvestments = {
         payload: errMsg,
         id:id,
     }),
-
     refreshPostResult: (msg) => ({
         type: 'FETCH_POST_RESULT',
         payload: msg,
     }),
+
     modalPlanShow: (id) => ({
         type: 'MODAL_PLAN_SHOW',
         //payload: id,
