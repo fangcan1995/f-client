@@ -153,7 +153,7 @@ export default class Receiving extends React.Component{
         const {list,pageNum,total,pageSize}=this.state.dataSetting;
         const totalPage=Math.ceil(total/pageSize);
         return(
-            <div className="member__main">
+            <div className="member__main receiving">
                 <Crumbs/>
                 <div className="member__cbox">
                     <Tab>

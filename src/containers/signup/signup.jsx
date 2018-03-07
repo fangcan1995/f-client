@@ -1,12 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Form, Input, Button, Row, Col } from 'antd';
+import { Link, NavLink } from 'react-router-dom';
+import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
 import { loginUser } from '../../actions/auth';
 
 import { hex_md5 } from '../../utils/md5';
 import parseJson2URL from '../../utils/parseJson2URL';
 
+import Card from '../../components/login-card/login-card';
 import './signup.less';
 
 const createForm = Form.create;
@@ -27,9 +28,9 @@ class Signup extends Component {
 
     const { dispatch } = this.props;
     this.props.form.validateFields((errors) => {
-      if (errors) {
-        return false;
-      }
+      
+      if (errors) return false;
+      
       let creds = this.props.form.getFieldsValue();
       creds.password = hex_md5(creds.password);
       const opts = {
@@ -90,6 +91,8 @@ class Signup extends Component {
         { required: true, min: 6, max: 16, message: '密码应该由6-16位字母、数字或者特殊符号组成' }
       ]
     });
+    const inviteCodeProps = getFieldDecorator('invite_code', {
+    });
 
     const rememberProps = getFieldDecorator('remember', {
       valuePropName: 'checked',
@@ -111,56 +114,62 @@ class Signup extends Component {
     return (
       <main className="main signup">
         <div className="wrapper">
-          <div className="login__card">
-            <div className="card__header">
-              <h3 className="card__tit">注册</h3>
-              <span className="card__tip">已有账号？<Link to="/login">立即登录</Link></span>
-            </div>
-            <div className="card__body">
-              <Form layout="horizontal" onSubmit={this.handleSubmit}>
-                <FormItem
-                  { ...formItemLayout }
-                  label="手机号"
-                  hasFeedback
-                  >
-                  {usernameProps(
-                    <Input
-                      placeholder="请输入手机号"
-                      type="text"
-                    />
-                  )}
-                </FormItem>
-                <FormItem
-                  { ...formItemLayout }
-                  label="验证码"
-                  hasFeedback
-                  >
-                  <Row gutter={8}>
-                    <Col span={12}>
-                    {
-                      verifyCodeProps(
-                        <Input
-                          size="large"
-                          type="text"
-                          autoComplete="off"
-                          placeholder="验证码"
-                          onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
-                        />
-                      )
-                    }
-                    </Col>
-                    <Col span={12}>
-                      <img className="verifyCode__img" src="http://172.16.1.234:8060/uaa/code/image" />
-                    </Col>
-                  </Row>
-                </FormItem>
-                <FormItem
-                  { ...formItemLayout }
-                  label="验证码"
-                  hasFeedback
-                  >
-                  <Row gutter={8}>
-                    <Col span={12}>
+          <Card
+            tit="注册"
+            tip={ <span>已有账号？<Link to="/login">立即登录</Link></span> }
+            >
+            <Form layout="horizontal" onSubmit={this.handleSubmit}>
+              <FormItem
+                { ...formItemLayout }
+                label="手机号"
+                hasFeedback
+                >
+                {usernameProps(
+                  <Input
+                    placeholder="请输入手机号"
+                    type="text"
+                  />
+                )}
+              </FormItem>
+              <FormItem
+                { ...formItemLayout }
+                label="验证码"
+                required
+                >
+                <Row gutter={8}>
+                  <Col span={12}>
+                    <FormItem
+                      hasFeedback
+                      >
+                      {
+                        verifyCodeProps(
+                          <Input
+                            size="large"
+                            type="text"
+                            autoComplete="off"
+                            placeholder="验证码"
+                            onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
+                          />
+                        )
+                      }
+                    </FormItem>
+                  
+                  </Col>
+                  <Col span={12}>
+                    <img className="verifyCode__img" src="http://172.16.1.234:8060/uaa/code/image" />
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem
+                { ...formItemLayout }
+                label="验证码"
+                hasFeedback
+                >
+                <Row gutter={8}>
+                  <Col span={12}>
+                    <FormItem
+                      hasFeedback
+                      >
                       {
                         mobileCodeProps(
                           <Input
@@ -172,38 +181,58 @@ class Signup extends Component {
                           />
                         )
                       }
-                    </Col>
-                    <Col span={12}>
-                      <Button size="large" type="dashed" htmlType="submit">获取验证码</Button>
-                    </Col>
-                  </Row>
-                </FormItem>
-                <FormItem
-                  { ...formItemLayout }
-                  label="密码"
-                  hasFeedback
-                  >
-                  {
-                    passwordProps(
-                      <Input
-                        type="password"
-                        autoComplete="off"
-                        placeholder="设置6-16位的登录密码"
-                        onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
-                      />
-                    )
-                  }
-                </FormItem>
-                <FormItem>
-                  <Button className="ant-col-24" type="primary" htmlType="submit">登录</Button>
-                </FormItem>
-              </Form>
-            </div>
-            
-          </div>
-          
+                    </FormItem>
+                  </Col>
+                  <Col span={12}>
+                    <Button size="large" type="dashed" htmlType="submit">获取验证码</Button>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem
+                { ...formItemLayout }
+                label="密码"
+                hasFeedback
+                >
+                {
+                  passwordProps(
+                    <Input
+                      type="password"
+                      autoComplete="off"
+                      placeholder="设置6-16位的登录密码"
+                      onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
+                    />
+                  )
+                }
+              </FormItem>
+              <FormItem
+                { ...formItemLayout }
+                label="邀请码"
+                hasFeedback
+                >
+                {
+                  inviteCodeProps(
+                    <Input
+                      type="text"
+                      autoComplete="off"
+                      placeholder="邀请人的邀请码（选填）"
+                      onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
+                    />
+                  )
+                }
+              </FormItem>
+              <FormItem>
+                {
+                  rememberProps(
+                    <Checkbox> 我已阅读并同意<NavLink to="/login">《用户注册及服务协议》</NavLink></Checkbox>
+                  )
+                }
+              </FormItem>
+              <FormItem>
+                <Button className="ant-col-24" type="primary" htmlType="submit">注册</Button>
+              </FormItem>
+            </Form>
+          </Card>
         </div>
-        
       </main>
       
     );

@@ -1,6 +1,6 @@
 require('es6-promise').polyfill();
 import fetch from 'isomorphic-fetch';
-
+import _fetch from './_fetch.js';
 import cookie from 'js-cookie';
 import StandardError from 'standard-error';
 import { API_CONFIG } from './../config/api';
@@ -115,7 +115,7 @@ function toQueryString(object) {
 }
 
 
-function cFetch(url, options, ignoreAuth) {
+function cFetch(url, options, auth = true, timeout = 10000) {
   // let mergeUrl = API_CONFIG.baseUri + url;
   let mergeUrl = url;
   const defaultOptions = {
@@ -131,11 +131,11 @@ function cFetch(url, options, ignoreAuth) {
 
   const { token_type, access_token } = cookie.getJSON('token') || {};
   opts.headers = {
+    'Authorization': auth ? `${token_type} ${access_token}` : '',
     ...opts.headers,
-    'Authorization': ignoreAuth ? '' : `${token_type} ${access_token}`,
   };
 
-  return fetch(mergeUrl, opts)
+  return _fetch(fetch(mergeUrl, opts), timeout)
     .then(check401)
     .then(check404)
     .then(checkStatus)

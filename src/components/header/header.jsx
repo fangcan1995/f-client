@@ -75,10 +75,10 @@ class Header extends Component {
                   <Link to="/my-account" className="dropdown__toggle">我的账户<i className="iconfont icon-sanjiaojiantou-xia"></i></Link>
                   <div className="dropdown__menu">
                     <ul>
-                      <li><Link to="/member2">我的投资</Link></li>
+                      <li><Link to="/my-investments">我的投资</Link></li>
                       <li><Link to="/my-loan">我的借款</Link></li>
-                      <li><Link to="/member">基本设置</Link></li>
-                      <li><Link to="/member">奖励管理</Link></li>
+                      <li><Link to="/my-settings">基本设置</Link></li>
+                      <li><Link to="/my-reward">奖励管理</Link></li>
                     </ul>
                   </div>
                 </div>
