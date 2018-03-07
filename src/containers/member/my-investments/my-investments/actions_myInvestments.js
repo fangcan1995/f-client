@@ -9,7 +9,7 @@ let actionsMyInvestments = {
     },
     getPie:()=>(dispatch,myInvestments)=>{
         // 获取统计数据
-        let url = `http://172.16.4.62:9090/members/invest/statistics?access_token=7bc2aec5-2003-4cc1-9220-1dadef256a3f`;
+        let url = `http://172.16.4.62:9090/members/invest/statistics?access_token=d05271c1-0061-4c07-8ccf-4fa6dd507de5`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -54,7 +54,7 @@ let actionsMyInvestments = {
             }
         }
         //let url = `http://172.16.4.5:8084/getList.php?access_token=1480826e-71b9-4cb0-8590-abbbe81ef9a0&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
-        let url=`http://172.16.4.62:9090/members/investments?access_token=7bc2aec5-2003-4cc1-9220-1dadef256a3f&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
+        let url=`http://172.16.4.62:9090/members/investments?access_token=d05271c1-0061-4c07-8ccf-4fa6dd507de5&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -74,7 +74,7 @@ let actionsMyInvestments = {
     },
     getPie:()=>(dispatch,myInvestments)=>{
         // 获取统计数据
-        let url = `http://172.16.4.62:9090/members/invest/statistics?access_token=7bc2aec5-2003-4cc1-9220-1dadef256a3f`;
+        let url = `http://172.16.4.62:9090/members/invest/statistics?access_token=d05271c1-0061-4c07-8ccf-4fa6dd507de5`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -111,8 +111,7 @@ let actionsMyInvestments = {
             });
     },
     getPlanList:(pram)=>(dispatch, myInvestments)=>{
-        let url=`http://172.16.4.62:9090/members/investments/receiving/${pram}?access_token=7bc2aec5-2003-4cc1-9220-1dadef256a3f`;
-        //let url = `http://172.16.4.5:8084/getPlanList.php?id=${pram}}`;
+        let url=`http://172.16.4.62:9090/members/investments/receiving/${pram}?access_token=d05271c1-0061-4c07-8ccf-4fa6dd507de5`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -123,13 +122,13 @@ let actionsMyInvestments = {
             })
             .then((data) => data.json())
             .then(data => {
-                dispatch(actionsMyInvestments.refreshPlanListSuccess(pram,data.data));
+                dispatch(actionsMyInvestments.refreshPlanListSuccess(pram, data.data));
             }).catch(err=>{
             dispatch(actionsMyInvestments.refreshPlanListFail(pram,'连接错误'));
         });
     },
     getTransfer:(pram)=>(dispatch, myInvestments)=>{
-        let url=`http://172.16.4.62:9090/members/investments/transfer/${pram}?access_token=7bc2aec5-2003-4cc1-9220-1dadef256a3f`;
+        let url=`http://172.16.4.62:9090/members/investments/transfer/${pram}?access_token=d05271c1-0061-4c07-8ccf-4fa6dd507de5`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -140,12 +139,15 @@ let actionsMyInvestments = {
             })
             .then((data) => data.json())
             .then(data => {
-                console.log('----data----')
-                console.log(data);
-                dispatch(actionsMyInvestments.refreshTransferSuccess(pram,data.data));
+                setTimeout(() => {
+                    dispatch(actionsMyInvestments.refreshTransferSuccess(pram,data.data));
+                }, 1000);
+
+
             }).catch(err=>{
-            dispatch(actionsMyInvestments.refreshTransferFail(pram,'连接错误'));
+                dispatch(actionsMyInvestments.refreshTransferFail(pram,'连接错误'));
         });
+
     },
     //根据状态检索投资列表
     filter: (pram) => (dispatch, myInvestments) => {
@@ -163,10 +165,9 @@ let actionsMyInvestments = {
                 dispatch(actionsMyInvestments.modalPlanHide(id))
             }
         }else if(modal=='modalTransfer'){
-            console.log('------id--------');
-            console.log(id);
+
             if(visile){
-                dispatch(actionsMyInvestments.getTransfer(id));//获取债权转让详情
+                //dispatch(actionsMyInvestments.getTransfer(id));//获取债权转让详情
                 dispatch(actionsMyInvestments.modalTransferShow(id));  //显示债权转让弹框
             }else{
                 dispatch(actionsMyInvestments.modalTransferHide(id))
@@ -179,20 +180,36 @@ let actionsMyInvestments = {
         type: 'TOGGLE_CLASS',
         payload: id
     }),
-    //验证债转申请
-    checkTransfer:(pram) => (dispatch, myInvestments) => {
-        //console.log('验证');
-
-        dispatch(actionsMyInvestments.refreshPostSwitch(false,'aaaa'));
-    },
     //提交债转申请
     postTransfer:(pram) => (dispatch, myInvestments) => {
         //dispatch(actionsMyInvestments.checkTransfer());
-        console.log('提交申请');
-    },
-    changeAmount:(pram) => (dispatch, myInvestments) => {
-        dispatch(actionsMyInvestments.refreshAmount(pram));
-        console.log('----------1111-----------');
+        let url = `http://172.16.4.5:8084/test.php`;
+        fetch(url,{
+            method: "POST",
+            mode:'cors',
+            cache: 'default',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pram)
+        })
+            .then(function (response){
+                if (response.status == 200){
+                    return response;
+                }else{
+                    dispatch(actionsMyInvestments.refreshPostResult(1));
+                }
+            })
+            .then((data) => data.json())
+            .then(data => {
+                setTimeout(() => {
+                    dispatch(actionsMyInvestments.refreshPostResult(2));
+                }, 100);
+            })
+            .catch(err=>{
+                dispatch(actionsMyInvestments.refreshPostResult(1));
+            });
     },
     refreshChartsSuccess: json => ({
         type: 'FETCH_CHARTS_SUCCESS',
@@ -233,18 +250,10 @@ let actionsMyInvestments = {
         id:id,
     }),
 
-    refreshPostSwitch: (whether,errMsg,amount) => ({
-        type: 'FETCH_POSTSWITCH_SUCCESS',
-        payload:whether,
-        errorMsg:errMsg,
-        amount:amount
+    refreshPostResult: (msg) => ({
+        type: 'FETCH_POST_RESULT',
+        payload: msg,
     }),
-    /*refreshPostSwitchFail: (id,errMsg) => ({
-        type: 'FETCH_POSTSWITCH_FAIL',
-        payload: errMsg,
-        id:id,
-    }),*/
-
     modalPlanShow: (id) => ({
         type: 'MODAL_PLAN_SHOW',
         //payload: id,
@@ -262,12 +271,11 @@ let actionsMyInvestments = {
         type: 'MODAL_TRANSFER_HIDE',
         payload: id
     }),
+    modifyTransfer: (json) => ({
+        type: 'MODIFY_TRANSFER',
+        payload:json,
 
-    refreshAmount: (amount) => ({
-    type: 'FETCH_AMOUNT_SUCCESS',
-    payload:amount,
-
-}),
+    }),
 
 
 

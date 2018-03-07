@@ -4,7 +4,6 @@ import moment from "moment";
 export default class ModalPlan extends React.Component {
     render() {
         let {currentId,planData}=this.props.currentPro;
-        console.log(currentId);
         return (
                     <div className="table__wrapper">
                         {(JSON.stringify(planData)=='{}')?(<p></p>)
@@ -33,7 +32,7 @@ export default class ModalPlan extends React.Component {
                                                 <td>{l.inveCreateTime}</td>
                                             </tr>
                                         ))
-                                    :(<tr colspan="6"><p className="noRecord">暂无记录</p></tr>)
+                                    :(<tr colSpan="6"><p className="noRecord">暂无记录</p></tr>)
                                     }
                                     </tbody>
 

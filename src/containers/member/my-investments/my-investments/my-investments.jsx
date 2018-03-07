@@ -16,9 +16,22 @@ class MyInvestments extends React.Component{
     componentDidMount () {
         this.props.dispatch(actionsMyInvestments.getData(1));
     }
+    transferCallback(){
+        let {dispatch}=this.props;
+        dispatch(actionsMyInvestments.refreshPostResult(0));
+        dispatch(actionsMyInvestments.refreshTransferSuccess('',{}));
+        dispatch(actionsMyInvestments.toggleModal('modalTransfer',false,''));
+        dispatch(actionsMyInvestments.filter(2));
+    }
+    planCallback(){
+
+    }
     render(){
         let {myInvestments,dispatch} = this.props;
-        let {status,myList,charts,modalPlan,modalTransfer,currentPro,transferInfo}=myInvestments;
+        console.log('-------myInvestments--------');
+        console.log(myInvestments);
+        let {status,myList,charts,modalPlan,modalTransfer,currentPro,currentId}=myInvestments;
+
         let thead=[];
         thead[0]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>还款方式</th><th>投资金额(元)</th><th>投资时间</th><th>投资进度</th></tr>;
         thead[1]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>投资金额(元)</th><th>投资时间</th><th>下期回款日期</th><th>下期回款金额(元)</th><th>操作</th></tr>;
@@ -167,6 +180,7 @@ class MyInvestments extends React.Component{
                                                 filter:status,
                                                 paging:(obj)=>{
                                                     dispatch(actionsMyInvestments.getList(obj.currentPage,obj.pageCount,{status:status}));
+
                                                 }
                                             }
                                         } ></Pagination>)
@@ -201,20 +215,17 @@ class MyInvestments extends React.Component{
                     visible={modalTransfer}
                     width="520px"
                     footer={null}
-                    onCancel={() => dispatch(actionsMyInvestments.toggleModal('modalTransfer',false,''))}
+                    onCancel={() => this.transferCallback()}
                 >
                     {modalTransfer===true?
-                        <ModalTransfer transferInfo={
+                        <ModalTransfer info={
                             {
-                                currentId:transferInfo.currentId,
-                                transferData:transferInfo.transferData,
-                                value:'',
+                                currentId:currentId,
                                 callback:(obj)=>{
-                                    dispatch(actionsMyInvestments.toggleModal('modalTransfer',false,''))
-                                    dispatch(actionsMyInvestments.filter(4))
+                                    this.transferCallback();
                                 }
-                            }}
-
+                            }
+                        }
                         />:''
                     }
                 </Modal>
