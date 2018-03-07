@@ -17,7 +17,7 @@ const initialState = Immutable.fromJS({
     status: 1,
     modalPlan: false,
     modalTransfer: false,
-
+    postResult:0,
     currentPro:{
         currentId:'',
         planData:{},
@@ -25,10 +25,6 @@ const initialState = Immutable.fromJS({
     transferInfo:{
         currentId:'',
         transferData:{},
-        tips:'',
-        isRead:false,
-        value:0,
-        postSwitch:false,
     }
 });
 
@@ -109,25 +105,10 @@ export default createReducer(initialState, {
             value:'',
         }
     }),
+    ['FETCH_POST_RESULT']: (state, action) => state.merge({
+        postResult:action.payload
+    }),
 
-    ['FETCH_POSTSWITCH_SUCCESS']: (state, action) => state.merge({
-        transferInfo: {
-            postSwitch:action.payload,
-            tips:action.errorMsg,
-            value:action.amount
-        }
-    }),
-    ['FETCH_POSTSWITCH_FAIL']: (state, action) => state.merge({
-        transferInfo: {
-            postSwitch:false,
-            tips:''
-        }
-    }),
-    ['FETCH_AMOUNT_SUCCESS']: (state, action) => state.merge({
-        transferInfo: {
-            value:'',
-        }
-    }),
 
 
 })
