@@ -6,9 +6,12 @@ import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
 import  {getData}  from '../../../../assets/js/getData';
+import actionsMyReceiving from './actions_myReceiving';
 import './receiving.less';
-export default class Receiving extends React.Component{
-    constructor(props){
+import { connect } from 'react-redux';
+import moment from "moment";
+class Receiving extends React.Component{
+    /*constructor(props){
         super(props);
         this.state={
             dataSetting:{},  //项目数据
@@ -78,7 +81,7 @@ export default class Receiving extends React.Component{
     loadChartsData(){
         let data=getData(`http://localhost:9002/members`);
         if (data){
-            /*this.setState({
+            /!*this.setState({
                 charts:{
                     totalInvestment:{
                         legend:{data:['招标中','回款中','已回款','已转出']},
@@ -103,7 +106,7 @@ export default class Receiving extends React.Component{
                         }
                     }
                 }
-            });*/
+            });*!/
         }else{
             let mockDate={
                 data: {
@@ -148,10 +151,16 @@ export default class Receiving extends React.Component{
         this.loadChartsData();
         this.loadData(1,10,{status:1});
 
+    }*/
+    componentDidMount () {
+        this.props.dispatch(actionsMyReceiving.getData());
     }
     render(){
-        const {list,pageNum,total,pageSize}=this.state.dataSetting;
-        const totalPage=Math.ceil(total/pageSize);
+        console.log('---------this.props---------');
+        console.log(this.props);
+        //const {list,pageNum,total,pageSize}=this.state.dataSetting;
+        //const totalPage=Math.ceil(total/pageSize);
+        let {myList,charts}=this.props.myReceiving;
         return(
             <div className="member__main">
                 <Crumbs/>
@@ -161,26 +170,26 @@ export default class Receiving extends React.Component{
                             <Tab>
                                 <div name="已回金额">
                                     {
-                                        JSON.stringify(this.state.charts.totalInvestment) != "{}"?
+                                        JSON.stringify(charts.doneDto) != "{}"?
                                             <PieChart
-                                                data={this.state.charts.totalInvestment.data}
+                                                data={charts.doneDto.data}
                                                 style={{height: '300px', width: '930px'}}
                                                 totalTitle="已回金额"
                                             >
                                             </PieChart>
-                                            :''
+                                            :<p>{charts.message}</p>
                                     }
                                 </div>
                                 <div name="未回金额">
                                     {
-                                        JSON.stringify(this.state.charts.accumulatedIncome) != "{}"?
+                                        JSON.stringify(charts.todoDto) != "{}"?
                                             <PieChart
-                                                data={this.state.charts.accumulatedIncome.data}
+                                                data={charts.todoDto.data}
                                                 style={{height: '300px', width: '930px'}}
                                                 totalTitle="未回金额"
                                             >
                                             </PieChart>
-                                            :''
+                                            :<p>{charts.message}</p>
                                     }
                                 </div>
                             </Tab>
@@ -189,43 +198,43 @@ export default class Receiving extends React.Component{
                 </div>
                 <div className="member__cbox" style={{ padding:'20px 30px' }}>
 
-                    {
-                        JSON.stringify(this.state.dataSetting) == "{}"? <div>连接错误,请稍后再试</div>
-                            :
-                            list.length>0 ?
-                                <div className="table__wrapper">
-                                    {
-                                        list.map((item, rowIndex) => (
-                                    <dl key={`row-${rowIndex}`}>
-                                        <dt><p><a href="#">汇车贷-HCD201704170003</a></p><strong>回款中</strong></dt>
-                                        <dd>投资金额：10000元</dd>
-                                        <dd>投资日期：2018-02-06</dd>
-                                        <dd>收益率：12%</dd>
-                                        <dd>下期回款日：2018-02-06</dd>
-                                        <dd>结清日期：2018-06-06</dd>
-                                        <dd>奖励金额：100.00元</dd>
-                                        <dd>预估收益：1000.00元</dd>
-                                        <dd>已回本金：0.00元</dd>
-                                        <dd>已回利息：100.00元</dd>
-                                        <dd>已回罚息：0.00元</dd>
-
-                                    </dl>
-                                        ))
-                                    }
-
-                                    <Pagination config = {
+                    {(JSON.stringify(myList.data) == '{}') ? (<p>{myList.message}</p>)
+                        : (
+                            (myList.data.total > 0) ? (
+                                    <div className="table__wrapper">
                                         {
-                                            currentPage:1,
-                                            pageSize:10,
-                                            totalPage:2,
-                                            filter:this.state.status,
-                                            paging:(obj)=>{
-                                                this.loadData(obj.currentPage,obj.pageCount,{re_status:obj.filter});
-                                            }
+                                            myList.data.list.map((l, i) => (
+                                                <dl key={`row-${i}`}>
+                                                    <dt><p><a href="#">{l.proName}</a></p><strong>{l.proStatus}回款中</strong></dt>
+                                                    <dd>投资金额：{l.proMoneyEnd}元</dd>
+                                                    <dd>投资日期：{moment(l.inveCreateTime).format('YYYY-MM-DD')}</dd>
+                                                    <dd>收益率：{l.proAnnualRate}%</dd>
+                                                    <dd>下期回款日：{l.earnShdEarnDate}</dd>
+                                                    <dd>结清日期：{l.earnRealEarnDate}</dd>
+                                                    <dd>奖励金额：{l.rewardAmount}元</dd>
+                                                    <dd>预估收益：{l.earnIncome}元</dd>
+                                                    <dd>已回本金：{l.earnTotalCapital}元</dd>
+                                                    <dd>已回利息：{l.earnTotalIint}元</dd>
+                                                    <dd>已回罚息：{l.earnTotalLateIint}元</dd>
+                                                </dl>
+                                            ))
                                         }
-                                    } ></Pagination>
-                                </div>
-                                : <div>暂无记录</div>
+
+                                        <Pagination config = {
+                                            {
+                                                currentPage:myList.data.pageNum,
+                                                pageSize:myList.data.pageSize,
+                                                totalPage:Math.ceil(myList.data.total/myList.data.pageSize),
+                                                paging:(obj)=>{
+                                                    this.loadData(obj.currentPage,obj.pageCount,{re_status:obj.filter});
+                                                    dispatch(actionsMyReceiving.getList(obj.currentPage,obj.pageCount));
+                                                }
+                                            }
+                                        } ></Pagination>
+                                    </div>
+                            )
+                                : '暂无记录'
+                        )
                     }
                 </div>
 
@@ -235,3 +244,12 @@ export default class Receiving extends React.Component{
 
     }
 }
+function mapStateToProps(state) {
+    const { auth,myReceiving } = state.toJS();
+    return {
+        auth,
+        myReceiving,
+    };
+}
+
+export default connect(mapStateToProps)(Receiving);

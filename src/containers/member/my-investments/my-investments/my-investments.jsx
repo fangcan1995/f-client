@@ -23,9 +23,6 @@ class MyInvestments extends React.Component{
         dispatch(actionsMyInvestments.toggleModal('modalTransfer',false,''));
         dispatch(actionsMyInvestments.filter(2));
     }
-    planCallback(){
-
-    }
     render(){
         let {myInvestments,dispatch} = this.props;
         console.log('-------myInvestments--------');
@@ -180,7 +177,6 @@ class MyInvestments extends React.Component{
                                                 filter:status,
                                                 paging:(obj)=>{
                                                     dispatch(actionsMyInvestments.getList(obj.currentPage,obj.pageCount,{status:status}));
-
                                                 }
                                             }
                                         } ></Pagination>)

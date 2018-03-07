@@ -72,7 +72,7 @@ let actionsMyInvestments = {
 
 
     },
-    getPie:()=>(dispatch,myInvestments)=>{
+/*    getPie:()=>(dispatch,myInvestments)=>{
         // 获取统计数据
         let url = `http://172.16.4.62:9090/members/invest/statistics?access_token=d05271c1-0061-4c07-8ccf-4fa6dd507de5`;
         fetch(url,{method:"get"})
@@ -109,7 +109,7 @@ let actionsMyInvestments = {
             .catch(err=>{
                 dispatch(actionsMyInvestments.refreshChartsFail('连接错误'));
             });
-    },
+    },*/
     getPlanList:(pram)=>(dispatch, myInvestments)=>{
         let url=`http://172.16.4.62:9090/members/investments/receiving/${pram}?access_token=d05271c1-0061-4c07-8ccf-4fa6dd507de5`;
         fetch(url,{method:"get"})
