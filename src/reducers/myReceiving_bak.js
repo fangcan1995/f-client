@@ -27,9 +27,15 @@ export default createReducer(initialState, {
             message:action.payload
         }
     }),
-    ['FETCH_CHARTS_SUCCESS']: (state, action) => state.merge({
-        charts: action.payload,
-    }),
+    ['FETCH_CHARTS_SUCCESS']: (state, action) =>
+    {
+        console.log('---------state------------');
+        console.log(state.toJS());
+        return  state.mergeDeep({
+            charts: action.payload,
+        })
+    }
+    ,
     ['FETCH_CHARTS_FAIL']: (state, action) => state.merge({
         charts: {
             doneDto:{},

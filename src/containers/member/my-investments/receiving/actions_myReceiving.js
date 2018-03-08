@@ -3,19 +3,19 @@ import cookie from 'js-cookie';
 import {addCommas,checkMoney} from '../../../../assets/js/cost';
 
 let actionsMyReceiving = {
-    getData: (status) => (dispatch, myReceiving) => {
+    getData: (status) => (dispatch, memberInvestments) => {
         dispatch(actionsMyReceiving.getPie());
         dispatch(actionsMyReceiving.getList(1,10));
     },
-    getPie:()=>(dispatch,myReceiving)=>{
+    getPie:()=>(dispatch,memberInvestments)=>{
         // 获取统计数据
-        let url = `http://172.16.4.62:9090/members/investments/receiving/statistics?access_token=907e3e02-bf28-4cac-87cc-fda8d2c58223`;
+        let url = `http://172.16.4.62:9090/members/investments/receiving/statistics?access_token=97c8feba-9a64-4f9a-93ed-100816046afe`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
                     return response;
                 }else{
-                    dispatch(actionsMyReceiving.refreshChartsFail('后端代码'));
+                    dispatch(actionsMyReceiving.refreshChartsSuccess({myReceiving:{charts: {},message:'无响应'}}));
                 }
             })
             .then((data) => data.json())
@@ -39,14 +39,25 @@ let actionsMyReceiving = {
                             ]
                         },
                     };
-                    dispatch(actionsMyReceiving.refreshChartsSuccess(charts));
+                    let myReceiving_new={
+                        myReceiving:
+                            {charts:
+                                {
+                                    data:charts,
+                                    message:''
+                                }
+                        }
+                    };
+
+                    dispatch(actionsMyReceiving.refreshChartsSuccess(myReceiving_new));
                 }, 1000);
             })
             .catch(err=>{
-                dispatch(actionsMyReceiving.refreshChartsFail('连接错误'));
+                //dispatch(actionsMyReceiving.refreshChartsFail('连接错误'));
+                dispatch(actionsMyReceiving.refreshChartsSuccess({myReceiving:{charts: {message:'连接错误'}}}));
             });
     },
-    getList: (pageNum=1,pageSize=10,filter={}) => (dispatch, myReceiving) => {
+    getList: (pageNum=1,pageSize=10,filter={}) => (dispatch, memberInvestments) => {
         // 获取数据列表
         let conditions='';
         if(JSON.stringify(filter)!={}){
@@ -54,7 +65,7 @@ let actionsMyReceiving = {
                 conditions += "&"+item+"="+filter[item];
             }
         }
-        let url=`http://172.16.4.62:9090/members/investments/receiving?access_token=907e3e02-bf28-4cac-87cc-fda8d2c58223&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
+        let url=`http://172.16.4.62:9090/members/investments/receiving?access_token=97c8feba-9a64-4f9a-93ed-100816046afe&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
