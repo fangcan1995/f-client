@@ -245,10 +245,11 @@ class Receiving extends React.Component{
     }
 }
 function mapStateToProps(state) {
-    const { auth,myReceiving } = state.toJS();
+    const { auth,myReceiving,myInvestments } = state.toJS();
     return {
         auth,
         myReceiving,
+        myInvestments
     };
 }
 

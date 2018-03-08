@@ -9,7 +9,7 @@ let actionsMyReceiving = {
     },
     getPie:()=>(dispatch,myReceiving)=>{
         // 获取统计数据
-        let url = `http://172.16.4.62:9090/members/investments/receiving/statistics?access_token=d05271c1-0061-4c07-8ccf-4fa6dd507de5`;
+        let url = `http://172.16.4.62:9090/members/investments/receiving/statistics?access_token=907e3e02-bf28-4cac-87cc-fda8d2c58223`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -54,7 +54,7 @@ let actionsMyReceiving = {
                 conditions += "&"+item+"="+filter[item];
             }
         }
-        let url=`http://172.16.4.62:9090/members/investments/receiving?access_token=d05271c1-0061-4c07-8ccf-4fa6dd507de5&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
+        let url=`http://172.16.4.62:9090/members/investments/receiving?access_token=907e3e02-bf28-4cac-87cc-fda8d2c58223&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){

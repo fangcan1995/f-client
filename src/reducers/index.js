@@ -5,6 +5,7 @@ import myRedEnvelopes from './myRedEnvelopes';
 import myRateCoupons from './myRateCoupons';
 import myInvestments from './myInvestments';
 import aboutReducer from './aboutReducer';
+import myReceiving from './myReceiving'
 
 export {
     auth,
@@ -14,4 +15,6 @@ export {
     myRedEnvelopes,
     myRateCoupons,
     myInvestments,
+    myReceiving
+
 }

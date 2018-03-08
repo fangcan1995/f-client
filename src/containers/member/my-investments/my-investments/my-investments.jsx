@@ -26,7 +26,7 @@ class MyInvestments extends React.Component{
     render(){
         let {myInvestments,dispatch} = this.props;
         console.log('-------myInvestments--------');
-        console.log(myInvestments);
+        console.log(this.props);
         let {status,myList,charts,modalPlan,modalTransfer,currentPro,currentId}=myInvestments;
 
         let thead=[];
@@ -233,10 +233,11 @@ class MyInvestments extends React.Component{
 }
 
 function mapStateToProps(state) {
-    const { auth,myInvestments } = state.toJS();
+    const { auth,myInvestments,myReceiving } = state.toJS();
     return {
         auth,
         myInvestments,
+        myReceiving
     };
 }
 

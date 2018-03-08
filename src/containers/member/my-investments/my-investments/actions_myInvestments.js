@@ -9,7 +9,7 @@ let actionsMyInvestments = {
     },
     getPie:()=>(dispatch,myInvestments)=>{
         // 获取统计数据
-        let url = `http://172.16.4.62:9090/members/invest/statistics?access_token=d05271c1-0061-4c07-8ccf-4fa6dd507de5`;
+        let url = `http://172.16.4.62:9090/members/invest/statistics?access_token=907e3e02-bf28-4cac-87cc-fda8d2c58223`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -54,7 +54,7 @@ let actionsMyInvestments = {
             }
         }
         //let url = `http://172.16.4.5:8084/getList.php?access_token=1480826e-71b9-4cb0-8590-abbbe81ef9a0&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
-        let url=`http://172.16.4.62:9090/members/investments?access_token=d05271c1-0061-4c07-8ccf-4fa6dd507de5&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
+        let url=`http://172.16.4.62:9090/members/investments?access_token=907e3e02-bf28-4cac-87cc-fda8d2c58223&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -74,7 +74,7 @@ let actionsMyInvestments = {
     },
 /*    getPie:()=>(dispatch,myInvestments)=>{
         // 获取统计数据
-        let url = `http://172.16.4.62:9090/members/invest/statistics?access_token=d05271c1-0061-4c07-8ccf-4fa6dd507de5`;
+        let url = `http://172.16.4.62:9090/members/invest/statistics?access_token=907e3e02-bf28-4cac-87cc-fda8d2c58223`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -111,7 +111,7 @@ let actionsMyInvestments = {
             });
     },*/
     getPlanList:(pram)=>(dispatch, myInvestments)=>{
-        let url=`http://172.16.4.62:9090/members/investments/receiving/${pram}?access_token=d05271c1-0061-4c07-8ccf-4fa6dd507de5`;
+        let url=`http://172.16.4.62:9090/members/investments/receiving/${pram}?access_token=907e3e02-bf28-4cac-87cc-fda8d2c58223`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -128,7 +128,7 @@ let actionsMyInvestments = {
         });
     },
     getTransfer:(pram)=>(dispatch, myInvestments)=>{
-        let url=`http://172.16.4.62:9090/members/investments/transfer/${pram}?access_token=d05271c1-0061-4c07-8ccf-4fa6dd507de5`;
+        let url=`http://172.16.4.62:9090/members/investments/transfer/${pram}?access_token=907e3e02-bf28-4cac-87cc-fda8d2c58223`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
