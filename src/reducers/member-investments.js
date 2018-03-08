@@ -51,7 +51,12 @@ export default createReducer(initialState, {
             charts: {}
         }
     }),*/
-
+    ['myInvest/MODIFY_STATE']: (state, action) =>
+        state.mergeDeep(action.payload)
+    ,
+    ['myInvest/receiving/MODIFY_STATE']:(state,action) => state.mergeDeep({
+        myReceiving:action.payload
+    }),
 })
 
 

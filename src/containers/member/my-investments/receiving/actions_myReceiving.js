@@ -1,7 +1,6 @@
 import cFetch from './../../../../utils/cFetch';
 import cookie from 'js-cookie';
-import {addCommas,checkMoney} from '../../../../assets/js/cost';
-
+import {addCommas} from '../../../../assets/js/cost';
 let actionsMyReceiving = {
     getData: (status) => (dispatch, memberInvestments) => {
         dispatch(actionsMyReceiving.getPie());
@@ -9,6 +8,7 @@ let actionsMyReceiving = {
     },
     getPie:()=>(dispatch,memberInvestments)=>{
         // 获取统计数据
+        let myReceiving_new={};
         let url = `http://172.16.4.62:9090/members/investments/receiving/statistics?access_token=97c8feba-9a64-4f9a-93ed-100816046afe`;
         fetch(url,{method:"get"})
             .then(function (response){
@@ -39,25 +39,28 @@ let actionsMyReceiving = {
                             ]
                         },
                     };
-                    let myReceiving_new={
-                        myReceiving:
-                            {charts:
+                    myReceiving_new={
+                        charts:
                                 {
                                     data:charts,
                                     message:''
                                 }
-                        }
                     };
-
-                    dispatch(actionsMyReceiving.refreshChartsSuccess(myReceiving_new));
+                    dispatch(actionsMyReceiving.stateModify(myReceiving_new));
                 }, 1000);
             })
             .catch(err=>{
-                //dispatch(actionsMyReceiving.refreshChartsFail('连接错误'));
-                dispatch(actionsMyReceiving.refreshChartsSuccess({myReceiving:{charts: {message:'连接错误'}}}));
+                myReceiving_new={
+                    charts:{
+                        data:{},
+                        message:'连接错误'
+                    }
+                };
+                dispatch(actionsMyReceiving.stateModify(myReceiving_new));
             });
     },
     getList: (pageNum=1,pageSize=10,filter={}) => (dispatch, memberInvestments) => {
+        let myReceiving_new={};
         // 获取数据列表
         let conditions='';
         if(JSON.stringify(filter)!={}){
@@ -71,41 +74,33 @@ let actionsMyReceiving = {
                 if (response.status == 200){
                     return response;
                 }else{
-                    dispatch(actionsMyReceiving.refreshListFail('后端代码'));
+                    dispatch(actionsMyReceiving.stateModify({myReceiving:{data: {},message:'无响应'}}));
                 }
             })
             .then((data) => data.json())
             .then(data => {
-                dispatch(actionsMyReceiving.refreshListSuccess(data.data));
+                myReceiving_new={
+                        myList:
+                            {
+                                data:data.data,
+                                message:''
+                            }
+                };
+                dispatch(actionsMyReceiving.stateModify(myReceiving_new));
             }).catch(err=>{
-                dispatch(actionsMyReceiving.refreshListFail('连接错误'));
+                myReceiving_new={
+                    myList: {
+                        data:{},
+                        message:'连接错误'
+                    }
+                };
+                dispatch(actionsMyReceiving.stateModify(myReceiving_new));
             });
-
-
     },
-
-
-    refreshChartsSuccess: json => ({
-        type: 'FETCH_CHARTS_SUCCESS',
+    stateModify: json => ({
+        type: 'myInvest/receiving/MODIFY_STATE',
         payload: json
-    }),
-    refreshChartsFail: errMsg => ({
-        type: 'FETCH_CHARTS_FAIL',
-        payload: errMsg,
-    }),
-    refreshListSuccess: json => ({
-        type: 'FETCH_LIST_SUCCESS',
-        payload: json
-    }),
-    refreshListFail: errMsg => ({
-        type: 'FETCH_LIST_FAIL',
-        payload: errMsg,
-        error: true
-    }),
-
-
-
-
+    })
 };
 export default actionsMyReceiving;
 

@@ -13,8 +13,6 @@ class Receiving extends React.Component{
         this.props.dispatch(actionsMyReceiving.getData());
     }
     render(){
-        console.log('---------this.props---------');
-        console.log(this.props);
         let {dispatch}=this.props;
         let {myReceiving}=this.props.memberInvestments;
         let {myList,charts}=myReceiving;
@@ -29,7 +27,7 @@ class Receiving extends React.Component{
                                     {
                                         JSON.stringify(charts.data) != "{}"?
                                             <PieChart
-                                                data={charts.doneDto.data}
+                                                data={charts.data.doneDto.data}
                                                 style={{height: '300px', width: '930px'}}
                                                 totalTitle="已回金额"
                                             >
@@ -41,7 +39,7 @@ class Receiving extends React.Component{
                                     {
                                         JSON.stringify(charts.data) != "{}"?
                                             <PieChart
-                                                data={charts.todoDto.data}
+                                                data={charts.data.todoDto.data}
                                                 style={{height: '300px', width: '930px'}}
                                                 totalTitle="未回金额"
                                             >
@@ -54,7 +52,6 @@ class Receiving extends React.Component{
                     </Tab>
                 </div>
                 <div className="member__cbox" style={{ padding:'20px 30px' }}>
-
                     {(JSON.stringify(myList) == '{}') ? (<p>{myList.message}</p>)
                         : (
                             (myList.data.total > 0) ? (
@@ -93,11 +90,8 @@ class Receiving extends React.Component{
                         )
                     }
                 </div>
-
             </div>
-
         )
-
     }
 }
 function mapStateToProps(state) {
@@ -107,5 +101,4 @@ function mapStateToProps(state) {
         memberInvestments,
     };
 }
-
 export default connect(mapStateToProps)(Receiving);
