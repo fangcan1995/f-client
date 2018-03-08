@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Row, Col } from 'antd';
 import { loginUser } from '../../actions/auth';
 
 import { hex_md5 } from '../../utils/md5';
@@ -11,7 +11,7 @@ import './signup.less';
 
 const createForm = Form.create;
 const FormItem = Form.Item;
-
+const phoneNumberRegExp = /^1[3|4|5|7|8]\d{9}$/;
 function noop() {
   return false;
 }
@@ -61,21 +61,40 @@ class Signup extends Component {
     const usernameProps = getFieldDecorator('username', {
       validate: [{
         rules: [
-          { required: true }
+          { required: true, message: '手机号不能为空' }
         ],
         trigger: 'onBlur'
       }, {
         rules: [
-          //{ type: 'email', message: '请输入正确的邮箱地址' }
+          { pattern: phoneNumberRegExp, message: '请输入正确的手机号码' }
         ],
         trigger: ['onBlur', 'onChange']
       }]
     });
-    const passwordProps = getFieldDecorator('password', {
+    
+
+    const verifyCodeProps = getFieldDecorator('verify_code', {
       rules: [
-        { required: true, min: 4, message: '密码至少为 4 个字符' }
+        { required: true, min: 4, message: '验证码至少为4个字符' }
       ]
     });
+
+    const mobileCodeProps = getFieldDecorator('mobileCode', {
+      rules: [
+        { required: true, min: 4, message: '验证码至少为4个字符' }
+      ]
+    });
+
+    const passwordProps = getFieldDecorator('password', {
+      rules: [
+        { required: true, min: 6, max: 16, message: '密码应该由6-16位字母、数字或者特殊符号组成' }
+      ]
+    });
+
+    const rememberProps = getFieldDecorator('remember', {
+      valuePropName: 'checked',
+      initialValue: true,
+    })
 
 
     const formItemLayout = {
@@ -90,7 +109,7 @@ class Signup extends Component {
     };
 
     return (
-      <main className="main login">
+      <main className="main signup">
         <div className="wrapper">
           <div className="login__card">
             <div className="card__header">
@@ -101,15 +120,63 @@ class Signup extends Component {
               <Form layout="horizontal" onSubmit={this.handleSubmit}>
                 <FormItem
                   { ...formItemLayout }
-                  label="账号"
+                  label="手机号"
                   hasFeedback
                   >
                   {usernameProps(
                     <Input
-                      placeholder="请输入账号"
+                      placeholder="请输入手机号"
                       type="text"
                     />
                   )}
+                </FormItem>
+                <FormItem
+                  { ...formItemLayout }
+                  label="验证码"
+                  hasFeedback
+                  >
+                  <Row gutter={8}>
+                    <Col span={12}>
+                    {
+                      verifyCodeProps(
+                        <Input
+                          size="large"
+                          type="text"
+                          autoComplete="off"
+                          placeholder="验证码"
+                          onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
+                        />
+                      )
+                    }
+                    </Col>
+                    <Col span={12}>
+                      <img className="verifyCode__img" src="http://172.16.1.234:8060/uaa/code/image" />
+                    </Col>
+                  </Row>
+                </FormItem>
+                <FormItem
+                  { ...formItemLayout }
+                  label="验证码"
+                  hasFeedback
+                  >
+                  <Row gutter={8}>
+                    <Col span={12}>
+                      {
+                        mobileCodeProps(
+                          <Input
+                            type="text"
+                            size="large"
+                            autoComplete="off"
+                            placeholder="请输入短信验证码"
+                            onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
+                          />
+                        )
+                      }
+                    </Col>
+                    <Col span={12}>
+                      <Button size="large" type="dashed" htmlType="submit">获取验证码</Button>
+                    </Col>
+                  </Row>
                 </FormItem>
                 <FormItem
                   { ...formItemLayout }
@@ -121,7 +188,7 @@ class Signup extends Component {
                       <Input
                         type="password"
                         autoComplete="off"
-                        placeholder="请输入密码"
+                        placeholder="设置6-16位的登录密码"
                         onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
                       />
                     )

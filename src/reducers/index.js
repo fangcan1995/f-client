@@ -1,14 +1,17 @@
 import auth from './auth';
-import constantReducer from './totalDataReducer';
+import homePage from './home-page';
+import constantReducer from './constantReducer';
 import myRedEnvelopes from './myRedEnvelopes';
-import myRateCoupons from './myRateCoupons'
-import myInvestments from './myInvestments'
-import myReceiving from './myReceiving'
+import myRateCoupons from './myRateCoupons';
+import myInvestments from './myInvestments';
+import aboutReducer from './aboutReducer';
+
 export {
     auth,
+    aboutReducer,
+    homePage,
     constantReducer,
     myRedEnvelopes,
     myRateCoupons,
     myInvestments,
-    myReceiving
 }

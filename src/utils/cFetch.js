@@ -1,5 +1,5 @@
-import fetch, { Response } from 'isomorphic-fetch';
 require('es6-promise').polyfill();
+import fetch from 'isomorphic-fetch';
 
 import cookie from 'js-cookie';
 import StandardError from 'standard-error';
@@ -116,7 +116,8 @@ function toQueryString(object) {
 
 
 function cFetch(url, options, ignoreAuth) {
-  let mergeUrl = API_CONFIG.baseUri + url;
+  // let mergeUrl = API_CONFIG.baseUri + url;
+  let mergeUrl = url;
   const defaultOptions = {
     method: 'GET'
   };

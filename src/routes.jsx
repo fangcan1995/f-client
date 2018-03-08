@@ -47,18 +47,10 @@ import Honor from './containers/about/honor/honor';
 
 
 const userIsAuthenticated = connectedRouterRedirect({
-   // The url to redirect user to if they fail
   redirectPath: '/login',
-   // If selector is true, wrapper will not redirect
-   // For example let's check that state contains user data
   authenticatedSelector: state => state.getIn(['auth', 'isAuthenticated']),
-  // A nice display name for this check
   wrapperDisplayName: 'UserIsAuthenticated'
 })
-
-console.log(userIsAuthenticated)
-
-
 export default (
     <App>
         <Switch>
@@ -143,23 +135,39 @@ export default (
                     <About>
                         <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/constant`} />
+
+                            {/* 关于我们 */}
                             <Route path={`${match.url}/constant`} component={Constant} />
+                            <Route path={`${match.url}/introduce`} component={ArticleList} />
                             <Route path={`${match.url}/team`} component={Team} />
-                            <Route path={`${match.url}/contact`} component={Contact} />
                             <Route path={`${match.url}/honor`} component={Honor} />
                             <Route path={`${match.url}/partners`} component={Partners} />
-                            <Redirect to="/" />
-                        </Switch>
-                    </About>
-                )
-            }} />
-            <Route path="/news" render={(props) => {
-                const { match } = props;
-                return(
-                    <About>
-                        <Switch>
-                            <Redirect exact from={`${match.url}`} to={`${match.url}/media-report`} />
-                            <Route path={`${match.url}/media-report`} component={ArticleList} />
+                            <Route path={`${match.url}/history`} component={ArticleList} />
+
+                            {/* 新闻动态 */}
+                            <Route path={`${match.url}/news/mediaCompany`} component={ArticleList} />
+                            <Route path={`${match.url}/news/mediaReport`} component={ArticleList} />
+                            <Route path={`${match.url}/news/mediaIndustry`} component={ArticleList} />
+
+                            {/* 官方公告 */}
+                            <Route path={`${match.url}/news/notice`} component={ArticleList} />
+
+                            {/* 运营报告 */}
+                            <Route path={`${match.url}/news/report`} component={ArticleList} />
+
+                            {/* 安全保障 */}
+                            <Route path={`${match.url}/dangerControl/:id`} component={ArticleList} />
+
+                            {/* 法律法规 */}
+                            <Route path={`${match.url}/laws`} component={ArticleList} />
+
+                            {/* 活动公告 */}
+                            <Route path={`${match.url}/activeNotice`} component={ArticleList} />
+
+                            {/* 帮助中心 */}
+                            <Route path={`${match.url}/questions`} component={ArticleList}/>
+                            <Route path={`${match.url}/contact`} component={Contact} />
+                            
                             <Redirect to="/" />
                         </Switch>
                     </About>
