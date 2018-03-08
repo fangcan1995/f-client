@@ -38,7 +38,6 @@ class ModalTransfer extends React.Component {
     }
     //改变转让金额
     changeAmount(event) {
-
         let result=this.checkAmount(event.target.value);
         if(!result[0]){
             this.setState({
@@ -55,7 +54,7 @@ class ModalTransfer extends React.Component {
     }
     checkAmount(pram){
         //1 验证输入是否正确
-        let {transferData}=this.props.myInvestments.transferInfo;
+        let {transferData}=this.props.memberInvestments.myInvestments.transferInfo;
         let result=checkMoney({
             'value':pram,
             'type':0,
@@ -65,18 +64,6 @@ class ModalTransfer extends React.Component {
             'interval':parseInt(transferData.proIncreaseAmount)  //
         });
         return result;
-        /*if(!result[0]){
-            this.setState({
-                tips:result[2],
-                amount:result[1],
-            });
-            return false;
-        }else{
-            this.setState({
-                tips:'',
-                amount:result[1],
-            })
-        }*/
     }
     handleSubmit(){
         //1 验证输入是否正确
@@ -124,9 +111,10 @@ class ModalTransfer extends React.Component {
         });
     }
     render() {
+        console.log(this.props);
         let {callback}=this.props.info;
-        let {postResult}=this.props.myInvestments;
-        let {transferData}=this.props.myInvestments.transferInfo;
+        let {postResult}=this.props.memberInvestments.myInvestments;
+        let {transferData}=this.props.memberInvestments.myInvestments.transferInfo;
         let {amount,tips,isRead,postSwitch} =this.state;
         return (
             <div className="pop__transfer">
@@ -215,10 +203,10 @@ class ModalTransfer extends React.Component {
     }
 };
 function mapStateToProps(state) {
-    const { auth,myInvestments } = state.toJS();
+    const { auth,memberInvestments } = state.toJS();
     return {
         auth,
-        myInvestments,
+        memberInvestments,
     };
 }
 export default connect(mapStateToProps)(ModalTransfer);

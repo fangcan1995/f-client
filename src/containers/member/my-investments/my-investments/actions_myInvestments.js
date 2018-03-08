@@ -8,14 +8,22 @@ let actionsMyInvestments = {
         dispatch(actionsMyInvestments.getList(1,10,{status:status}));
     },
     getPie:()=>(dispatch,myInvestments)=>{
+        let myReceiving_new={};
         // 获取统计数据
-        let url = `http://172.16.4.62:9090/members/invest/statistics?access_token=907e3e02-bf28-4cac-87cc-fda8d2c58223`;
+        let url = `http://172.16.4.62:9090/members/invest/statistics?access_token=97c8feba-9a64-4f9a-93ed-100816046afe`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
                     return response;
                 }else{
-                    dispatch(actionsMyInvestments.refreshChartsFail('后端代码'));
+                    myReceiving_new={
+                        charts:{
+                            data:{},
+                            message:'无响应'
+                        }
+                    };
+                    dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+
                 }
             })
             .then((data) => data.json())
@@ -38,14 +46,28 @@ let actionsMyInvestments = {
                             ]
                         },
                     };
-                    dispatch(actionsMyInvestments.refreshChartsSuccess(charts));
+                    myReceiving_new={
+                        charts:
+                            {
+                                data:charts,
+                                message:''
+                            }
+                    };
+                    dispatch(actionsMyInvestments.stateModify(myReceiving_new));
                 }, 1000);
             })
             .catch(err=>{
-                dispatch(actionsMyInvestments.refreshChartsFail('连接错误'));
+                myReceiving_new={
+                    charts:{
+                        data:{},
+                        message:'连接错误'
+                    }
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
             });
     },
     getList: (pageNum=1,pageSize=10,filter={}) => (dispatch, myInvestments) => {
+        let myReceiving_new={};
         // 获取数据列表
         let conditions='';
         if(JSON.stringify(filter)!={}){
@@ -53,137 +75,186 @@ let actionsMyInvestments = {
                 conditions += "&"+item+"="+filter[item];
             }
         }
-        //let url = `http://172.16.4.5:8084/getList.php?access_token=1480826e-71b9-4cb0-8590-abbbe81ef9a0&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
-        let url=`http://172.16.4.62:9090/members/investments?access_token=907e3e02-bf28-4cac-87cc-fda8d2c58223&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
+        let url=`http://172.16.4.62:9090/members/investments?access_token=97c8feba-9a64-4f9a-93ed-100816046afe&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
                     return response;
                 }else{
-                    dispatch(actionsMyInvestments.refreshListFail('后端代码'));
+                    dispatch(actionsMyInvestments.stateModify({myReceiving:{data: {},message:'无响应'}}));
                 }
             })
             .then((data) => data.json())
             .then(data => {
-                dispatch(actionsMyInvestments.refreshListSuccess(data.data));
+                myReceiving_new={
+                    myList:
+                        {
+                            data:data.data,
+                            message:''
+                        }
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
             }).catch(err=>{
-            dispatch(actionsMyInvestments.refreshListFail('连接错误'));
+                myReceiving_new={
+                    myList: {
+                        data:{},
+                        message:'连接错误'
+                    }
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
         });
 
 
     },
-/*    getPie:()=>(dispatch,myInvestments)=>{
-        // 获取统计数据
-        let url = `http://172.16.4.62:9090/members/invest/statistics?access_token=907e3e02-bf28-4cac-87cc-fda8d2c58223`;
-        fetch(url,{method:"get"})
-            .then(function (response){
-                if (response.status == 200){
-                    return response;
-                }else{
-                    dispatch(actionsMyInvestments.refreshChartsFail('后端代码'));
-                }
-            })
-            .then((data) => data.json())
-            .then(data => {
-                setTimeout(() => {
-                    let {totalInvestmentDto,accumulatedIncomeDto}=data.data;
-                    let charts={
-                        totalInvestment:{
-                            data:[
-                                {name:'招标中',value:totalInvestmentDto.proMoneyBidding,instruction:`${addCommas(totalInvestmentDto.proMoneyBidding)}元`},
-                                {name:'回款中',value:totalInvestmentDto.proMoneyInBack,instruction:`${addCommas(totalInvestmentDto.proMoneyInBack)}元`},
-                                {name:'已回款',value:totalInvestmentDto.proMoneyBacked,instruction:`${addCommas(totalInvestmentDto.proMoneyBacked)}元`},
-                                {name:'已转出',value:totalInvestmentDto.proMoneyOut,instruction:`${addCommas(totalInvestmentDto.proMoneyOut)}元`}
-                            ]
-                        },
-                        accumulatedIncome:{
-                            data:[
-                                {name:'回款中',value:accumulatedIncomeDto.earnMoneyInBack,instruction:`${addCommas(accumulatedIncomeDto.earnMoneyInBack)}元`},
-                                {name:'已回款',value:accumulatedIncomeDto.earnMoneyBacked,instruction:`${addCommas(accumulatedIncomeDto.earnMoneyBacked)}元` },
-                            ]
-                        },
-                    };
-                    dispatch(actionsMyInvestments.refreshChartsSuccess(charts));
-                }, 1000);
-            })
-            .catch(err=>{
-                dispatch(actionsMyInvestments.refreshChartsFail('连接错误'));
-            });
-    },*/
     getPlanList:(pram)=>(dispatch, myInvestments)=>{
-        let url=`http://172.16.4.62:9090/members/investments/receiving/${pram}?access_token=907e3e02-bf28-4cac-87cc-fda8d2c58223`;
+        let myReceiving_new={};
+        let url=`http://172.16.4.62:9090/members/investments/receiving/${pram}?access_token=97c8feba-9a64-4f9a-93ed-100816046afe`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
                     return response;
                 }else{
-                    dispatch(actionsMyInvestments.refreshPlanListFail('后端代码'));
+                    myReceiving_new={
+                        currentPro:
+                            {
+                                planData:[],
+                                currentId:'',
+                                message:'无响应'
+                            }
+                    };
+                    dispatch(actionsMyInvestments.stateModify(myReceiving_new));
                 }
             })
             .then((data) => data.json())
             .then(data => {
-                dispatch(actionsMyInvestments.refreshPlanListSuccess(pram, data.data));
+                myReceiving_new={
+                    currentPro:
+                        {
+                            planData:data.data,
+                            currentId:pram,
+                            message:''
+                        }
+                };
+
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
             }).catch(err=>{
-            dispatch(actionsMyInvestments.refreshPlanListFail(pram,'连接错误'));
+            myReceiving_new={
+                currentPro:
+                    {
+                        planData:[],
+                        currentId:'',
+                        message:'连接错误'
+                    }
+            };
+            dispatch(actionsMyInvestments.stateModify(myReceiving_new));
         });
     },
     getTransfer:(pram)=>(dispatch, myInvestments)=>{
-        let url=`http://172.16.4.62:9090/members/investments/transfer/${pram}?access_token=907e3e02-bf28-4cac-87cc-fda8d2c58223`;
+        let myReceiving_new={};
+        let url=`http://172.16.4.62:9090/members/investments/transfer/${pram}?access_token=97c8feba-9a64-4f9a-93ed-100816046afe`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
                     return response;
                 }else{
-                    dispatch(actionsMyInvestments.refreshTransferFail('后端代码'));
+                    myReceiving_new={
+                        transferInfo:
+                            {
+                                transferData:{},
+                                currentId:'',
+                                message:'无响应'
+                            }
+                    };
+                    dispatch(actionsMyInvestments.stateModify(myReceiving_new));
                 }
             })
             .then((data) => data.json())
             .then(data => {
                 setTimeout(() => {
-                    dispatch(actionsMyInvestments.refreshTransferSuccess(pram,data.data));
+                    console.log('---------------data.data--------------');
+                    console.log(data.data);
+                    myReceiving_new={
+                        transferInfo:
+                            {
+                                transferData:data.data,
+                                currentId:'',
+                                message:''
+                            }
+                    };
+                    dispatch(actionsMyInvestments.stateModify(myReceiving_new));
                 }, 1000);
 
 
             }).catch(err=>{
-                dispatch(actionsMyInvestments.refreshTransferFail(pram,'连接错误'));
+            myReceiving_new={
+                transferInfo:
+                    {
+                        transferData:{},
+                        currentId:'',
+                        message:'连接错误'
+                    }
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+
         });
 
     },
     //根据状态检索投资列表
     filter: (pram) => (dispatch, myInvestments) => {
         dispatch(actionsMyInvestments.toggleClass(pram));
-        dispatch(actionsMyInvestments.refreshListFail(''));
+        //dispatch(actionsMyInvestments.refreshListFail(''));
         dispatch(actionsMyInvestments.getList(1,10,{status:pram}));
 
     },
     //打开关闭模态框
     toggleModal:(modal,visile,id)=>(dispatch, myInvestments) => {
+        let myReceiving_new={};
         if(modal=='modalPlan'){
             if(visile){
                 dispatch(actionsMyInvestments.getPlanList(id));//获取某项目回款计划
-                dispatch(actionsMyInvestments.modalPlanShow(id));  //显示回款计划弹框
+                myReceiving_new={
+                    modalPlan: true,
+                    currentId: id,
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
             }else{
-                dispatch(actionsMyInvestments.modalPlanHide(id))
+                myReceiving_new={
+                    modalPlan: false,
+                    currentId: '',
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
             }
         }else if(modal=='modalTransfer'){
 
             if(visile){
-                //dispatch(actionsMyInvestments.getTransfer(id));//获取债权转让详情
-                dispatch(actionsMyInvestments.modalTransferShow(id));  //显示债权转让弹框
+                myReceiving_new={
+                    modalTransfer: true,
+                    currentId: id,
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
             }else{
-                dispatch(actionsMyInvestments.modalTransferHide(id))
+
+                myReceiving_new={
+                    modalTransfer: false,
+                    currentId: '',
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
             }
         }
 
     },
+
     //选项卡样式切换
-    toggleClass: id => ({
-        type: 'TOGGLE_CLASS',
-        payload: id
-    }),
+    toggleClass:(pram)=>(dispatch, myInvestments)=>{
+        let myReceiving_new={};
+        myReceiving_new= {
+            status:pram
+        };
+    dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+    },
     //提交债转申请
     postTransfer:(pram) => (dispatch, myInvestments) => {
-        //dispatch(actionsMyInvestments.checkTransfer());
+        let myReceiving_new={};
         let url = `http://172.16.4.5:8084/test.php`;
         fetch(url,{
             method: "POST",
@@ -199,20 +270,30 @@ let actionsMyInvestments = {
                 if (response.status == 200){
                     return response;
                 }else{
-                    dispatch(actionsMyInvestments.refreshPostResult(1));
+                    myReceiving_new= {
+                        postResult:1
+                    };
+                    dispatch(actionsMyInvestments.stateModify(myReceiving_new));
                 }
             })
             .then((data) => data.json())
             .then(data => {
                 setTimeout(() => {
-                    dispatch(actionsMyInvestments.refreshPostResult(2));
+                    //dispatch(actionsMyInvestments.refreshPostResult(2));
+                    myReceiving_new= {
+                        postResult:2
+                    };
+                    dispatch(actionsMyInvestments.stateModify(myReceiving_new));
                 }, 100);
             })
             .catch(err=>{
-                dispatch(actionsMyInvestments.refreshPostResult(1));
+                myReceiving_new= {
+                    postResult:1
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
             });
     },
-    refreshChartsSuccess: json => ({
+    /*refreshChartsSuccess: json => ({
         type: 'FETCH_CHARTS_SUCCESS',
         payload: json
     }),
@@ -276,8 +357,12 @@ let actionsMyInvestments = {
         payload:json,
 
     }),
-
-
+*/
+    //-------------------------------------
+    stateModify: json => ({
+        type: 'myInvest/investments/MODIFY_STATE',
+        payload: json
+    })
 
 };
 export default actionsMyInvestments;

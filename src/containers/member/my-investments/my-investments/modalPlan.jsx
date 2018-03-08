@@ -26,10 +26,10 @@ export default class ModalPlan extends React.Component {
                                             <tr key={`row-${i}`}>
                                                 <td>{moment(l.earnShdEarnDate).format('YYYY-MM-DD')}</td>
                                                 <td>{l.earnIssue}</td>
-                                                <td>{l.proName}</td>
-                                                <td>{l.proMoney}</td>
-                                                <td>{l.proMoneyEnd}</td>
-                                                <td>{l.inveCreateTime}</td>
+                                                <td>{l.earnIint2}</td>
+                                                <td>{l.earnCapital}</td>
+                                                <td>{l.earnIint}</td>
+                                                <td>{l.lateIint}</td>
                                             </tr>
                                         ))
                                     :(<tr colSpan="6"><p className="noRecord">暂无记录</p></tr>)

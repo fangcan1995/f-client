@@ -18,17 +18,24 @@ class MyInvestments extends React.Component{
     }
     transferCallback(){
         let {dispatch}=this.props;
-        dispatch(actionsMyInvestments.refreshPostResult(0));
-        dispatch(actionsMyInvestments.refreshTransferSuccess('',{}));
+        //dispatch(actionsMyInvestments.refreshPostResult(0));
+        let myReceiving_new= {
+            postResult:0
+        };
+        dispatch(actionsMyInvestments.stateModify(myReceiving_new));
         dispatch(actionsMyInvestments.toggleModal('modalTransfer',false,''));
         dispatch(actionsMyInvestments.filter(2));
     }
     render(){
-        let {myInvestments,dispatch} = this.props;
+        //let {myInvestments,dispatch} = this.props;
         console.log('-------myInvestments--------');
         console.log(this.props);
-        let {status,myList,charts,modalPlan,modalTransfer,currentPro,currentId}=myInvestments;
 
+        let {dispatch}=this.props;
+        let {myInvestments}=this.props.memberInvestments;
+        let {myList,charts,status,modalPlan,modalTransfer,currentPro,currentId}=myInvestments;
+        console.log(currentPro);
+        //let {status,myList,charts,modalPlan,modalTransfer,currentPro,currentId}=myInvestments;
         let thead=[];
         thead[0]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>还款方式</th><th>投资金额(元)</th><th>投资时间</th><th>投资进度</th></tr>;
         thead[1]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>投资金额(元)</th><th>投资时间</th><th>下期回款日期</th><th>下期回款金额(元)</th><th>操作</th></tr>;
@@ -44,9 +51,9 @@ class MyInvestments extends React.Component{
                         <div name="我的投资" className="chart">
                             <Tab>
                                 <div name="投资总额">
-                                    {(JSON.stringify(charts.totalInvestment)=='{}')?(<p>{charts.message}</p>)
+                                    {(JSON.stringify(charts.data)=='{}')?(<p>{charts.message}</p>)
                                         :(<PieChart
-                                            data={charts.totalInvestment.data}
+                                            data={charts.data.totalInvestment.data}
                                             style={{height: '300px', width: '930px'}}
                                             totalTitle="投资总额"
                                         >
@@ -55,9 +62,9 @@ class MyInvestments extends React.Component{
                                     }
                                 </div>
                                 <div name="累计收益">
-                                    {(JSON.stringify(charts.accumulatedIncome)=='{}')?(<p>{charts.message}</p>)
+                                    {(JSON.stringify(charts.data)=='{}')?(<p>{charts.message}</p>)
                                         :(<PieChart
-                                            data={charts.accumulatedIncome.data}
+                                            data={charts.data.accumulatedIncome.data}
                                             style={{height: '300px', width: '930px'}}
                                             totalTitle="投资总额"
                                         >
@@ -112,7 +119,7 @@ class MyInvestments extends React.Component{
                             <div  className="table__wrapper">
                                 <table className={`tableList table${status}`}>
                                     <thead>
-                                        {thead[status-1]}
+                                    {thead[status-1]}
                                     </thead>
 
                                     {(myList.data.total>0)?(
@@ -202,7 +209,7 @@ class MyInvestments extends React.Component{
                             }
 
                         }
-                         />:''
+                        />:''
                     }
                 </Modal>
                 <Modal
@@ -233,11 +240,10 @@ class MyInvestments extends React.Component{
 }
 
 function mapStateToProps(state) {
-    const { auth,myInvestments,myReceiving } = state.toJS();
+    const { auth,memberInvestments } = state.toJS();
     return {
         auth,
-        myInvestments,
-        myReceiving
+        memberInvestments
     };
 }
 
