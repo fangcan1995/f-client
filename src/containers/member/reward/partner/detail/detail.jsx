@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './detail.less';
+/*import './detail.less';*/
 import Crumbs from '../../../../../components/crumbs/crumbs';
 import Tab from '../../../../../components/tab/tab';
-import Table from '../../../../../components/table/table';
+/*import Table from '../../../../../components/table/table';*/
 import  {getData}  from '../../../../../assets/js/getData'
 var Yqjl={
     columnOpts:[
@@ -53,18 +53,60 @@ export default class PartnerDetail extends React.Component{
 					<Tab>
 						<div name="邀请记录">
                             <div className="table__wrapper">
-                                <Table
+                                {/*<Table
                                     source='http://localhost:9002'
                                     config={Yqjl}
-                                />
+                                />*/}
+                                <table  className="tableList">
+                                    <thead>
+                                    <tr>
+                                        <th>邀请用户</th>
+                                        <th>业绩金额（元）</th>
+                                        <th>奖励来源</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr >
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            2
+                                        </td>
+                                        <td>
+                                            3
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
                             </div>
 						</div>
 						<div name="业绩明细">
                             <div className="table__wrapper">
-                                <Table
-                                    source='http://localhost:9002'
-                                    config={Yjmx}
-                                />
+                                <table  className="tableList">
+                                    <thead>
+                                    <tr>
+                                        <th>获得时间</th>
+                                        <th>注册时间</th>
+                                        <th>首次投资时间</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr >
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            2
+                                        </td>
+                                        <td>
+                                            3
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
                             </div>
 
 						</div>

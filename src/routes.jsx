@@ -27,6 +27,7 @@ import Receiving from './containers/member/my-investments/receiving/receiving';
 
 import SuperPartner from './containers/member/reward/super-partner/super-partner';
 import PartnerList from './containers/member/reward/partner/master/master';
+import PartnerDetail from './containers/member/reward/partner/detail/detail';
 import MyRedEnvelopes from './containers/member/reward/my-redEnvelopes/myRedEnvelopes';
 import MyRateCoupons from './containers/member/reward/my-rateCoupons/my-rateCoupons';
 
@@ -108,6 +109,7 @@ export default (
                         <Switch>
                             <Route path={`${match.url}/super-partner`} component={SuperPartner} />
                             <Route path={`${match.url}/partner-list`} component={PartnerList} />
+                            <Route path={`${match.url}/partner-detail`} component={PartnerDetail} />
                             <Route path={`${match.url}/my-redEnvelopes`} component={MyRedEnvelopes} />
                             <Route path={`${match.url}/my-rateCoupons`} component={MyRateCoupons} />
                             <Redirect to="/" />
