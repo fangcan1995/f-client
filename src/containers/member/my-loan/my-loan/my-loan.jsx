@@ -8,9 +8,12 @@ import Pagination from '../../../../components/pagination/pagination';
 import  {getData}  from '../../../../assets/js/getData';
 import { Modal } from 'antd';
 import ModalRepaymentApp from './modalRepaymentApp';
+import { connect } from 'react-redux';
+import  memberLoansActions  from '../../../../actions/member-loans';
+import moment from "moment";
 import './my-loan.less';
-export default class MyLoans extends React.Component {
-    constructor(props){
+class MyLoans extends React.Component {
+    /*constructor(props){
         super(props);
         this.state={
             modalRepaymentApp: false,
@@ -61,7 +64,7 @@ export default class MyLoans extends React.Component {
                 data:{
                     list:[
                         {
-                            proId:'1',proStatus:'项目状态',proName:'项目名称',proMoney:'投资总额',proMoneyEnd:'投资金额',
+                            proId:'1',proStatus:'项目状态',shortText:'项目名称',proMoney:'投资总额',proMoneyEnd:'投资金额',
                             inveCreateTime:'投资时间',proAnnualRate:'预期年化收益率',loanExpiry:'锁定期限',loanRefundWay:'还款方式',
                             proMoneyPercent:'投资进度',earnShdEarnDate:'下期回款日期',earnShdEarnDate:'下期回款日期',earnShdEarnAmou:'下期回款金额',
                             earnRemittancAmou:'回款金额',earnRealEarnDate:'结清时间',transNo:'债转标项目名称',transApplyTime:'转让申请日期',
@@ -69,7 +72,7 @@ export default class MyLoans extends React.Component {
                             transferDate:'转让成功日期',transAmt:'转让金额',transFee:'手续费'
                         },
                         {
-                            proId:'2',proStatus:'项目状态',proName:'汇车贷-HCD201704170001',proMoney:'投资总额',proMoneyEnd:'投资金额',
+                            proId:'2',proStatus:'项目状态',shortText:'汇车贷-HCD201704170001',proMoney:'投资总额',proMoneyEnd:'投资金额',
                             inveCreateTime:'投资时间',proAnnualRate:'预期年化收益率',loanExpiry:'锁定期限',loanRefundWay:'还款方式',
                             proMoneyPercent:'投资进度',earnShdEarnDate:'下期回款日期',earnShdEarnDate:'下期回款日期',earnShdEarnAmou:'下期回款金额',
                             earnRemittancAmou:'回款金额',earnRealEarnDate:'结清时间',transNo:'债转标项目名称',transApplyTime:'转让申请日期',
@@ -77,7 +80,7 @@ export default class MyLoans extends React.Component {
                             transferDate:'转让成功日期',transAmt:'转让金额',transFee:'手续费'
                         },
                         {
-                            proId:'3',proStatus:'项目状态',proName:'汇车贷-HCD201704170002',proMoney:'投资总额',proMoneyEnd:'投资金额',
+                            proId:'3',proStatus:'项目状态',shortText:'汇车贷-HCD201704170002',proMoney:'投资总额',proMoneyEnd:'投资金额',
                             inveCreateTime:'投资时间',proAnnualRate:'预期年化收益率',loanExpiry:'锁定期限',loanRefundWay:'还款方式',
                             proMoneyPercent:'投资进度',earnShdEarnDate:'下期回款日期',earnShdEarnDate:'下期回款日期',earnShdEarnAmou:'下期回款金额',
                             earnRemittancAmou:'回款金额',earnRealEarnDate:'结清时间',transNo:'债转标项目名称',transApplyTime:'转让申请日期',
@@ -85,7 +88,7 @@ export default class MyLoans extends React.Component {
                             transferDate:'转让成功日期',transAmt:'转让金额',transFee:'手续费'
                         },
                         {
-                            proId:'4',proStatus:'项目状态',proName:'汇车贷-HCD201704170003',proMoney:'100000.00',proMoneyEnd:'50000.00',
+                            proId:'4',proStatus:'项目状态',shortText:'汇车贷-HCD201704170003',proMoney:'100000.00',proMoneyEnd:'50000.00',
                             inveCreateTime:'2016-12-12',proAnnualRate:'12%',loanExpiry:'3个月',loanRefundWay:'还款方式',
                             proMoneyPercent:'投资进度',earnShdEarnDate:'下期回款日期',earnShdEarnDate:'下期回款日期',earnShdEarnAmou:'下期回款金额',
                             earnRemittancAmou:'回款金额',earnRealEarnDate:'结清时间',transNo:'巴20170426字00061号',transApplyTime:'转让申请日期',
@@ -109,7 +112,7 @@ export default class MyLoans extends React.Component {
     loadChartsData(){
         let data=getData(`http://localhost:9002/members`);
         if (data){
-            /*this.setState({
+            /!*this.setState({
                 charts:{
                     totalInvestment:{
                         legend:{data:['招标中','回款中','已回款','已转出']},
@@ -134,7 +137,7 @@ export default class MyLoans extends React.Component {
                         }
                     }
                 }
-            });*/
+            });*!/
         }else{
             let mockDate={
                 data: {
@@ -181,10 +184,30 @@ export default class MyLoans extends React.Component {
         this.loadChartsData();
         this.loadData(1,10,{status:1});
 
+    }*/
+    componentDidMount () {
+        this.props.dispatch(memberLoansActions.getData(1));
+    }
+    repaymentCallback(){
+        let {dispatch}=this.props;
+        let newState= {
+            postResult:0
+        };
+        dispatch(memberLoansActions.stateModify(newState));
+        dispatch(memberLoansActions.toggleModal('modalRepaymentApp',false,''));
+        dispatch(memberLoansActions.filter(3));
     }
     render(){
-        const {list,pageNum,total,pageSize}=this.state.dataSetting;
-        const totalPage=Math.ceil(total/pageSize);
+        console.log('-------myLoans--------');
+        console.log(this.props);
+        let {dispatch}=this.props;
+        let {myLoans}=this.props.memberLoans;
+        let {myList,charts,status,modalRepaymentApp,currentId}=myLoans;
+        let tHead=[];
+        tHead[0]=<tr><th>项目名称</th><th>项目类型</th><th>借款金额(元)</th><th>借款年利率(%)</th><th>借款期限</th><th>还款方式</th><th>申请日期</th><th>状态</th></tr>;
+        tHead[1]=<tr><th>项目名称</th><th>借款总额(元)</th><th>借款期限</th><th>发布日期</th><th>当前投资金额(元)</th><th>投资进度(%)</th><th>募集结束日期</th><th>状态</th></tr>;
+        tHead[2]=<tr><th>项目名称</th><th>借款总额(元)</th><th>借款期限</th><th>放款日期</th><th>下期还款日期</th><th>下期还款金额(元)</th><th>操作</th></tr>;
+        tHead[3]=<tr><th>项目名称</th><th>借款金额(元)</th><th>借款期限</th><th>放款日期</th><th>还款本金(元)</th><th>还款利息(元)</th><th>逾期罚金(元)</th><th>逾期罚息(元)</th><th>结清日期</th><th>操作</th></tr>;
         return(
             <div className="member__main">
                 <Crumbs/>
@@ -193,27 +216,23 @@ export default class MyLoans extends React.Component {
                         <div name="我的借款" className="chart">
                             <Tab>
                                 <div name="借款总额">
-                                    {
-                                        JSON.stringify(this.state.charts.totalInvestment) != "{}"?
-                                            <PieChart
-                                                data={this.state.charts.totalInvestment.data}
-                                                style={{height: '300px', width: '930px'}}
-                                                totalTitle="借款总额"
-                                            >
-                                            </PieChart>
-                                            :''
+                                    {(JSON.stringify(charts.data)=='{}')?(<p>{charts.message}</p>)
+                                        :(<PieChart
+                                            data={charts.data.totalLoan.data}
+                                            style={{height: '300px', width: '930px'}}
+                                            totalTitle="借款总额"
+                                        >
+                                        </PieChart>)
                                     }
                                 </div>
                                 <div name="累计利息">
-                                    {
-                                        JSON.stringify(this.state.charts.accumulatedIncome) != "{}"?
-                                            <PieChart
-                                                data={this.state.charts.accumulatedIncome.data}
-                                                style={{height: '300px', width: '930px'}}
-                                                totalTitle="累计利息"
-                                            >
-                                            </PieChart>
-                                            :''
+                                    {(JSON.stringify(charts.data)=='{}')?(<p>{charts.message}</p>)
+                                        :(<PieChart
+                                            data={charts.data.accumulatedInterest.data}
+                                            style={{height: '300px', width: '930px'}}
+                                            totalTitle="累计利息"
+                                        >
+                                        </PieChart>)
                                     }
                                 </div>
                             </Tab>
@@ -229,120 +248,149 @@ export default class MyLoans extends React.Component {
                                         <h5>类型:</h5>
                                     </div>
                                     <div className="filter__cell">
-                                        <p className={ this.switchFilterStyle('status',1) } onClick={ () => { this.filter('status',1) } }>申请中</p>
+                                        <p className={(status===1)?'filter__opt filter__opt--active':'filter__opt'}
+                                           onClick={ () => { dispatch(memberLoansActions.filter(1)) } }>申请中</p>
                                     </div>
                                     <div className="filter__cell">
-                                        <p className={  this.switchFilterStyle('status',2) } onClick={ () => { this.filter('status',2) } }>招标中</p>
+                                        <p className={(status===2)?'filter__opt filter__opt--active':'filter__opt'}
+                                           onClick={ () => { dispatch(memberLoansActions.filter(2)) } }>招标中</p>
                                     </div>
                                     <div className="filter__cell">
-                                        <p className={  this.switchFilterStyle('status',3)  } onClick={ () => { this.filter('status',3) } }>还款中</p>
+                                        <p className={(status===3)?'filter__opt filter__opt--active':'filter__opt'}
+                                           onClick={ () => { dispatch(memberLoansActions.filter(3)) } }>还款中</p>
                                     </div>
                                     <div className="filter__cell">
-                                        <p className={  this.switchFilterStyle('status',4) } onClick={ () => { this.filter('status',4) } }>已结清</p>
+                                        <p className={(status===4)?'filter__opt filter__opt--active':'filter__opt'}
+                                           onClick={ () => { dispatch(memberLoansActions.filter(4)) } }>已结清</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {
-                        JSON.stringify(this.state.dataSetting) == "{}"? <div>连接错误,请稍后再试</div>
-                            :
-                            list.length>0 ?
-                                <div className="table__wrapper">
-                                    <table className={`tableList table${this.state.status}`}>
-                                        <thead>
-                                        <tr>
-                                            <th>项目名称</th>
-                                            {(this.state.status==1)? <th>项目类型</th>:''}
-                                            <th>借款金额(元)</th>
-                                            {(this.state.status==1)? <th>借款年利率(%)</th>:''}
-                                            <th>借款期限</th>
-                                            {(this.state.status==1)? <th>还款方式</th>:''}
-                                            {(this.state.status==1)? <th>申请日期</th>:''}
-                                            {(this.state.status==2)? <th>发布日期</th>:''}
-                                            {(this.state.status==2)? <th>当前投资金额(元)</th>:''}
-                                            {(this.state.status==2)? <th>投资进度(%)</th>:''}
-                                            {(this.state.status==2)? <th>募集结束日期</th>:''}
-                                            {(this.state.status==3||this.state.status==4)? <th>放款日期</th>:''}
-                                            {(this.state.status==3)? <th>下期还款日期</th>:''}
-                                            {(this.state.status==3)? <th>下期还款金额</th>:''}
-                                            {(this.state.status==4)? <th>还款本金</th>:''}
-                                            {(this.state.status==4)? <th>还款利息</th>:''}
-                                            {(this.state.status==4)? <th>逾期罚金</th>:''}
-                                            {(this.state.status==4)? <th>逾期罚息</th>:''}
-                                            {(this.state.status==4)? <th>结清日期</th>:''}
-                                            {(this.state.status==1||this.state.status==2)? <th>状态</th>:''}
-                                            {(this.state.status==3||this.state.status==4)? <th>操作</th> :''}
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {
-                                            list.map((item, rowIndex) => (
-                                                <tr key={`row-${rowIndex}`}>
-                                                        <td>
-                                                            <p>{item.transNo}{/*项目名称*/}</p>
-                                                        </td>
-                                                    {(this.state.status==1)? <td>项目类型</td>:''}
-                                                    <td>借款金额</td>
-                                                    {(this.state.status==1)? <td>5%</td>:''}
-                                                    <td>借款期限</td>
-                                                    {(this.state.status==1)? <td>还款方式</td>:''}
-                                                    {(this.state.status==1)? <td>申请日期</td>:''}
-                                                    {(this.state.status==2)? <td>发布日期</td>:''}
-                                                    {(this.state.status==2)? <td>当前投资金额(元)</td>:''}
-                                                    {(this.state.status==2)? <td>投资进度</td>:''}
-                                                    {(this.state.status==2)? <td>募集结束日期</td>:''}
-                                                    {(this.state.status==3||this.state.status==4)? <td>放款日期</td>:''}
-                                                    {(this.state.status==3)? <td>下期还款日期</td>:''}
-                                                    {(this.state.status==3)? <td>下期还款金额</td>:''}
-                                                    {(this.state.status==4)? <td>还款本金</td>:''}
-                                                    {(this.state.status==4)? <td>还款利息</td>:''}
-                                                    {(this.state.status==4)? <td>逾期罚金</td>:''}
-                                                    {(this.state.status==4)? <td>逾期罚息</td>:''}
-                                                    {(this.state.status==4)? <td>结清日期</td>:''}
-                                                    {(this.state.status==1||this.state.status==2)? <td>{item.transStatus}{/*状态*/}</td>:''}
-                                                    {(this.state.status==3||this.state.status==4)?
-                                                        <td>
-                                                            {(this.state.status==3)? <a onClick={() => this.toggleModal(`modalRepaymentApp`,true,item.proId)}>提前还款</a>:''}
-                                                            <a href="">借款合同</a>
-                                                        </td>
-                                                        :''
-                                                    }
-                                                </tr>
-                                            ))
-                                        }
-                                        </tbody>
-                                    </table>
-                                    <Pagination config = {
-                                        {
-                                            currentPage:1,
-                                            pageSize:10,
-                                            totalPage:2,
-                                            filter:this.state.status,
-                                            paging:(obj)=>{
-                                                this.loadData(obj.currentPage,obj.pageCount,{re_status:obj.filter});
+                    {(JSON.stringify(myList.data) == '{}') ? (<p>{myList.message}</p>)
+                        : (
+                            <div className="table__wrapper">
+                                <table className={`tableList table${status}`}>
+                                    <thead>
+                                    {tHead[status - 1]}
+                                    </thead>
+
+                                    {/*数据*/}
+                                    {(myList.data.total > 0) ? (
+                                            <tbody>
+                                            {
+                                                myList.data.list.map((l, i) => (
+                                                    (status === 1) ? (
+                                                        <tr key={`row-${i}`}>
+                                                            <td>--</td>
+                                                            <td>{l.shortText}</td>
+                                                            <td>{l.money}</td>
+                                                            <td>{l.num}</td>
+                                                            <td>{l.num}</td>
+                                                            <td>{l.shortText}</td>
+                                                            <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
+                                                            <td>申请中</td>
+                                                        </tr>
+                                                    ) : ((status === 2) ? (
+                                                        <tr key={`row-${i}`}>
+                                                            <td><p><a href="#">{l.longText}</a></p></td>
+                                                            <td>{l.shortText}</td>
+                                                            <td>{l.shortText}</td>
+                                                            <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.shortText}</td>
+                                                            <td>{l.shortText}</td>
+                                                            <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
+                                                            <td>招标中</td>
+                                                        </tr>
+                                                    ) : ((status === 3) ? (
+                                                        <tr key={`row-${i}`}>
+                                                            <td><p><a href="#">{l.longText}</a></p></td>
+                                                            <td>{l.money}</td>
+                                                            <td>{l.num}</td>
+                                                            <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
+                                                            <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.money}</td>
+                                                            <td>
+                                                                {
+                                                                    l.status=='0'?('提前还款申请中')
+                                                                        :(
+                                                                            <a onClick={() => dispatch(memberLoansActions.toggleModal('modalRepaymentApp', true, l.proId))}>提前还款</a>
+                                                                        )
+                                                                }
+                                                                <a href="">借款合同</a>
+                                                            </td>
+                                                        </tr>
+                                                    ) : ((status === 4) ? (
+                                                        <tr key={`row-${i}`}>
+                                                            <td><p><a href="#">{l.longText}</a></p></td>
+                                                            <td>{l.shortText}</td>
+                                                            <td>{l.shortText}</td>
+                                                            <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.shortText}</td>
+                                                            <td>{l.shortText}</td>
+                                                            <td>{l.shortText}</td>
+                                                            <td>{l.shortText}</td>
+                                                            <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
+                                                            <td><a href="">借款合同</a></td>
+                                                        </tr>
+                                                    ) : (''))))
+                                                ))
                                             }
+                                            </tbody>)
+                                        : (<tbody><p className="noRecord">暂无记录</p></tbody>)
+                                    }
+                                    {/*/数据*/}
+                                </table>
+                                <Pagination config = {
+                                    {
+                                        currentPage:myList.data.pageNum,
+                                        pageSize:myList.data.pageSize,
+                                        totalPage:Math.ceil(myList.data.total/myList.data.pageSize),
+                                        filter:status,
+                                        paging:(obj)=>{
+                                            dispatch(memberLoansActions.getList(obj.currentPage,obj.pageCount,{status:status}));
                                         }
-                                    } ></Pagination>
-                                </div>
-                                : <div>暂无记录</div>
+                                    }
+                                } ></Pagination>
+                            </div>
+                        )
                     }
                 </div>
                 <Modal
                     title="提前还款申请"
                     wrapClassName="vertical-center-modal"
-                    visible={this.state.modalRepaymentApp}
+                    //visible={this.state.modalRepaymentApp}
+                    visible={modalRepaymentApp}
                     width="520px"
                     footer={null}
-                    onCancel={() => this.toggleModal(`modalRepaymentApp`,false,'')}
+                    //onCancel={() => this.toggleModal(`modalRepaymentApp`,false,'')}
+                    onCancel={() => this.repaymentCallback()}
                 >
-                    {this.state.modalRepaymentApp===true?
+                    {/*{this.state.modalRepaymentApp===true?
                         <ModalRepaymentApp proId={this.state.currentId} />:''
+                    }*/}
+                    {modalRepaymentApp===true?
+                        <ModalRepaymentApp info={
+                            {
+                                currentId:currentId,
+                                callback:(obj)=>{
+                                    this.repaymentCallback();
+                                }
+                            }
+                        }
+                        />:''
                     }
                 </Modal>
             </div>
-
         )
-
     }
 }
+function mapStateToProps(state) {
+    const { auth,memberLoans } = state.toJS();
+    return {
+        auth,
+        memberLoans
+    };
+}
+
+export default connect(mapStateToProps)(MyLoans);

@@ -5,6 +5,7 @@ import myRedEnvelopes from './myRedEnvelopes';
 import myRateCoupons from './myRateCoupons';
 import aboutReducer from './aboutReducer';
 import memberInvestments from './member-investments';
+import memberLoans from './member-loans';
 export {
     auth,
     aboutReducer,
@@ -12,6 +13,7 @@ export {
     constantReducer,
     myRedEnvelopes,
     myRateCoupons,
-    memberInvestments
+    memberInvestments,
+    memberLoans
 
 }
