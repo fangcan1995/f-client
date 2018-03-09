@@ -26,8 +26,10 @@ import MyInvestments from './containers/member/my-investments/my-investments/my-
 import Receiving from './containers/member/my-investments/receiving/receiving';
 
 import SuperPartner from './containers/member/reward/super-partner/super-partner';
+import SuperPartnerDetail from './containers/member/reward/super-partner/detail';
 import PartnerList from './containers/member/reward/partner/master/master';
 import PartnerDetail from './containers/member/reward/partner/detail/detail';
+
 import MyRedEnvelopes from './containers/member/reward/my-redEnvelopes/myRedEnvelopes';
 import MyRateCoupons from './containers/member/reward/my-rateCoupons/my-rateCoupons';
 
@@ -108,6 +110,7 @@ export default (
                     <MemberSidebar {...props}>
                         <Switch>
                             <Route path={`${match.url}/super-partner`} component={SuperPartner} />
+                            <Route path={`${match.url}/super-list`} component={SuperPartnerDetail} />
                             <Route path={`${match.url}/partner-list`} component={PartnerList} />
                             <Route path={`${match.url}/partner-detail`} component={PartnerDetail} />
                             <Route path={`${match.url}/my-redEnvelopes`} component={MyRedEnvelopes} />

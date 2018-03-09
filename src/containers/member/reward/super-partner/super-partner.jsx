@@ -31,8 +31,8 @@ export default ({ location, match, history }) => {
                 </div>
             </div>
             <div className="inviteControl">
-                <Link to="/my-reward/partner-list" className="inviteControl__button">我要邀请</Link>
-                <a href="" className="inviteControl__link">查看邀请详细</a>
+                <Link to="#" className="inviteControl__button">我要邀请</Link>
+                <a href="/my-reward/super-list" className="inviteControl__link">查看邀请详细</a>
             </div>
         </div>
         
