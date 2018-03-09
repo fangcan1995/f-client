@@ -60,8 +60,8 @@ export default (
             <Route exact path="/" component={HomePage} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
-            <Route path="/invest-list" component={userIsAuthenticated(InvestList)} />
-            <Route path="/loan-index" component={LoanIndex} />
+            <Route path="/invest-list" component={InvestList} />
+            <Route path="/loan-index" component={userIsAuthenticated(LoanIndex)} />
             <Route strict path="/my-account" render={(props) => {
                 const { match } = props;
                 return (
