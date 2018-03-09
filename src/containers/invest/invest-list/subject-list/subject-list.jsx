@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import '../../../../assets/stylesheets/filter.less';
 import '../../../../components/table/table.less';
 import Pagination from '../../../../components/pagination/pagination';
-
+import { Progress } from 'antd';
 export default class SubjectList extends Component {
     constructor(props) {
         super(props);
@@ -332,10 +332,9 @@ export default class SubjectList extends Component {
                                                 <td>{entry['publishTime']}</td>
                                                 <td className="rtxt">{entry['syje']}元</td>
                                                 <td>{entry['loanApplyExpiry']}人</td>
-                                                <td><dl className="progressbar">
-                                                    <dt><div className="finished" style={{ width:`${entry['tzjd']}%`}}></div></dt>
-                                                    <dd><strong>{entry['tzjd']}%</strong></dd>
-                                                </dl></td>
+                                                <td style={{ width: 170}}>
+                                                    <Progress percent={entry['tzjd']} size="small" />
+                                                </td>
                                                 <td>
                                                     {entry['projectStatus']==50?
                                                         <a  href={"/invest/invest-detail/" + entry['id']} className="btn start">
