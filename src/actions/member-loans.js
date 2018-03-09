@@ -113,7 +113,6 @@ let memberLoansActions = {
 
 
     },
-
     getRepayment:(pram)=>(dispatch, memberLoans)=>{
         let newState={};
         let url=`http://172.16.4.5:8084/getRepayment.php`;
@@ -188,7 +187,6 @@ let memberLoansActions = {
         }
 
     },
-
     //选项卡样式切换
     toggleClass:(pram)=>(dispatch, memberLoans)=>{
         let newState={};
@@ -197,7 +195,7 @@ let memberLoansActions = {
         };
         dispatch(memberLoansActions.stateModify(newState));
     },
-    //提交债转申请
+    //提交提前还款申请
     postRepayment:(pram) => (dispatch, memberLoans) => {
         let newState={};
         let url = `http://172.16.4.5:8084/test.php`;
