@@ -13,7 +13,7 @@ function noop() {
 }
 class ModalRepaymentApp extends React.Component {
     componentWillMount () {
-        this.props.dispatch(memberLoansActions.getRepayment(this.props.info.currentId));
+        this.props.dispatch(memberLoansActions.getRepaymentApp(this.props.info.currentId));
     }
     static propTypes = {
         form: PropTypes.object.isRequired,
@@ -31,7 +31,7 @@ class ModalRepaymentApp extends React.Component {
                 verifyCode:form.getFieldsValue().verifyCode,
                 proId:this.props.currentId
             }
-            dispatch(memberLoansActions.postRepayment(appInfo));
+            dispatch(memberLoansActions.postRepaymentApp(appInfo));
 
         });
     }

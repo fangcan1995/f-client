@@ -29,17 +29,18 @@ const initialState = Immutable.fromJS({
             data:{},
             message:''
         },
+        pid:'',
+        DateStart:'',
+        DateEnd:'',
+        modalRepayment: false,
+        proList:[],
+        currentId:'',
+        postResult:0,
+        repaymentInfo:{
+            repaymentData:{},
+            message:''
+        }
     },
-    /*myList:{
-        data:{},
-        message:''
-    },
-    charts:{
-        doneDto:{},
-        todoDto:{},
-        message:''
-    },
-    status: 1,*/
 });
 
 export default createReducer(initialState, {
@@ -47,7 +48,7 @@ export default createReducer(initialState, {
         myLoans:action.payload
     }),
     ['myLoans/repaymentPlans/MODIFY_STATE']:(state,action) => state.mergeDeep({
-        myReceiving:action.payload
+        repaymentPlans:action.payload
     }),
 })
 
