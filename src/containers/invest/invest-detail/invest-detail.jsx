@@ -4,30 +4,39 @@ import Tab from '../../../components/tab/tab';
 import InvestDetailMaster from './master/master';
 import BorrowerInfo from './borrowerInfo/borrowerInfo';
 import InvestRecords from './investRecords/investRecords';
-import RepayRecords from './repayRecords/repayRecords'
+import RepayRecords from './repayRecords/repayRecords';
 import './invest-detail.less';
-
-export default class InvestDetail extends React.Component{
+import { connect } from 'react-redux';
+import  investDetailActions  from '../../../actions/invest-detail';
+class InvestDetail extends React.Component{
     constructor(props) {
         super(props);
-        this.state = {}
+
+    }
+    componentDidMount () {
+        const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
+        let proId=pathSnippets[1];
+        let transferId=pathSnippets[3];
+        this.props.dispatch(investDetailActions.getData(proId,transferId));
     }
     render(){
+        console.log('---------------this.props----------');
+        console.log(this.props);
+
         return (
             <main className="main sbDetail">
                 <div className="wrapper">
-                    <InvestDetailMaster>
-                    </InvestDetailMaster>
+                    <InvestDetailMaster  />
                     <div className="tab_info">
                         <Tab>
                             <div name="项目信息">
-                                <BorrowerInfo/>
+                                <BorrowerInfo />
                             </div>
                             <div name="投标记录">
-                                <InvestRecords/>
+                                <InvestRecords  />
                             </div>
                             <div name="还款记录">
-                                <RepayRecords/>
+                                <RepayRecords  />
                             </div>
                             <div name="风险信息">
                                 <ul className="m-notice">
@@ -61,3 +70,11 @@ export default class InvestDetail extends React.Component{
         )
     }
 }
+function mapStateToProps(state) {
+    const { auth,investDetail } = state.toJS();
+    return {
+        auth,
+        investDetail
+    };
+}
+export default connect(mapStateToProps)(InvestDetail);
