@@ -6,7 +6,8 @@ import myRateCoupons from './myRateCoupons';
 import aboutReducer from './aboutReducer';
 import memberInvestments from './member-investments';
 import memberLoans from './member-loans';
-import investList from './invest-list'
+import investList from './invest-list';
+import investDetail from './invest-detail';
 export {
     auth,
     aboutReducer,
@@ -16,6 +17,7 @@ export {
     myRateCoupons,
     memberInvestments,
     memberLoans,
-    investList
+    investList,
+    investDetail,
 
 }

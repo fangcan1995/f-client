@@ -37,7 +37,17 @@ let investListActions = {
         let sortConditions='';
         if(JSON.stringify(sort)!={}){
             for(var item in sort){
-                sortConditions += "&"+item+"="+sort[item];
+                switch(sort[item]){
+                    case 0:
+                        break;
+                    case 1:
+                        sortConditions += "&sortBy="+item;
+                        break;
+                    case 2:
+                        sortConditions += "&sortBy=-"+item;
+                        break;
+                }
+
             }
         }
         let url=`http://172.16.4.5:8084/getloansList.php?pageNum=${pageNum}&pageSize=${pageSize}${filterConditions}${sortConditions}`;
