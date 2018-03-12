@@ -9,7 +9,10 @@ import HomePage from './containers/home-page/home-page';
 import Login from './containers/login/login';
 import Signup from './containers/signup/signup';
 
-import InvestList from './containers/invest/invest-list/invest-list';
+import InvestList from './containers/invest/invest-list/subject-list/subject-list';
+import TransferList from './containers/invest/invest-list/transfer-list/transfers-list';
+
+import InvestDetail from './containers/invest/invest-detail/invest-detail';
 
 import LoanIndex from './containers/loan/loan-index/loan-index';
 
@@ -27,7 +30,10 @@ import MyInvestments from './containers/member/my-investments/my-investments/my-
 import Receiving from './containers/member/my-investments/receiving/receiving';
 
 import SuperPartner from './containers/member/reward/super-partner/super-partner';
+import SuperPartnerDetail from './containers/member/reward/super-partner/detail';
 import PartnerList from './containers/member/reward/partner/master/master';
+import PartnerDetail from './containers/member/reward/partner/detail/detail';
+
 import MyRedEnvelopes from './containers/member/reward/my-redEnvelopes/myRedEnvelopes';
 import MyRateCoupons from './containers/member/reward/my-rateCoupons/my-rateCoupons';
 
@@ -59,6 +65,9 @@ export default (
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <Route path="/invest-list" component={InvestList} />
+
+            <Route path="/transfer-list" component={TransferList} />
+            <Route path="/invest-detail" component={InvestDetail} />
             <Route path="/loan-index" component={LoanIndex} />
             <Route strict path="/my-account" render={(props) => {
                 const { match } = props;
@@ -108,8 +117,11 @@ export default (
                     <MemberSidebar {...props}>
                         <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/super-partner`} />
+
                             <Route path={`${match.url}/super-partner`} component={userIsAuthenticated(SuperPartner)} />
+                            <Route path={`${match.url}/super-list`} component={userIsAuthenticated(SuperPartnerDetail)} />
                             <Route path={`${match.url}/partner-list`} component={userIsAuthenticated(PartnerList)} />
+                            <Route path={`${match.url}/partner-detail`} component={userIsAuthenticated(PartnerDetail)} />
                             <Route path={`${match.url}/my-redEnvelopes`} component={userIsAuthenticated(MyRedEnvelopes)} />
                             <Route path={`${match.url}/my-rateCoupons`} component={userIsAuthenticated(MyRateCoupons)} />
                             <Redirect to="/" />

@@ -36,15 +36,14 @@ let actionsRedEnvelopes = {
         dispatch(actionsRedEnvelopes.refreshStart());
         dispatch(actionsRedEnvelopes.getData(1,10,{reStatus:pram}));
     },
+
     refreshStart: () => ({
         type: 'FETCH_START',
     }),
-
     refreshSuccess: json => ({
         type: 'FETCH_SUCCESS',
         payload: json
     }),
-
     refreshFail: errMsg => ({
         type: 'FETCH_FAIL',
         payload: errMsg,
@@ -54,6 +53,7 @@ let actionsRedEnvelopes = {
         type: 'TOGGLE_CLASS',
         payload: id
     }),
+
 
 
 

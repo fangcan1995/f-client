@@ -1,115 +1,368 @@
 import cFetch from './../../../../utils/cFetch';
 import cookie from 'js-cookie';
-import {addCommas} from '../../../../assets/js/cost';
-let actionsMyInvestments = {
-    getData: () => (dispatch, myInvestments) => {
-        // 获取统计数据
-        dispatch(actionsMyInvestments.createPie());
-        dispatch(actionsMyInvestments.getList());
-        dispatch(actionsMyInvestments.refreshSuccess());
+import {addCommas,checkMoney} from '../../../../assets/js/cost';
 
+let actionsMyInvestments = {
+    getData: (status) => (dispatch, myInvestments) => {
+        dispatch(actionsMyInvestments.getPie());
+        dispatch(actionsMyInvestments.getList(1,10,{status:status}));
     },
-    createPie:()=>(dispatch,myInvestments)=>{
+    getPie:()=>(dispatch,myInvestments)=>{
+        let myReceiving_new={};
         // 获取统计数据
-        let url = `http://172.16.4.5:8084/statistics.php`;
+        let url = `http://172.16.4.62:9090/members/invest/statistics?access_token=97c8feba-9a64-4f9a-93ed-100816046afe`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
                     return response;
                 }else{
-                    dispatch(actionsMyInvestments.refreshFail('后端代码'));
+                    myReceiving_new={
+                        charts:{
+                            data:{},
+                            message:'无响应'
+                        }
+                    };
+                    dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+
                 }
             })
             .then((data) => data.json())
             .then(data => {
                 setTimeout(() => {
-                    let {totalInvestment,accumulatedIncome}=data.data;
+                    let {totalInvestmentDto,accumulatedIncomeDto}=data.data;
                     let charts={
                         totalInvestment:{
                             data:[
-                                {name:'招标中',value:totalInvestment.proMoneyBidding,instruction:`${addCommas(totalInvestment.proMoneyBidding)}元`},
-                                {name:'回款中',value:totalInvestment.proMoneyInBack,instruction:`${addCommas(totalInvestment.proMoneyInBack)}元`},
-                                {name:'已回款',value:totalInvestment.proMoneyBacked,instruction:`${addCommas(totalInvestment.proMoneyBacked)}元`},
-                                {name:'已转出',value:totalInvestment.proMoneyOut,instruction:`${addCommas(totalInvestment.proMoneyOut)}元`}
+                                {name:'招标中',value:totalInvestmentDto.proMoneyBidding,instruction:`${addCommas(totalInvestmentDto.proMoneyBidding)}元`},
+                                {name:'回款中',value:totalInvestmentDto.proMoneyInBack,instruction:`${addCommas(totalInvestmentDto.proMoneyInBack)}元`},
+                                {name:'已回款',value:totalInvestmentDto.proMoneyBacked,instruction:`${addCommas(totalInvestmentDto.proMoneyBacked)}元`},
+                                {name:'已转出',value:totalInvestmentDto.proMoneyOut,instruction:`${addCommas(totalInvestmentDto.proMoneyOut)}元`}
                             ]
                         },
                         accumulatedIncome:{
                             data:[
-                                {name:'回款中',value:accumulatedIncome.earnMoneyInBack,instruction:`${addCommas(accumulatedIncome.earnMoneyInBack)}元`},
-                                {name:'已回款',value:accumulatedIncome.earnMoneyBacked,instruction:`${addCommas(accumulatedIncome.earnMoneyBacked)}元` },
+                                {name:'回款中',value:accumulatedIncomeDto.earnMoneyInBack,instruction:`${addCommas(accumulatedIncomeDto.earnMoneyInBack)}元`},
+                                {name:'已回款',value:accumulatedIncomeDto.earnMoneyBacked,instruction:`${addCommas(accumulatedIncomeDto.earnMoneyBacked)}元` },
                             ]
                         },
                     };
-                    dispatch(actionsMyInvestments.refreshChartsSuccess(charts));
+                    myReceiving_new={
+                        charts:
+                            {
+                                data:charts,
+                                message:''
+                            }
+                    };
+                    dispatch(actionsMyInvestments.stateModify(myReceiving_new));
                 }, 1000);
             })
             .catch(err=>{
-                dispatch(actionsMyInvestments.refreshFail('连接错误'));
+                myReceiving_new={
+                    charts:{
+                        data:{},
+                        message:'连接错误'
+                    }
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
             });
     },
     getList: (pageNum=1,pageSize=10,filter={}) => (dispatch, myInvestments) => {
-        // 获取统计数据
-        console.log('获取数据列表');
+        let myReceiving_new={};
+        // 获取数据列表
         let conditions='';
         if(JSON.stringify(filter)!={}){
             for(var item in filter){
                 conditions += "&"+item+"="+filter[item];
             }
         }
-        let url = `http://172.16.4.5:8084/getList.php`;
+        let url=`http://172.16.4.62:9090/members/investments?access_token=97c8feba-9a64-4f9a-93ed-100816046afe&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
                     return response;
                 }else{
-                    dispatch(actionsMyInvestments.refreshFail('后端代码'));
+                    dispatch(actionsMyInvestments.stateModify({myReceiving:{data: {},message:'无响应'}}));
+                }
+            })
+            .then((data) => data.json())
+            .then(data => {
+                myReceiving_new={
+                    myList:
+                        {
+                            data:data.data,
+                            message:''
+                        }
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+            }).catch(err=>{
+                myReceiving_new={
+                    myList: {
+                        data:{},
+                        message:'连接错误'
+                    }
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+        });
+
+
+    },
+    getPlanList:(pram)=>(dispatch, myInvestments)=>{
+        let myReceiving_new={};
+        let url=`http://172.16.4.62:9090/members/investments/receiving/${pram}?access_token=97c8feba-9a64-4f9a-93ed-100816046afe`;
+        fetch(url,{method:"get"})
+            .then(function (response){
+                if (response.status == 200){
+                    return response;
+                }else{
+                    myReceiving_new={
+                        currentPro:
+                            {
+                                planData:[],
+                                currentId:'',
+                                message:'无响应'
+                            }
+                    };
+                    dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+                }
+            })
+            .then((data) => data.json())
+            .then(data => {
+                myReceiving_new={
+                    currentPro:
+                        {
+                            planData:data.data,
+                            currentId:pram,
+                            message:''
+                        }
+                };
+
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+            }).catch(err=>{
+            myReceiving_new={
+                currentPro:
+                    {
+                        planData:[],
+                        currentId:'',
+                        message:'连接错误'
+                    }
+            };
+            dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+        });
+    },
+    getTransfer:(pram)=>(dispatch, myInvestments)=>{
+        let myReceiving_new={};
+        let url=`http://172.16.4.62:9090/members/investments/transfer/${pram}?access_token=97c8feba-9a64-4f9a-93ed-100816046afe`;
+        fetch(url,{method:"get"})
+            .then(function (response){
+                if (response.status == 200){
+                    return response;
+                }else{
+                    myReceiving_new={
+                        transferInfo:
+                            {
+                                transferData:{},
+                                currentId:'',
+                                message:'无响应'
+                            }
+                    };
+                    dispatch(actionsMyInvestments.stateModify(myReceiving_new));
                 }
             })
             .then((data) => data.json())
             .then(data => {
                 setTimeout(() => {
-                    dispatch(actionsMyInvestments.refreshListSuccess(data.data));
+                    console.log('---------------data.data--------------');
+                    console.log(data.data);
+                    myReceiving_new={
+                        transferInfo:
+                            {
+                                transferData:data.data,
+                                currentId:'',
+                                message:''
+                            }
+                    };
+                    dispatch(actionsMyInvestments.stateModify(myReceiving_new));
                 }, 1000);
+
+
             }).catch(err=>{
-            dispatch(actionsMyInvestments.refreshFail('连接错误'));
+            myReceiving_new={
+                transferInfo:
+                    {
+                        transferData:{},
+                        currentId:'',
+                        message:'连接错误'
+                    }
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+
         });
 
-
     },
-    filter: (pram) => (dispatch, myRedEnvelopes) => {
+    //根据状态检索投资列表
+    filter: (pram) => (dispatch, myInvestments) => {
         dispatch(actionsMyInvestments.toggleClass(pram));
-        dispatch(actionsMyInvestments.refreshStart());
-        dispatch(actionsMyInvestments.getData(1,10,{reStatus:pram}));
-    },
-    refreshStart: () => ({
-        type: 'FETCH_START',
-    }),
+        //dispatch(actionsMyInvestments.refreshListFail(''));
+        dispatch(actionsMyInvestments.getList(1,10,{status:pram}));
 
-    refreshChartsSuccess: json => ({
+    },
+    //打开关闭模态框
+    toggleModal:(modal,visile,id)=>(dispatch, myInvestments) => {
+        let myReceiving_new={};
+        if(modal=='modalPlan'){
+            if(visile){
+                dispatch(actionsMyInvestments.getPlanList(id));//获取某项目回款计划
+                myReceiving_new={
+                    modalPlan: true,
+                    currentId: id,
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+            }else{
+                myReceiving_new={
+                    modalPlan: false,
+                    currentId: '',
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+            }
+        }else if(modal=='modalTransfer'){
+
+            if(visile){
+                myReceiving_new={
+                    modalTransfer: true,
+                    currentId: id,
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+            }else{
+
+                myReceiving_new={
+                    modalTransfer: false,
+                    currentId: '',
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+            }
+        }
+
+    },
+
+    //选项卡样式切换
+    toggleClass:(pram)=>(dispatch, myInvestments)=>{
+        let myReceiving_new={};
+        myReceiving_new= {
+            status:pram
+        };
+    dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+    },
+    //提交债转申请
+    postTransfer:(pram) => (dispatch, myInvestments) => {
+        let myReceiving_new={};
+        let url = `http://172.16.4.5:8084/test.php`;
+        fetch(url,{
+            method: "POST",
+            mode:'cors',
+            cache: 'default',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pram)
+        })
+            .then(function (response){
+                if (response.status == 200){
+                    return response;
+                }else{
+                    myReceiving_new= {
+                        postResult:1
+                    };
+                    dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+                }
+            })
+            .then((data) => data.json())
+            .then(data => {
+                setTimeout(() => {
+                    //dispatch(actionsMyInvestments.refreshPostResult(2));
+                    myReceiving_new= {
+                        postResult:2
+                    };
+                    dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+                }, 100);
+            })
+            .catch(err=>{
+                myReceiving_new= {
+                    postResult:1
+                };
+                dispatch(actionsMyInvestments.stateModify(myReceiving_new));
+            });
+    },
+    /*refreshChartsSuccess: json => ({
         type: 'FETCH_CHARTS_SUCCESS',
         payload: json
+    }),
+    refreshChartsFail: errMsg => ({
+        type: 'FETCH_CHARTS_FAIL',
+        payload: errMsg,
     }),
     refreshListSuccess: json => ({
         type: 'FETCH_LIST_SUCCESS',
         payload: json
     }),
-    refreshSuccess: json => ({
-        type: 'FETCH_SUCCESS',
-        payload: json
-    }),
-
-    refreshFail: errMsg => ({
-        type: 'FETCH_FAIL',
+    refreshListFail: errMsg => ({
+        type: 'FETCH_LIST_FAIL',
         payload: errMsg,
         error: true
     }),
-
-    toggleClass: id => ({
-        type: 'TOGGLE_CLASS',
-        payload: id
+    refreshPlanListSuccess: (id,json) => ({
+        type: 'FETCH_PLANLIST_SUCCESS',
+        payload: json,
+        id:id,
+    }),
+    refreshPlanListFail: (id,errMsg) => ({
+        type: 'FETCH_PLANLIST_FAIL',
+        payload: errMsg,
+        id:id,
+    }),
+    refreshTransferSuccess: (id,json) => ({
+        type: 'FETCH_TRANSFER_SUCCESS',
+        payload: json,
+        id:id,
+    }),
+    refreshTransferFail: (id,errMsg) => ({
+        type: 'FETCH_TRANSFER_FAIL',
+        payload: errMsg,
+        id:id,
+    }),
+    refreshPostResult: (msg) => ({
+        type: 'FETCH_POST_RESULT',
+        payload: msg,
     }),
 
+    modalPlanShow: (id) => ({
+        type: 'MODAL_PLAN_SHOW',
+        //payload: id,
 
+    }),
+    modalPlanHide: id => ({
+        type: 'MODAL_PLAN_HIDE',
+        payload: id
+    }),
+    modalTransferShow: (id) => ({
+        type: 'MODAL_TRANSFER_SHOW',
+        payload: id
+    }),
+    modalTransferHide: id => ({
+        type: 'MODAL_TRANSFER_HIDE',
+        payload: id
+    }),
+    modifyTransfer: (json) => ({
+        type: 'MODIFY_TRANSFER',
+        payload:json,
+
+    }),
+*/
+    //-------------------------------------
+    stateModify: json => ({
+        type: 'myInvest/investments/MODIFY_STATE',
+        payload: json
+    })
 
 };
 export default actionsMyInvestments;
