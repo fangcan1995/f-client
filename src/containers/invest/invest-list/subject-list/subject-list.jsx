@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import '../../../../assets/stylesheets/filter.less';
-import '../../../../components/table/table.less';
-import Pagination from '../../../../components/pagination/pagination';
 import { Progress } from 'antd';
 import { connect } from 'react-redux';
 import moment from "moment";
 import  investListActions  from '../../../../actions/invest-list';
-
+import Pagination from '../../../../components/pagination/pagination';
 class SubjectList extends Component {
     /*constructor(props) {
         super(props);
@@ -236,28 +233,25 @@ class SubjectList extends Component {
         this.props.dispatch(investListActions.filter(this.props.investList.sbList.filter));
     }
     sort(type){
-
-       /* let newState={};
-        newState[type]=value;*/
-        console.log('----this.props.investList.sbList.sort----');
-        console.log(this.props.investList.sbList.sort);
         let sbList=this.props.investList.sbList
         let {pageNum,pageSize}=sbList.list.data;
         let sort=sbList.sort;
+        for(var i in sort){
+            sort[i]=0;
+        }
         let filter=sbList.filter;
-        let newState={};
         switch (sort[type]){
             case 0:
-                newState[type]=1;
+                sort[type]=1;
                 break;
             case 1:
-                newState[type]=2;
+                sort[type]=2;
                 break;
             case 2:
-                newState[type]=0;
+                sort[type]=0;
                 break;
         }
-        this.props.dispatch(investListActions.stateSbModify({sort:newState}));
+        this.props.dispatch(investListActions.stateSbModify({sort:sort}));
         this.props.dispatch(investListActions.sort(pageNum,pageSize,filter,sbList.sort));
     }
     render(){
@@ -265,8 +259,8 @@ class SubjectList extends Component {
         console.log(this.props);
         let {dispatch}=this.props;
         let {sbList}=this.props.investList;
-        let {list,filter}=sbList;
-        let {type,loanApplyExpiry,rateGroup}=filter
+        let {list,filter,sort}=sbList;
+        let {type,loanApplyExpiry,rateGroup}=filter;
 
         return (
             <div>
@@ -346,12 +340,12 @@ class SubjectList extends Component {
                                     <tr>
                                         <th>项目名称</th>
                                         <th>投资总额</th>
-                                        <th className={this.switchSortStyle('rate')} onClick={() => {this.sort('rate')}}>预期年化收益率<i></i></th>
-                                        <th className={this.switchSortStyle('loanApplyExpiry')} onClick={() => {this.sort('loanApplyExpiry')}}>投资期限<i></i></th>
-                                        <th className={this.switchSortStyle('publishTime')} onClick={() => {this.sort('publishTime')}}>发布时间<i></i></th>
-                                        <th className={this.switchSortStyle('syje')} onClick={() => {this.sort('syje')}}>剩余金额<i></i></th>
+                                        <th className={`order${sort.rate}`} onClick={() => {this.sort('rate')}}>预期年化收益率<i></i></th>
+                                        <th className={`order${sort.loanApplyExpiry}`} onClick={() => {this.sort('loanApplyExpiry')}}>投资期限<i></i></th>
+                                        <th className={`order${sort.publishTime}`} onClick={() => {this.sort('publishTime')}}>发布时间<i></i></th>
+                                        <th className={`order${sort.syje}`} onClick={() => {this.sort('syje')}}>剩余金额<i></i></th>
                                         <th>投资人数</th>
-                                        <th className={this.switchSortStyle('tzjd')} onClick={() => {this.sort('tzjd')}}>投资进度<i></i></th>
+                                        <th className={`order${sort.tzjd}`} onClick={() => {this.sort('tzjd')}}>投资进度<i></i></th>
                                         <th></th>
                                     </tr>
                                     </thead>

@@ -179,7 +179,6 @@ class RepaymentPlans extends React.Component{
                                                 <th>应还本金(元)</th>
                                                 <th>应还利息(元)</th>
                                                 <th>应还罚息(元)</th>
-                                                <th>已还罚金(元)</th>
                                                 <th>还款总额(元)</th>
                                                 <th>还款状态</th>
                                                 <th>操作</th>
@@ -194,8 +193,6 @@ class RepaymentPlans extends React.Component{
                                                     <td>{l.money}{/*应还本金*/}</td>
                                                     <td>{l.money}{/*应还利息*/}</td>
                                                     <td>{l.money}{/*应还罚息*/}</td>
-                                                    <td>{l.money}{/*已还罚金*/}</td>
-
                                                     <td>{l.money}{/*还款总额*/}</td>
                                                     <td>{l.statusName}{/*还款状态*/}</td>
                                                     <td>

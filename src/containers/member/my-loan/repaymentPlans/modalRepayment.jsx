@@ -96,10 +96,10 @@ class ModalRepayment extends React.Component {
                                     <dt><label>应还罚息：</label></dt>
                                     <dd>{addCommas(repaymentData.e)} 元</dd>
                                 </dl>
-                                <dl className="form__bar">
+{/*                                <dl className="form__bar">
                                     <dt><label>应还罚金：</label></dt>
                                     <dd>{addCommas(repaymentData.e)} 元</dd>
-                                </dl>
+                                </dl>*/}
                                 <dl className="form__bar">
                                     <dt><label>还款总额：</label></dt>
                                     <dd>{addCommas(repaymentData.f)} 元</dd>

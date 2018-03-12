@@ -24,6 +24,7 @@ let investListActions = {
             }
         }
         let url=`http://172.16.4.5:8084/getloansList.php?pageNum=${pageNum}&pageSize=${pageSize}${filterConditions}${sortConditions}`;
+        console.log('-------------url------------');
         console.log(url);
         fetch(url,{method:"get"})
             .then(function (response){
