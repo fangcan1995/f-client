@@ -9,7 +9,9 @@ import HomePage from './containers/home-page/home-page';
 import Login from './containers/login/login';
 import Signup from './containers/signup/signup';
 
-import InvestList from './containers/invest/invest-list/invest-list';
+import InvestList from './containers/invest/invest-list/subject-list/subject-list';
+import TransferList from './containers/invest/invest-list/transfer-list/transfers-list';
+
 import InvestDetail from './containers/invest/invest-detail/invest-detail';
 
 import LoanIndex from './containers/loan/loan-index/loan-index';
@@ -62,8 +64,8 @@ export default (
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <Route path="/invest-list" component={InvestList} />
+            <Route path="/transfer-list" component={TransferList} />
             <Route path="/invest-detail" component={InvestDetail} />
-            InvestDetail
             <Route path="/loan-index" component={userIsAuthenticated(LoanIndex)} />
             <Route strict path="/my-account" render={(props) => {
                 const { match } = props;

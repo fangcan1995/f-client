@@ -21,24 +21,16 @@ const initialState = Immutable.fromJS({
         }
     },
     transferList:{
-        charts:{
+        list:{
             data:{},
             message:''
         },
-        myList:{
-            data:{},
-            message:''
-        },
-        pid:'',
-        DateStart:'',
-        DateEnd:'',
-        modalRepayment: false,
-        proList:[],
-        currentId:'',
-        postResult:0,
-        repaymentInfo:{
-            repaymentData:{},
-            message:''
+        sort:{
+            rate:0,
+            loanApplyExpiry:0,
+            publishTime:0,
+            syje:0,
+            tzjd:0,
         }
     },
 });
