@@ -1,0 +1,36 @@
+import { createReducer } from 'redux-immutablejs';
+import Immutable from 'immutable';
+import { LOGIN, LOGOUT } from '../constants/actions-type';
+const initialState = Immutable.fromJS({
+  isFetching: false,
+  imageCodeImg: '',
+  verifyCode: {},
+});
+
+export default createReducer(initialState, {
+  ['login/GET_IMAGE_CODE_PENDING']: (state, action) => state.merge({
+    isFetching: true,
+  }),
+  ['login/GET_IMAGE_CODE_FULFILLED']: (state, action) => state.merge({
+    isFetching: false,
+    imageCodeImg: action.payload
+  }),
+  ['login/GET_IMAGE_CODE_REJECTED']: (state, action) => state.merge({
+    isFetching: false,
+    errorMessage: action.message
+  }),
+
+  ['login/SEND_VERIFY_CODE_PENDING']: (state, action) => state.merge({
+    isFetching: true,
+  }),
+  ['login/SEND_VERIFY_CODE_FULFILLED']: (state, action) => state.merge({
+    isFetching: false,
+    verifyCode: action.payload
+  }),
+  ['login/SEND_VERIFY_CODE_REJECTED']: (state, action) => state.merge({
+    isFetching: false,
+    errorMessage: action.message
+  }),
+
+
+})

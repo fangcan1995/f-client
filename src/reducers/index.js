@@ -1,4 +1,6 @@
 import auth from './auth';
+import login from './login';
+import signup from './signup';
 import homePage from './home-page';
 import constantReducer from './constantReducer';
 import myRedEnvelopes from './myRedEnvelopes';
@@ -10,6 +12,8 @@ import investList from './invest-list';
 import investDetail from './invest-detail';
 export {
     auth,
+    login,
+    signup,
     aboutReducer,
     homePage,
     constantReducer,

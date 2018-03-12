@@ -16,6 +16,7 @@ import InvestDetail from './containers/invest/invest-detail/invest-detail';
 
 import LoanIndex from './containers/loan/loan-index/loan-index';
 
+// member
 import AccountOverview from './containers/member/account-overview/account-overview';
 import BankCard from './containers/member/bank-card/bank-card';
 import Recharge from './containers/member/recharge/recharge';
@@ -64,20 +65,21 @@ export default (
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <Route path="/invest-list" component={InvestList} />
+
             <Route path="/transfer-list" component={TransferList} />
             <Route path="/invest-detail" component={InvestDetail} />
-            <Route path="/loan-index" component={userIsAuthenticated(LoanIndex)} />
+            <Route path="/loan-index" component={LoanIndex} />
             <Route strict path="/my-account" render={(props) => {
                 const { match } = props;
                 return (
                     <MemberSidebar {...props}>
                         <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/account-overview`} />
-                            <Route path={`${match.url}/account-overview`} component={AccountOverview} />
-                            <Route path={`${match.url}/bank-card`} component={BankCard} />
-                            <Route path={`${match.url}/recharge`} component={Recharge} />
-                            <Route path={`${match.url}/withdrawals`} component={Withdrawals} />
-                            <Route path={`${match.url}/transaction-record`} component={TransactionRecord} />
+                            <Route path={`${match.url}/account-overview`} component={userIsAuthenticated(AccountOverview)} />
+                            <Route path={`${match.url}/bank-card`} component={userIsAuthenticated(BankCard)} />
+                            <Route path={`${match.url}/recharge`} component={userIsAuthenticated(Recharge)} />
+                            <Route path={`${match.url}/withdrawals`} component={userIsAuthenticated(Withdrawals)} />
+                            <Route path={`${match.url}/transaction-record`} component={userIsAuthenticated(TransactionRecord)} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>
@@ -89,8 +91,8 @@ export default (
                     <MemberSidebar {...props}>
                         <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/my-loan`} />
-                            <Route path={`${match.url}/my-loan`} component={MyLoan} />
-                            <Route path={`${match.url}/repaymentPlans`} component={RepaymentPlans} />
+                            <Route path={`${match.url}/my-loan`} component={userIsAuthenticated(MyLoan)} />
+                            <Route path={`${match.url}/repaymentPlans`} component={userIsAuthenticated(RepaymentPlans)} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>
@@ -102,8 +104,8 @@ export default (
                     <MemberSidebar {...props}>
                         <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/my-investments`} />
-                            <Route path={`${match.url}/my-investments`} component={MyInvestments} />
-                            <Route path={`${match.url}/receiving`} component={Receiving} />
+                            <Route path={`${match.url}/my-investments`} component={userIsAuthenticated(MyInvestments)} />
+                            <Route path={`${match.url}/receiving`} component={userIsAuthenticated(Receiving)} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>
@@ -114,12 +116,14 @@ export default (
                 return (
                     <MemberSidebar {...props}>
                         <Switch>
-                            <Route path={`${match.url}/super-partner`} component={SuperPartner} />
-                            <Route path={`${match.url}/super-list`} component={SuperPartnerDetail} />
-                            <Route path={`${match.url}/partner-list`} component={PartnerList} />
-                            <Route path={`${match.url}/partner-detail`} component={PartnerDetail} />
-                            <Route path={`${match.url}/my-redEnvelopes`} component={MyRedEnvelopes} />
-                            <Route path={`${match.url}/my-rateCoupons`} component={MyRateCoupons} />
+                            <Redirect exact from={`${match.url}`} to={`${match.url}/super-partner`} />
+
+                            <Route path={`${match.url}/super-partner`} component={userIsAuthenticated(SuperPartner)} />
+                            <Route path={`${match.url}/super-list`} component={userIsAuthenticated(SuperPartnerDetail)} />
+                            <Route path={`${match.url}/partner-list`} component={userIsAuthenticated(PartnerList)} />
+                            <Route path={`${match.url}/partner-detail`} component={userIsAuthenticated(PartnerDetail)} />
+                            <Route path={`${match.url}/my-redEnvelopes`} component={userIsAuthenticated(MyRedEnvelopes)} />
+                            <Route path={`${match.url}/my-rateCoupons`} component={userIsAuthenticated(MyRateCoupons)} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>
@@ -130,10 +134,10 @@ export default (
                 return (
                     <MemberSidebar {...props}>
                         <Switch>
-                            <Route path={`${match.url}/my-messages`} component={MyMessage} />
-                            <Route path={`${match.url}/my-authInfo`} component={MyAuthInfo} />
-                            <Route path={`${match.url}/my-riskAssess`} component={MyRiskAssess} />
-
+                            <Redirect exact from={`${match.url}`} to={`${match.url}/my-messages`} />
+                            <Route path={`${match.url}/my-messages`} component={userIsAuthenticated(MyMessage)} />
+                            <Route path={`${match.url}/my-authInfo`} component={userIsAuthenticated(MyAuthInfo)} />
+                            <Route path={`${match.url}/my-riskAssess`} component={userIsAuthenticated(MyRiskAssess)} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>

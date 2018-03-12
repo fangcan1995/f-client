@@ -5,82 +5,50 @@
 	.wrapper {
 		position: relative;
 	}
-}
-.login__card {
-	position: absolute;
-	top: 100px;
-	right: 0;
-	width: 375px;
-	background-color: #fff;
-	.card__header {
-		padding: 20px 20px;
-		border-bottom: 1px solid #d7dbe0;
-		.clearfix()
+	.ant-tabs-bar {
+		margin-bottom: 0;
+		border-bottom: 0;
 	}
-	.card__tit {
-		float: left;
-		padding-left: 16px;
-		
-		height: 24px;
-		font-size: 24px;
-		line-height: 24px;
-		border-left: 2px solid #32a9f2;
+	.ant-tabs-nav {
+		width: 100%;
 	}
-	.card__tip {
-		float: right;
-		margin-top: 5px;
-		height: 14px;
-		font-size: 14px;
-		line-height: 14px;
-		a,
-		a:hover,
-		a:active {
-			color: #3793df;
-		}
-	}
-	.card__body {
-		.ant-tabs-bar {
-			border-bottom: 0;
-		}
-		.ant-tabs-nav {
-			width: 100%;
-		}
-		.ant-tabs-nav .ant-tabs-tab {
-			margin-right: 0;
-			@p-h: (46px - 24px) / 2;
-			padding: @p-h 16px @p-h;
-			width: 50%;
+	.ant-tabs-nav .ant-tabs-tab {
+		margin-right: 0;
+		@p-h: (46px - 24px) / 2;
+		padding: @p-h 16px @p-h;
+		width: 50%;
 
-			font-size: 16px;
-			text-align: center;
+		font-size: 16px;
+		text-align: center;
+	}
+	.ant-tabs > .ant-tabs-bar .ant-tabs-ink-bar {
+		visibility: hidden;
+	}
+	.ant-tabs > .ant-tabs-bar .ant-tabs-tab {
+		background-color: #e6eaf0;
+	}
+	.ant-tabs > .ant-tabs-bar .ant-tabs-tab-active {
+		background-color: #fff;
+	}
+	.ant-tabs > .ant-tabs-bar .ant-tabs-nav-container {
+		height: auto;
+	}
+	.ant-tabs > .ant-tabs-bar .ant-tabs-tab {
+		border: 0;
+	}
+	form {
+		margin-top: 24px;
+		padding: 0 20px;
+		.imageCode__img {
+			display: block;
+			margin-top: (32px - 26px) / 2;
+			cursor: pointer;
 		}
-		.ant-tabs > .ant-tabs-bar .ant-tabs-ink-bar {
-			visibility: hidden;
+		.login-form-forgot {
+		  float: right;
 		}
-		.ant-tabs > .ant-tabs-bar .ant-tabs-tab {
-			background-color: #e6eaf0;
-		}
-		.ant-tabs > .ant-tabs-bar .ant-tabs-tab-active {
-			background-color: #fff;
-		}
-		.ant-tabs > .ant-tabs-bar .ant-tabs-nav-container {
-			height: auto;
-		}
-		.ant-tabs > .ant-tabs-bar .ant-tabs-tab {
-			border: 0;
-		}
-		form {
-			padding: 0 20px;
-			.verifyCode__img {
-				display: block;
-				margin-top: (32px - 26px) / 2;
-			}
-			.login-form-forgot {
-			  float: right;
-			}
-			.login-form-button {
-			  width: 100%;
-			}
+		.login-form-button {
+		  width: 100%;
 		}
 	}
 }

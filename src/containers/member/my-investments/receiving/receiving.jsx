@@ -17,7 +17,7 @@ class Receiving extends React.Component{
         let {myReceiving}=this.props.memberInvestments;
         let {myList,charts}=myReceiving;
         return(
-            <div className="member__main">
+            <div className="member__main receiving">
                 <Crumbs/>
                 <div className="member__cbox">
                     <Tab>

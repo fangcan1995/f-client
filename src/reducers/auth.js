@@ -8,6 +8,8 @@ const initialState = Immutable.fromJS({
   isFetching: false,
   isAuthenticated: cookie.get('token') ? true : false,
   user: cookie.getJSON('user') || {},
+  imageCodeImg: '',
+  verifyCode: {},
 });
 
 export default createReducer(initialState, {
@@ -28,5 +30,31 @@ export default createReducer(initialState, {
   ['auth/LOGOUT']: (state, action) => state.merge({
     isFetching: false,
     isAuthenticated: false,
-  })
+  }),
+
+  ['auth/GET_IMAGE_CODE_PENDING']: (state, action) => state.merge({
+    isFetching: true,
+  }),
+  ['auth/GET_IMAGE_CODE_FULFILLED']: (state, action) => state.merge({
+    isFetching: false,
+    imageCodeImg: action.payload
+  }),
+  ['auth/GET_IMAGE_CODE_REJECTED']: (state, action) => state.merge({
+    isFetching: false,
+    errorMessage: action.message
+  }),
+
+  ['auth/SEND_VERIFY_CODE_PENDING']: (state, action) => state.merge({
+    isFetching: true,
+  }),
+  ['auth/SEND_VERIFY_CODE_FULFILLED']: (state, action) => state.merge({
+    isFetching: false,
+    verifyCode: action.payload
+  }),
+  ['auth/SEND_VERIFY_CODE_REJECTED']: (state, action) => state.merge({
+    isFetching: false,
+    errorMessage: action.message
+  }),
+
+
 })

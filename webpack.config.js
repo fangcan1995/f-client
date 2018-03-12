@@ -9,7 +9,24 @@ const BUILD_PATH = path.resolve(__dirname, 'build');
 const config = {
     entry: {
         main: path.join(SRC_PATH, '/main.jsx'),
-        vendor: ['react', 'react-dom', 'redux', 'react-redux']
+        vendor: [
+            'antd',
+            'es6-promise',
+            'immutable',
+            'isomorphic-fetch',
+            'js-cookie',
+            "prop-types",
+            'react',
+            'react-dom',
+            'react-redux',
+            'react-router-dom',
+            'redux',
+            'redux-auth-wrapper',
+            'redux-immutablejs',
+            'redux-promise-middleware',
+            'redux-thunk',
+            'standard-error'
+        ]
     },
     output: {
         path: BUILD_PATH,

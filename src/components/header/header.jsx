@@ -20,7 +20,7 @@ class Header extends Component {
               {
                 auth.isAuthenticated ?
                 <div className="user">
-                  <Link className="welcome" to="/my-account">你好！&nbsp;<span className="username">{ auth.user.loginName }</span></Link>
+                  <Link className="welcome" to="/my-account">你好！&nbsp;<span className="username">{ auth.user.userName }</span></Link>
                   <a className="logout" onClick={ this.handleLogoutBtnClick }>退出</a>
                 </div>
                 :
@@ -75,10 +75,10 @@ class Header extends Component {
                   <Link to="/my-account" className="dropdown__toggle">我的账户<i className="iconfont icon-sanjiaojiantou-xia"></i></Link>
                   <div className="dropdown__menu">
                     <ul>
-                      <li><Link to="/member2">我的投资</Link></li>
+                      <li><Link to="/my-investments">我的投资</Link></li>
                       <li><Link to="/my-loan">我的借款</Link></li>
-                      <li><Link to="/member">基本设置</Link></li>
-                      <li><Link to="/member">奖励管理</Link></li>
+                      <li><Link to="/my-settings">基本设置</Link></li>
+                      <li><Link to="/my-reward">奖励管理</Link></li>
                     </ul>
                   </div>
                 </div>
