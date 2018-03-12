@@ -8,42 +8,41 @@ import  investListActions  from '../../../../actions/invest-list';
 import Pagination from '../../../../components/pagination/pagination';
 import '../invest-list.less';
 class TransferList extends Component {
-
     constructor(props) {
         super(props);
     }
-
     componentDidMount () {
         this.props.dispatch(investListActions.getTransferList(1,10));
     }
     sort(type){
         let transferList=this.props.investList.transferList;
         let sort=transferList.sort;
-        for(var i in sort){
-            sort[i]=0;
-        }
         let filter=transferList.filter;
+        let newSort=Object.assign({},sort);
+        for(var i in sort){
+            newSort[i]=0;
+        };
         switch (sort[type]){
             case 0:
-                sort[type]=1;
+                newSort[type]=1;
                 break;
             case 1:
-                sort[type]=2;
+                newSort[type]=2;
                 break;
             case 2:
-                sort[type]=0;
+                newSort[type]=0;
                 break;
         }
-        let newSort={};
-        newSort[type]=sort[type];
-        this.props.dispatch(investListActions.stateSbModify({sort:sort}));
-        this.props.dispatch(investListActions.getTransferList(1,10,filter,newSort));
+        let orderBy={};
+        orderBy[type]=newSort[type];
+        this.props.dispatch(investListActions.stateRepaymentPlanModify({sort:newSort}));
+        this.props.dispatch(investListActions.getTransferList(1,10,filter,orderBy));
     }
     getStatusName(status,id){
         let investButton=``;
         switch(status){
             case 50:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn start">立即加入</Link>;
+                investButton=<Link to={`/invest-detail/${id}/transfer/5`} className="btn start">立即加入</Link>;
                 break;
             case 60:
                 investButton=<Link to={`/invest-detail/${id}`} className="btn end">满标待划转</Link>;

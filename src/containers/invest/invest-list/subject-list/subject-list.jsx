@@ -34,27 +34,27 @@ class SubjectList extends Component {
     }
     sort(type){
         let sbList=this.props.investList.sbList;
-        //let {pageNum,pageSize}=sbList.list.data;
         let sort=sbList.sort;
-        for(var i in sort){
-            sort[i]=0;
-        }
         let filter=sbList.filter;
+        let newSort=Object.assign({},sort);
+        for(var i in sort){
+            newSort[i]=0;
+        };
         switch (sort[type]){
             case 0:
-                sort[type]=1;
+                newSort[type]=1;
                 break;
             case 1:
-                sort[type]=2;
+                newSort[type]=2;
                 break;
             case 2:
-                sort[type]=0;
+                newSort[type]=0;
                 break;
         }
-        let newSort={};
-        newSort[type]=sort[type];
-        this.props.dispatch(investListActions.stateSbModify({sort:sort}));
-        this.props.dispatch(investListActions.getList(1,10,filter,newSort));
+        let orderBy={};
+        orderBy[type]=newSort[type];
+        this.props.dispatch(investListActions.stateSbModify({sort:newSort}));
+        this.props.dispatch(investListActions.getList(1,10,filter,orderBy));
     }
     getStatusName(status,id){
         let investButton=``;
