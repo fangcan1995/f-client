@@ -10,6 +10,10 @@ const initialState = Immutable.fromJS({
         data:{},
         message:''
     },
+    investRecords:{
+        data:{},
+        message:''
+    }
 });
 
 export default createReducer(initialState, {

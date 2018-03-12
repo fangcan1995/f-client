@@ -5,6 +5,9 @@ import {addCommas,checkMoney} from './../assets/js/cost';
 let investDetailActions = {
     getData: (status) => (dispatch, investList) => {
         dispatch(investDetailActions.getInvestInfo(5));
+        dispatch(investDetailActions.getInvestLoanInfo(5));
+        dispatch(investDetailActions.getInvestRecords(5));
+        dispatch(investDetailActions.getInvestInfo(5));
 
     },
 
@@ -61,7 +64,32 @@ let investDetailActions = {
 
 
     },
-    
+
+    /*获取投资列表*/
+    getInvestRecords: (id) => (dispatch, investList) => {
+        let newState={};
+        // 获取数据列表
+        let url=`http://172.16.4.5:8084/getloansList.php?pageNum=1&pageSize=10`;
+        fetch(url,{method:"get"})
+            .then(function (response){
+                if (response.status == 200){
+                    return response;
+                }else{
+                    newState.investRecords={data:{},message:'无响应'};
+                    dispatch(investDetailActions.stateModify(newState));
+                }
+            })
+            .then((data) => data.json())
+            .then(data => {
+                newState.investRecords={data:data.data,message:''};
+                dispatch(investDetailActions.stateModify(newState));
+            }).catch(err=>{
+            newState.investRecords={data:{},message:'连接错误'};
+            dispatch(investDetailActions.stateModify(newState));
+        });
+
+
+    },
 
     //修改状态
     stateModify: json => ({
