@@ -1,7 +1,7 @@
-import React from 'react';
-import { Route, Link } from 'react-router-dom';
-
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Route, Link } from 'react-router-dom';
 import './member-sidebar.less';
 
 
@@ -13,7 +13,7 @@ const ListItemLink = ({ to, ...rest }) => (
   )}/>
 )
 
-export default ({ location, match, history, ...props }) => {
+const MemberSidebar =  ({ location, match, history, auth, ...props }) => {
   return (
     <main className="main member">
         <div className="wrapper">
@@ -23,7 +23,7 @@ export default ({ location, match, history, ...props }) => {
                         <figure className="avatar">
                             <img src={require('../../assets/images/account/picture.png')} id="tx" />
                         </figure>
-                        <div className="username">tongxin</div>
+                        <div className="username">{ auth.user.userName }</div>
                         <div className="step">
                             <i className="iconfont icon-phone able"></i>
                             <i className="iconfont icon-card able"></i>
@@ -74,3 +74,11 @@ export default ({ location, match, history, ...props }) => {
     </main>
     );
 };
+
+function select(state) {
+  const { auth } = state.toJS();
+  return {
+    auth,
+  };
+}
+export default connect(select)(MemberSidebar);

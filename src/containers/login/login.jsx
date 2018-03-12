@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Form, Input, Checkbox, Button, Tabs, Row, Col, message } from 'antd';
-import { loginUser, sendVerifyCode, getImageCode } from '../../actions/auth';
+
+import { loginUser } from '../../actions/auth';
+import { sendVerifyCode, getImageCode } from '../../actions/login';
+
 import { hex_md5 } from '../../utils/md5';
 import readBlobAsDataURL from '../../utils/readBlobAsDataURL';
 import parseJson2URL from '../../utils/parseJson2URL';
+import parseQueryString from '../../utils/parseQueryString';
 
 import Card from '../../components/login-card/login-card';
 import './login.less';
@@ -59,8 +63,11 @@ class PasswordForm extends Component {
     form: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
   }
-
-  handleSubmit = (e) => {
+  handleImageCodeImgClick = e => {
+    const { dispatch } = this.props;
+    dispatch(getImageCode());
+  }
+  handleSubmit = e => {
     e.preventDefault();
     const { dispatch, form } = this.props;
     form.validateFields((errors) => {
@@ -73,8 +80,9 @@ class PasswordForm extends Component {
       creds = `?${parseJson2URL({...creds, ...params})}`;
       dispatch(loginUser(creds))
       .then(res => {
-        console.log(res)
-
+        const { history, location } = this.props;
+        const { redirect } = parseQueryString(location.search);
+        history.push(redirect ? decodeURIComponent(redirect) : '/')
         dispatch(getImageCode());
       })
       .catch(err => {
@@ -103,7 +111,7 @@ class PasswordForm extends Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { imageCodeImg } = this.props.auth;
+    const { imageCodeImg } = this.props.login;
     const usernameProps = getFieldDecorator('username', {
       validate: [{
         rules: [
@@ -119,7 +127,7 @@ class PasswordForm extends Component {
     });
     const passwordProps = getFieldDecorator('password', {
       rules: [
-        { required: true, min: 4, message: '密码至少为 4 个字符' }
+        { required: true, min: 6, message: '密码至少为 6 个字符' }
       ]
     });
     const imageCodeProps = getFieldDecorator('image_code', {
@@ -199,7 +207,11 @@ class PasswordForm extends Component {
             
             </Col>
             <Col span={12}>
-              <img className="imageCode__img" src={ imageCodeImg } />
+              <img
+                className="imageCode__img"
+                src={ imageCodeImg }
+                onClick={ this.handleImageCodeImgClick }
+                />
             </Col>
           </Row>
         </FormItem>
@@ -225,22 +237,40 @@ class VCodeForm extends Component {
     form: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
   }
+  handleImageCodeImgClick = e => {
+    const { dispatch } = this.props;
+    dispatch(getImageCode());
+  }
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
-    const { dispatch, form } = this.props;
+    const { dispatch, form, login } = this.props;
     form.validateFields((errors) => {
 
       if (errors) return false;
 
-      let creds = form.getFieldsValue();
-      creds.password = hex_md5(creds.password);
-      creds = `?${parseJson2URL({...creds, ...params})}`;
-      dispatch(loginUser(creds));
+      let fullCreds = form.getFieldsValue();
+      let { imageCode, ...creds } = fullCreds;
+      creds = `?${parseJson2URL({...creds, ...params, verify_token: login.verifyCode.token })}`;
+      dispatch(loginUser(creds))
+      .then(res => {
+        const { history, location } = this.props;
+        const { redirect } = parseQueryString(location.search);
+        history.push(redirect ? decodeURIComponent(redirect) : '/')
+        dispatch(getImageCode());
+      })
+      .catch(err => {
+        // 根据错误类型做更多判断，这里先把超时处理成弹message
+        if ( err.statusCode == -1 ) {
+          message.error(err.msg, 2.5);
+        } else {
+          this.loginFaileCallback(err)
+        }
+        dispatch(getImageCode());
+      });;
     });
   }
-  handleSendVerifyCodeBtnClick = (e) => {
-    e.preventDefault();
+  handleSendVerifyCodeBtnClick = e => {
     const { dispatch, form } = this.props;
     const entries = ['username', 'imageCode'];
     form.validateFields(entries, (errors) => {
@@ -249,8 +279,33 @@ class VCodeForm extends Component {
       let creds = form.getFieldsValue(entries);
       const { send_terminal } = params
       creds = `?${parseJson2URL({...creds, sendTerminal: send_terminal})}`;
-      dispatch(sendVerifyCode(creds));
+      dispatch(sendVerifyCode(creds))
+      .then(res => {
+        // todo
+      })
+      .catch(err => {
+        // 根据错误类型做更多判断，这里先把超时处理成弹message
+        if ( err.statusCode == -1 ) {
+          message.error(err.msg, 2.5);
+        } else {
+          this.sendVerifyFaileCallback(err);
+        }
+        dispatch(getImageCode());
+      });
     });
+  }
+  sendVerifyFaileCallback = (reason) => {
+    const message = reason.msg;
+    const { setFields, getFieldValue } = this.props.form;
+    const newValue = {
+      username: {
+        name: 'username',
+        validating: false,
+        value: getFieldValue('username'),
+        errors: [message]
+      }
+    };
+    setFields(newValue);
   }
   loginFaileCallback = (reason) => {
     const message = reason.msg;
@@ -267,7 +322,7 @@ class VCodeForm extends Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { imageCodeImg } = this.props.auth;
+    const { imageCodeImg } = this.props.login;
     const usernameProps = getFieldDecorator('username', {
       validate: [{
         rules: [
@@ -288,7 +343,7 @@ class VCodeForm extends Component {
     });
     const verifyCodeProps = getFieldDecorator('verify_code', {
       rules: [
-        { required: true, min: 4, message: '验证码至少为4个字符' }
+        { required: true, min: 6, message: '验证码至少为6个字符' }
       ]
     });
 
@@ -346,7 +401,11 @@ class VCodeForm extends Component {
             
             </Col>
             <Col span={12}>
-              <img className="imageCode__img" src={ imageCodeImg } />
+              <img
+                className="imageCode__img"
+                src={ imageCodeImg }
+                onClick={ this.handleImageCodeImgClick }
+                />
             </Col>
           </Row>
         </FormItem>
@@ -395,11 +454,12 @@ class VCodeForm extends Component {
 }
 
 function select(state) {
-  const { auth } = state.toJS();
+  const { auth, login } = state.toJS();
   return {
     auth,
+    login,
   };
 }
-PasswordForm = connect(select)(createForm()(PasswordForm))
-VCodeForm = connect(select)(createForm()(VCodeForm))
+PasswordForm = connect(select)(withRouter(createForm()(PasswordForm)))
+VCodeForm = connect(select)(withRouter(createForm()(VCodeForm)))
 export default connect(select)(Login);

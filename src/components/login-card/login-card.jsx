@@ -6,7 +6,7 @@ export default (props) => {
     <div className="login__card">
       <div className="card__header">
         <h3 className="card__tit">{ tit }</h3>
-        <span className="card__tip">{ tip }</span>
+        { tip ? <span className="card__tip">{ tip }</span> : null }
       </div>
       <div className="card__body">
         { children }

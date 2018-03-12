@@ -9,6 +9,7 @@ const initialState = Immutable.fromJS({
   isAuthenticated: cookie.get('token') ? true : false,
   user: cookie.getJSON('user') || {},
   imageCodeImg: '',
+  verifyCode: {},
 });
 
 export default createReducer(initialState, {

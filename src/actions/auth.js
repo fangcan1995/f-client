@@ -1,9 +1,5 @@
-require('es6-promise').polyfill();
-import fetch from 'isomorphic-fetch';
-
 import cookie from 'js-cookie';
 import cFetch from '../utils/cFetch';
-import readBlobAsDataURL from '../utils/readBlobAsDataURL';
 import { LOGIN, LOGOUT } from './../constants/actions-type';
 import { API_CONFIG } from './../config/api';
 
@@ -17,7 +13,7 @@ export const loginUser = params => {
       const res = await cFetch('http://172.16.1.234:8060/' + API_CONFIG.user, { headers: { 'Authorization': `${token_type} ${access_token}` } });
       const { code, data } = res;
       if ( code == 0 ) {
-        const { menus, roles, ...user } = data || {};
+        const { ...user } = data || {};
         cookie.set('token', token);
         cookie.set('user', user);
         return user;
@@ -28,27 +24,7 @@ export const loginUser = params => {
   };
 };
 
-export const getImageCode = () => {
-  return {
-    type: 'auth/GET_IMAGE_CODE',
-    async payload() {
-      const res = await fetch('http://172.16.1.234:8060/uaa/code/image', { credentials: 'include' })
-      const blob = await res.blob();
-      const dataURL = await readBlobAsDataURL(blob);
-      return dataURL;
-    }
-  }
-}
 
-export const sendVerifyCode = params => {
-  return {
-    type: 'auth/SEND_VERIFY_CODE',
-    async payload() {
-      const res = await cFetch('http://172.16.1.234:8060/' + API_CONFIG.verifyCode + params, { credentials: 'include' }, false);
-      return res
-    }
-  }
-}
 
 export const logoutUser = () => {
 	cookie.remove('token');

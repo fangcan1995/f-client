@@ -13,8 +13,14 @@ const baseUri = host + '/';
 export const API_CONFIG = {
   host: host,
   baseUri: baseUri,
+  
   auth: 'uaa/login',
   user: 'uaa/oauth/member/info',
-  verifyCode: 'uaa/code/sms/login',
-  imageCode: 'uaa/code/image'
+
+  imageCode: 'uaa/code/image',
+  loginVerifyCode: 'uaa/code/sms/login',
+
+  checkUserExist: 'uaa/register/check/mobile',
+  signup: 'uaa/register',
+  signupVerifyCode: 'uaa/code/sms/register',
 };
