@@ -4,7 +4,8 @@ const parseJson2URL = params => {
   let separator = '&';
   for ( let key in params ) {
     let value = params[key];
-    if ( value != null && value != '' ) {
+    //if ( value != null && value != '' ) {
+    if ( typeof value != 'undefined' ) {
       if ( typeof value === 'string' || value instanceof Number || typeof value === 'number' || value instanceof Boolean || typeof value === 'boolean' ) {
         paramStr += key + mappingOperator + value + separator;
       } else if ( typeof value === 'object' ) {

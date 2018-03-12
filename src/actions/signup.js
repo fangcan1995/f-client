@@ -6,7 +6,6 @@ import { LOGIN, LOGOUT } from './../constants/actions-type';
 import { API_CONFIG } from './../config/api';
 
 
-
 export const getImageCode = () => {
   return {
     type: 'signup/GET_IMAGE_CODE',
@@ -19,12 +18,11 @@ export const getImageCode = () => {
   }
 }
 
-export const checkUserExist = () => {
+export const checkUserExist = params => {
   return {
     type: 'signup/CHECK_USER_EXIST',
     async payload() {
-      const res = await fetch('http://172.16.1.234:8060/' + API_CONFIG.checkUserExist + params, { method: 'POST', body: params })
-      console.log(res);
+      const res = await cFetch('http://172.16.1.234:8060/' + API_CONFIG.checkUserExist + params, { method: 'GET' }, false)
       return res;
     }
   }
@@ -45,6 +43,12 @@ export const sendVerifyCode = params => {
   }
 }
 
+export const setVerifyCodeCd = cd => {
+  return {
+    type: 'signup/SET_VERIFY_CODE_CD',
+    payload: cd,
+  }
+}
 
 
 export const signupUser = params => {
@@ -57,7 +61,6 @@ export const signupUser = params => {
       const { code, data } = res;
       if ( code == 0 ) {
         const { ...user } = data || {};
-
         return user;
       } else {
         throw res;

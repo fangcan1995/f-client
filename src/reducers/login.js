@@ -5,6 +5,7 @@ const initialState = Immutable.fromJS({
   isFetching: false,
   imageCodeImg: '',
   verifyCode: {},
+  verifyCodeCd: 0,
 });
 
 export default createReducer(initialState, {
@@ -30,6 +31,11 @@ export default createReducer(initialState, {
   ['login/SEND_VERIFY_CODE_REJECTED']: (state, action) => state.merge({
     isFetching: false,
     errorMessage: action.message
+  }),
+
+
+  ['login/SET_VERIFY_CODE_CD']: (state, action) => state.merge({
+    verifyCodeCd: action.payload
   }),
 
 

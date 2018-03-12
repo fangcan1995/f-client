@@ -5,7 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Form, Input, Checkbox, Button, Tabs, Row, Col, message } from 'antd';
 
 import { loginUser } from '../../actions/auth';
-import { sendVerifyCode, getImageCode } from '../../actions/login';
+import { sendVerifyCode, getImageCode, setVerifyCodeCd } from '../../actions/login';
 
 import { hex_md5 } from '../../utils/md5';
 import readBlobAsDataURL from '../../utils/readBlobAsDataURL';
@@ -188,7 +188,7 @@ class PasswordForm extends Component {
           required
           >
           <Row gutter={8}>
-            <Col span={12}>
+            <Col span={14}>
               <FormItem
                 hasFeedback
                 >
@@ -206,7 +206,7 @@ class PasswordForm extends Component {
               </FormItem>
             
             </Col>
-            <Col span={12}>
+            <Col span={10}>
               <img
                 className="imageCode__img"
                 src={ imageCodeImg }
@@ -233,6 +233,10 @@ class PasswordForm extends Component {
 
 
 class VCodeForm extends Component {
+  constructor() {
+    super();
+    this.verifyCodeInputRef;
+  }
   static propTypes = {
     form: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
@@ -271,6 +275,7 @@ class VCodeForm extends Component {
     });
   }
   handleSendVerifyCodeBtnClick = e => {
+
     const { dispatch, form } = this.props;
     const entries = ['username', 'imageCode'];
     form.validateFields(entries, (errors) => {
@@ -281,8 +286,10 @@ class VCodeForm extends Component {
       creds = `?${parseJson2URL({...creds, sendTerminal: send_terminal})}`;
       dispatch(sendVerifyCode(creds))
       .then(res => {
-        // todo
+        this.verifyCodeInputRef.focus();
+        return res;
       })
+      .then(() => this.startCd(60))
       .catch(err => {
         // 根据错误类型做更多判断，这里先把超时处理成弹message
         if ( err.statusCode == -1 ) {
@@ -294,6 +301,26 @@ class VCodeForm extends Component {
       });
     });
   }
+
+  startCd = (secs) => new Promise((resolve, reject) => {
+    let timer = null;
+    const { dispatch } = this.props;
+    
+    const cd = () => {
+      if ( secs < 0 ) {
+        timer && clearTimeout(timer), timer = null;
+        secs = 0;
+        resolve(secs);
+      } else {
+        dispatch(setVerifyCodeCd(secs))
+        secs -= 1;
+        timer = setTimeout(cd, 1000)
+      }
+      
+    }
+    cd();
+  })
+
   sendVerifyFaileCallback = (reason) => {
     const message = reason.msg;
     const { setFields, getFieldValue } = this.props.form;
@@ -322,7 +349,7 @@ class VCodeForm extends Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { imageCodeImg } = this.props.login;
+    const { imageCodeImg, verifyCodeCd } = this.props.login;
     const usernameProps = getFieldDecorator('username', {
       validate: [{
         rules: [
@@ -382,13 +409,14 @@ class VCodeForm extends Component {
           required
           >
           <Row gutter={8}>
-            <Col span={12}>
+            <Col span={14}>
               <FormItem
               hasFeedback
               >
               {
                 imageCodeProps(
                   <Input
+
                     size="large"
                     type="text"
                     autoComplete="off"
@@ -400,7 +428,7 @@ class VCodeForm extends Component {
               </FormItem>
             
             </Col>
-            <Col span={12}>
+            <Col span={10}>
               <img
                 className="imageCode__img"
                 src={ imageCodeImg }
@@ -415,7 +443,7 @@ class VCodeForm extends Component {
           required
           >
           <Row gutter={8}>
-            <Col span={12}>
+            <Col span={14}>
               <FormItem
               hasFeedback
               >
@@ -427,13 +455,21 @@ class VCodeForm extends Component {
                     autoComplete="off"
                     placeholder="请输入短信验证码"
                     onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
+                    ref={ c => this.verifyCodeInputRef = c }
                   />
                 )
               }
               </FormItem>
             </Col>
-            <Col span={12}>
-              <Button size="large" type="dashed" htmlType="button" onClick={ this.handleSendVerifyCodeBtnClick }>获取验证码</Button>
+            <Col span={10}>
+              <Button
+                className="verifyCode__btn"
+                size="large"
+                type="dashed"
+                htmlType="button"
+                disabled={ !!verifyCodeCd }
+                onClick={ this.handleSendVerifyCodeBtnClick }
+                >{ verifyCodeCd || '获取验证码' }</Button>
             </Col>
           </Row>
         </FormItem>
