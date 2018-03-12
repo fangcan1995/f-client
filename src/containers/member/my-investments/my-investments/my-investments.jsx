@@ -128,11 +128,13 @@ class MyInvestments extends React.Component{
                                                 myList.data.list.map((l, i) => (
                                                     (status===1)?(
                                                         <tr key={`row-${i}`}>
-                                                            <td>{l.proName}</td><td>{l.proMoney}</td><td>{l.loanExpiry}</td><td>{l.loanRefundWay}</td><td>{l.proMoneyEnd}</td><td>{l.inveCreateTime}</td><td>{l.proMoneyPercent}%</td>
+                                                            <td><p><a href="#">{l.proName}</a></p></td>
+                                                            <td>{l.proMoney}</td><td>{l.loanExpiry}</td><td>{l.loanRefundWay}</td><td>{l.proMoneyEnd}</td><td>{l.inveCreateTime}</td><td>{l.proMoneyPercent}%</td>
                                                         </tr>
                                                     ):((status===2)?(
                                                         <tr key={`row-${i}`}>
-                                                            <td>{l.proName}</td><td>{l.proMoney}</td><td>{l.loanExpiry}</td><td>{l.proMoneyEnd}</td><td>{l.inveCreateTime}</td><td>{l.earnShdEarnDate}</td><td>{l.earnShdEarnAmou}</td>
+                                                            <td><p><a href="#">{l.proName}</a></p></td>
+                                                            <td>{l.proMoney}</td><td>{l.loanExpiry}</td><td>{l.proMoneyEnd}</td><td>{l.inveCreateTime}</td><td>{l.earnShdEarnDate}</td><td>{l.earnShdEarnAmou}</td>
                                                             <td>
                                                                 <a onClick={() => dispatch(actionsMyInvestments.toggleModal('modalPlan',true,l.investId))}>回款计划</a>
                                                                 <a onClick={() => dispatch(actionsMyInvestments.toggleModal('modalTransfer',true,l.investId))}>债权转让</a>
@@ -141,7 +143,8 @@ class MyInvestments extends React.Component{
                                                         </tr>
                                                     ):((status===3)?(
                                                         <tr key={`row-${i}`}>
-                                                            <td>{l.proName}</td><td>{l.proMoney}</td><td>{l.loanExpiry}</td><td>{l.proMoneyEnd}</td><td>{l.inveCreateTime}</td><td>{l.earnRemittancAmou}</td><td>{l.earnRealEarnDate}</td>
+                                                            <td><p><a href="#">{l.proName}</a></p></td>
+                                                            <td>{l.proMoney}</td><td>{l.loanExpiry}</td><td>{l.proMoneyEnd}</td><td>{l.inveCreateTime}</td><td>{l.earnRemittancAmou}</td><td>{l.earnRealEarnDate}</td>
                                                             <td>
                                                                 <a onClick={() => dispatch(actionsMyInvestments.toggleModal('modalPlan',true,l.investId))}>回款计划</a>
                                                                 <a href="">投资合同</a>
@@ -149,21 +152,27 @@ class MyInvestments extends React.Component{
                                                         </tr>
                                                     ):((status===4)?(
                                                         <tr key={`row-${i}`}>
-                                                            <td>--</td><td>{l.proName}</td><td>{l.proMoneyEnd}</td><td>{l.transAmt}</td><td>{l.transFee}</td><td>{l.transApplyTime}</td>
+                                                            <td>--</td>
+                                                            <td><p><a href="#">{l.proName}</a></p></td>
+                                                            <td>{l.proMoneyEnd}</td><td>{l.transAmt}</td><td>{l.transFee}</td><td>{l.transApplyTime}</td>
                                                             <td>
                                                                 {l.transStatus}
                                                             </td>
                                                         </tr>
                                                     ):((status===5)?(
                                                         <tr key={`row-${i}`}>
-                                                            <td>{l.transNo}</td><td>{l.proName}</td><td>{l.transAmt}</td><td>{l.transFinanced}</td><td>{l.transSchedule}</td><td>{l.transPutDate}</td>
+                                                            <td>{l.transNo}</td>
+                                                            <td><p><a href="#">{l.proName}</a></p></td>
+                                                            <td>{l.transAmt}</td><td>{l.transFinanced}</td><td>{l.transSchedule}</td><td>{l.transPutDate}</td>
                                                             <td>
                                                                 {l.transStatus}
                                                             </td>
                                                         </tr>
                                                     ):((status===6)?(
                                                         <tr key={`row-${i}`}>
-                                                            <td>{l.transNo}</td><td>{l.proName}</td><td>{l.transAmt}</td><td>{l.transferDate}</td>
+                                                            <td>{l.transNo}</td>
+                                                            <td><p><a href="#">{l.proName}</a></p></td>
+                                                            <td>{l.transAmt}</td><td>{l.transferDate}</td>
                                                             <td>
                                                                 <a href="">投资合同</a>
                                                             </td>

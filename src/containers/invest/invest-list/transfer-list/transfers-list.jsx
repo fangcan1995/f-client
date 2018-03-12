@@ -7,39 +7,22 @@ import moment from "moment";
 import  investListActions  from '../../../../actions/invest-list';
 import Pagination from '../../../../components/pagination/pagination';
 import '../invest-list.less';
-class SubjectList extends Component {
+class TransferList extends Component {
 
     constructor(props) {
         super(props);
-        this.multiFilter = this.multiFilter.bind(this);
     }
 
     componentDidMount () {
-        this.props.dispatch(investListActions.getList(1,10));
-    }
-    multiFilter(type,value){
-
-        //获取查询条件store
-        /*if(type=='rateGroup'){
-            switch (value){
-
-            }
-        }*/
-
-        let filter=this.props.investList.sbList.filter;
-        //修改
-        filter[type]=value;
-        this.props.dispatch(investListActions.stateSbModify({filter:filter}));
-        this.props.dispatch(investListActions.getList(1,10,filter));
+        this.props.dispatch(investListActions.getTransferList(1,10));
     }
     sort(type){
-        let sbList=this.props.investList.sbList;
-        //let {pageNum,pageSize}=sbList.list.data;
-        let sort=sbList.sort;
+        let transferList=this.props.investList.transferList;
+        let sort=transferList.sort;
         for(var i in sort){
             sort[i]=0;
         }
-        let filter=sbList.filter;
+        let filter=transferList.filter;
         switch (sort[type]){
             case 0:
                 sort[type]=1;
@@ -54,7 +37,7 @@ class SubjectList extends Component {
         let newSort={};
         newSort[type]=sort[type];
         this.props.dispatch(investListActions.stateSbModify({sort:sort}));
-        this.props.dispatch(investListActions.getList(1,10,filter,newSort));
+        this.props.dispatch(investListActions.getTransferList(1,10,filter,newSort));
     }
     getStatusName(status,id){
         let investButton=``;
@@ -82,85 +65,20 @@ class SubjectList extends Component {
         console.log('-------myLoans--------');
         console.log(this.props);
         let {dispatch}=this.props;
-        let {sbList}=this.props.investList;
-        let {list,filter,sort}=sbList;
-        let {type,loanApplyExpiry,rateGroup}=filter;
+        let {transferList}=this.props.investList;
+        let {list,sort}=transferList;
+
 
         return (
-            <main className="main invest-list">
+            <main className="main transfer-list">
             <div className="wrapper">
                 <div className="tablist">
                     <div className="tabs__nav">
-                        <Link to="/invest-list" className="tab tab--active">散标</Link>
-                        <Link to="/transfer-list" className="tab">债权</Link>
+                        <Link to="/invest-list" className="tab">散标</Link>
+                        <Link to="/transfer-list" className="tab tab--active">债权</Link>
                     </div>
                 </div>
-                <div className="filter">
-                    <div className="filter__outer">
-                        <div className="filter__inner">
-                            <div className="filter__row">
-                                <div className="filter__cell">
-                                    <h5 className="filter__tit">标的类型</h5>
-                                </div>
-                                <div className="filter__cell">
-                                    <p className={(type===0)?'filter__opt filter__opt--active':'filter__opt'}
-                                       onClick={ ()=>{this.multiFilter('type',0)}}>全部</p>
-                                </div>
-                                <div className="filter__cell">
-                                    <p className={(type===2)?'filter__opt filter__opt--active':'filter__opt'}
-                                       onClick={ ()=>{this.multiFilter('type',2)} }>新手</p>
-                                </div>
-                                <div className="filter__cell">
-                                    <p className={(type===1)?'filter__opt filter__opt--active':'filter__opt'}
-                                       onClick={ ()=>{this.multiFilter('type',1)}}>普通</p>
-                                </div>
-                            </div>
-                            <div className="filter__row">
-                                <div className="filter__cell">
-                                    <h5 className="filter__tit">投资期限</h5>
-                                </div>
-                                <div className="filter__cell">
-                                    <p className={(loanApplyExpiry===0)?'filter__opt filter__opt--active':'filter__opt'}
-                                       onClick={ () => { this.multiFilter('loanApplyExpiry',0) } }>全部</p>
-                                </div>
-                                <div className="filter__cell">
-                                    <p className={(loanApplyExpiry===3)?'filter__opt filter__opt--active':'filter__opt'}
-                                       onClick={ () => { this.multiFilter('loanApplyExpiry',3)}  }>3个月</p>
-                                </div>
-                                <div className="filter__cell">
-                                    <p className={(loanApplyExpiry===6)?'filter__opt filter__opt--active':'filter__opt'}
-                                       onClick={ () => { this.multiFilter('loanApplyExpiry',6)}  } >6个月</p>
-                                </div>
-                                <div className="filter__cell">
-                                    <p className={(loanApplyExpiry===12)?'filter__opt filter__opt--active':'filter__opt'}
-                                       onClick={ () => { this.multiFilter('loanApplyExpiry',12)}  } >12个月</p>
-                                </div>
-                            </div>
 
-                            <div className="filter__row">
-                                <div className="filter__cell">
-                                    <h5 className="filter__tit">预期年化收益率</h5>
-                                </div>
-                                <div className="filter__cell">
-                                    <p className={(rateGroup===0)?'filter__opt filter__opt--active':'filter__opt'}
-                                       onClick={ () => { this.multiFilter('rateGroup',0)}  } >全部</p>
-                                </div>
-                                <div className="filter__cell">
-                                    <p className={(rateGroup===1)?'filter__opt filter__opt--active':'filter__opt'}
-                                       onClick={ () => { this.multiFilter('rateGroup',1)}  } >6%~8%</p>
-                                </div>
-                                <div className="filter__cell">
-                                    <p className={(rateGroup===2)?'filter__opt filter__opt--active':'filter__opt'}
-                                       onClick={ () => { this.multiFilter('rateGroup',2)}  } >8%~10%</p>
-                                </div>
-                                <div className="filter__cell">
-                                    <p className={(rateGroup===3)?'filter__opt filter__opt--active':'filter__opt'}
-                                       onClick={ () => { this.multiFilter('rateGroup',3)}  } >10%~12%</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 {
                     list == "{}"? <div></div>
                         :
@@ -211,7 +129,7 @@ class SubjectList extends Component {
                                         pageSize:list.data.pageSize,
                                         totalPage:Math.ceil(list.data.total/list.data.pageSize),
                                         paging:(obj)=>{
-                                            dispatch(investListActions.getList(obj.currentPage,obj.pageCount,filter,sort));
+                                            dispatch(investListActions.getTransferList(obj.currentPage,obj.pageCount,filter,sort));
                                         }
                                     }
                                 } ></Pagination>
@@ -230,5 +148,5 @@ function mapStateToProps(state) {
         investList
     };
 }
-export default connect(mapStateToProps)(SubjectList);
+export default connect(mapStateToProps)(TransferList);
 

@@ -159,9 +159,7 @@ class ModalTransfer extends React.Component {
                                     </p>
                                 </dl>
                                 <div className="form__bar">
-                                    {(tips != '') ? (<span className="errorMessages">
-                            {tips}
-                        </span>)
+                                    {(tips != '') ? (<span className="errorMessages">{tips}</span>)
                                         : ('')
                                     }
                                 </div>

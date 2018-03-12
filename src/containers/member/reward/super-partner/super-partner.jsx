@@ -31,13 +31,12 @@ export default ({ location, match, history }) => {
                 </div>
             </div>
             <div className="inviteControl">
-                <Link to="/my-reward/partner-list" className="inviteControl__button">我要邀请</Link>
-                <a href="" className="inviteControl__link">查看邀请详细</a>
+                <Link to="#" className="inviteControl__button">我要邀请</Link>
+                <a href="/my-reward/super-list" className="inviteControl__link">查看邀请详细</a>
             </div>
         </div>
         
         <div className="member__cbox">
-
             <div className="title__list">
                 <div className="tab_title">
                     <ul><li className="on"><h3>活动规则</h3></li></ul>
@@ -47,7 +46,7 @@ export default ({ location, match, history }) => {
                     <dl className="myReward">
                         <dt>我的奖励</dt>
                         <dd>
-                            <img src="images/account/lcs_pt1.jpg" className="myReward__img" />
+                            <img src={require('../../../../assets/images/account/lcs_pt1.jpg')} className="myReward__img" />
                             <div className="myReward__main">
                                 <p>注册理财师邀请的好友注册成功后30天内首次投资<em>散标</em>注册理财师可获得返现红包。</p>
                                 <table>
@@ -79,7 +78,7 @@ export default ({ location, match, history }) => {
                             </div>
                         </dd>
                         <dd>
-                            <img src="images/account/lcs_pt2.jpg" className="myReward__img" />
+                            <img src={require('../../../../assets/images/account/lcs_pt2.jpg')} className="myReward__img" />
                             <div className="myReward__main">
                                 <p>直 接 被 邀 请 人 每 投 资 成 功 一 笔 <em>散 标</em> ， 合 伙 人 可 获 取 直 接 被 邀 请 人 的 年 化 投 资 金 额 的 <em>0.2%</em> 的 现 金 红 包， 红 包 金 额 直 接 返 至 <em>【 我 的 账户 】</em> 内 可 进 行 提 现 。<br />
                                     注：邀请人分为两级，第一级为直接被邀请人，第二级为间接被邀请人<br />
@@ -90,8 +89,8 @@ export default ({ location, match, history }) => {
                     <dl className="partnerReward">
                         <dt>合伙人奖励</dt>
                         <dd>
-                            <img  src="images/account/lcs_pt3.jpg" />
-                            <img src="images/account/lcs_pt4.jpg" />
+                            <img  src={require('../../../../assets/images/account/lcs_pt3.jpg')} />
+                            <img src={require('../../../../assets/images/account/lcs_pt4.jpg')} />
                         </dd>
                     </dl>
                 </div>
@@ -106,9 +105,9 @@ export default ({ location, match, history }) => {
                     <ul className="invite__way">
                         <li>
                             <a href="javascript:void(0);">
-                                <img src="images/account/invite_Wechat.png" />
+                                <img src={require('../../../../assets/images/account/invite_Wechat.png')} />
                                 <div className="float float1">
-                                    <img title="我的二维码" src="images/account/pt.png" />
+                                    <img title="我的二维码" src={require('../../../../assets/images/account/pt.png')} />
                                     <p>这是您的专属邀请链接，打开微信“扫一扫”，点击右上角“发送给朋友”或“分享到朋友圈“即可。</p>
                                 </div>
                             </a>
@@ -116,7 +115,7 @@ export default ({ location, match, history }) => {
                         </li>
                         <li>
                             <a href="javascript:void(0);">
-                                <img src="images/account/invite_code.png" />
+                                <img src={require('../../../../assets/images/account/invite_code.png')} />
                                 <div className="float float2">
                                     <strong>请您邀请的好友</strong>
                                     在注册时输入
@@ -129,11 +128,11 @@ export default ({ location, match, history }) => {
                         </li>
                         <li>
                             <a href="javascript:void(0);">
-                                <img src="images/account/invite_link.png" />
+                                <img src={require('../../../../assets/images/account/invite_link.png')} />
                                 <div className="float float3">
                                     <strong>您可以复制该链接</strong>发送给你的好友：
                                     <input type="text" readOnly value="http://588ku.com/sucai/0-defa" className="input_txt" />
-                                    <span className="btn" id="copylink">复制链接</span>{/*我是被复制的链接*/}
+                                    <span className="btn" id="copylink">复制链接</span>我是被复制的链接
                                 </div>
                             </a>
                             <h3>邀请链接</h3>

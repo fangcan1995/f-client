@@ -1,34 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import './detail.less';
 import Crumbs from '../../../../../components/crumbs/crumbs';
 import Tab from '../../../../../components/tab/tab';
-import Table from '../../../../../components/table/table';
-import  {getData}  from '../../../../../assets/js/getData'
-var Yqjl={
-    columnOpts:[
-        { key: 'col1', name: '邀请用户',type:'' },
-        { key: 'col2', name: '注册时间',type:'date' },
-        { key: 'col3', name: '首次投资时间',type:'date' },
-    ],
-    hasFilter:true, // 是否显示搜索过滤，为什么不直接用下面的，这里也是设计上的一个优化点
-    /*onSearch: function(keyword) {
-        doSearch(keyword)
-    }, // 搜索时的回调*/
-    showPager: true, // 是否显示分页
-}
-var Yjmx={
-    columnOpts:[
-        { key: 'col1', name: '获得时间',type:'date' },
-        { key: 'col2', name: '业绩金额（元）',type:'money' },
-        { key: 'col3', name: '奖励来源',type:'' },
-    ],
-    hasFilter:true, // 是否显示搜索过滤，为什么不直接用下面的，这里也是设计上的一个优化点
-    /*onSearch: function(keyword) {
-        doSearch(keyword)
-    }, // 搜索时的回调*/
-    showPager: true, // 是否显示分页
-}
+import './detail.less';
+
 export default class PartnerDetail extends React.Component{
     render(){
         return (
@@ -53,18 +27,56 @@ export default class PartnerDetail extends React.Component{
 					<Tab>
 						<div name="邀请记录">
                             <div className="table__wrapper">
-                                <Table
-                                    source='http://localhost:9002'
-                                    config={Yqjl}
-                                />
+                                <table  className="tableList">
+                                    <thead>
+                                    <tr>
+                                        <th>邀请用户</th>
+                                        <th>业绩金额（元）</th>
+                                        <th>奖励来源</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr >
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            2
+                                        </td>
+                                        <td>
+                                            3
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
                             </div>
 						</div>
 						<div name="业绩明细">
                             <div className="table__wrapper">
-                                <Table
-                                    source='http://localhost:9002'
-                                    config={Yjmx}
-                                />
+                                <table  className="tableList">
+                                    <thead>
+                                    <tr>
+                                        <th>获得时间</th>
+                                        <th>注册时间</th>
+                                        <th>首次投资时间</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr >
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            2
+                                        </td>
+                                        <td>
+                                            3
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
                             </div>
 
 						</div>
