@@ -15,6 +15,7 @@ export const API_CONFIG = {
   baseUri: baseUri,
   
   auth: 'uaa/login',
+  logout: 'uaa/oauth/logout',
   user: 'uaa/oauth/member/info',
 
   imageCode: 'uaa/code/image',

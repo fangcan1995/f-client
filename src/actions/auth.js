@@ -2,6 +2,7 @@ import cookie from 'js-cookie';
 import cFetch from '../utils/cFetch';
 import { LOGIN, LOGOUT } from './../constants/actions-type';
 import { API_CONFIG } from './../config/api';
+import parseJson2URL from './../utils/parseJson2URL';
 
 export const loginUser = params => {
   return {
@@ -27,9 +28,26 @@ export const loginUser = params => {
 
 
 export const logoutUser = () => {
-	cookie.remove('token');
-  cookie.remove('user');
+  
 	return {
 		type: LOGOUT,
+    async payload() {
+
+      const token = cookie.getJSON('token') || {};
+      const { access_token } = token;
+      const params = `?${parseJson2URL({ access_token })}`;
+
+
+      const res = await cFetch('http://172.16.1.234:8060/' + API_CONFIG.logout + params, { method: 'POST', body: params });
+      console.log(res);
+      const { code, message: msg } = res;
+      if ( code == 0 ) {
+        cookie.remove('token');
+        cookie.remove('user');
+        return msg;
+      } else {
+        throw res;
+      }
+    }
 	}
 }

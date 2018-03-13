@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Link } from 'react-router-dom';
+import { Avatar } from 'antd';
 import './member-sidebar.less';
 
 
@@ -20,9 +21,10 @@ const MemberSidebar =  ({ location, match, history, auth, ...props }) => {
             <div className="member__sidebar">
                 <div className="member__info">
                     <div className="info">
-                        <figure className="avatar">
+                        {/*<figure className="avatar">
                             <img src={require('../../assets/images/account/picture.png')} id="tx" />
-                        </figure>
+                        </figure>*/}
+                        <Avatar src={require('../../assets/images/account/picture.png')} id="tx" />
                         <div className="username">{ auth.user.userName }</div>
                         <div className="step">
                             <i className="iconfont icon-phone able"></i>
