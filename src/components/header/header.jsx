@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { message } from 'antd';
 import { logoutUser } from '../../actions/auth';
 import './header.less';
 import logo from '../../assets/images/public/logo.png';
@@ -8,7 +9,10 @@ class Header extends Component {
   handleLogoutBtnClick = e => {
     e.preventDefault();
     const { dispatch } = this.props;
-    dispatch(logoutUser());
+    dispatch(logoutUser())
+    .then(res => {
+      message.success(res.value || '登出成功！')
+    });
   }
   render() {
     const { auth } = this.props;

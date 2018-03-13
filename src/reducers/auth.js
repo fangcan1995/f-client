@@ -27,9 +27,20 @@ export default createReducer(initialState, {
     isAuthenticated: false,
     errorMessage: action.message
   }),
-  ['auth/LOGOUT']: (state, action) => state.merge({
+
+  ['auth/LOGOUT_PENDING']: (state, action) => state.merge({
+    isFetching: true,
+    // isAuthenticated: true,
+  }),
+  ['auth/LOGOUT_FULFILLED']: (state, action) => state.merge({
     isFetching: false,
     isAuthenticated: false,
+  }),
+
+  ['auth/LOGOUT_REJECTED']: (state, action) => state.merge({
+    isFetching: false,
+    // isAuthenticated: true,
+    errorMessage: action.message
   }),
 
   ['auth/GET_IMAGE_CODE_PENDING']: (state, action) => state.merge({

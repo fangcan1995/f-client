@@ -9,7 +9,7 @@ export const getImageCode = () => {
   return {
     type: 'login/GET_IMAGE_CODE',
     async payload() {
-      const res = await fetch('http://172.16.1.234:8060/' + API_CONFIG.imageCode, { credentials: 'include' })
+      const res = await fetch('http://172.16.1.234:8060/' + API_CONFIG.imageCode, { credentials: 'include' });
       const blob = await res.blob();
       const dataURL = await readBlobAsDataURL(blob);
       return dataURL;
