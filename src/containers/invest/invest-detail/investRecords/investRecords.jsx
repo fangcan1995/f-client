@@ -8,28 +8,23 @@ export default class InvestRecords extends React.Component{
         super(props);
         this.changePage = this.changePage.bind(this);
         this.state={
-            pageNum:1
+            pageNum:1,
         }
     }
-    componentDidMount () {
-
-    }
     changePage(currentPage){
-        console.log('换页'+currentPage);
-
-        this.setState({ pageNum:currentPage });
+        this.setState({
+            pageNum:currentPage,
+        });
     }
     render(){
-        console.log('------投资记录-----');
-        console.log(this.props);
+        //console.log('------投资记录-----');
+        //console.log(this.props);
         let {investRecords,callback,pageSize,pageNum} =this.props;
         let {data}=investRecords;
         let {list}=data;
         if(data.list.length>0){
             list=list.slice((this.state.pageNum-1)*pageSize,(this.state.pageNum-1)*pageSize+pageSize);
         }
-        console.log('---------list--------');
-        console.log(list);
         return (
             <ul  className="m-record">
                 {
@@ -67,8 +62,6 @@ export default class InvestRecords extends React.Component{
                                     pageSize: pageSize,
                                     totalPage: Math.ceil(data.total/pageSize),
                                     paging: (obj) => {
-                                        //this.loadData(obj.currentPage, obj.pageCount, this.state.dataSetting.filter);
-                                        //callback(obj.currentPage, obj.pageCount);
                                         this.changePage(obj.currentPage);
                                     }
                                 }

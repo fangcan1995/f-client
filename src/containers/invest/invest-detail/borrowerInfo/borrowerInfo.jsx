@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default () => {
+
+export default (loanInfo) => {
+    let info=loanInfo.loanInfo.data;
     return (
         <ul className="m-intro">
             <li>
                 <dl className="intro">
                     <dt><h3>基本信息</h3></dt>
                     <dd>
-                        <p><strong>用户名：</strong>xu***an</p>
+                        <p><strong>用户名：</strong>xu***an{info.total}</p>
                         <p><strong>手机号：</strong>137*****089</p>
                         <p><strong>身份证号：</strong>2102**********2312</p>
                         <p><strong>性别：</strong> 男	</p>

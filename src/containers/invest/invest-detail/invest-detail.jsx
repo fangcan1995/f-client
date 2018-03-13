@@ -8,6 +8,7 @@ import RepayRecords from './repayRecords/repayRecords';
 import './invest-detail.less';
 import { connect } from 'react-redux';
 import  investDetailActions  from '../../../actions/invest-detail';
+
 class InvestDetail extends React.Component{
     constructor(props) {
         super(props);
@@ -22,27 +23,32 @@ class InvestDetail extends React.Component{
         console.log('---------------this.props----------');
         console.log(this.props);
         let {investDetail}=this.props;
-        let {investRecords}=investDetail;
-        console.log(investRecords);
+        let {investInfo,memberInfo,loanInfo,investRecords,repayRecords}=investDetail;
         return (
             <main className="main sbDetail">
                 <div className="wrapper">
-                    <InvestDetailMaster  />
+                    <InvestDetailMaster
+                        investInfo={investInfo}
+                        memberInfo={memberInfo}
+                    />
                     <div className="tab_info">
                         <Tab>
                             <div name="项目信息">
-                                <BorrowerInfo />
+
+                                <BorrowerInfo
+                                        loanInfo={loanInfo}
+                                />
                             </div>
                             <div name="投标记录" >
                                 <InvestRecords
                                     investRecords={investRecords}
-                                    pageSize={10}
+                                    pageSize={5}
                                 />
                             </div>
                             <div name="还款记录">
                                 <RepayRecords
-                                    investRecords={investRecords}
-                                    pageSize={10}
+                                    repayRecords={repayRecords}
+                                    pageSize={5}
                                 />
                             </div>
                             <div name="风险信息">
