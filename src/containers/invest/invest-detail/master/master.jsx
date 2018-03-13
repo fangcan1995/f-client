@@ -22,6 +22,20 @@ export default class InvestDetailMaster extends React.Component {
             code:100
         }
     }
+    /*constructor(props) {
+        super(props);
+        this.state = {
+            project:{},
+            member:{},
+            investAmount:0,
+            modalInvest: false,
+            modalRecharge: false,
+            modalRiskAssess: false,
+            tips:'',
+            allowedInvest:true,
+            code:100
+        }
+    }
     //模态框开启关闭
     toggleModal=(modal,visile,id)=>{
         if(visile){
@@ -90,13 +104,18 @@ export default class InvestDetailMaster extends React.Component {
     }
     componentDidMount () {
         this.loadData();
-    }
+    }*/
     render(){
-        let {project,member,investAmount}=this.state;
+        let {investAmount}=this.state;
+        console.log('投资信息');
+        console.log(this.props);
+        let project=this.props.investInfo.data;
+        let member=this.props.memberInfo.data;
+        //let invest=<div>投资</div>
         return (
             <div>
                 {
-                    JSON.stringify(this.state.project) != "{}" ?
+                    JSON.stringify(project.project) != "{}" ?
                         <div>
                             <div className="master">
                                 <dl className="info">
@@ -108,9 +127,9 @@ export default class InvestDetailMaster extends React.Component {
                                         <dl className="item1">
                                             <dt className="subtitle">预期年化回报率</dt>
                                             <dd>
-                                                <i>{project.rate+project.raiseRate}</i>%
+                                                <i>{project.rate}</i>%
                                                 {project.raiseRate>0 ?
-                                                    <div className="addtips"><strong>{project.greenName}已奖4.0%</strong></div>
+                                                    <div className="addtips"><strong>{project.greenName}{/*已奖4.0%*/}</strong></div>
                                                     :''
                                                 }
                                             </dd>
@@ -136,7 +155,7 @@ export default class InvestDetailMaster extends React.Component {
                                         </ul>
                                     </dd>
                                 </dl>
-                                {/**/}
+
                                 <div className="m-invest">
                                     <ul className="m-amount">
                                         <li><strong>开放金额：</strong>{project.applyAmt}元</li>
@@ -145,7 +164,7 @@ export default class InvestDetailMaster extends React.Component {
                                     <div className="form_area">
                                         <StepperInput config = {
                                             {
-                                                defaultValue:investAmount,
+                                                defaultValue:1000, //默认金额investAmount
                                                 min:project.minMoneyTemp,
                                                 max:(project.maxMoneyTemp<project.restMoneyTemp)?project.maxMoneyTemp:project.restMoneyTemp,
                                                 step:project.rangeMoneyTemp,
@@ -225,21 +244,22 @@ export default class InvestDetailMaster extends React.Component {
                                                         : <button className="button unable">立即投资</button>
 
                                             }
-                                            {/*<button className="button unable">满标待审核</button>*/}
+                                            <button className="button unable">满标待审核</button>
 
 
-                                            {/*{
+                                            {
                                                 (member.user='')? <a className="btn" href="#">我要登录</a>
                                                     : (!member.isOpenAccount)?<a className="btn" href="#" >立即开户</a>
                                                     :(!member.isFxpg)?<a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,project.pid)}>立即风险评估</a>
                                                         :(member.accountBalance<investAmount)? <a className="btn" onClick={() => this.toggleModal(`modalRecharge`,true,project.pid)}>立即充值</a>
                                                             :<a className="btn enable" onClick={() => this.toggleModal(`modalInvest`,true,project.pid)}>立即投资</a>
-                                            }*/}
+                                            }
 
                                         </div>
 
                                     </div>
                                 </div>
+
                             </div>
                             <ul className="detail steps">
                                 <li className="step1"><i className="iconfont icon-1"></i>
@@ -276,7 +296,7 @@ export default class InvestDetailMaster extends React.Component {
                 <Modal
                     title="投资"
                     wrapClassName="vertical-center-modal"
-                    visible={this.state.modalInvest}
+                    visible={false}
                     width="520px"
                     footer={null}
                     onCancel={() => this.toggleModal(`modalInvest`,false,'')}
@@ -286,7 +306,7 @@ export default class InvestDetailMaster extends React.Component {
                             config = {
                                 {
                                     proId:1,
-                                    investAmount:this.state.investAmount,  //投资金额
+                                    investAmount:1000,  //投资金额
                                     proMinInvestAmount:1000,   //起投金额
                                     proMaxInvestAmount:10000, //投资上限
                                     proIncreaseAmount:100,    //递增金额
@@ -311,7 +331,7 @@ export default class InvestDetailMaster extends React.Component {
                 <Modal
                     title="充值"
                     wrapClassName="vertical-center-modal"
-                    visible={this.state.modalRecharge}
+                    visible={false}
                     width="520px"
                     footer={null}
                     onCancel={() => this.toggleModal(`modalRecharge`,false,'')}
@@ -324,7 +344,7 @@ export default class InvestDetailMaster extends React.Component {
                 <Modal
                     title="风险测评"
                     wrapClassName="vertical-center-modal"
-                    visible={this.state.modalRiskAssess}
+                    visible={false}
                     width="800px"
                     footer={null}
                     onCancel={() => this.toggleModal(`modalRiskAssess`,false,'')}
@@ -333,8 +353,8 @@ export default class InvestDetailMaster extends React.Component {
                         <ModalRiskAssess
                             config={{
                                 callback:(obj)=>{
-                                this.toggleModal(`modalRiskAssess`,false);
-                                this.loadData();
+                                    this.toggleModal(`modalRiskAssess`,false);
+                                    this.loadData();
                                 }
                             }}
                         />:''

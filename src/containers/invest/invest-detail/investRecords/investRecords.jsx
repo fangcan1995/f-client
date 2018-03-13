@@ -4,67 +4,71 @@ import moment from "moment";
 import Pagination from '../../../../components/pagination/pagination';
 
 export default class InvestRecords extends React.Component{
-
+    constructor(props) {
+        super(props);
+        this.changePage = this.changePage.bind(this);
+        this.state={
+            pageNum:1,
+        }
+    }
+    changePage(currentPage){
+        this.setState({
+            pageNum:currentPage,
+        });
+    }
     render(){
+        //console.log('------投资记录-----');
+        //console.log(this.props);
+        let {investRecords,callback,pageSize,pageNum} =this.props;
+        let {data}=investRecords;
+        let {list}=data;
+        if(data.list.length>0){
+            list=list.slice((this.state.pageNum-1)*pageSize,(this.state.pageNum-1)*pageSize+pageSize);
+        }
         return (
             <ul  className="m-record">
-                <li>
-                    <div className="table__wrapper">
-                        <table  className="tableList">
-                            <thead>
-                            <tr>
-                                <th>投资人</th>
-                                <th>投资金额（元）</th>
-                                <th>投资时间</th>
-                                <th>投资方式</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>9a**ae</td>
-                                <td>500.00</td>
-                                <td>2017-08-23 11:06:46</td>
-                                <td>APP端加入</td>
-                            </tr>
-                            <tr>
-                                <td>15**61</td>
-                                <td>2000.00</td>
-                                <td>2017-08-22 17:49:55</td>
-                                <td>APP端加入</td>
-                            </tr>
-                            <tr>
-                                <td>sa**00</td>
-                                <td>10000.00</td>
-                                <td>2017-08-19 14:13:45</td>
-                                <td>APP端加入</td>
-                            </tr>
-                            <tr>
-                                <td>18**89</td>
-                                <td>5000.00</td>
-                                <td>2017-08-18 15:17:47</td>
-                                <td>APP端加入</td>
-                            </tr>
-                            <tr>
-                                <td>18**59</td>
-                                <td>12500.00</td>
-                                <td>2017-08-18 14:52:27</td>
-                                <td>APP端加入</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                {
+                    (data == "{}") ? <li>{data.message}</li>
+                        : (data.total>0)?
+                        <li>
+                            <div className="table__wrapper">
+                                <table className="tableList">
+                                    <thead>
+                                    <tr>
+                                        <th>投资人</th>
+                                        <th>投资金额（元）</th>
+                                        <th>投资时间</th>
+                                        <th>投资方式</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {
+                                        list.map((l, i) => (
+                                            <tr key={`row-${i}`}>
+                                                <td>{i}{l.shortTxt}</td>
+                                                <td>500.00</td>
+                                                <td>{l.dateTime}</td>
+                                                <td>APP端加入</td>
+                                            </tr>
+                                        ))}
 
-                    </div>
-                    <Pagination config = {
-                        {
-                            currentPage:1,
-                            pageSize:10,
-                            totalPage:3,
-                            paging:(obj)=>{
-                                this.loadData(obj.currentPage,obj.pageCount,this.state.dataSetting.filter);
-                            }
-                        }
-                    } ></Pagination>
-                </li>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <Pagination config={
+                                {
+                                    currentPage: this.state.pageNum,
+                                    pageSize: pageSize,
+                                    totalPage: Math.ceil(data.total/pageSize),
+                                    paging: (obj) => {
+                                        this.changePage(obj.currentPage);
+                                    }
+                                }
+                            }></Pagination>
+                        </li>
+                            :<li>暂无记录</li>
+                }
             </ul>
         );
     }
