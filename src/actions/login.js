@@ -31,3 +31,10 @@ export const sendVerifyCode = params => {
     }
   }
 }
+
+export const setVerifyCodeCd = cd => {
+  return {
+    type: 'login/SET_VERIFY_CODE_CD',
+    payload: cd,
+  }
+}

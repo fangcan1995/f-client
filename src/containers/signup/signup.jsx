@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import { Form, Input, Button, Checkbox, Row, Col, message } from 'antd';
-import { signupUser, sendVerifyCode, getImageCode } from '../../actions/signup';
+import { signupUser, sendVerifyCode, getImageCode, checkUserExist, setVerifyCodeCd } from '../../actions/signup';
 import { loginUser } from '../../actions/auth';
 import { hex_md5 } from '../../utils/md5';
 import parseJson2URL from '../../utils/parseJson2URL';
@@ -30,6 +30,10 @@ function hasErrors(fieldsError) {
 }
 
 class Signup extends Component {
+  constructor() {
+    super();
+    this.verifyCodeInputRef;
+  }
   static propTypes = {
     form: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
@@ -37,7 +41,6 @@ class Signup extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(getImageCode());
-    this.props.form.validateFields();
   }
   handleImageCodeImgClick = e => {
     const { dispatch } = this.props;
@@ -63,7 +66,6 @@ class Signup extends Component {
         const image_code = Object.keys(imageCodeValueObj).map(key=> imageCodeValueObj[key]).join('');
         const { username, password } = creds;
         const queryParams = `?${parseJson2URL({username, password, image_code, ...params })}`;
-        console.log(queryParams)
         return dispatch(loginUser(queryParams))
       })
       .then(res => {
@@ -73,6 +75,7 @@ class Signup extends Component {
         dispatch(getImageCode());
       })
       .catch(err => {
+
         // 根据错误类型做更多判断，这里先把超时处理成弹message
         if ( err.statusCode == -1 ) {
           message.error(err.msg, 2.5);
@@ -83,26 +86,22 @@ class Signup extends Component {
       });
     });
   }
-  handleUsernameChange = e => {
-    const { dispatch, form } = this.props;
-    form.validateFields(['username'], errors => {
-      if (errors) return false;
-      let username = form.getFieldValue('username');
 
-    })
-  }
   handleSendVerifyCodeBtnClick = e => {
-    const { dispatch, form } = this.props;
+    const { dispatch, form, signup } = this.props;
     const entries = ['username', 'imageCode'];
     form.validateFields(entries, errors => {
       if (errors) return false;
       let creds = form.getFieldsValue(entries);
       const { send_terminal } = params
       creds = `?${parseJson2URL({...creds, sendTerminal: send_terminal})}`;
+
       dispatch(sendVerifyCode(creds))
       .then(res => {
-        // todo
+        this.verifyCodeInputRef.focus();
+        return res;
       })
+      .then(res => this.startCd(60))
       .catch(err => {
         // 根据错误类型做更多判断，这里先把超时处理成弹message
         if ( err.statusCode == -1 ) {
@@ -114,7 +113,24 @@ class Signup extends Component {
       });
     });
   }
-
+  startCd = (secs) => new Promise((resolve, reject) => {
+    let timer = null;
+    const { dispatch } = this.props;
+    
+    const cd = () => {
+      if ( secs < 0 ) {
+        timer && clearTimeout(timer), timer = null;
+        secs = 0;
+        resolve(secs);
+      } else {
+        dispatch(setVerifyCodeCd(secs))
+        secs -= 1;
+        timer = setTimeout(cd, 1000)
+      }
+      
+    }
+    cd();
+  })
   sendVerifyFaileCallback = (reason) => {
     const message = reason.msg;
     const { setFields, getFieldValue } = this.props.form;
@@ -145,16 +161,40 @@ class Signup extends Component {
 
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, getFieldValue } = this.props.form;
-    const { imageCodeImg } = this.props.signup;
+    const { imageCodeImg, verifyCodeCd } = this.props.signup;
     const usernameProps = getFieldDecorator('username', {
       validate: [{
         rules: [
-          { required: true, message: '手机号不能为空' }
+          { required: true, message: '手机号不能为空' },
+          
         ],
         trigger: 'onBlur'
       }, {
         rules: [
-          { pattern: phoneNumberRegExp, message: '请输入正确的手机号码' }
+          { pattern: phoneNumberRegExp, message: '请输入正确的手机号码' },
+          {
+            validator: (rule, value, callback) => {
+              if ( !phoneNumberRegExp.test(value) ) {
+                return callback()
+              }
+              const params = `?${parseJson2URL({username: value || ''})}`;
+              this.props.dispatch(checkUserExist(params))
+              .then(res => {
+                const { code, msg } = res;
+                if ( code == 0 ) {
+                  callback()
+                } else {
+                  callback(msg)
+                }
+                
+              })
+              .catch(err => {
+                // 当请求失败的时候做更多判断
+                callback(err.msg)
+              })
+            }
+          }
+          
         ],
         trigger: ['onBlur', 'onChange']
       }]
@@ -203,12 +243,6 @@ class Signup extends Component {
         sm: { span: 18 },
       },
     };
-
-
-    const usernameError = isFieldTouched('username') && getFieldError('username');
-    const passwordError = isFieldTouched('password') && getFieldError('password');
-    const imageCodeError = isFieldTouched('imageCode') && getFieldError('imageCode');
-    const registerCodeError = isFieldTouched('registerCode') && getFieldError('registerCode')
     return (
       <main className="main signup">
         <div className="wrapper">
@@ -220,15 +254,12 @@ class Signup extends Component {
               <FormItem
                 { ...formItemLayout }
                 label="手机号"
-                validateStatus={usernameError ? 'error' : ''}
-                help={usernameError || ''}
                 hasFeedback
                 >
                 {usernameProps(
                   <Input
                     placeholder="请输入手机号"
                     type="text"
-                    onChange={ this.handleUsernameChange }
                   />
                 )}
               </FormItem>
@@ -238,10 +269,8 @@ class Signup extends Component {
                 required
                 >
                 <Row gutter={8}>
-                  <Col span={12}>
+                  <Col span={14}>
                     <FormItem
-                      validateStatus={imageCodeError ? 'error' : ''}
-                      help={imageCodeError || ''}
                       hasFeedback
                       >
                       {
@@ -256,9 +285,8 @@ class Signup extends Component {
                         )
                       }
                     </FormItem>
-                  
                   </Col>
-                  <Col span={12}>
+                  <Col span={10}>
                     <img
                       className="imageCode__img"
                       src={ imageCodeImg }
@@ -273,10 +301,9 @@ class Signup extends Component {
                 required
                 >
                 <Row gutter={8}>
-                  <Col span={12}>
+                  <Col span={14}>
                     <FormItem
-                      validateStatus={registerCodeError ? 'error' : ''}
-                      help={registerCodeError || ''}
+           
                       hasFeedback
                       >
                       {
@@ -287,13 +314,21 @@ class Signup extends Component {
                             autoComplete="off"
                             placeholder="请输入短信验证码"
                             onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
+                            ref={ c => this.verifyCodeInputRef = c }
                           />
                         )
                       }
                     </FormItem>
                   </Col>
-                  <Col span={12}>
-                    <Button size="large" type="dashed" htmlType="button"  onClick={ this.handleSendVerifyCodeBtnClick }>获取验证码</Button>
+                  <Col span={10}>
+                    <Button
+                      className="verifyCode__btn"
+                      size="large"
+                      type="dashed"
+                      htmlType="button"
+                      disabled={ !!verifyCodeCd }
+                      onClick={ this.handleSendVerifyCodeBtnClick }
+                      >{ verifyCodeCd || '获取验证码' }</Button>
                   </Col>
                 </Row>
               </FormItem>
@@ -301,8 +336,6 @@ class Signup extends Component {
                 { ...formItemLayout }
                 label="密码"
                 hasFeedback
-                validateStatus={passwordError ? 'error' : ''}
-                help={passwordError || ''}
                 >
                 {
                   passwordProps(
@@ -331,7 +364,7 @@ class Signup extends Component {
                   )
                 }
               </FormItem>
-              <FormItem>
+              <FormItem className="agreement">
                 {
                   agreementProps(
                     <Checkbox> 我已阅读并同意<NavLink to="/login">《用户注册及服务协议》</NavLink></Checkbox>
