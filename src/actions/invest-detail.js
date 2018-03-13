@@ -3,16 +3,16 @@ import cookie from 'js-cookie';
 import {addCommas,checkMoney} from './../assets/js/cost';
 
 let investDetailActions = {
-    getData: (status) => (dispatch, investList) => {
-        dispatch(investDetailActions.getInvestInfo(5));
-        dispatch(investDetailActions.getInvestLoanInfo(5));
+    getData: (status) => (dispatch, investDetail) => {
+        /*dispatch(investDetailActions.getInvestInfo(5));
+        dispatch(investDetailActions.getInvestLoanInfo(5));*/
         dispatch(investDetailActions.getInvestRecords(5));
-        dispatch(investDetailActions.getInvestInfo(5));
+
 
     },
 
     /*获取标的详情*/
-    getInvestInfo: (id) => (dispatch, investList) => {
+    getInvestInfo: (id) => (dispatch, investDetail) => {
         let newState={};
         let url=`http://172.16.4.5:8084/projects/${id}/investInfo`;
         console.log('-------------url------------');
@@ -39,7 +39,7 @@ let investDetailActions = {
     },
 
     /*获取标的详情-信息披露部分*/
-    getInvestLoanInfo: (id) => (dispatch, investList) => {
+    getInvestLoanInfo: (id) => (dispatch, investDetail) => {
         let newState={};
         let url=`http://172.16.4.5:8084/projects/${id}/investInfo`;
         console.log('-------------url------------');
@@ -66,7 +66,7 @@ let investDetailActions = {
     },
 
     /*获取投资列表*/
-    getInvestRecords: (id) => (dispatch, investList) => {
+    getInvestRecords: (id) => (dispatch, investDetail) => {
         let newState={};
         // 获取数据列表
         let url=`http://172.16.4.5:8084/getloansList.php?pageNum=1&pageSize=10`;
@@ -75,17 +75,19 @@ let investDetailActions = {
                 if (response.status == 200){
                     return response;
                 }else{
-                    newState.investRecords={data:{},message:'无响应'};
+                    newState={data:{},message:'无响应'};
                     dispatch(investDetailActions.stateModify(newState));
                 }
             })
             .then((data) => data.json())
             .then(data => {
-                newState.investRecords={data:data.data,message:''};
+
+                newState={data:data.data,message:''};
+                console.log(newState);
                 dispatch(investDetailActions.stateModify(newState));
             }).catch(err=>{
-            newState.investRecords={data:{},message:'连接错误'};
-            dispatch(investDetailActions.stateModify(newState));
+                newState={data:{},message:'连接错误'};
+                dispatch(investDetailActions.stateModify(newState));
         });
 
 
@@ -93,13 +95,10 @@ let investDetailActions = {
 
     //修改状态
     stateModify: json => ({
-        type: 'investList/sbList/MODIFY_STATE',
+        type: 'investDetail/investRecords/MODIFY_STATE',
         payload: json
     }),
-    /*stateRepaymentPlanModify: json => ({
-        type: 'investList/transferList/MODIFY_STATE',
-        payload: json
-    }),*/
+
 };
 export default investDetailActions;
 
