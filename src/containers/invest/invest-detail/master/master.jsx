@@ -1,13 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import  {getData}  from '../../../../assets/js/getData';
+import {  Link} from 'react-router-dom';
 import StepperInput from '../../../../components/stepperInput/stepperInput';
 import { Modal } from 'antd';
 import {income} from "../../../../assets/js/cost";
 import ModalInvest from '../modal-invest/modalInvest';
+import ModalRecharge from '../modal-recharge/modaRecharge'
 import ModalRiskAssess from '../modal-riskAssess/modal-riskAssess';
+import { connect } from 'react-redux';
+import  investDetailActions  from '../../../../actions/invest-detail';
 
-export default class InvestDetailMaster extends React.Component {
+class InvestDetailMaster extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,20 +26,7 @@ export default class InvestDetailMaster extends React.Component {
             code:100
         }
     }
-    /*constructor(props) {
-        super(props);
-        this.state = {
-            project:{},
-            member:{},
-            investAmount:0,
-            modalInvest: false,
-            modalRecharge: false,
-            modalRiskAssess: false,
-            tips:'',
-            allowedInvest:true,
-            code:100
-        }
-    }
+
     //模态框开启关闭
     toggleModal=(modal,visile,id)=>{
         if(visile){
@@ -49,73 +40,31 @@ export default class InvestDetailMaster extends React.Component {
         }
         console.log(this.state);
     };
-    //载入数据
-    loadData(){
-        let data=getData(`http://localhost:9002/detail`);
-        if (data){
-            //与后台对接
-        }else{
-            let mockDate={
-                data: {
-                    project: {
-                        pid:'1',
-                        projectName:'汇车贷_HCD201701080001',
-                        greenHand:1,   //是否新手标
-                        greenName:'新手',
-                        applyAmt:100000,  //借款金额
-                        minMoneyTemp:1000,                  //本标的起投金额
-                        maxMoneyTemp:10000,               //单笔投资上限
-                        rangeMoneyTemp:100,              //递增金额
-                        restMoneyTemp:1980,   			//标的剩余金额
-                        process:50,
-                        rate:8,    					//年化收益，单位%
-                        raiseRate:4,//加息
-                        repayType:'按月付息，到期还本',//还款方式
-                        loanApplyExpiry:3,   				//投资期限，单位
-                        sxDateTemp:'2017-01-10',                         //上线日期
-                        jsDateTemp:'2017-01-29',                         //结束日期
-                        mjNumTemp:'19',                         //募集天数
-                        fkDateTemp:'',                         //放款日期
-                        hkDateTemp:'',                         //还款日期
-                    },  //标的
-                    memberInfo: {
-                        user:1,//是否登录
-                        isGreen:true, //是否新手
-                        isOpenAccount:true,             //是否开户
-                        isFxpg:true,
-                        accountBalance:2000, //账户余额
-                        redAmount:1548, //红包金额
-                        rateNum:3, //加息券数量
-
-                    },  //会员信息
-                },
-                code: "0",
-                message: "SUCCESS",
-            };
-            let {project,memberInfo}=mockDate.data;
-            this.setState({
-                project:project,
-                member:memberInfo,
-                investAmount:project.minMoneyTemp
-            },()=>{
-            });
-        }
-
+    rechargeCallback(){
+        this.toggleModal(`modalRecharge`,false);
+        //this.loadData();
+        let newState= {
+            code:0,
+            type:'',
+            message:'',
+            description:''
+        };
+        dispatch(investDetailActions.statePostResultModify(newState));
     }
-    componentDidMount () {
-        this.loadData();
-    }*/
     render(){
+        console.log('------userIsAuthenticated--------');
+        //console.log(userIsAuthenticated);
         let {investAmount}=this.state;
         console.log('投资信息');
         console.log(this.props);
+        let {dispatch}=this.props;
         let project=this.props.investInfo.data;
         let member=this.props.memberInfo.data;
-        //let invest=<div>投资</div>
+
         return (
             <div>
                 {
-                    JSON.stringify(project.project) != "{}" ?
+                    JSON.stringify(project) != "{}" ?
                         <div>
                             <div className="master">
                                 <dl className="info">
@@ -191,21 +140,21 @@ export default class InvestDetailMaster extends React.Component {
                                                 <i className="iconfont icon-user"></i> <strong>
                                                 我的可用余额：</strong>
                                                 {
-                                                    (member.user='')? <a href="#">登陆查看</a>
+                                                    (JSON.stringify(member) == '{}')? <a href="#">登陆查看</a>
                                                         : `${member.accountBalance} 元`
                                                 }
                                             </li>
                                             <li>
                                                 <strong>可用红包总计：</strong>
                                                 {
-                                                    (member.user='')? <a href="#">登陆查看</a>
+                                                    (JSON.stringify(member) == '{}')? <a href="#">登陆查看</a>
                                                         : `${member.redAmount} 元`
                                                 }
                                             </li>
                                             <li>
                                                 <strong>可用加息券：</strong>
                                                 {
-                                                    (member.user='')? <a href="#">登陆查看</a>
+                                                    (JSON.stringify(member) == '{}')? <a href="#">登陆查看</a>
                                                         : `${member.rateNum} 张`
                                                 }
                                             </li>
@@ -214,42 +163,11 @@ export default class InvestDetailMaster extends React.Component {
                                             </li>
                                         </ul>
                                         <div className="form_bar">
-                                            {
-                                                (member.user='')? <button className="button able" >
-                                                    我要登录
-                                                </button>:''
-                                            }
-                                            {
-                                                (!member.isOpenAccount)?<button className="button able" >
-                                                    立即开户
-                                                </button>:''
-                                            }
-                                            {
-                                                (!member.isFxpg)?
-                                                    <button className="button able" onClick={() => this.toggleModal(`modalRiskAssess`,true,project.pid)}>
-                                                        立即风险评估
-                                                    </button>
-                                                    :''
-                                            }
-                                            {
-                                                (member.accountBalance<investAmount)?
-                                                    <button className="button able" onClick={() => this.toggleModal(`modalRecharge`,true,project.pid)}>
-                                                        立即充值
-                                                    </button>
-                                                    :
-                                                    (this.state.code == 100) ?
-                                                        <button className="button able" onClick={() => this.toggleModal(`modalInvest`, true, project.pid)}>
-                                                            立即投资
-                                                        </button>
-                                                        : <button className="button unable">立即投资</button>
-
-                                            }
-                                            <button className="button unable">满标待审核</button>
-
 
                                             {
-                                                (member.user='')? <a className="btn" href="#">我要登录</a>
-                                                    : (!member.isOpenAccount)?<a className="btn" href="#" >立即开户</a>
+                                                (JSON.stringify(member) == '{}')?
+                                                    <Link  to="/login?redirect=%2invest-detail%29" className="btn">我要登录</Link>
+                                                    : (!member.isOpenAccount)?<a  className="btn" onClick={()=>{window.location.href="http://www.baidu.com?redirect"}}>立即开户</a>
                                                     :(!member.isFxpg)?<a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,project.pid)}>立即风险评估</a>
                                                         :(member.accountBalance<investAmount)? <a className="btn" onClick={() => this.toggleModal(`modalRecharge`,true,project.pid)}>立即充值</a>
                                                             :<a className="btn enable" onClick={() => this.toggleModal(`modalInvest`,true,project.pid)}>立即投资</a>
@@ -296,8 +214,9 @@ export default class InvestDetailMaster extends React.Component {
                 <Modal
                     title="投资"
                     wrapClassName="vertical-center-modal"
-                    visible={false}
+                    visible={this.state.modalInvest}
                     width="520px"
+                    height="400px"
                     footer={null}
                     onCancel={() => this.toggleModal(`modalInvest`,false,'')}
                 >
@@ -331,20 +250,33 @@ export default class InvestDetailMaster extends React.Component {
                 <Modal
                     title="充值"
                     wrapClassName="vertical-center-modal"
-                    visible={false}
+                    visible={this.state.modalRecharge}
                     width="520px"
+                    height="400px"
                     footer={null}
-                    onCancel={() => this.toggleModal(`modalRecharge`,false,'')}
+                    onCancel={() => this.rechargeCallback()}
                 >
                     {this.state.modalRecharge===true?
-                        <div>充值</div>:''
+                        <ModalRecharge
+                            config = {
+                                {
+                                    proId:project.pid,
+                                    accountBalance:member.accountBalance,  //账户余额
+                                    callback:(obj)=>{
+                                        this.rechargeCallback();
+                                    },
+
+
+                                }
+                            }
+                        />:''
                     }
                 </Modal>
                 {/*风险测评弹窗*/}
                 <Modal
                     title="风险测评"
                     wrapClassName="vertical-center-modal"
-                    visible={false}
+                    visible={this.state.modalRiskAssess}
                     width="800px"
                     footer={null}
                     onCancel={() => this.toggleModal(`modalRiskAssess`,false,'')}
@@ -364,4 +296,13 @@ export default class InvestDetailMaster extends React.Component {
         )
     }
 }
+function mapStateToProps(state) {
+    const { auth,investDetail } = state.toJS();
+    return {
+        auth,
+        investDetail
+    };
+}
+export default connect(mapStateToProps)(InvestDetailMaster);
+
 

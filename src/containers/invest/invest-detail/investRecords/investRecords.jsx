@@ -45,10 +45,10 @@ export default class InvestRecords extends React.Component{
                                     {
                                         list.map((l, i) => (
                                             <tr key={`row-${i}`}>
-                                                <td>{i}{l.shortTxt}</td>
-                                                <td>500.00</td>
-                                                <td>{l.dateTime}</td>
-                                                <td>APP端加入</td>
+                                                <td>{l.investor}</td>
+                                                <td>{l.investAmt}</td>
+                                                <td>{l.investTime}</td>
+                                                <td>{l.investWayString}</td>
                                             </tr>
                                         ))}
 

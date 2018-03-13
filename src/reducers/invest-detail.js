@@ -25,7 +25,14 @@ const initialState = Immutable.fromJS({
             list:[]
         },
         message:''
-    }
+    },
+    postResult:{
+        code:0,
+        type:'',
+        message:'',
+        description:''
+
+    },
 });
 
 export default createReducer(initialState, {
@@ -45,6 +52,10 @@ export default createReducer(initialState, {
     ['investDetail/repayRecords/MODIFY_STATE']:(state,action) => state.mergeDeep({
         repayRecords:action.payload
     }),
+    ['investDetail/postResult/MODIFY_STATE']:(state,action) => state.mergeDeep({
+        postResult:action.payload
+    }),
+
 
 })
 

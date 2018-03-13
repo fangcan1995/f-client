@@ -44,102 +44,21 @@ export default class RepayRecords extends React.Component{
                                         <th>还款状态</th>
                                     </tr>
                                     </thead>
-                                    {/*<tbody>
+                                    <tbody>
                                     {
                                         list.map((l, i) => (
                                             <tr key={`row-${i}`}>
-                                                <td>{i}{l.shortTxt}</td>
-                                                <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
-                                                <td>10000.00</td>
-                                                <td>1000.00</td>
-                                                <td>11000.00</td>
-                                                <td>已经还款</td>
+                                                <td>{l.rpmtIssue}</td>
+                                                <td>{moment(l.shdRpmtDate).format('YYYY-MM-DD')}</td>
+                                                <td>{l.rpmtCapital}</td>
+                                                <td>{l.rpmtIint}</td>
+                                                <td>{l.rpmtCapitalIintSum}</td>
+                                                <td>{l.rpmtStatusString}</td>
                                             </tr>
                                         ))}
 
-                                    </tbody>*/}
-                                    <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>2017-07-08</td>
-                                        <td>0.00</td>
-                                        <td>860.00</td>
-                                        <td>860.00</td>
-                                        <td>已经还款</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>2017-08-08</td>
-                                        <td>0.00</td>
-                                        <td>860.00</td>
-                                        <td>860.00</td>
-                                        <td>已经还款</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>2017-09-08</td>
-                                        <td>0.00</td>
-                                        <td>860.00</td>
-                                        <td>860.00</td>
-                                        <td>已经还款</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>2017-10-08</td>
-                                        <td>0.00</td>
-                                        <td>860.00</td>
-                                        <td>860.00</td>
-                                        <td>已经还款</td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>2017-11-08</td>
-                                        <td>0.00</td>
-                                        <td>860.00</td>
-                                        <td>860.00</td>
-                                        <td>已经还款</td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>2017-12-08</td>
-                                        <td>0.00</td>
-                                        <td>860.00</td>
-                                        <td>860.00</td>
-                                        <td>已经还款</td>
-                                    </tr>
-                                    <tr>
-                                        <td>7</td>
-                                        <td>2018-01-08</td>
-                                        <td>0.00</td>
-                                        <td>860.00</td>
-                                        <td>860.00</td>
-                                        <td>等待还款</td>
-                                    </tr>
-                                    <tr>
-                                        <td>8</td>
-                                        <td>2018-02-08</td>
-                                        <td>0.00</td>
-                                        <td>860.00</td>
-                                        <td>860.00</td>
-                                        <td>等待还款</td>
-                                    </tr>
-                                    <tr>
-                                        <td>9</td>
-                                        <td>2018-03-08</td>
-                                        <td>0.00</td>
-                                        <td>860.00</td>
-                                        <td>860.00</td>
-                                        <td>等待还款</td>
-                                    </tr>
-                                    <tr>
-                                        <td>10</td>
-                                        <td>2018-04-08</td>
-                                        <td>0.00</td>
-                                        <td>860.00</td>
-                                        <td>860.00</td>
-                                        <td>等待还款</td>
-                                    </tr>
                                     </tbody>
+
                                 </table>
 
                             </div>

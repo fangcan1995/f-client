@@ -17,7 +17,7 @@ class InvestDetail extends React.Component{
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
         let proId=pathSnippets[1];
         let transferId=pathSnippets[3];
-        this.props.dispatch(investDetailActions.getData(proId,transferId));
+        this.props.dispatch(investDetailActions.getData(proId));
     }
     render(){
         console.log('---------------this.props----------');
@@ -42,13 +42,13 @@ class InvestDetail extends React.Component{
                             <div name="投标记录" >
                                 <InvestRecords
                                     investRecords={investRecords}
-                                    pageSize={5}
+                                    pageSize={10}
                                 />
                             </div>
                             <div name="还款记录">
                                 <RepayRecords
                                     repayRecords={repayRecords}
-                                    pageSize={5}
+                                    pageSize={10}
                                 />
                             </div>
                             <div name="风险信息">
