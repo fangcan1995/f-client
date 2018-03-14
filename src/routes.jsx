@@ -76,11 +76,11 @@ export default (
                     <MemberSidebar {...props}>
                         <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/account-overview`} />
-                            <Route path={`${match.url}/account-overview`} component={userIsAuthenticated(AccountOverview)} />
-                            <Route path={`${match.url}/bank-card`} component={userIsAuthenticated(BankCard)} />
-                            <Route path={`${match.url}/recharge`} component={userIsAuthenticated(Recharge)} />
-                            <Route path={`${match.url}/withdrawals`} component={userIsAuthenticated(Withdrawals)} />
-                            <Route path={`${match.url}/transaction-record`} component={userIsAuthenticated(TransactionRecord)} />
+                            <Route path={`${match.url}/account-overview`} component={AccountOverview} />
+                            <Route path={`${match.url}/bank-card`} component={BankCard} />
+                            <Route path={`${match.url}/recharge`} component={Recharge} />
+                            <Route path={`${match.url}/withdrawals`} component={Withdrawals} />
+                            <Route path={`${match.url}/transaction-record`} component={TransactionRecord} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>
@@ -92,8 +92,8 @@ export default (
                     <MemberSidebar {...props}>
                         <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/my-loan`} />
-                            <Route path={`${match.url}/my-loan`} component={userIsAuthenticated(MyLoan)} />
-                            <Route path={`${match.url}/repaymentPlans`} component={userIsAuthenticated(RepaymentPlans)} />
+                            <Route path={`${match.url}/my-loan`} component={MyLoan} />
+                            <Route path={`${match.url}/repaymentPlans`} component={RepaymentPlans} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>

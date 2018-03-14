@@ -1,47 +1,5 @@
 @import '../../../assets/stylesheets/library';
 @import '../../../assets/stylesheets/tablelistStyle';
 @import '../../../assets/stylesheets/sbdetail';
-.tablist {
-  .tabs__nav {
-    .tab {
-      position: relative;
-      float: left;
-      min-width: 160px;
-      height: 60px;
-      line-height: 60px;
-      font-size: 18px;
-      color: @text-color-help;
-      text-align: center;
-      background-color: #f7f9fa;
-      margin-right: 1px;
-      //margin-bottom: 1px;
-      list-style: none;
-      cursor:pointer;
-      text-decoration: none;
-      &:before {
-        position: absolute;
-        top: 0;
-        width: 100%;
-        height: 0;
-        border-top: 2px solid @color-primary
-      }
-      &:last-child {
-        margin-right: 0;
-        text-align: center;
-        &:before {
-          width: 100%;
-        }
-      }
-      &.tab--active {
-        margin-bottom: 0;
-        padding-bottom: 1px;
-        color: @text-color-default;
-        &:before {
-          content: '';
-          display: block;
-        }
-      }
-    }
-  }
-}
+
 

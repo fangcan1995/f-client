@@ -5,7 +5,7 @@ import {getEchartLine,getEchartBar} from '../../../assets/js/getEchart';
 import PieChart from '../../../components/charts/pie';
 import {addCommas} from '../../../assets/js/cost';
 import './account-overview.less';
-
+import Tab from '../../../components/tab/tab';
 //折线图数据
 let data_Chart1={
     xAxis_data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
@@ -35,11 +35,12 @@ let data_Chart2={
             itemStyle:{
                 normal:{
                     color:'#668bc1',  //柱体颜色
-                    label: {
+
+                    /*label: {
                         show:true,
                         formatter: "{c}万",
                         position:'top'
-                    }
+                    }*/
                 }
             },
             data:[5.6, 4.9, 89, 23.2, 25.6, 76.7, 6.6, 162.2, 32.6, 20, 5.4, 3.3]
@@ -62,6 +63,82 @@ export default ({ location, match, history }) => {
             </div>
         </div>
         <a className="adver" href=""></a>
+        <div className="member__cbox">
+            <div className="accountInfo">
+                <div className="infoLine">
+                    <div>账户余额: <span>0.00</span>&nbsp;元<em>?</em></div>
+                    <div>账户余额: <span>0.00</span>&nbsp;元<em>?</em></div>
+                </div>
+                <div className="infoLine">
+                    <div>账户余额: <span>0.00</span>&nbsp;元<em>?</em></div>
+                    <div>账户余额: <span>0.00</span>&nbsp;元<em>?</em></div>
+                </div>
+            </div>
+            <div className="accountRedbag">
+                <i className="iconfont icon-hongbao"></i>
+                <div className="numInfo">
+                    <div className="topM">可用红包</div>
+                    <div><span>1</span>个</div>
+                </div>
+                <div className="accountControl">
+                    <a className="topF" href="">立即使用</a>
+                    <a href="">查看明细</a>
+                </div>
+            </div>
+            <div className="accountInterests">
+                <i className="iconfont icon-icongao"></i>
+                <div className="numInfo">
+                    <div className="topM">加息券</div>
+                    <div><span>0</span>个</div>
+                </div>
+                <div className="accountControl">
+                    <a className="topF" href="">立即使用</a>
+                    <a href="">查看明细</a>
+                </div>
+            </div>
+        </div>
+        <div className="member__cbox">
+            <Tab>
+                <div name="账户总资产">
+                    {/*{(JSON.stringify(charts.data)=='{}')?(<p>{charts.message}</p>)
+                                    :(<PieChart
+                                        data={charts.data.totalLoan.data}
+                                        style={{height: '300px', width: '930px'}}
+                                        totalTitle="借款总额"
+                                    >
+                                    </PieChart>)
+                                }*/}
+                </div>
+            </Tab>
+        </div>
+        <div className="member__cbox">
+            <Tab>
+                <div name="收益情况">
+                    <Tab>
+                        <div name="累计收益">
+                            {/*{(JSON.stringify(charts.data)=='{}')?(<p>{charts.message}</p>)
+                                    :(<PieChart
+                                        data={charts.data.totalLoan.data}
+                                        style={{height: '300px', width: '930px'}}
+                                        totalTitle="借款总额"
+                                    >
+                                    </PieChart>)
+                                }*/}
+                        </div>
+                        <div name="每日收益">
+                            {/*{(JSON.stringify(charts.data)=='{}')?(<p>{charts.message}</p>)
+                                    :(<PieChart
+                                        data={charts.data.accumulatedInterest.data}
+                                        style={{height: '300px', width: '930px'}}
+                                        totalTitle="累计利息"
+                                    >
+                                    </PieChart>)
+                                }*/}
+                        </div>
+                    </Tab>
+                </div>
+            </Tab>
+        </div>
 
         <div className="accountDetails">
             <div className="accountInfo">
@@ -127,6 +204,7 @@ export default ({ location, match, history }) => {
             </div>
         </div>
 
+
         <div className="incomeState">
             <div className="blockTitle">
                 <h3 className="blockTitle__name">收益情况</h3>
@@ -139,6 +217,30 @@ export default ({ location, match, history }) => {
                     </div>
                 </div>
                 <div className="incomeForm"></div>
+
+                        <Tab>
+                            <div name="累计收益">
+                                {/*{(JSON.stringify(charts.data)=='{}')?(<p>{charts.message}</p>)
+                                    :(<PieChart
+                                        data={charts.data.totalLoan.data}
+                                        style={{height: '300px', width: '930px'}}
+                                        totalTitle="借款总额"
+                                    >
+                                    </PieChart>)
+                                }*/}
+                            </div>
+                            <div name="每日收益">
+                                {/*{(JSON.stringify(charts.data)=='{}')?(<p>{charts.message}</p>)
+                                    :(<PieChart
+                                        data={charts.data.accumulatedInterest.data}
+                                        style={{height: '300px', width: '930px'}}
+                                        totalTitle="累计利息"
+                                    >
+                                    </PieChart>)
+                                }*/}
+                            </div>
+                        </Tab>
+
             </div>
         </div>
         <div className="incomeState">
