@@ -13,6 +13,7 @@ import InvestList from './containers/invest/invest-list/subject-list/subject-lis
 import TransferList from './containers/invest/invest-list/transfer-list/transfers-list';
 
 import InvestDetail from './containers/invest/invest-detail/invest-detail';
+import TransferDetail from './containers/invest/invest-detail/transfer-detail';
 
 import LoanIndex from './containers/loan/loan-index/loan-index';
 
@@ -65,9 +66,9 @@ export default (
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <Route path="/invest-list" component={InvestList} />
-
             <Route path="/transfer-list" component={TransferList} />
             <Route path="/invest-detail" component={InvestDetail} />
+            <Route path="/transfer-detail" component={TransferDetail} />
             <Route path="/loan-index" component={LoanIndex} />
             <Route strict path="/my-account" render={(props) => {
                 const { match } = props;

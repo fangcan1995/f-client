@@ -22,15 +22,15 @@ const initialState = Immutable.fromJS({
     },
     transferList:{
         list:{
-            data:{},
+            data:'',
             message:''
         },
         sort:{
-            rate:0,
-            loanApplyExpiry:0,
-            publishTime:0,
-            syje:0,
-            tzjd:0,
+            annualRate:0,
+            transferPeriod:0,
+            putDate:0,
+            surplusAmount:0,
+            investmentProgress:0,
         }
     },
 });
