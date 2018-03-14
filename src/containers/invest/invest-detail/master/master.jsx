@@ -52,18 +52,159 @@ class InvestDetailMaster extends React.Component {
         };
         dispatch(investDetailActions.statePostResultModify(newState));
     }
+    getStatusName(status,id){
+        let investButton=``;
+        switch(status){
+
+            case 1:
+                investButton=<Link to={`/invest-detail/${id}`} className="btn end">待发布</Link>;
+                break;
+            case 2:
+                investButton=<Link to={`/invest-detail/${id}`} className="btn start">立即加入</Link>;
+                break;
+            case 3:
+                investButton=<Link to={`/invest-detail/${id}`} className="btn end">满标待划转</Link>;
+                break;
+            case 4:
+                investButton=<Link to={`/invest-detail/${id}`} className="btn end">还款中</Link>;
+                break;
+            case 6:
+                investButton=<Link to={`/invest-detail/${id}`} className="btn end">已流标</Link>;
+                break;
+            case 5:
+                investButton=<Link to={`/invest-detail/${id}`} className="btn end">已结清</Link>;
+                break;
+        }
+        return investButton;
+
+    }
+    getInvestName(member,id){
+        let investButton=``;
+        switch(status){
+
+            case 1:
+                investButton=<Link to={`/invest-detail/${id}`} className="btn end">待发布</Link>;
+                break;
+            case 2:
+                investButton=<Link to={`/invest-detail/${id}`} className="btn start">立即加入</Link>;
+                break;
+            case 3:
+                investButton=<Link to={`/invest-detail/${id}`} className="btn end">满标待划转</Link>;
+                break;
+            case 4:
+                investButton=<Link to={`/invest-detail/${id}`} className="btn end">还款中</Link>;
+                break;
+            case 6:
+                investButton=<Link to={`/invest-detail/${id}`} className="btn end">已流标</Link>;
+                break;
+            case 5:
+                investButton=<Link to={`/invest-detail/${id}`} className="btn end">已结清</Link>;
+                break;
+        }
+        return investButton;
+
+    }
     render(){
-        console.log('------userIsAuthenticated--------');
-        //console.log(userIsAuthenticated);
         let {investAmount}=this.state;
-        console.log('投资信息');
-        console.log(this.props);
         let {dispatch}=this.props;
         let project=this.props.investInfo.data;
         let member=this.props.memberInfo.data;
+        let mInvest=``;
+        if(project.status!=2){
+            mInvest=<div className="form_area">
+                <ul className="m-amount">
+                    <li><strong>开放金额：</strong>{project.money}元</li>
+                </ul>
+                {this.getStatusName(project.status,project.id)}
+            </div>
+        }else{
+            let button=``;
+            if(JSON.stringify(member.data) == '{}'){
+                button=<Link  to={`/login?redirect=%2invest-detail%${project.id}`} className="btn">我要登录</Link>;
+            }else{
+                if(!member.isOpenAccount){
+                    button=<a  className="btn" onClick={()=>{window.location.href="http://www.baidu.com?redirect"}}>立即开户</a>
+                }else{
+                    if(!member.isFxpg){
+                        button=<a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,project.id)}>立即风险评估</a>
+                    }else{
+                        if((member.accountBalance<investAmount)){
+                            button=<a className="btn" onClick={() => this.toggleModal(`modalRecharge`,true,project.id)}>立即充值</a>
+                        }else{
+                            console.log('this.state.tips='+this.state.tips);
+                            if(this.state.tips!=''){
+                                button=<a className='btn end'>立即投资</a>
+                            }else{
+                                button=<a className='btn' onClick={() => this.toggleModal(`modalInvest`,true,project.id)}>立即投资</a>
+                            }
 
+                        }
+                    }
+                }
+            }
+            mInvest=<div className="form_area">
+                <ul className="m-amount">
+                    <li><strong>开放金额：</strong>{project.money}元</li>
+                    <li><strong>可投金额：</strong>{project.surplusAmount}元</li>
+                </ul>
+                <StepperInput config = {
+                    {
+                        defaultValue:project.minInvestAmount, //默认金额
+                        min:project.minInvestAmount,
+                        max:(project.maxInvestAmount<project.surplusAmount)?project.maxInvestAmount:project.surplusAmount,
+                        step:project.increaseAmount,
+                        callback:(obj)=>{
+                            this.setState({
+                                tips:obj.tips,
+                                investAmount:parseFloat(obj.value),
+                                code:obj.code
+                            });
+                        }
+                    }
+                }
+                >
+                </StepperInput>
+                <div className="tips__area">
+                    {this.state.tips!=''? <span className="tips error">{this.state.tips}</span>
+                        :''}
+                </div>
+                <ul className="others">
+                    <li>
+                        <i className="iconfont icon-user"></i>
+                        <strong>我的可用余额：</strong>
+                        {
+                            (JSON.stringify(member) == '{}')? <Link  to={`/login?redirect=%2invest-detail%${project.id}`} className="btn">登陆查看</Link>
+                                : `${member.accountBalance} 元`
+                        }
+                    </li>
+                    <li>
+                        <strong>可用红包总计：</strong>
+                        {
+                            (JSON.stringify(member) == '{}')? <Link  to={`/login?redirect=%2invest-detail%${project.id}`} className="btn">登陆查看</Link>
+                                : `${member.redAmount} 元`
+                        }
+                    </li>
+                    <li>
+                        <strong>可用加息券：</strong>
+                        {
+                            (JSON.stringify(member) == '{}')? <Link  to={`/login?redirect=%2invest-detail%${project.id}`} className="btn">登陆查看</Link>
+                                : `${member.rateNum} 张`
+                        }
+                    </li>
+                    <li><strong>预期可赚取：</strong> <i id="money">
+                        {(investAmount==0)?income(project.minInvestAmount,(project.annualRate),project.loanExpiry,'m')
+                            :income(this.state.investAmount,(project.annualRate),project.loanExpiry,'m')
+                        }
+
+                    </i>元
+                    </li>
+                </ul>
+                {button}
+            </div>
+        }
         return (
             <div>
+
                 {
                     JSON.stringify(project) != "{}" ?
                         <div>
@@ -105,78 +246,9 @@ class InvestDetailMaster extends React.Component {
                                         </ul>
                                     </dd>
                                 </dl>
-
+                                {/*投资区域*/}
                                 <div className="m-invest">
-                                    <ul className="m-amount">
-                                        <li><strong>开放金额：</strong>{project.money}元</li>
-                                        <li><strong>可投金额：</strong>{project.surplusAmount}元</li>
-                                    </ul>
-                                    <div className="form_area">
-                                        <StepperInput config = {
-                                            {
-                                                defaultValue:1000, //默认金额investAmount
-                                                min:project.minMoneyTemp,
-                                                max:(project.maxMoneyTemp<project.restMoneyTemp)?project.maxMoneyTemp:project.restMoneyTemp,
-                                                step:project.rangeMoneyTemp,
-                                                callback:(obj)=>{
-                                                    //console.log(obj);
-                                                    this.setState({
-                                                        tips:obj.tips,
-                                                        investAmount:parseFloat(obj.value),
-                                                        code:obj.code
-                                                    });
-                                                }
-                                            }
-                                        }
-                                        >
-                                        </StepperInput>
-                                        <div className="tips__area">
-                                            {this.state.tips!=''?
-                                                <span className="tips error">{this.state.tips}</span>
-                                                :''
-                                            }
-                                        </div>
-                                        <ul className="others">
-                                            <li>
-                                                <i className="iconfont icon-user"></i> <strong>
-                                                我的可用余额：</strong>
-                                                {
-                                                    (JSON.stringify(member) == '{}')? <a href="#">登陆查看</a>
-                                                        : `${member.accountBalance} 元`
-                                                }
-                                            </li>
-                                            <li>
-                                                <strong>可用红包总计：</strong>
-                                                {
-                                                    (JSON.stringify(member) == '{}')? <a href="#">登陆查看</a>
-                                                        : `${member.redAmount} 元`
-                                                }
-                                            </li>
-                                            <li>
-                                                <strong>可用加息券：</strong>
-                                                {
-                                                    (JSON.stringify(member) == '{}')? <a href="#">登陆查看</a>
-                                                        : `${member.rateNum} 张`
-                                                }
-                                            </li>
-                                            <li><strong>预期可赚取：</strong> <i id="money">
-                                                {income(investAmount,(project.rate+project.raiseRate),project.loanApplyExpiry,'m')}</i> 元
-                                            </li>
-                                        </ul>
-                                        <div className="form_bar">
-
-                                            {
-                                                (JSON.stringify(member) == '{}')?
-                                                    <Link  to="/login?redirect=%2invest-detail%29" className="btn">我要登录</Link>
-                                                    : (!member.isOpenAccount)?<a  className="btn" onClick={()=>{window.location.href="http://www.baidu.com?redirect"}}>立即开户</a>
-                                                    :(!member.isFxpg)?<a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,project.pid)}>立即风险评估</a>
-                                                        :(member.accountBalance<investAmount)? <a className="btn" onClick={() => this.toggleModal(`modalRecharge`,true,project.pid)}>立即充值</a>
-                                                            :<a className="btn enable" onClick={() => this.toggleModal(`modalInvest`,true,project.pid)}>立即投资</a>
-                                            }
-
-                                        </div>
-
-                                    </div>
+                                        {mInvest}
                                 </div>
 
                             </div>
@@ -226,21 +298,17 @@ class InvestDetailMaster extends React.Component {
                             config = {
                                 {
                                     proId:1,
-                                    investAmount:1000,  //投资金额
-                                    proMinInvestAmount:1000,   //起投金额
-                                    proMaxInvestAmount:10000, //投资上限
-                                    proIncreaseAmount:100,    //递增金额
-                                    restMoney:1100,//标的剩余金额
-                                    rate:project.rate+project.raiseRate, //年化收益
-                                    loanApplyExpiry:project.loanApplyExpiry,  //投资期限
+                                    investAmount:(investAmount>0)?investAmount:project.minInvestAmount,  //投资金额
+                                    proMinInvestAmount:project.minInvestAmount,   //起投金额
+                                    proMaxInvestAmount:(project.maxInvestAmount<project.surplusAmount)?project.maxInvestAmount:project.surplusAmount, //投资上限
+                                    proIncreaseAmount:project.increaseAmount,    //递增金额
+                                    restMoney:project.surplusAmount,//标的剩余金额
+                                    rate:project.annualRate, //年化收益
+                                    loanApplyExpiry:project.loanExpiry,  //投资期限
                                     //账户余额
-
                                     callback:(obj)=>{
                                         this.toggleModal(`modalInvest`,false);
-                                        /*this.setState({
-                                            status:1
-                                        });*/
-                                        this.loadData();
+                                        dispatch(investDetailActions.getData(project.id));  //投资成功重载数据
                                     }
                                 }
                             }
@@ -266,8 +334,6 @@ class InvestDetailMaster extends React.Component {
                                     callback:(obj)=>{
                                         this.rechargeCallback();
                                     },
-
-
                                 }
                             }
                         />:''

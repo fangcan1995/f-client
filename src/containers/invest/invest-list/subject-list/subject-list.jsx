@@ -55,7 +55,7 @@ class SubjectList extends Component {
                 investButton=<Link to={`/invest-detail/${id}`} className="btn end">待发布</Link>;
                 break;
             case 2:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn start">立即加入</Link>;
+                investButton=<Link to={`/invest-detail/${id}`} className="btn start">立即投资</Link>;
                 break;
             case 3:
                 investButton=<Link to={`/invest-detail/${id}`} className="btn end">满标待划转</Link>;
