@@ -1,37 +1,61 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './invest-detail.less';
 import Tab from '../../../components/tab/tab';
-import TransferDetailMaster from './transfer-master/transferMaster'
+import TransferDetailMaster from './master/transferMaster';
 import BorrowerInfo from './borrowerInfo/borrowerInfo';
 import InvestRecords from './investRecords/investRecords';
-import RepayRecords from './repayRecords/repayRecords'
+import RepayRecords from './repayRecords/repayRecords';
+import './invest-detail.less';
+import { connect } from 'react-redux';
+import  investDetailActions  from '../../../actions/invest-detail';
 
-
-export default class TransferDetail extends React.Component{
+class TransferDetail extends React.Component{
     constructor(props) {
         super(props);
-        this.state = {}
+    }
+    componentDidMount () {
+        const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
+        let proId=pathSnippets[2];
+        let transferId=pathSnippets[1];
+        this.props.dispatch(investDetailActions.getTransferData(proId,transferId));
     }
     render(){
+        console.log('---------------债转标----------');
+        console.log(this.props);
+        let {investDetail}=this.props;
+        let {investInfo,memberInfo,loanInfo,investRecords,investTransferRecords,repayRecords}=investDetail;
         return (
             <main className="main sbDetail">
-                <TransferDetailMaster>
-                </TransferDetailMaster>
                 <div className="wrapper">
+                    <TransferDetailMaster
+                        investInfo={investInfo}
+                        memberInfo={memberInfo}
+                    />
                     <div className="tab_info">
                         <Tab>
                             <div name="项目信息">
-                                <BorrowerInfo/>
+
+                                <BorrowerInfo
+                                        loanInfo={loanInfo}
+                                />
                             </div>
                             <div name="转让投标记录">
-                                <InvestRecords/>
+                                <InvestRecords
+                                    investRecords={investTransferRecords}
+                                    pageSize={10}
+                                />
                             </div>
-                            <div name="原项目投标记录">
-                                <InvestRecords/>
+                            <div name="原项目投标记录" >
+                                <InvestRecords
+                                    investRecords={investRecords}
+                                    pageSize={10}
+                                />
                             </div>
                             <div name="还款记录">
-                                <RepayRecords/>
+                                <RepayRecords
+                                    repayRecords={repayRecords}
+                                    pageSize={10}
+                                />
                             </div>
                             <div name="风险信息">
                                 <ul className="m-notice">
@@ -65,3 +89,11 @@ export default class TransferDetail extends React.Component{
         )
     }
 }
+function mapStateToProps(state) {
+    const { auth,investDetail } = state.toJS();
+    return {
+        auth,
+        investDetail
+    };
+}
+export default connect(mapStateToProps)(TransferDetail);

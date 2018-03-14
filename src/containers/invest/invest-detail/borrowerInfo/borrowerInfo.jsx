@@ -9,7 +9,7 @@ class BorrowerInfo extends React.Component {
         if(JSON.stringify(loanInfo.data)!='{}'){
 
             console.log(loanInfo.data);
-            let {projectInfoBaseInfoDto,loanCreditCountDto,projectInfoLoanInfoDto,mortgageCarHis,mortgageHouseHis}=loanInfo.data;
+            let {projectInfoBaseInfoDto,loanCreditCountDto,projectInfoLoanInfoDto,mortgageCarHis,mortgageHouseHis,filesList}=loanInfo.data;
             return (
                 <ul className="m-intro">
                     <li>
@@ -91,7 +91,15 @@ class BorrowerInfo extends React.Component {
                         <dl className="intro">
                             <dt><h3>相关资料</h3></dt>
                             <dd className="imglist">
-
+                                <ul>
+                                    {filesList.map((l, i) => (
+                                        <li key={`row-${i}`}>
+                                            <a href={`${l.uploadPath}`} target="_blank">
+                                                <img src={`${l.uploadPath}`} />{l.fileName}
+                                            </a>
+                                        </li>
+                                        ))}
+                                </ul>
                             </dd>
                         </dl>
                         <div className="m-introFooter">

@@ -7,8 +7,9 @@ import InvestRecords from './investRecords/investRecords';
 import RepayRecords from './repayRecords/repayRecords';
 import './invest-detail.less';
 import { connect } from 'react-redux';
+import { Form,Row,Input,Button,Checkbox,Col,Alert } from 'antd';
 import  investDetailActions  from '../../../actions/invest-detail';
-
+import StepperInput from '../../../components/stepperInput/stepperInput';
 class InvestDetail extends React.Component{
     constructor(props) {
         super(props);
@@ -16,21 +17,41 @@ class InvestDetail extends React.Component{
     componentDidMount () {
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
         let proId=pathSnippets[1];
-        let transferId=pathSnippets[3];
         this.props.dispatch(investDetailActions.getData(proId));
     }
     render(){
         console.log('---------------this.props----------');
-        console.log(this.props);
         let {investDetail}=this.props;
         let {investInfo,memberInfo,loanInfo,investRecords,repayRecords}=investDetail;
+        let project=investInfo.data;
+        console.log(project);
         return (
             <main className="main sbDetail">
                 <div className="wrapper">
                     <InvestDetailMaster
                         investInfo={investInfo}
                         memberInfo={memberInfo}
-                    />
+                    >
+                        <div className="form_area">
+                            {
+                                (project)?
+                                    (project.status!='2')?
+                                        <div>
+                                            <ul className="m-amount">
+                                                <li><strong>开放金额：</strong>{project.money}元</li>
+                                            </ul>
+                                            <div className="form_area">
+                                                <div className="form__bar">
+                                                    <a className="btn_unable" href="javascript:void(0);">不能投资</a>
+                                                    <Button type="primary"  className="pop-button" disabled={false}>不能投资</Button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        :''
+                                    :''
+                            }
+                        </div>
+                    </InvestDetailMaster>
                     <div className="tab_info">
                         <Tab>
                             <div name="项目信息">

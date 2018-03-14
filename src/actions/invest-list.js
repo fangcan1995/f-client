@@ -15,20 +15,22 @@ let investListActions = {
         if(JSON.stringify(filter)!={}){
             for(var item in filter){
                 if(item!='rateGroup'){
-                    filterConditions += "&"+item+"="+filter[item];
+                    if(filter[item]!=''){
+                        filterConditions += "&"+item+"="+filter[item];
+                    }
                 }else{
                     switch(filter[item]){
-                        case 0:
-                            filterConditions+='';
+                        case '':
+                            //filterConditions+='';
                             break;
                         case 1:
-                            filterConditions += "&rateBegin=6&rateEnd=8";
+                            filterConditions += "&annualRateStart=6&annualRateEnd=8";
                             break;
                         case 2:
-                            filterConditions += "&rateBegin=8&rateEnd=10";
+                            filterConditions += "&annualRateStart=8&annualRateEnd=10";
                             break;
                         case 3:
-                            filterConditions += "&rateBegin=10&rateEnd=12";
+                            filterConditions += "&annualRateStart=10&annualRateEnd=12";
                             break;
                     }
                 }
@@ -41,16 +43,17 @@ let investListActions = {
                     case 0:
                         break;
                     case 1:
-                        sortConditions += "&sortBy="+item;
+                        sortConditions += "&sortBy=-"+item;
                         break;
                     case 2:
-                        sortConditions += "&sortBy=-"+item;
+                        sortConditions += "&sortBy="+item;
                         break;
                 }
 
             }
         }
-        let url=`http://172.16.4.5:8084/getloansList.php?pageNum=${pageNum}&pageSize=${pageSize}${filterConditions}${sortConditions}`;
+        let url=`http://172.16.1.234:9090/invest/projects/loan/page.php?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c&pageNum=${pageNum}&pageSize=${pageSize}${filterConditions}${sortConditions}`;
+
         console.log('-------------url------------');
         console.log(url);
         fetch(url,{method:"get"})
@@ -58,16 +61,21 @@ let investListActions = {
                 if (response.status == 200){
                     return response;
                 }else{
-                    newState.list={data:{},message:'无响应'};
+                    newState.list={data:'',message:'无响应'};
                     dispatch(investListActions.stateSbModify(newState));
                 }
             })
             .then((data) => data.json())
             .then(data => {
-                newState.list={data:data.data,message:''};
+                console.log('-------------data------------');
+                console.log(data.data);
+                newState.list={
+                    data:data.data,
+                    message:''
+                }
                 dispatch(investListActions.stateSbModify(newState));
             }).catch(err=>{
-                newState.list={data:{},message:'连接错误'};
+                newState.list={data:'',message:'连接错误'};
                 dispatch(investListActions.stateSbModify(newState));
         });
 
@@ -77,36 +85,23 @@ let investListActions = {
     getTransferList: (pageNum=1,pageSize=10,filter={},sort={}) => (dispatch, investList) => {
         let newState={};
         // 获取数据列表
-        let filterConditions='';
-        if(JSON.stringify(filter)!={}){
-            for(var item in filter){
-                if(item!='rateGroup'){
-                    filterConditions += "&"+item+"="+filter[item];
-                }else{
-                    switch(filter[item]){
-                        case 0:
-                            filterConditions+='';
-                            break;
-                        case 1:
-                            filterConditions += "&rateBegin=6&rateEnd=8";
-                            break;
-                        case 2:
-                            filterConditions += "&rateBegin=8&rateEnd=10";
-                            break;
-                        case 3:
-                            filterConditions += "&rateBegin=10&rateEnd=12";
-                            break;
-                    }
-                }
-            }
-        }
         let sortConditions='';
         if(JSON.stringify(sort)!={}){
             for(var item in sort){
-                sortConditions += "&"+item+"="+sort[item];
+                switch(sort[item]){
+                    case 0:
+                        break;
+                    case 1:
+                        sortConditions += "&sortBy=-"+item;
+                        break;
+                    case 2:
+                        sortConditions += "&sortBy="+item;
+                        break;
+                }
+
             }
         }
-        let url=`http://172.16.4.5:8084/getloansList.php?pageNum=${pageNum}&pageSize=${pageSize}${filterConditions}${sortConditions}`;
+        let url=`http://172.16.1.234:9090/invest/transfer/loan/page?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c&pageNum=${pageNum}&pageSize=${pageSize}${sortConditions}`
         console.log('-------------url------------');
         console.log(url);
         fetch(url,{method:"get"})
