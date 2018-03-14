@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import ReactSwipe from 'react-swipe';
 
 import './home-page.less';
 import featureIcon1 from '../../assets/images/homePage/feature_icon_1.png';
@@ -22,10 +23,23 @@ import Floor from '../../components/home-page-floor/home-page-floor';
 import { getData } from '../../actions/home-page';
 
 class HomePage extends Component {
+  constructor(props) {
+    super(props)
+     this.swipeOptions={
+      continuous: true,
+      startSlide: 0,
+      speed: 400,
+      auto: 3000,
+      stopPropagation: false}
+ }
   handleLoginBtnClick = (e) => {
     e.preventDefault();
+    console.log('aaaa')
     this.props.history.push('/login');
 
+  }
+  handleClick(e){
+   console.log(e)
   }
   componentDidMount() {
     const { dispatch } = this.props;
@@ -33,11 +47,22 @@ class HomePage extends Component {
   }
   render() {
     const { homePage } = this.props;
+    console.log(homePage)
     return (
     <main className="main home-page" id="home-page">
-      <div className="banner">
-        <div className="carousel">
-          <div className="carousel__img" style={{ backgroundImage: `url(${require('../../assets/images/homePage/banner.png')})` }}></div>
+      <div className="banner" >
+        <div className="carousel" >
+            <ReactSwipe className="carousel" swipeOptions={this.swipeOptions}>
+                {/* <div>PANE 1</div>
+                <div>PANE 2</div>
+                <div>PANE 3</div> */}
+                {homePage.banner.banner.map((item)=>{
+                  return (
+                    <div><img src={item.imgsrc}  onClick={this.handleClick.bind(this,item.imgurl)}/></div>
+                  )
+                })}
+            </ReactSwipe>
+          {/* <div className="carousel__img" style={{ backgroundImage: `url(${require('../../assets/images/homePage/banner.png')})` }}></div> */}
         </div>
        
         <div className="wrapper">
