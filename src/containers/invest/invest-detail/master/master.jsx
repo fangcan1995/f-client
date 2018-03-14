@@ -78,32 +78,6 @@ class InvestDetailMaster extends React.Component {
         return investButton;
 
     }
-    getInvestName(member,id){
-        let investButton=``;
-        switch(status){
-
-            case 1:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn end">待发布</Link>;
-                break;
-            case 2:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn start">立即加入</Link>;
-                break;
-            case 3:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn end">满标待划转</Link>;
-                break;
-            case 4:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn end">还款中</Link>;
-                break;
-            case 6:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn end">已流标</Link>;
-                break;
-            case 5:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn end">已结清</Link>;
-                break;
-        }
-        return investButton;
-
-    }
     render(){
         let {investAmount}=this.state;
         let {dispatch}=this.props;
@@ -204,7 +178,6 @@ class InvestDetailMaster extends React.Component {
         }
         return (
             <div>
-
                 {
                     JSON.stringify(project) != "{}" ?
                         <div>
@@ -297,7 +270,7 @@ class InvestDetailMaster extends React.Component {
                         <ModalInvest
                             config = {
                                 {
-                                    proId:1,
+                                    proId:project.id,
                                     investAmount:(investAmount>0)?investAmount:project.minInvestAmount,  //投资金额
                                     proMinInvestAmount:project.minInvestAmount,   //起投金额
                                     proMaxInvestAmount:(project.maxInvestAmount<project.surplusAmount)?project.maxInvestAmount:project.surplusAmount, //投资上限

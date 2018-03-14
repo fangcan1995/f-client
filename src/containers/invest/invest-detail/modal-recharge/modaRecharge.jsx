@@ -70,10 +70,7 @@ class ModalRecharge extends React.Component {
     }
     render() {
         let {accountBalance,callback}=this.props.config;
-        console.log('充值弹框');
-        console.log(this.props);
         let {postResult}=this.props.investDetail;
-        console.log(this.props);
         if(postResult.code==0){
             return (
                 <div className="pop__invest">
