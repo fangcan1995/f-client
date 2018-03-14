@@ -4,20 +4,20 @@ import Immutable from 'immutable';
 const initialState = Immutable.fromJS({
     sbList:{
         list:{
-            data:{},
+            data:'',
             message:''
         },
         filter:{
-            type:0,
-            loanApplyExpiry:0,
-            rateGroup:0,
+            noviceLoan:'',
+            loanExpiry:'',
+            rateGroup:'',
         },
         sort:{
-            rate:0,
-            loanApplyExpiry:0,
-            publishTime:0,
-            syje:0,
-            tzjd:0,
+            annualRate:0,
+            loanExpiry:0,
+            putTime:0,
+            surplusAmount:0,
+            investmentProgress:0,
         }
     },
     transferList:{

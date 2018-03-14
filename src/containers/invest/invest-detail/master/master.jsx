@@ -10,6 +10,7 @@ import ModalRecharge from '../modal-recharge/modaRecharge'
 import ModalRiskAssess from '../modal-riskAssess/modal-riskAssess';
 import { connect } from 'react-redux';
 import  investDetailActions  from '../../../../actions/invest-detail';
+import moment from "moment";
 
 class InvestDetailMaster extends React.Component {
     constructor(props) {
@@ -70,15 +71,15 @@ class InvestDetailMaster extends React.Component {
                                 <dl className="info">
                                     <dt className="title">
                                         <h2>抵押标</h2>
-                                        <p>{project.projectName}</p>
+                                        <p>{project.name}</p>
                                     </dt>
                                     <dd className="content">
                                         <dl className="item1">
                                             <dt className="subtitle">预期年化回报率</dt>
                                             <dd>
-                                                <i>{project.rate}</i>%
-                                                {project.raiseRate>0 ?
-                                                    <div className="addtips"><strong>{project.greenName}{/*已奖4.0%*/}</strong></div>
+                                                <i>{project.annualRate}</i>%
+                                                {(project.noviceLoan=='1') ?
+                                                    <div className="addtips"><strong>新手</strong></div>
                                                     :''
                                                 }
                                             </dd>
@@ -86,29 +87,29 @@ class InvestDetailMaster extends React.Component {
                                         </dl>
                                         <dl className="item2">
                                             <dt className="subtitle">锁定期限</dt>
-                                            <dd><i>{project.loanApplyExpiry}</i>个月</dd>
+                                            <dd><i>{project.loanExpiry}</i>个月</dd>
                                         </dl>
                                         <dl className="item3">
                                             <dt className="subtitle">起投金额</dt>
-                                            <dd><i>{project.minMoneyTemp}</i>元</dd>
+                                            <dd><i>{project.minInvestAmount}</i>元</dd>
                                         </dl>
                                         <dl className="progressbar">
-                                            <dt><div className="finished" style={{ width:`${project.process}%`}}><i className="iconfont">&#xe64d;</i></div></dt>
-                                            <dd><strong>投资进度：<em>{project.process}%</em></strong></dd>
+                                            <dt><div className="finished" style={{ width:`${project.investmentProgress}%`}}><i className="iconfont">&#xe64d;</i></div></dt>
+                                            <dd><strong>投资进度：<em>{project.investmentProgress}%</em></strong></dd>
                                         </dl>
                                         <ul className="safe">
                                             <li><i className="iconfont icon-star"></i>国企背景</li>
                                             <li><i className="iconfont icon-user"></i>真实借款</li>
                                             <li><i className="iconfont icon-heart"></i>实物抵押</li>
-                                            <li><i className="iconfont icon-money"></i>{project.repayType}</li>
+                                            <li><i className="iconfont icon-money"></i>{project.refundWayString}</li>
                                         </ul>
                                     </dd>
                                 </dl>
 
                                 <div className="m-invest">
                                     <ul className="m-amount">
-                                        <li><strong>开放金额：</strong>{project.applyAmt}元</li>
-                                        <li><strong>可投金额：</strong>{project.restMoneyTemp}元</li>
+                                        <li><strong>开放金额：</strong>{project.money}元</li>
+                                        <li><strong>可投金额：</strong>{project.surplusAmount}元</li>
                                     </ul>
                                     <div className="form_area">
                                         <StepperInput config = {
@@ -183,27 +184,27 @@ class InvestDetailMaster extends React.Component {
                                 <li className="step1"><i className="iconfont icon-1"></i>
                                     <dl>
                                         <dt>项目上线</dt>
-                                        <dd>上线日期：{project.sxDateTemp}</dd>
+                                        <dd>上线日期：{moment(project.putTime).format('YYYY-MM-DD')}</dd>
                                     </dl>
                                 </li>
                                 <li className="step2"><i className="iconfont icon-2"></i>
                                     <dl>
-                                        <dt>项目募集<em>(募集总时间:{project.mjNumTemp}天)</em></dt>
-                                        <dd>结束日期：{project.jsDateTemp}</dd>
+                                        <dt>项目募集<em>(募集总时间:{project.collectDays}天)</em></dt>
+                                        <dd>结束日期：{moment(project.endDate).format('YYYY-MM-DD')}</dd>
                                     </dl>
                                 </li>
                                 <li className="step3"><i className="iconfont icon-3"></i>
                                     <dl>
                                         <dt>项目放款</dt>
                                         <dd>放款日期：
-                                            {(project.fkDateTemp!='')? `${project.fkDateTemp} ` : '— —'}
+                                             {(project.fkDateTemp!='')? `${moment(project.fkDateTemp).format('YYYY-MM-DD')} ` : '— —'}
                                         </dd>
                                     </dl>
                                 </li>
                                 <li className="step4"><i className="iconfont icon-4"></i>
                                     <dl>
                                         <dt>项目还款</dt>
-                                        <dd>还款日期：{(project.hkDateTemp!='')? `${project.hkDateTemp} ` : '— —'}</dd>
+                                        <dd>还款日期：{(project.repaymentDateString!='')? `${project.repaymentDateString} ` : '— —'}</dd>
                                     </dl>
                                 </li>
                             </ul>

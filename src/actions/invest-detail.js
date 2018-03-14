@@ -9,15 +9,13 @@ let investDetailActions = {
         dispatch(investDetailActions.getLoanInfo(id));
         dispatch(investDetailActions.getInvestRecords(id));
         dispatch(investDetailActions.getRepayRecords(id));
-
-
     },
 
     /*获取标的详情*/
     getInvestInfo: (id) => (dispatch, investDetail) => {
         let newState={};
-        //let url=`http://172.16.4.5:8084/projects/${id}/investInfo`;
-        let url=`http://172.16.1.234:9090/invest/projects/loan/${id}?access_token=cec9b6a7-43d1-46db-b31d-3e3cb3198f9d`;
+
+        let url=`http://172.16.1.234:9090/invest/projects/loan/${id}?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -29,32 +27,6 @@ let investDetailActions = {
             })
             .then((data) => data.json())
             .then(data => {
-                /*let mockDate={
-                    data: {
-                        pid:'1',
-                        projectName:'汇车贷_HCD201701080001',
-                        greenHand:1,   //是否新手标
-                        greenName:'新手',
-                        applyAmt:100000,  //借款金额
-                        minMoneyTemp:1000,                  //本标的起投金额
-                        maxMoneyTemp:10000,               //单笔投资上限
-                        rangeMoneyTemp:100,              //递增金额
-                        restMoneyTemp:50000,   			//标的剩余金额
-                        process:50,
-                        rate:8,    					//年化收益，单位%
-                        raiseRate:4,//加息
-                        repayType:'按月付息，到期还本',//还款方式
-                        loanApplyExpiry:3,   				//投资期限，单位
-                        sxDateTemp:'2017-01-10',                         //上线日期
-                        jsDateTemp:'2017-01-29',                         //结束日期
-                        mjNumTemp:'19',                         //募集天数
-                        fkDateTemp:'',                         //放款日期
-                        hkDateTemp:'',                         //还款日期
-                    },
-                    code: "0",
-                    message: "SUCCESS",
-                };*/
-                //newState={data:mockDate.data,message:''};
                 newState={data:data.data,message:''};
                 dispatch(investDetailActions.stateInvestInfoModify(newState));
             }).catch(err=>{
@@ -68,7 +40,6 @@ let investDetailActions = {
     /*获取会员详情*/
     getMemberInfo: (id) => (dispatch, investDetail) => {
         let newState={};
-        //let url=`http://172.16.4.5:8084/projects/${id}/investInfo`;
         let url=`http://172.16.4.5:8084/getloansList.php?pageNum=1&pageSize=10`;
         fetch(url,{method:"get"})
             .then(function (response){
@@ -109,8 +80,7 @@ let investDetailActions = {
     /*获取标的详情-信息披露部分*/
     getLoanInfo: (id) => (dispatch, investDetail) => {
         let newState={};
-        let url=`http://172.16.1.234:9090/invest/projects/info/${id}?access_token=cec9b6a7-43d1-46db-b31d-3e3cb3198f9d`;
-
+        let url=`http://172.16.1.234:9090/invest/projects/info/${id}?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c`;
         //let url=`http://172.16.4.5:8084/getloansList.php?pageNum=1&pageSize=10`;
         fetch(url,{method:"get"})
             .then(function (response){
@@ -137,7 +107,7 @@ let investDetailActions = {
     getInvestRecords: (id) => (dispatch, investDetail) => {
         let newState={};
         // 获取数据列表
-        let url=`http://172.16.1.234:9090/invest/projects/record?access_token=cec9b6a7-43d1-46db-b31d-3e3cb3198f9d&pageNum=1&pageSize=1000&projectId=${id}`;
+        let url=`http://172.16.1.234:9090/invest/projects/record?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c&pageNum=1&pageSize=1000&projectId=${id}`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -165,7 +135,7 @@ let investDetailActions = {
     getRepayRecords: (id) => (dispatch, investDetail) => {
         let newState={};
         // 获取数据列表
-        let url=`http://172.16.1.234:9090/invest/rpmtplan/page?access_token=cec9b6a7-43d1-46db-b31d-3e3cb3198f9d&pageNum=1&pageSize=1000&projectId=${id}`;
+        let url=`http://172.16.1.234:9090/invest/rpmtplan/page?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c&pageNum=1&pageSize=1000&projectId=${id}`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){

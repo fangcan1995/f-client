@@ -15,20 +15,22 @@ let investListActions = {
         if(JSON.stringify(filter)!={}){
             for(var item in filter){
                 if(item!='rateGroup'){
-                    filterConditions += "&"+item+"="+filter[item];
+                    if(filter[item]!=''){
+                        filterConditions += "&"+item+"="+filter[item];
+                    }
                 }else{
                     switch(filter[item]){
-                        case 0:
-                            filterConditions+='';
+                        case '':
+                            //filterConditions+='';
                             break;
                         case 1:
-                            filterConditions += "&rateBegin=6&rateEnd=8";
+                            filterConditions += "&annualRateStart=6&annualRateEnd=8";
                             break;
                         case 2:
-                            filterConditions += "&rateBegin=8&rateEnd=10";
+                            filterConditions += "&annualRateStart=8&annualRateEnd=10";
                             break;
                         case 3:
-                            filterConditions += "&rateBegin=10&rateEnd=12";
+                            filterConditions += "&annualRateStart=10&annualRateEnd=12";
                             break;
                     }
                 }
@@ -50,7 +52,9 @@ let investListActions = {
 
             }
         }
-        let url=`http://172.16.4.5:8084/getloansList.php?pageNum=${pageNum}&pageSize=${pageSize}${filterConditions}${sortConditions}`;
+
+        let url=`http://172.16.1.234:9090/invest/projects/loan/page.php?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c&pageNum=${pageNum}&pageSize=${pageSize}${filterConditions}${sortConditions}`;
+        //http://172.16.1.234:9090/invest/projects/loan/page?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c&pageNum=1&pageSize=10
         console.log('-------------url------------');
         console.log(url);
         fetch(url,{method:"get"})
@@ -58,16 +62,27 @@ let investListActions = {
                 if (response.status == 200){
                     return response;
                 }else{
-                    newState.list={data:{},message:'无响应'};
+                    newState.list={data:'',message:'无响应'};
                     dispatch(investListActions.stateSbModify(newState));
                 }
             })
             .then((data) => data.json())
             .then(data => {
-                newState.list={data:data.data,message:''};
+                console.log('-------------data------------');
+                console.log(data.data);
+                newState.list={
+                    data:data.data,
+                    message:''
+                }
+                /*newState.list.total=data.data.total;
+                newState.list.list=data.data.list;
+                newState.list.pageNum=data.data.pageNum;
+                newState.list.pageSize=data.data.pageSize;
+                newState.list.message='';*/
+
                 dispatch(investListActions.stateSbModify(newState));
             }).catch(err=>{
-                newState.list={data:{},message:'连接错误'};
+                newState.list={data:'',message:'连接错误'};
                 dispatch(investListActions.stateSbModify(newState));
         });
 
