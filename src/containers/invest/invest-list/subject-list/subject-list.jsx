@@ -13,7 +13,7 @@ class SubjectList extends Component {
         this.multiFilter = this.multiFilter.bind(this);
     }
     componentDidMount () {
-        this.props.dispatch(investListActions.getList(1,10));
+        this.props.dispatch(investListActions.getList(1,10,{},{status:2}));
     }
     multiFilter(type,value){
         let filter=this.props.investList.sbList.filter;
@@ -21,7 +21,7 @@ class SubjectList extends Component {
         filter[type]=value;
         this.props.dispatch(investListActions.stateSbModify({filter:filter}));
         this.props.dispatch(investListActions.stateSbModify({list:{data:'',message:''}}));
-        this.props.dispatch(investListActions.getList(1,10,filter));
+        this.props.dispatch(investListActions.getList(1,10,filter,{status:2}));
     }
     sort(type){
         let sbList=this.props.investList.sbList;

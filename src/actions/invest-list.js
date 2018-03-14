@@ -43,18 +43,17 @@ let investListActions = {
                     case 0:
                         break;
                     case 1:
-                        sortConditions += "&sortBy="+item;
+                        sortConditions += "&sortBy=-"+item;
                         break;
                     case 2:
-                        sortConditions += "&sortBy=-"+item;
+                        sortConditions += "&sortBy="+item;
                         break;
                 }
 
             }
         }
-
         let url=`http://172.16.1.234:9090/invest/projects/loan/page.php?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c&pageNum=${pageNum}&pageSize=${pageSize}${filterConditions}${sortConditions}`;
-        //http://172.16.1.234:9090/invest/projects/loan/page?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c&pageNum=1&pageSize=10
+
         console.log('-------------url------------');
         console.log(url);
         fetch(url,{method:"get"})
@@ -74,12 +73,6 @@ let investListActions = {
                     data:data.data,
                     message:''
                 }
-                /*newState.list.total=data.data.total;
-                newState.list.list=data.data.list;
-                newState.list.pageNum=data.data.pageNum;
-                newState.list.pageSize=data.data.pageSize;
-                newState.list.message='';*/
-
                 dispatch(investListActions.stateSbModify(newState));
             }).catch(err=>{
                 newState.list={data:'',message:'连接错误'};
@@ -92,14 +85,22 @@ let investListActions = {
     getTransferList: (pageNum=1,pageSize=10,filter={},sort={}) => (dispatch, investList) => {
         let newState={};
         // 获取数据列表
-
         let sortConditions='';
         if(JSON.stringify(sort)!={}){
             for(var item in sort){
-                sortConditions += "&"+item+"="+sort[item];
+                switch(sort[item]){
+                    case 0:
+                        break;
+                    case 1:
+                        sortConditions += "&sortBy=-"+item;
+                        break;
+                    case 2:
+                        sortConditions += "&sortBy="+item;
+                        break;
+                }
+
             }
         }
-        //let url=`http://172.16.4.5:8084/getloansList.php?pageNum=${pageNum}&pageSize=${pageSize}${sortConditions}`;
         let url=`http://172.16.1.234:9090/invest/transfer/loan/page?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c&pageNum=${pageNum}&pageSize=${pageSize}${sortConditions}`
         console.log('-------------url------------');
         console.log(url);

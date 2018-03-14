@@ -4,18 +4,30 @@ import {addCommas,checkMoney} from './../assets/js/cost';
 
 let investDetailActions = {
     getData: (id) => (dispatch, investDetail) => {
-        dispatch(investDetailActions.getInvestInfo(id));
+        let url=`http://172.16.1.234:9090/invest/projects/loan/${id}?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c`;
+        dispatch(investDetailActions.getInvestInfo(url,id));
         dispatch(investDetailActions.getMemberInfo(id));
         dispatch(investDetailActions.getLoanInfo(id));
         dispatch(investDetailActions.getInvestRecords(id));
         dispatch(investDetailActions.getRepayRecords(id));
     },
 
-    /*获取标的详情*/
-    getInvestInfo: (id) => (dispatch, investDetail) => {
+    getTransferData: (pid,transferId) => (dispatch, investDetail) => {
+        let url=`http://172.16.1.234:9090/invest/transfer/loan/${transferId}?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c`;
+        dispatch(investDetailActions.getInvestInfo(url,transferId));
+        dispatch(investDetailActions.getMemberInfo(pid));
+        dispatch(investDetailActions.getLoanInfo(pid));
+        dispatch(investDetailActions.getInvestRecords(pid));
+        dispatch(investDetailActions.getTransferInvestRecords(transferId));
+
+        dispatch(investDetailActions.getRepayRecords(pid));
+    },
+
+    /*获取散标详情*/
+    getInvestInfo: (url,id) => (dispatch, investDetail) => {
         let newState={};
 
-        let url=`http://172.16.1.234:9090/invest/projects/loan/${id}?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c`;
+        //let url=`http://172.16.1.234:9090/invest/projects/loan/${id}?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -103,7 +115,7 @@ let investDetailActions = {
 
     },
 
-    /*获取投资记录*/
+    /*获取散标投资记录*/
     getInvestRecords: (id) => (dispatch, investDetail) => {
         let newState={};
         // 获取数据列表
@@ -126,6 +138,34 @@ let investDetailActions = {
             }).catch(err=>{
                 newState={data:{},message:'连接错误'};
                 dispatch(investDetailActions.stateInvestRecordsModify(newState));
+        });
+
+
+    },
+
+    /*获取转让标投资记录*/
+    getTransferInvestRecords: (id) => (dispatch, investDetail) => {
+        let newState={};
+        // 获取数据列表
+        let url=`http://172.16.1.234:9090/invest/transfer/record?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c&pageNum=1&pageSize=1000&projectId=${id}`;
+        fetch(url,{method:"get"})
+            .then(function (response){
+                if (response.status == 200){
+                    return response;
+                }else{
+                    newState={data:{},message:'无响应'};
+                    dispatch(investDetailActions.stateInvestTransferRecordsModify(newState));
+                }
+            })
+            .then((data) => data.json())
+            .then(data => {
+
+                newState={data:data.data,message:''};
+                console.log(newState);
+                dispatch(investDetailActions.stateInvestTransferRecordsModify(newState));
+            }).catch(err=>{
+            newState={data:{},message:'连接错误'};
+            dispatch(investDetailActions.stateInvestTransferRecordsModify(newState));
         });
 
 
@@ -317,6 +357,11 @@ let investDetailActions = {
     //修改投资记录状态
     stateInvestRecordsModify: json => ({
         type: 'investDetail/investRecords/MODIFY_STATE',
+        payload: json
+    }),
+    //修改转让标投资记录状态
+    stateInvestTransferRecordsModify: json => ({
+        type: 'investDetail/investTransferRecords/MODIFY_STATE',
         payload: json
     }),
     //修改借款记录状态

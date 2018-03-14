@@ -8,7 +8,7 @@ import RepayRecords from './repayRecords/repayRecords';
 import './invest-detail.less';
 import { connect } from 'react-redux';
 import  investDetailActions  from '../../../actions/invest-detail';
-
+import StepperInput from '../../../components/stepperInput/stepperInput';
 class InvestDetail extends React.Component{
     constructor(props) {
         super(props);
@@ -21,16 +21,102 @@ class InvestDetail extends React.Component{
     }
     render(){
         console.log('---------------this.props----------');
-        console.log(this.props);
+
         let {investDetail}=this.props;
         let {investInfo,memberInfo,loanInfo,investRecords,repayRecords}=investDetail;
+        let {project}=investInfo.data;
+        console.log(project);
         return (
             <main className="main sbDetail">
                 <div className="wrapper">
                     <InvestDetailMaster
                         investInfo={investInfo}
                         memberInfo={memberInfo}
-                    />
+                    >
+                        {/*<div className="form_area">
+                            <StepperInput config = {
+                                {
+                                    defaultValue:project.minInvestAmount, //默认金额
+                                    min:project.minInvestAmount,
+                                    max:(project.maxInvestAmount<project.surplusAmount)?project.maxInvestAmount:project.surplusAmount,
+                                    step:project.increaseAmount,
+                                    callback:(obj)=>{
+                                        //console.log(obj);
+                                        this.setState({
+                                            tips:obj.tips,
+                                            investAmount:parseFloat(obj.value),
+                                            code:obj.code
+                                        });
+                                    }
+                                }
+                            }
+                            >
+                            </StepperInput>
+                            <div className="tips__area">
+                                {this.state.tips!=''?
+                                    <span className="tips error">{this.state.tips}</span>
+                                    :''
+                                }
+                            </div>
+                            <ul className="others">
+                                <li>
+                                    <i className="iconfont icon-user"></i> <strong>
+                                    我的可用余额：</strong>
+                                    {
+                                        (JSON.stringify(member) == '{}')? <a href="#">登陆查看</a>
+                                            : `${member.accountBalance} 元`
+                                    }
+                                </li>
+                                <li>
+                                    <strong>可用红包总计：</strong>
+                                    {
+                                        (JSON.stringify(member) == '{}')? <a href="#">登陆查看</a>
+                                            : `${member.redAmount} 元`
+                                    }
+                                </li>
+                                <li>
+                                    <strong>可用加息券：</strong>
+                                    {
+                                        (JSON.stringify(member) == '{}')? <a href="#">登陆查看</a>
+                                            : `${member.rateNum} 张`
+                                    }
+                                </li>
+                                <li><strong>预期可赚取：</strong> <i id="money">
+                                    {income(investAmount,(project.rate+project.raiseRate),project.loanApplyExpiry,'m')}</i> 元
+                                </li>
+                            </ul>
+                            <div className="form_bar">
+
+                                {
+                                    (JSON.stringify(member) == '{}')?
+                                        <Link  to="/login?redirect=%2invest-detail%29" className="btn">我要登录</Link>
+                                        : (!member.isOpenAccount)?<a  className="btn" onClick={()=>{window.location.href="http://www.baidu.com?redirect"}}>立即开户</a>
+                                        :(!member.isFxpg)?<a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,project.pid)}>立即风险评估</a>
+                                            :(member.accountBalance<investAmount)? <a className="btn" onClick={() => this.toggleModal(`modalRecharge`,true,project.pid)}>立即充值</a>
+                                                :<a className="btn enable" onClick={() => this.toggleModal(`modalInvest`,true,project.pid)}>立即投资</a>
+                                }
+
+                            </div>
+                        </div>*/}
+                        <div className="form_area">
+                            {
+                                (project)?
+                                    (project.status!='2')?
+                                        <div>
+                                            <ul className="m-amount">
+                                                <li><strong>开放金额：</strong>5000.00元</li>
+                                            </ul>
+                                            <div className="form_area">
+                                                <div className="form__bar">
+                                                    <a className="btn_unable" href="javascript:void(0);">不能投资</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        :<a className="btn able" >可以投资</a>
+                                    :''
+                            }
+                        </div>
+                    </InvestDetailMaster>
                     <div className="tab_info">
                         <Tab>
                             <div name="项目信息">

@@ -12,12 +12,12 @@ class TransferList extends Component {
         super(props);
     }
     componentDidMount () {
-        this.props.dispatch(investListActions.getTransferList(1,10));
+        this.props.dispatch(investListActions.getTransferList(1,10,{},{status:2}));
     }
     sort(type){
         let transferList=this.props.investList.transferList;
         let sort=transferList.sort;
-        let filter=transferList.filter;
+        //let filter=transferList.filter;
         let newSort=Object.assign({},sort);
         for(var i in sort){
             newSort[i]=0;
@@ -36,38 +36,37 @@ class TransferList extends Component {
         let orderBy={};
         orderBy[type]=newSort[type];
         this.props.dispatch(investListActions.stateRepaymentPlanModify({sort:newSort}));
-        this.props.dispatch(investListActions.getTransferList(1,10,filter,orderBy));
+        this.props.dispatch(investListActions.getTransferList(1,10,{},orderBy));
     }
-    getStatusName(status,id){
+    getStatusName(status,id,transferId){
         let investButton=``;
         switch(status){
-            case 50:
-                investButton=<Link to={`/invest-detail/${id}/transfer/5`} className="btn start">立即加入</Link>;
+            case 1:
+                investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">待审核</Link>;
                 break;
-            case 60:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn end">满标待划转</Link>;
+            case 2:
+                investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn start">立即加入</Link>;
                 break;
-            case 70:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn end">还款中</Link>;
+            case 3:
+                investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">满标待划转</Link>;
                 break;
-            case 90:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn end">已流标</Link>;
+            case 4:
+                investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">还款中</Link>;
                 break;
-            case 100:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn end">已结清</Link>;
+            case 6:
+                investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">已流标</Link>;
                 break;
+            case 5:
+                investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">已结清</Link>;
+                break;
+
         }
         return investButton;
-
     }
     render(){
-        console.log('-------myLoans--------');
-        console.log(this.props);
         let {dispatch}=this.props;
         let {transferList}=this.props.investList;
         let {list,sort}=transferList;
-
-
         return (
             <main className="main transfer-list">
             <div className="wrapper">
@@ -77,23 +76,21 @@ class TransferList extends Component {
                         <Link to="/transfer-list" className="tab tab--active">债权</Link>
                     </div>
                 </div>
-
                 {
-                    list == "{}"? <div></div>
-                        :
-                        list.data.total > 0 ?
+                    list.data ==''? <div><p className="loading">loading</p></div>
+                        : list.data.total > 0 ?
                             <div className="table__wrapper">
                                 <table className="tableList">
                                     <thead>
                                     <tr>
                                         <th>项目名称</th>
                                         <th>投资总额</th>
-                                        <th className={`order${sort.rate}`} onClick={() => {this.sort('rate')}}>预期年化收益率<i></i></th>
-                                        <th className={`order${sort.loanApplyExpiry}`} onClick={() => {this.sort('loanApplyExpiry')}}>投资期限<i></i></th>
-                                        <th className={`order${sort.publishTime}`} onClick={() => {this.sort('publishTime')}}>发布时间<i></i></th>
-                                        <th className={`order${sort.syje}`} onClick={() => {this.sort('syje')}}>剩余金额<i></i></th>
+                                        <th className={`order${sort.annualRate}`} onClick={() => {this.sort('annualRate')}}>预期年化收益率<i></i></th>
+                                        <th className={`order${sort.transferPeriod}`} onClick={() => {this.sort('transferPeriod')}}>投资期限<i></i></th>
+                                        <th className={`order${sort.putDate}`} onClick={() => {this.sort('putDate')}}>发布时间<i></i></th>
+                                        <th className={`order${sort.surplusAmount}`} onClick={() => {this.sort('surplusAmount')}}>剩余金额<i></i></th>
                                         <th>投资人数</th>
-                                        <th className={`order${sort.tzjd}`} onClick={() => {this.sort('tzjd')}}>投资进度<i></i></th>
+                                        <th className={`order${sort.investmentProgress}`} onClick={() => {this.sort('investmentProgress')}}>投资进度<i></i></th>
                                         <th></th>
                                     </tr>
                                     </thead>
@@ -102,19 +99,20 @@ class TransferList extends Component {
                                         list.data.list.map((l, i) => (
                                             <tr key={`row-${i}`}>
                                                 <td className="t_table">
-                                                    <p><a href={"/invest-detail/" + l['proId']}  title="longText">{l.longText}</a></p>
+                                                    <p><a href={"/invest-detail/" + l['proId']}  title="longText">{l.transNo}</a></p>
                                                 </td>
-                                                <td className="rtxt">{l.money}元</td>
-                                                <td><em className="redTxt">{l.num}%</em></td>
-                                                <td>{l.num}个月</td>
-                                                <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
-                                                <td className="rtxt">{l.money}元</td>
-                                                <td>{l.num}人</td>
+                                                <td className="rtxt">{l.transAmt}元</td>
+                                                <td><em className="redTxt">{l.annualRate}%</em></td>
+                                                <td>{l.transferPeriod}个月</td>
+                                                <td>{moment(l.putDate).format('YYYY-MM-DD')}</td>
+                                                <td className="rtxt">{l.surplusAmount}元</td>
+                                                <td>{l.investNumber}人</td>
                                                 <td style={{ width: 170}}>
-                                                    <Progress percent={parseInt(l.num)} size="small" />
+                                                    <Progress percent={parseInt(l.investmentProgress)} size="small" />
                                                 </td>
                                                 <td>
-                                                    {this.getStatusName(l.projectStatus,l.proId)}
+                                                    {this.getStatusName(l.transStatus,l.projectId,l.id)}
+
                                                 </td>
                                             </tr>
                                         ))
@@ -128,7 +126,7 @@ class TransferList extends Component {
                                         pageSize:list.data.pageSize,
                                         totalPage:Math.ceil(list.data.total/list.data.pageSize),
                                         paging:(obj)=>{
-                                            dispatch(investListActions.getTransferList(obj.currentPage,obj.pageCount,filter,sort));
+                                            dispatch(investListActions.getTransferList(obj.currentPage,obj.pageCount,{},sort));
                                         }
                                     }
                                 } ></Pagination>
