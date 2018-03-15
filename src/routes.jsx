@@ -136,9 +136,9 @@ export default (
                     <MemberSidebar {...props}>
                         <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/my-messages`} />
-                            <Route path={`${match.url}/my-messages`} component={userIsAuthenticated(MyMessage)} />
-                            <Route path={`${match.url}/my-authInfo`} component={userIsAuthenticated(MyAuthInfo)} />
-                            <Route path={`${match.url}/my-riskAssess`} component={userIsAuthenticated(MyRiskAssess)} />
+                            <Route path={`${match.url}/my-messages`} component={MyMessage} />
+                            <Route path={`${match.url}/my-authInfo`} component={MyAuthInfo} />
+                            <Route path={`${match.url}/my-riskAssess`} component={MyRiskAssess} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>
