@@ -79,7 +79,7 @@ class AccountOverview extends React.Component{
                                 <div name="累计收益">
                                     <BarChart
                                         data={{
-                                            xAxis_data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                                            xAxis_data:['2018-3', '2018-2', '2018-1', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
                                             series_data:[
                                                 {
                                                     data:[1, 2, 3, 4, 5, 6, 7, 8,9,10, 11, 12]
