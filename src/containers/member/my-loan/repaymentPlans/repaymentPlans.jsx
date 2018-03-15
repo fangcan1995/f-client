@@ -52,7 +52,7 @@ class RepaymentPlans extends React.Component{
     handleDateEndChange(date,dateString) {
         dateString=dateString+' 23:59:59';
         let filter={
-            pid:this.props.memberLoans.repaymentPlans.projectId,
+            projectId:this.props.memberLoans.repaymentPlans.projectId,
             dateStart:this.props.memberLoans.repaymentPlans.dateStart,
             dateEnd:dateString,
         };
@@ -70,7 +70,6 @@ class RepaymentPlans extends React.Component{
     }
     render(){
         console.log('-------myLoans--------');
-        console.log(this.props);
         let {dispatch}=this.props;
         let {repaymentPlans}=this.props.memberLoans;
         let {myList,charts,modalRepayment,currentId,proList}=repaymentPlans;
@@ -127,15 +126,15 @@ class RepaymentPlans extends React.Component{
                                             </div>
                                             <div className="filter__cell">
                                                 <Select
-                                                    defaultValue="0"
+                                                    defaultValue=""
                                                     style={{ width: 210 }}
                                                     onChange={this.handleChange}
                                                     getPopupContainer={() => document.getElementById('area')}
                                                 >
-                                                    <Option value="0">全部</Option>
+                                                    <Option value="">全部</Option>
                                                     {
                                                         proList.map((l, i) => (
-                                                        <Option value={`${l.projectId}`} key={`row-${i}`}>{l.name}</Option>
+                                                        <Option value={`${l.id}`} key={`row-${i}`}>{l.name}</Option>
                                                         ))
                                                     }
                                                 </Select>
@@ -209,14 +208,14 @@ class RepaymentPlans extends React.Component{
                                             }
                                             </tbody>
                                         </table>
+
                                         <Pagination config = {
                                             {
-                                                currentPage:1,
-                                                pageSize:10,
-                                                totalPage:2,
-                                                //filter:this.state.status,
+                                                currentPage:myList.data.pageNum,
+                                                pageSize:myList.data.pageSize,
+                                                totalPage:Math.ceil(myList.data.total/myList.data.pageSize),
                                                 paging:(obj)=>{
-                                                    //this.loadData(obj.currentPage,obj.pageCount,{re_status:obj.filter});
+                                                    dispatch(memberLoansActions.getRepaymentPlanList(obj.currentPage,obj.pageCount,{}));
                                                 }
                                             }
                                         } ></Pagination>

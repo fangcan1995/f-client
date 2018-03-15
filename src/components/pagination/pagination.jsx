@@ -5,11 +5,10 @@ export default class Pagination extends Component{
         super(props)
         // 设置当前页码，默认为第一页
         this.state = {
-            pageCount:10,
-            currentPage:1,
+            pageCount:props.config.pageSize,
+            currentPage:props.config.currentPage,
             groupCount:5,
             startPage:1,
-
         }
     }
     componentDidMount() {

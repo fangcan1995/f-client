@@ -253,7 +253,7 @@ let memberLoansActions = {
     getRepaymentPlanData: (status) => (dispatch, memberLoans) => {
         dispatch(memberLoansActions.getRepaymentPlanPie());
         dispatch(memberLoansActions.getRepaymentPlanList(1,10));
-        dispatch(memberLoansActions.getProList(1,100,{status:3}));
+        dispatch(memberLoansActions.getProList());
     },
     getRepaymentPlanPie:()=>(dispatch,memberLoans)=>{
         let newState={};
@@ -335,9 +335,9 @@ let memberLoansActions = {
             })
             .then((data) => data.json())
             .then(data => {
-                newState.myList={ data:data.data,message:''};
                 console.log('返回的数据');
-                console.log(newState.myList);
+                console.log(data.data);
+                newState.myList={ data:data.data,message:''};
                 dispatch(memberLoansActions.stateRepaymentPlanModify(newState));
             }).catch(err=>{
                 newState.myList={ data:{},message:'连接错误'};
@@ -346,18 +346,11 @@ let memberLoansActions = {
 
 
     },
-    //获取还款中的项目列表
-    getProList: (pageNum=1,pageSize=10,filter={}) => (dispatch, memberLoans) => {
+    //获取还款中和已完结的项目列表
+    getProList: () => (dispatch, memberLoans) => {
         let newState={};
         // 获取数据列表
-        let conditions='';
-        if(JSON.stringify(filter)!={}){
-            for(var item in filter){
-                conditions += "&"+item+"="+filter[item];
-            }
-        }
-        //http://172.16.1.221:9090/members/loans?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f&pageNum=1&pageSize=10&status=2
-        let url=`http://172.16.1.221:9090/members/loans?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f&pageNum=1&pageSize=100&status=0`;
+        let url=`http://172.16.1.221:9090/members/loans/proName?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -370,7 +363,7 @@ let memberLoansActions = {
             })
             .then((data) => data.json())
             .then(data => {
-                newState.proList=data.data.list;
+                newState.proList=data.data;
                 dispatch(memberLoansActions.stateRepaymentPlanModify(newState));
             }).catch(err=>{
                 newState.proList=[];
@@ -382,7 +375,7 @@ let memberLoansActions = {
     //还款
     getRepayment:(pram)=>(dispatch, memberLoans)=>{
         let newState={};
-        let url=`http://172.16.4.5:8084/getRepayment.php`;
+        let url=`http://172.16.1.221:9090/members/loans/repayments/${pram}?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -394,12 +387,8 @@ let memberLoansActions = {
             })
             .then((data) => data.json())
             .then(data => {
-                setTimeout(() => {
-                    newState.repaymentInfo={repaymentData:data.data,message:''};
-                    dispatch(memberLoansActions.stateRepaymentPlanModify(newState));
-                }, 1000);
-
-
+                newState.repaymentInfo={repaymentData:data.data,message:''};
+                dispatch(memberLoansActions.stateRepaymentPlanModify(newState));
             }).catch(err=>{
                 newState.repaymentInfo={repaymentData:{},message:'连接错误'};
                 dispatch(memberLoansActions.stateRepaymentPlanModify(newState));

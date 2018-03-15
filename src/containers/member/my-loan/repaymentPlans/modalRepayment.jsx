@@ -26,7 +26,7 @@ class ModalRepayment extends React.Component {
             let appInfo={
                 password:hex_md5(form.getFieldsValue().password),
                 verifyCode:form.getFieldsValue().verifyCode,
-                proId:this.props.currentId
+                projectId:this.props.currentId,
             }
             dispatch(memberLoansActions.postRepayment(appInfo));
 
@@ -37,6 +37,8 @@ class ModalRepayment extends React.Component {
         dispatch: PropTypes.func.isRequired
     }
     render() {
+        console.log('还款弹框');
+        console.log(this.props);
         let {callback}=this.props.info;
         let {postResult}=this.props.memberLoans.repaymentPlans;
         let {repaymentData}=this.props.memberLoans.repaymentPlans.repaymentInfo;
@@ -74,27 +76,27 @@ class ModalRepayment extends React.Component {
                             <div className="form__wrapper">
                                 <dl className="form__bar">
                                     <dt><label>项目名称：</label></dt>
-                                    <dd>{repaymentData.a}</dd>
+                                    <dd>{repaymentData.name}</dd>
                                 </dl>
                                 <dl className="form__bar">
                                         <dt><label>还款期数：</label></dt>
-                                        <dd>{repaymentData.b} 期</dd>
+                                        <dd>{repaymentData.rpmtIssue} 期</dd>
                                     </dl>
                                 <dl className="form__bar">
                                     <dt><label>应还日期：</label></dt>
-                                    <dd>{moment(repaymentData.c).format('YYYY-MM-DD')}</dd>
+                                    <dd>{moment(repaymentData.shdRpmtDate).format('YYYY-MM-DD')}</dd>
                                 </dl>
                                 <dl className="form__bar">
                                     <dt><label>应还本金：</label></dt>
-                                    <dd><p>{addCommas(repaymentData.d)} 元</p></dd>
+                                    <dd><p>{addCommas(repaymentData.rpmtCapital)} 元</p></dd>
                                 </dl>
                                 <dl className="form__bar">
                                     <dt><label>应还利息：</label></dt>
-                                    <dd>{addCommas(repaymentData.e)} 元</dd>
+                                    <dd>{addCommas(repaymentData.rpmtIint)} 元</dd>
                                 </dl>
                                 <dl className="form__bar">
                                     <dt><label>应还罚息：</label></dt>
-                                    <dd>{addCommas(repaymentData.e)} 元</dd>
+                                    <dd>{addCommas(repaymentData.lateTotal)} 元</dd>
                                 </dl>
 {/*                                <dl className="form__bar">
                                     <dt><label>应还罚金：</label></dt>
@@ -102,7 +104,7 @@ class ModalRepayment extends React.Component {
                                 </dl>*/}
                                 <dl className="form__bar">
                                     <dt><label>还款总额：</label></dt>
-                                    <dd>{addCommas(repaymentData.f)} 元</dd>
+                                    <dd>{addCommas(repaymentData.rpmtTotal)} 元</dd>
                                 </dl>
                                 <Form layout="horizontal" onSubmit={this.handleSubmit}>
                                     <FormItem
