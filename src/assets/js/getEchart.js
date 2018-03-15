@@ -232,11 +232,12 @@ export  function getEchartBar(json) {
         tooltip : {
             show:false,
             trigger: 'axis',
-            //formatter: "{b} : {c}元"
+            formatter: "{b} : {c}元"
         },
         legend: {
             show:false,
-            data:json.legend.data  //统计项目
+            data:json.legend.data,  //统计项目
+
         },
         toolbox: {
             show : false,
@@ -257,7 +258,10 @@ export  function getEchartBar(json) {
         ],
         yAxis : [
             {
-                type : 'value'
+                type : 'value',
+                axisLabel : {
+                    formatter: '{value} 元'
+                }
             }
         ],
         series : json.series_data   //数据

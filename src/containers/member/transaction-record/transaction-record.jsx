@@ -7,22 +7,8 @@ import  {getData}  from '../../../assets/js/getData';
 import './transaction-record.less';
 import { Modal,Select,DatePicker } from 'antd';
 import moment from 'moment';
-/*var tableSetting={
->>>>>>> 22fbb944d7c336a85fa8d4a6ce95546f2b19ad01:src/containers/member/overview/transaction-record/transaction-record.jsx
-    columnOpts:[
-        { key: 'col1', name: '交易时间',type:'date-time' },
-        { key: 'col2', name: '交易类型',type:'tradeType' },
-        { key: 'col3', name: '交易金额 (元)',type:'money' },
-        { key: 'col4', name: '状态',type:'default' },
-    ],
-    hasFilter:true, // 是否显示搜索过滤
-    /!*onSearch: function(keyword) {
-        doSearch(keyword)
-    }, // 搜索时的回调*!/
-    showPager: true, // 是否显示分页
-}*/
-
-export default class TransactionRecord extends React.Component{
+import { connect } from 'react-redux';
+class TransactionRecord extends React.Component{
     constructor(props){
         super(props);
         this.handleChange = this.handleChange.bind(this);
@@ -241,122 +227,119 @@ export default class TransactionRecord extends React.Component{
                 <Crumbs/>
                 <div className="member__cbox">
                     <Tab>
+
                         <div name="交易记录">
-                            <p className="info">
-                                <strong>提示：</strong>资金历史记录了您各种交易产生的支出和收入的明细，请选择事件类型和时间。
-                            </p>
-                            <div className="filter">
-                                <div className="filter__outer">
-                                    <div className="filter__inner">
-                                        <div className="filter__row">
-                                            <div className="filter__cell">
-                                                <h5>交易类型:</h5>
-                                            </div>
-                                            <div className="filter__cell">
-                                                <Select
-                                                    defaultValue="0"
-                                                    style={{ width: 100 }}
-                                                    onChange={this.handleChange}
-                                                    getPopupContainer={() => document.getElementById('area')}
-                                                >
-                                                    <option value="0">全部</option>
-                                                    <option value="1">充值</option>
-                                                    <option value="2">提现</option>
-                                                    <option value="3">投资</option>
-                                                    <option value="4">回款</option>
-                                                    <option value="5">费用</option>
-                                                    <option value="6">奖励</option>
-                                                </Select>
-                                            </div>
-                                            <div className="filter__cell">
-                                                <h5>状态:</h5>
-                                            </div>
-                                            <div className="filter__cell">
-                                                <Select
-                                                    defaultValue="0"
-                                                    style={{ width: 100 }}
-                                                    onChange={this.handleChange}
-                                                    getPopupContainer={() => document.getElementById('area')}
-                                                >
-                                                    <option value="">全部</option>
-                                                    <option value="1">成功</option>
-                                                    <option value="0">失败</option>
-                                                </Select>
-                                            </div>
-                                            <div className="filter__cell">
-                                                <h5>交易时间:</h5>
-                                            </div>
-                                            <div className="filter__cell">
-                                                <DatePicker
-                                                    format={ 'YYYY-MM-DD'}
-                                                    placeholder="开始日期"
-                                                    onChange={ this.handleDateStartChange }
-                                                    getCalendarContainer={() => document.getElementById('area')}
-                                                />
-                                            </div>
-                                            <div className="filter__cell">
-                                                <h5>-</h5>
-                                            </div>
-                                            <div className="filter__cell">
-                                                <DatePicker
-                                                    /*defaultValue={moment(`${getNowFormatDate('-')}`, dateFormat)}*/
-                                                    format={ 'YYYY-MM-DD'}
-                                                    placeholder="结束日期"
-                                                    onChange={ this.handleDateEndChange}
-                                                    getCalendarContainer={() => document.getElementById('area')}
-                                                />
+                            <div className="tab_content">
+                                <p className="info">
+                                    <strong>提示：</strong>资金历史记录了您各种交易产生的支出和收入的明细，请选择事件类型和时间。
+                                </p>
+                                <div className="filter">
+                                    <div className="filter__outer">
+                                        <div className="filter__inner">
+                                            <div className="filter__row">
+                                                <div className="filter__cell">
+                                                    <h5>交易类型:</h5>
+                                                </div>
+                                                <div className="filter__cell">
+                                                    <Select
+                                                        defaultValue="0"
+                                                        style={{ width: 100 }}
+                                                        onChange={this.handleChange}
+                                                        getPopupContainer={() => document.getElementById('area')}
+                                                    >
+                                                        <option value="0">全部</option>
+                                                        <option value="1">充值</option>
+                                                        <option value="2">提现</option>
+                                                        <option value="3">投资</option>
+                                                        <option value="4">回款</option>
+                                                        <option value="5">费用</option>
+                                                        <option value="6">奖励</option>
+                                                    </Select>
+                                                </div>
+                                                <div className="filter__cell">
+                                                    <h5>状态:</h5>
+                                                </div>
+                                                <div className="filter__cell">
+                                                    <Select
+                                                        defaultValue="0"
+                                                        style={{ width: 100 }}
+                                                        onChange={this.handleChange}
+                                                        getPopupContainer={() => document.getElementById('area')}
+                                                    >
+                                                        <option value="">全部</option>
+                                                        <option value="1">成功</option>
+                                                        <option value="0">失败</option>
+                                                    </Select>
+                                                </div>
+                                                <div className="filter__cell">
+                                                    <h5>交易时间:</h5>
+                                                </div>
+                                                <div className="filter__cell">
+                                                    <DatePicker
+                                                        format={ 'YYYY-MM-DD'}
+                                                        placeholder="开始日期"
+                                                        onChange={ this.handleDateStartChange }
+                                                        getCalendarContainer={() => document.getElementById('area')}
+                                                    />
+                                                </div>
+                                                <div className="filter__cell">
+                                                    <h5>-</h5>
+                                                </div>
+                                                <div className="filter__cell">
+                                                    <DatePicker
+                                                        /*defaultValue={moment(`${getNowFormatDate('-')}`, dateFormat)}*/
+                                                        format={ 'YYYY-MM-DD'}
+                                                        placeholder="结束日期"
+                                                        onChange={ this.handleDateEndChange}
+                                                        getCalendarContainer={() => document.getElementById('area')}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            {/*<div className="table__wrapper">
-                                <Table
-                                    source='http://localhost:9002'
-                                    config={tableSetting}
-                                />
-                            </div>*/}
-                            {
-                                JSON.stringify(this.state.dataList) == "{}"? <div>连接错误,请稍后再试</div>
-                                    :
-                                    list.length>0 ?
-                                        <div className="table__wrapper">
-                                            <table className={`tableList table${this.state.status}`}>
-                                                <thead>
-                                                <tr>
-                                                    <th>交易时间</th>
-                                                    <th>交易类型</th>
-                                                    <th>交易金额 (元)</th>
-                                                    <th>状态</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                {
-                                                    list.map((item, rowIndex) => (
-                                                        <tr key={`row-${rowIndex}`}>
-                                                            <td>{item.col1}</td>
-                                                            <td>{item.col2}</td>
-                                                            <td>{item.col3}</td>
-                                                            <td>{item.col4}</td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
-                                            <Pagination config = {
-                                                {
-                                                    currentPage:1,
-                                                    pageSize:10,
-                                                    totalPage:2,
-                                                    filter:this.state.status,
-                                                    paging:(obj)=>{
-                                                        this.loadData(obj.currentPage,obj.pageCount,{status:obj.filter});
-                                                    }
-                                                }
-                                            } ></Pagination>
-                                        </div>
-                                        :''
-                                }
 
+                                {
+                                    JSON.stringify(this.state.dataList) == "{}"? <div>连接错误,请稍后再试</div>
+                                        :
+                                        list.length>0 ?
+                                            <div className="table__wrapper">
+                                                <table className={`tableList table${this.state.status}`}>
+                                                    <thead>
+                                                    <tr>
+                                                        <th>交易时间</th>
+                                                        <th>交易类型</th>
+                                                        <th>交易金额 (元)</th>
+                                                        <th>状态</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {
+                                                        list.map((item, rowIndex) => (
+                                                            <tr key={`row-${rowIndex}`}>
+                                                                <td>{item.col1}</td>
+                                                                <td>{item.col2}</td>
+                                                                <td>{item.col3}</td>
+                                                                <td>{item.col4}</td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                                <Pagination config = {
+                                                    {
+                                                        currentPage:1,
+                                                        pageSize:10,
+                                                        totalPage:2,
+                                                        filter:this.state.status,
+                                                        paging:(obj)=>{
+                                                            this.loadData(obj.currentPage,obj.pageCount,{status:obj.filter});
+                                                        }
+                                                    }
+                                                } ></Pagination>
+                                            </div>
+                                            :''
+                                }
+                            </div>
                         </div>
                     </Tab>
 
@@ -366,3 +349,12 @@ export default class TransactionRecord extends React.Component{
     }
 }
 
+function mapStateToProps(state) {
+    const { auth, } = state.toJS();
+    return {
+        auth,
+
+    };
+}
+
+export default connect(mapStateToProps)(TransactionRecord);
