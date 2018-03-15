@@ -64,36 +64,38 @@ export default ({ location, match, history }) => {
         </div>
         <a className="adver" href=""></a>
         <div className="member__cbox">
-            <div className="accountInfo">
-                <div className="infoLine">
-                    <div>账户余额: <span>0.00</span>&nbsp;元<em>?</em></div>
-                    <div>账户余额: <span>0.00</span>&nbsp;元<em>?</em></div>
+            <div className="master">
+                <div className="accountInfo">
+                    <div className="infoLine">
+                        <div>账户余额: <span>0.00</span>&nbsp;元<em>?<strong>包含您可用余额及投资冻结的金额，满标划转后统一扣除</strong></em></div>
+                        <div>可用余额: <span>0.00</span>&nbsp;元</div>
+                    </div>
+                    <div className="infoLine">
+                        <div>昨日收益: <span>0.00</span>&nbsp;元</div>
+                        <div>累计收益: <span>0.00</span>&nbsp;元</div>
+                    </div>
                 </div>
-                <div className="infoLine">
-                    <div>账户余额: <span>0.00</span>&nbsp;元<em>?</em></div>
-                    <div>账户余额: <span>0.00</span>&nbsp;元<em>?</em></div>
+                <div className="accountRedbag">
+                    <i className="iconfont icon-hongbao"></i>
+                    <div className="numInfo">
+                        <div className="topM">可用红包</div>
+                        <div><span>1</span>个</div>
+                    </div>
+                    <div className="accountControl">
+                        <a className="topF" href="/invest-list">立即使用</a>
+                        <a href="/my-reward/my-redEnvelopes">查看明细</a>
+                    </div>
                 </div>
-            </div>
-            <div className="accountRedbag">
-                <i className="iconfont icon-hongbao"></i>
-                <div className="numInfo">
-                    <div className="topM">可用红包</div>
-                    <div><span>1</span>个</div>
-                </div>
-                <div className="accountControl">
-                    <a className="topF" href="">立即使用</a>
-                    <a href="">查看明细</a>
-                </div>
-            </div>
-            <div className="accountInterests">
-                <i className="iconfont icon-icongao"></i>
-                <div className="numInfo">
-                    <div className="topM">加息券</div>
-                    <div><span>0</span>个</div>
-                </div>
-                <div className="accountControl">
-                    <a className="topF" href="">立即使用</a>
-                    <a href="">查看明细</a>
+                <div className="accountInterests">
+                    <i className="iconfont icon-icongao"></i>
+                    <div className="numInfo">
+                        <div className="topM">加息券</div>
+                        <div><span>0</span>个</div>
+                    </div>
+                    <div className="accountControl">
+                        <a className="topF" href="">立即使用</a>
+                        <a href="">查看明细</a>
+                    </div>
                 </div>
             </div>
         </div>

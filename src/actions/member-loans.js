@@ -42,7 +42,7 @@ let memberLoansActions = {
     getPie:()=>(dispatch,memberLoans)=>{
         let newState={};
         // 获取统计数据
-        let url = `http://172.16.4.5:8084/getCharts.php`;
+        let url = `http://172.16.1.221:9090/members/loans/statistics?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -61,20 +61,20 @@ let memberLoansActions = {
             .then((data) => data.json())
             .then(data => {
                 setTimeout(() => {
-                    let {totalLoan,accumulatedInterest}=data.data;
+                    let {totalLoanDto,accumulatedInterestDto}=data.data;
                     let charts={
                         totalLoan:{
                             data:[
-                                {name:'申请中',value:totalLoan.a,instruction:`${addCommas(totalLoan.a)}元`  },
-                                {name:'招标中',value:totalLoan.b,instruction:`${addCommas(totalLoan.b)}元`},
-                                {name:'还款中',value:totalLoan.c,instruction:`${addCommas(totalLoan.c)}元`},
-                                {name:'已结清',value:totalLoan.d,instruction:`${addCommas(totalLoan.d)}元`}
+                                {name:'申请中',value:totalLoanDto.loaningMoney,instruction:`${addCommas(totalLoanDto.loaningMoney)}元`  },
+                                {name:'招标中',value:totalLoanDto.investingMoney,instruction:`${addCommas(totalLoanDto.investingMoney)}元`},
+                                {name:'还款中',value:totalLoanDto.repayingMoney,instruction:`${addCommas(totalLoanDto.repayingMoney)}元`},
+                                {name:'已结清',value:totalLoanDto.settleMoney,instruction:`${addCommas(totalLoanDto.settleMoney)}元`}
                             ]
                         },
                         accumulatedInterest:{
                             data:[
-                                {name:'还款中',value:accumulatedInterest.a,instruction:`${addCommas(accumulatedInterest.a)}元`  },
-                                {name:'已结清',value:accumulatedInterest.b,instruction:`${addCommas(accumulatedInterest.b)}元`  },
+                                {name:'还款中',value:accumulatedInterestDto.repayingIint,instruction:`${addCommas(accumulatedInterestDto.repayingIint)}元`  },
+                                {name:'已结清',value:accumulatedInterestDto.settleIint,instruction:`${addCommas(accumulatedInterestDto.settleIint)}元`  },
                             ]
                         },
                     };
@@ -107,7 +107,8 @@ let memberLoansActions = {
                 conditions += "&"+item+"="+filter[item];
             }
         }
-        let url=`http://172.16.4.5:8084/getloansList.php?pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
+        //let url=`http://172.16.4.5:8084/getloansList.php?pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
+        let url=`http://172.16.1.221:9090/members/loans?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){

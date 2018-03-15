@@ -110,36 +110,36 @@ class MyLoans extends React.Component {
                                                     (status === 1) ? (
                                                         <tr key={`row-${i}`}>
                                                             <td>--</td>
-                                                            <td>{l.shortText}</td>
+                                                            <td>{l.name}</td>
                                                             <td>{l.money}</td>
-                                                            <td>{l.num}%</td>
-                                                            <td>{l.num}个月</td>
-                                                            <td>{l.shortText}</td>
-                                                            <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.annualRate}%</td>
+                                                            <td>{l.loanExpiry}个月</td>
+                                                            <td>{l.refundWayName}</td>
+                                                            <td>{moment(l.applyTime).format('YYYY-MM-DD')}</td>
                                                             <td>申请中</td>
                                                         </tr>
                                                     ) : ((status === 2) ? (
                                                         <tr key={`row-${i}`}>
-                                                            <td><p><a href="#">{l.longText}</a></p></td>
-                                                            <td>{l.shortText}</td>
-                                                            <td>{l.shortText}个月</td>
+                                                            <td><p><a href={`/invest-list/${l.projectId}`} target="_blank">{l.name}</a></p></td>
+                                                            <td>{l.money}</td>
+                                                            <td>{l.loanExpiry}个月</td>
                                                             <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
-                                                            <td>{l.shortText}</td>
-                                                            <td>{l.shortText}%</td>
-                                                            <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.moneyEnd}</td>
+                                                            <td>{l.investProgress}%</td>
+                                                            <td>{moment(l.endDate).format('YYYY-MM-DD')}</td>
                                                             <td>招标中</td>
                                                         </tr>
                                                     ) : ((status === 3) ? (
                                                         <tr key={`row-${i}`}>
-                                                            <td><p><a href="#">{l.longText}</a></p></td>
+                                                            <td><p><a href="#">{l.name}</a></p></td>
                                                             <td>{l.money}</td>
-                                                            <td>{l.num}个月</td>
-                                                            <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
-                                                            <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
-                                                            <td>{l.money}</td>
+                                                            <td>{l.loanExpiry}个月</td>
+                                                            <td>{moment(l.transferTtime).format('YYYY-MM-DD')}</td>
+                                                            <td>{moment(l.shdRpmtDate).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.shdRpmtMoney}</td>
                                                             <td>
                                                                 {
-                                                                    l.status=='0'?('提前还款申请中')
+                                                                    l.refundStatus=='0'?('提前还款申请中')
                                                                         :(
                                                                             <a onClick={() => dispatch(memberLoansActions.toggleModal('modalRepaymentApp', true, l.proId))}>提前还款</a>
                                                                         )
@@ -149,15 +149,15 @@ class MyLoans extends React.Component {
                                                         </tr>
                                                     ) : ((status === 4) ? (
                                                         <tr key={`row-${i}`}>
-                                                            <td><p><a href="#">{l.longText}</a></p></td>
-                                                            <td>{l.shortText}</td>
-                                                            <td>{l.shortText}个月</td>
-                                                            <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
-                                                            <td>{l.shortText}</td>
-                                                            <td>{l.shortText}</td>
-                                                            <td>{l.shortText}</td>
-                                                            <td>{l.shortText}</td>
-                                                            <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
+                                                            <td><p><a href="#">{l.name}</a></p></td>
+                                                            <td>{l.money}</td>
+                                                            <td>{l.loanExpiry}个月</td>
+                                                            <td>{moment(l.transferTtime).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.rpmtCapital}</td>
+                                                            <td>{l.rpmtIint}</td>
+                                                            <td>{l.lateFine}</td>
+                                                            <td>{l.lateIint}</td>
+                                                            <td>{moment(l.settleTime).format('YYYY-MM-DD')}</td>
                                                             <td><a href="">借款合同</a></td>
                                                         </tr>
                                                     ) : (''))))
