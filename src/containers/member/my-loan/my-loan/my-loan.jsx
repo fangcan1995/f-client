@@ -97,88 +97,90 @@ class MyLoans extends React.Component {
                     {(JSON.stringify(myList.data) == '{}') ? (<p>{myList.message}</p>)
                         : (
                             <div className="table__wrapper">
-                                <table className={`tableList table${status}`}>
-                                    <thead>
-                                    {tHead[status - 1]}
-                                    </thead>
-
-                                    {/*数据*/}
-                                    {(myList.data.total > 0) ? (
+                                {(myList.data.total > 0) ? (
+                                    <div>
+                                        <table className={`tableList table${status}`}>
+                                            <thead>
+                                            {tHead[status - 1]}
+                                            </thead>
                                             <tbody>
                                             {
                                                 myList.data.list.map((l, i) => (
-                                                    (status === 1) ? (
-                                                        <tr key={`row-${i}`}>
-                                                            <td>--</td>
-                                                            <td>{l.name}</td>
-                                                            <td>{l.money}</td>
-                                                            <td>{l.annualRate}%</td>
-                                                            <td>{l.loanExpiry}个月</td>
-                                                            <td>{l.refundWayName}</td>
-                                                            <td>{moment(l.applyTime).format('YYYY-MM-DD')}</td>
-                                                            <td>申请中</td>
-                                                        </tr>
-                                                    ) : ((status === 2) ? (
-                                                        <tr key={`row-${i}`}>
-                                                            <td><p><a href={`/invest-list/${l.projectId}`} target="_blank">{l.name}</a></p></td>
-                                                            <td>{l.money}</td>
-                                                            <td>{l.loanExpiry}个月</td>
-                                                            <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
-                                                            <td>{l.moneyEnd}</td>
-                                                            <td>{l.investProgress}%</td>
-                                                            <td>{moment(l.endDate).format('YYYY-MM-DD')}</td>
-                                                            <td>招标中</td>
-                                                        </tr>
-                                                    ) : ((status === 3) ? (
-                                                        <tr key={`row-${i}`}>
-                                                            <td><p><a href="#">{l.name}</a></p></td>
-                                                            <td>{l.money}</td>
-                                                            <td>{l.loanExpiry}个月</td>
-                                                            <td>{moment(l.transferTtime).format('YYYY-MM-DD')}</td>
-                                                            <td>{moment(l.shdRpmtDate).format('YYYY-MM-DD')}</td>
-                                                            <td>{l.shdRpmtMoney}</td>
-                                                            <td>
-                                                                {
-                                                                    l.refundStatus=='0'?('提前还款申请中')
-                                                                        :(
-                                                                            <a onClick={() => dispatch(memberLoansActions.toggleModal('modalRepaymentApp', true, l.proId))}>提前还款</a>
-                                                                        )
-                                                                }
-                                                                <a href="">借款合同</a>
-                                                            </td>
-                                                        </tr>
-                                                    ) : ((status === 4) ? (
-                                                        <tr key={`row-${i}`}>
-                                                            <td><p><a href="#">{l.name}</a></p></td>
-                                                            <td>{l.money}</td>
-                                                            <td>{l.loanExpiry}个月</td>
-                                                            <td>{moment(l.transferTtime).format('YYYY-MM-DD')}</td>
-                                                            <td>{l.rpmtCapital}</td>
-                                                            <td>{l.rpmtIint}</td>
-                                                            <td>{l.lateFine}</td>
-                                                            <td>{l.lateIint}</td>
-                                                            <td>{moment(l.settleTime).format('YYYY-MM-DD')}</td>
-                                                            <td><a href="">借款合同</a></td>
-                                                        </tr>
-                                                    ) : (''))))
-                                                ))
+                                                        (status === 1) ? (
+                                                            <tr key={`row-${i}`}>
+                                                                <td>--</td>
+                                                                <td>{l.name}</td>
+                                                                <td>{l.money}</td>
+                                                                <td>{l.annualRate}%</td>
+                                                                <td>{l.loanExpiry}个月</td>
+                                                                <td>{l.refundWayName}</td>
+                                                                <td>{moment(l.applyTime).format('YYYY-MM-DD')}</td>
+                                                                <td>申请中</td>
+                                                            </tr>
+                                                        ) : ((status === 2) ? (
+                                                            <tr key={`row-${i}`}>
+                                                                <td><p><a href={`/invest-list/${l.projectId}`} target="_blank">{l.name}</a></p></td>
+                                                                <td>{l.money}</td>
+                                                                <td>{l.loanExpiry}个月</td>
+                                                                <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
+                                                                <td>{l.moneyEnd}</td>
+                                                                <td>{l.investProgress}%</td>
+                                                                <td>{moment(l.endDate).format('YYYY-MM-DD')}</td>
+                                                                <td>招标中</td>
+                                                            </tr>
+                                                        ) : ((status === 3) ? (
+                                                            <tr key={`row-${i}`}>
+                                                                <td><p><a href={`/invest-list/${l.projectId}`} target="_blank">{l.name}</a></p></td>
+                                                                <td>{l.money}</td>
+                                                                <td>{l.loanExpiry}个月</td>
+                                                                <td>{moment(l.transferTtime).format('YYYY-MM-DD')}</td>
+                                                                <td>{moment(l.shdRpmtDate).format('YYYY-MM-DD')}</td>
+                                                                <td>{l.shdRpmtMoney}</td>
+                                                                <td>
+                                                                    {
+                                                                        l.refundStatus=='0'?('提前还款申请中')
+                                                                            :(
+                                                                                <a onClick={() => dispatch(memberLoansActions.toggleModal('modalRepaymentApp', true, l.projectId))}>提前还款</a>
+                                                                            )
+                                                                    }
+                                                                    <a href="">借款合同</a>
+                                                                </td>
+                                                            </tr>
+                                                        ) : ((status === 4) ? (
+                                                            <tr key={`row-${i}`}>
+                                                                <td><p><a href={`/invest-list/${l.projectId}`} target="_blank">{l.name}</a></p></td>
+                                                                <td>{l.money}</td>
+                                                                <td>{l.loanExpiry}个月</td>
+                                                                <td>{moment(l.transferTtime).format('YYYY-MM-DD')}</td>
+                                                                <td>{l.rpmtCapital}</td>
+                                                                <td>{l.rpmtIint}</td>
+                                                                <td>{l.lateFine}</td>
+                                                                <td>{l.lateIint}</td>
+                                                                <td>{moment(l.settleTime).format('YYYY-MM-DD')}</td>
+                                                                <td><a href="">借款合同</a></td>
+                                                            </tr>
+                                                        ) : (''))))
+                                                    )
+
+                                                )
+
                                             }
-                                            </tbody>)
-                                        : (<tbody><p className="noRecord">暂无记录</p></tbody>)
-                                    }
-                                    {/*/数据*/}
-                                </table>
-                                <Pagination config = {
-                                    {
-                                        currentPage:myList.data.pageNum,
-                                        pageSize:myList.data.pageSize,
-                                        totalPage:Math.ceil(myList.data.total/myList.data.pageSize),
-                                        filter:status,
-                                        paging:(obj)=>{
-                                            dispatch(memberLoansActions.getList(obj.currentPage,obj.pageCount,{status:status}));
-                                        }
-                                    }
-                                } ></Pagination>
+                                            </tbody>
+                                        </table>
+                                        <Pagination config = {
+                                            {
+                                                currentPage:myList.data.pageNum,
+                                                pageSize:myList.data.pageSize,
+                                                totalPage:Math.ceil(myList.data.total/myList.data.pageSize),
+                                                filter:status,
+                                                paging:(obj)=>{
+                                                    dispatch(memberLoansActions.getList(obj.currentPage,obj.pageCount,{status:status}));
+                                                }
+                                            }
+                                        } ></Pagination>
+                                    </div>
+                                    ): '暂无记录'
+                                }
                             </div>
                         )
                     }

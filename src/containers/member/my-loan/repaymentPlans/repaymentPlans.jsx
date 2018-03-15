@@ -28,36 +28,36 @@ class RepaymentPlans extends React.Component{
     }
     handleChange(e) {
         let filter={
-            pid:e,
-            DateStart:this.props.memberLoans.repaymentPlans.DateStart,
-            DateEnd:this.props.memberLoans.repaymentPlans.DateEnd,
+            projectId:e,
+            dateStart:this.props.memberLoans.repaymentPlans.dateStart,
+            dateEnd:this.props.memberLoans.repaymentPlans.dateEnd,
         };
         let newState={};
-        newState.pid=e;
+        newState.projectId=e;
         this.props.dispatch(memberLoansActions.stateRepaymentPlanModify(newState));
         this.props.dispatch(memberLoansActions.getRepaymentPlanList(1,10,filter));
     }
     handleDateStartChange(date,dateString) {
         dateString=dateString+' 00:00:00';
         let filter={
-            pid:this.props.memberLoans.repaymentPlans.pid,
-            DateStart:dateString,
-            DateEnd:this.props.memberLoans.repaymentPlans.DateEnd,
+            projectId:this.props.memberLoans.repaymentPlans.projectId,
+            dateStart:dateString,
+            dateEnd:this.props.memberLoans.repaymentPlans.dateEnd,
         };
         let newState={};
-        newState.DateStart=dateString;
+        newState.dateStart=dateString;
         this.props.dispatch(memberLoansActions.stateRepaymentPlanModify(newState));
         this.props.dispatch(memberLoansActions.getRepaymentPlanList(1,10,filter));
     }
     handleDateEndChange(date,dateString) {
         dateString=dateString+' 23:59:59';
         let filter={
-            pid:this.props.memberLoans.repaymentPlans.pid,
-            DateStart:this.props.memberLoans.repaymentPlans.DateStart,
-            DateEnd:dateString,
+            pid:this.props.memberLoans.repaymentPlans.projectId,
+            dateStart:this.props.memberLoans.repaymentPlans.dateStart,
+            dateEnd:dateString,
         };
         let newState={};
-        newState.DateEnd=dateString;
+        newState.dateEnd=dateString;
         this.props.dispatch(memberLoansActions.stateRepaymentPlanModify(newState));
         this.props.dispatch(memberLoansActions.getRepaymentPlanList(1,10,filter));
     }
@@ -135,7 +135,7 @@ class RepaymentPlans extends React.Component{
                                                     <Option value="0">全部</Option>
                                                     {
                                                         proList.map((l, i) => (
-                                                        <Option value={`${l.proId}`} key={`row-${i}`}>{l.longText}</Option>
+                                                        <Option value={`${l.projectId}`} key={`row-${i}`}>{l.name}</Option>
                                                         ))
                                                     }
                                                 </Select>
@@ -167,7 +167,7 @@ class RepaymentPlans extends React.Component{
                                     </div>
                                 </div>
                             </div>
-                            {(JSON.stringify(myList.data) == '{}') ? (<p>{myList.message}</p>)
+                            {(myList.data == '') ? (<p>{myList.message}</p>)
                                     : (myList.data.total > 0) ?
                                     <div className="table__wrapper">
                                         <table className={`tableList`}>
@@ -187,20 +187,20 @@ class RepaymentPlans extends React.Component{
                                             <tbody>
                                             {myList.data.list.map((l, i) => (
                                                 <tr key={`row-${i}`}>
-                                                    <td><p><a href="#">{l.longText}</a></p></td>
-                                                    <td>{moment(l.dateTime).format('YYYY-MM-DD')}{/*应还日期*/}</td>
-                                                    <td>{l.num}{/*还款期数*/}</td>
-                                                    <td>{l.money}{/*应还本金*/}</td>
-                                                    <td>{l.money}{/*应还利息*/}</td>
-                                                    <td>{l.money}{/*应还罚息*/}</td>
-                                                    <td>{l.money}{/*还款总额*/}</td>
+                                                    <td><p><a href={`/invest-list/${l.projectId}`} target="_blank">{l.name}</a></p></td>
+                                                    <td>{moment(l.shdRpmtDate).format('YYYY-MM-DD')}{/*应还日期*/}</td>
+                                                    <td>{l.rpmtIssue}{/*还款期数*/}</td>
+                                                    <td>{l.rpmtCapital}{/*应还本金*/}</td>
+                                                    <td>{l.rpmtIint}{/*应还利息*/}</td>
+                                                    <td>{l.lateTotal}{/*应还罚息*/}</td>
+                                                    <td>{l.rpmtTotal}{/*还款总额*/}</td>
                                                     <td>{l.statusName}{/*还款状态*/}</td>
                                                     <td>
                                                         {
-                                                            (l.proStatus==4)? '还款':''
+                                                            (l.proStatus==3)? '还款':''
                                                         }
                                                         {
-                                                            (l.proStatus==7||l.proStatus==6)? <a onClick={() => dispatch(memberLoansActions.toggleModal('modalRepayment', true, l.proId))}>还款</a>:''
+                                                            (l.proStatus==4||l.proStatus==5)? <a onClick={() => dispatch(memberLoansActions.toggleModal('modalRepayment', true, l.projectId))}>还款</a>:''
                                                         }
 
                                                     </td>
@@ -221,7 +221,7 @@ class RepaymentPlans extends React.Component{
                                             }
                                         } ></Pagination>
                                     </div>
-                                    :'暂无记录'
+                                    :<p>暂无记录</p>
                             }
                         </div>
                     </Tab>

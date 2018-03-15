@@ -147,7 +147,7 @@ let memberLoansActions = {
     },
     getRepaymentApp:(pram)=>(dispatch, memberLoans)=>{
         let newState={};
-        let url=`http://172.16.4.5:8084/getRepayment.php`;
+        let url=`http://172.16.1.221:9090/members/loans/repayments/all/${pram}?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -249,7 +249,6 @@ let memberLoansActions = {
             });
     },
 
-
     /*还款计划*/
     getRepaymentPlanData: (status) => (dispatch, memberLoans) => {
         dispatch(memberLoansActions.getRepaymentPlanPie());
@@ -259,7 +258,7 @@ let memberLoansActions = {
     getRepaymentPlanPie:()=>(dispatch,memberLoans)=>{
         let newState={};
         // 获取统计数据
-        let url = `http://172.16.4.5:8084/getCharts2.php`;
+        let url = `http://172.16.1.221:9090/members/loans/repayments/statistics?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -273,31 +272,31 @@ let memberLoansActions = {
             .then((data) => data.json())
             .then(data => {
                 setTimeout(() => {
-                    let {repayments,todoDto,doneDto}=data.data;
+                    let {allRepaymentDto,todoRepaymentsDto,doneRepaymentsDto}=data.data;
                     let charts={
                         repayments:{
                             data:[
-                                {name:'逾期未还',value:repayments.a[1],instruction:`${repayments.a[0]}笔 ${addCommas(repayments.a[1])}元`  },
-                                {name:'待还款',value:repayments.b[1],instruction:`${repayments.b[0]}笔 ${addCommas(repayments.b[1])}元`},
-                                {name:'逾期已还',value:repayments.c[1],instruction:`${repayments.c[0]}笔 ${addCommas(repayments.c[1])}元`},
-                                {name:'已提前还款',value:repayments.d[1],instruction:`${repayments.d[0]}笔 ${addCommas(repayments.d[1])}元`},
-                                {name:'已正常还款',value:repayments.e[1],instruction:`${repayments.e[0]}笔 ${addCommas(repayments.e[1])}元`}
+                                {name:'逾期未还',value:allRepaymentDto.overdueNoRepay[1],instruction:`${allRepaymentDto.overdueNoRepay[0]}笔 ${addCommas(allRepaymentDto.overdueNoRepay[1])}元`  },
+                                {name:'待还款',value:allRepaymentDto.repayments[1],instruction:`${allRepaymentDto.repayments[0]}笔 ${addCommas(allRepaymentDto.repayments[1])}元`},
+                                {name:'逾期已还',value:allRepaymentDto.overdueRepay[1],instruction:`${allRepaymentDto.overdueRepay[0]}笔 ${addCommas(allRepaymentDto.overdueRepay[1])}元`},
+                                {name:'已提前还款',value:allRepaymentDto.advanceRepay[1],instruction:`${allRepaymentDto.advanceRepay[0]}笔 ${addCommas(allRepaymentDto.advanceRepay[1])}元`},
+                                {name:'已正常还款',value:allRepaymentDto.normalRepay[1],instruction:`${allRepaymentDto.normalRepay[0]}笔 ${addCommas(allRepaymentDto.normalRepay[1])}元`}
                             ]
                         },
                         todoDto:{
                             data:[
-                                {name:'未还本金',value:todoDto.a,instruction:`${addCommas(todoDto.a)}元`  },
-                                {name:'未还利息',value:todoDto.b,instruction:`${addCommas(todoDto.b)}元`  },
-                                {name:'未还罚息',value:todoDto.b,instruction:`${addCommas(todoDto.b)}元`  },
-                                {name:'未还罚金',value:todoDto.b,instruction:`${addCommas(todoDto.b)}元`  },
+                                {name:'未还本金',value:todoRepaymentsDto.todoCapital,instruction:`${addCommas(todoRepaymentsDto.todoCapital)}元`  },
+                                {name:'未还利息',value:todoRepaymentsDto.todoIint,instruction:`${addCommas(todoRepaymentsDto.todoIint)}元`  },
+                                {name:'未还罚息',value:todoRepaymentsDto.todoLateIint,instruction:`${addCommas(todoRepaymentsDto.todoLateIint)}元`  },
+                                {name:'未还罚金',value:todoRepaymentsDto.todoLateFine,instruction:`${addCommas(todoRepaymentsDto.todoLateFine)}元`  },
                             ]
                         },
                         doneDto:{
                             data:[
-                                {name:'已还本金',value:doneDto.a,instruction:`${addCommas(doneDto.a)}元`  },
-                                {name:'已还利息',value:doneDto.b,instruction:`${addCommas(doneDto.b)}元`  },
-                                {name:'已还罚息',value:doneDto.b,instruction:`${addCommas(doneDto.b)}元`  },
-                                {name:'已还罚金',value:doneDto.b,instruction:`${addCommas(doneDto.b)}元`  },
+                                {name:'已还本金',value:doneRepaymentsDto.doneCapital,instruction:`${addCommas(doneRepaymentsDto.doneCapital)}元`  },
+                                {name:'已还利息',value:doneRepaymentsDto.doneIint,instruction:`${addCommas(doneRepaymentsDto.doneIint)}元`  },
+                                {name:'已还罚息',value:doneRepaymentsDto.doneLateIint,instruction:`${addCommas(doneRepaymentsDto.doneLateIint)}元`  },
+                                {name:'已还罚金',value:doneRepaymentsDto.doneLateFine,instruction:`${addCommas(doneRepaymentsDto.doneLateFine)}元`  },
                             ]
                         },
                     };
@@ -312,14 +311,18 @@ let memberLoansActions = {
     },
     getRepaymentPlanList: (pageNum=1,pageSize=10,filter={}) => (dispatch, memberLoans) => {
         let newState={};
+        newState.myList={ data:'',message:''};
+        dispatch(memberLoansActions.stateRepaymentPlanModify(newState));
         // 获取数据列表
         let conditions='';
         if(JSON.stringify(filter)!={}){
             for(var item in filter){
-                conditions += "&"+item+"="+filter[item];
+                if(filter[item]!=''){
+                    conditions += "&"+item+"="+filter[item];
+                }
             }
         }
-        let url=`http://172.16.4.5:8084/getloansList.php?pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
+        let url=`http://172.16.1.221:9090/members/loans/repayments?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
         console.log(url);
         fetch(url,{method:"get"})
             .then(function (response){
@@ -333,6 +336,8 @@ let memberLoansActions = {
             .then((data) => data.json())
             .then(data => {
                 newState.myList={ data:data.data,message:''};
+                console.log('返回的数据');
+                console.log(newState.myList);
                 dispatch(memberLoansActions.stateRepaymentPlanModify(newState));
             }).catch(err=>{
                 newState.myList={ data:{},message:'连接错误'};
@@ -341,6 +346,7 @@ let memberLoansActions = {
 
 
     },
+    //获取还款中的项目列表
     getProList: (pageNum=1,pageSize=10,filter={}) => (dispatch, memberLoans) => {
         let newState={};
         // 获取数据列表
@@ -350,7 +356,8 @@ let memberLoansActions = {
                 conditions += "&"+item+"="+filter[item];
             }
         }
-        let url=`http://172.16.4.5:8084/getloansList.php?pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
+        //http://172.16.1.221:9090/members/loans?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f&pageNum=1&pageSize=10&status=2
+        let url=`http://172.16.1.221:9090/members/loans?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f&pageNum=1&pageSize=100&status=0`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -363,7 +370,6 @@ let memberLoansActions = {
             })
             .then((data) => data.json())
             .then(data => {
-
                 newState.proList=data.data.list;
                 dispatch(memberLoansActions.stateRepaymentPlanModify(newState));
             }).catch(err=>{

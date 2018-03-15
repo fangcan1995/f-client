@@ -8,7 +8,7 @@ const initialState = Immutable.fromJS({
             message:''
         },
         myList:{
-            data:{},
+            data:'',
             message:''
         },
         status: 1,
@@ -29,9 +29,9 @@ const initialState = Immutable.fromJS({
             data:{},
             message:''
         },
-        pid:'',
-        DateStart:'',
-        DateEnd:'',
+        projectId:'',
+        dateStart:'',
+        dateEnd:'',
         modalRepayment: false,
         proList:[],
         currentId:'',
