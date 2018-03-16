@@ -8,6 +8,7 @@ import './account-overview.less';
 import Tab from '../../../components/tab/tab';
 import { connect } from 'react-redux';
 
+
 class AccountOverview extends React.Component{
     render(){
         return (
@@ -79,7 +80,7 @@ class AccountOverview extends React.Component{
                                 <div name="累计收益">
                                     <BarChart
                                         data={{
-                                            xAxis_data:['2018-3', '2018-2', '2018-1', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                                            xAxis_data:['2018-03', '2018-02', '2018-01', '2017-12', '2017-11', '2017-10', '2017-09', '8月', '9月', '10月', '11月', '12月'],
                                             series_data:[
                                                 {
                                                     data:[1, 2, 3, 4, 5, 6, 7, 8,9,10, 11, 12]
@@ -96,7 +97,7 @@ class AccountOverview extends React.Component{
                                             xAxis_data:['03-1','03-2','03-3','03-4','03-5','03-6','03-7','03-8','03-9', '03-10', '03-11', '03-12', '03-13', '03-14', '03-15'],
                                             series_data:[
                                                 {
-                                                    data:[1, 2, 3, 4, 5, 6, 7,8,9,10,11,12,13,14,15]
+                                                    data:[0, 20.5, 20.5, 20.5, 20.5, 20.5, 20.5,18,18,18,18,12,13,14,15]
                                                 }
                                             ]
                                         }}

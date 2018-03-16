@@ -8,6 +8,7 @@ import myRateCoupons from './myRateCoupons';
 import aboutReducer from './aboutReducer';
 import memberInvestments from './member-investments';
 import memberLoans from './member-loans';
+import memberSettings from './member-settings';
 import investList from './invest-list';
 import investDetail from './invest-detail';
 export {
@@ -23,5 +24,6 @@ export {
     memberLoans,
     investList,
     investDetail,
+    memberSettings,
 
 }
