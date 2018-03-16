@@ -9,7 +9,6 @@ import  memberSettingsActions  from '../../../../actions/member-settings';
 import { Checkbox,message,Select } from 'antd';
 import { connect } from 'react-redux';
 
-
 let selectIds = [];
 class MyMessages extends React.Component {
     constructor(props){
@@ -49,7 +48,7 @@ class MyMessages extends React.Component {
         }
         this.props.dispatch(memberSettingsActions.stateModify(newState));
     }
-    delete(pram){
+    deleteMessage(pram){
         console.log('删除');
         pram=pram.toString();
         //console.log(pram);

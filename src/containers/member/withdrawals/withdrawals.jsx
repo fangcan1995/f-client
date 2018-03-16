@@ -5,9 +5,33 @@ import Tab from '../../../components/tab/tab';
 import './withdrawals.less';
 import CountDownButton from '../../../components/countDownButton/countDownButton';
 import { connect } from 'react-redux';
-
+import  memberActions  from '../../../actions/member';
+import {toMoney,toNumber} from  '../../../assets/js/famatData';
 class Withdrawals extends React.Component{
+    constructor(props) {
+        super(props);
+        this.withdrawals= this.withdrawals.bind(this);
+    }
+    componentDidMount() {
+        this.props.dispatch(memberActions.getInfo());
+    }
+    bindCard(){
+        alert('去开户');
+    }
+    withdrawals(value){
+        //console.log(this.props);
+        value=this.refs.amount.value;
+        let postData={
+            escrowCode:100100,
+            amount:value,
+            type:3
+        };
+        this.props.dispatch(memberActions.postData(postData));
+    }
     render(){
+        console.log(this.props);
+        let {openAccountStatus,amount}=this.props.member.accountsInfo;
+        console.log(openAccountStatus);
         return (
             <div className="member__main withdrawals">
                 <Crumbs/>
@@ -15,30 +39,32 @@ class Withdrawals extends React.Component{
                     <Tab>
                         <div name="提现">
                             <div className="tab_content" style={{width:'500px'}}>
-                                <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先
-                                    <a href="javascript:void(0);" className="btn_bindCard">绑定银行卡！</a>
-                                </p>
-                                <div className="form__wrapper">
-                                    <dl className="form__bar">
-                                        <dt><label>可用余额</label></dt>
-                                        <dd><p><i>1,000.00</i>元</p></dd>
-                                    </dl>
-                                    <dl className="form__bar">
-                                        <dt><label>提现金额</label></dt>
-                                        <dd>
-                                            <input name="transAmt" id="transAmt"   maxLength={20} type="text" className="textInput moneyInput" />
-                                            <i className="unit">元</i>
-                                            <span className="tips error"></span>
-                                        </dd>
-                                    </dl>
-                                    <dl className="form__bar">
+                                {
+                                    (openAccountStatus===0)?
+                                        <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先
+                                            <a href="javascript:void(0);" style={{color:'#31aaf5'}} onClick={()=>{this.bindCard()}}> 绑定银行卡！</a>
+                                        </p>
+                                        :
+                                        <div className="form__wrapper">
+                                            <dl className="form__bar">
+                                                <dt><label>可用余额</label></dt>
+                                                <dd><p><i>{toMoney(amount.availableBalance)}</i>元</p></dd>
+                                            </dl>
+                                            <dl className="form__bar">
+                                                <dt><label>提现金额</label></dt>
+                                                <dd>
+                                                    <input name="transAmt" id="transAmt"   maxLength={20} type="text" className="textInput moneyInput" ref="amount" />
+                                                    <i className="unit">元</i>
+                                                    <span className="tips error"></span>
+                                                </dd>
+                                            </dl>
+                                            {/*<dl className="form__bar">
                                         <dt><label>交易密码</label></dt>
                                         <dd>
                                             <input name="password" id="password"   maxLength={20}  type="password" className="textInput" />
                                             <span className="tips error"></span>
                                         </dd>
                                     </dl>
-
                                     <dl className="form__bar">
                                         <dt><label>验证码</label></dt>
                                         <dd>
@@ -61,11 +87,14 @@ class Withdrawals extends React.Component{
                                         <dd><p><i id="money">0.00</i> 元</p>
                                         </dd>
 
-                                    </dl>
-                                    <div className="form__bar">
-                                        <button className="button able" style={{ width: '200px',marginTop:'20px'}}>确定</button>
-                                    </div>
-                                </div>
+                                    </dl>*/}
+                                            <div className="form__bar">
+                                                <button className="button able" style={{ width: '200px',marginTop:'20px'}} onClick={this.withdrawals}>确定</button>
+                                            </div>
+                                        </div>
+                                }
+
+
                             </div>
                         </div>
                     </Tab>
@@ -94,9 +123,10 @@ class Withdrawals extends React.Component{
 
 
 function mapStateToProps(state) {
-    const { auth } = state.toJS();
+    const { auth,member } = state.toJS();
     return {
-        auth
+        auth,
+        member
     };
 }
 export default connect(mapStateToProps)(Withdrawals);

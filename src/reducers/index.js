@@ -11,6 +11,7 @@ import memberLoans from './member-loans';
 import memberSettings from './member-settings';
 import investList from './invest-list';
 import investDetail from './invest-detail';
+import member from './member';
 export {
     auth,
     login,
@@ -25,5 +26,6 @@ export {
     investList,
     investDetail,
     memberSettings,
+    member,
 
 }

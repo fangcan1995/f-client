@@ -4,9 +4,19 @@ import './bank-card.less';
 import Tab from '../../../components/tab/tab';
 import Crumbs from '../../../components/crumbs/crumbs';
 import { connect } from 'react-redux';
+import  memberActions  from '../../../actions/member';
 
 class BankCard extends React.Component{
+    componentDidMount() {
+        this.props.dispatch(memberActions.getInfo());
+    }
+    bindCard(){
+        alert('去开户');
+    }
     render(){
+        console.log(this.props);
+        let {openAccountStatus,acBank}=this.props.member.accountsInfo;
+        console.log(openAccountStatus);
         return (
             <div className="member__main">
                 <Crumbs />
@@ -14,26 +24,32 @@ class BankCard extends React.Component{
                     <Tab>
                         <div name="我的银行卡">
                             <div className="tab_content">
-                                {/*<div className="addCard">
-                                <p>为保证账户资金安全，请绑定本人的银行卡</p>
-                                <div className="grayCard">
-                                    <a href="javascript:void(0);" className="btn_add">
-                                        <i className="iconfont">&#xe748;</i><p>绑定银行卡</p>
-                                    </a>
-                                </div>
-                            </div>*/}
-                                <div className="editCard">
-                                    <div className="form__wrapper">
-                                        <div className="card">
-                                            <p><strong>用户名</strong>佟鑫</p>
-                                            <p><strong>银行账号</strong>6217000780022472881</p>
-                                            <p><strong>开户支行</strong>中国建设银行大连香周路分理处</p>
+                                {
+                                    (openAccountStatus === 0) ?<div className="addCard">
+                                            <p>为保证账户资金安全，请绑定本人的银行卡</p>
+                                            <div className="grayCard">
+                                                <a href="javascript:void(0);" style={{color: '#31aaf5'}} onClick={() => {
+                                                    this.bindCard()
+                                                }}> 绑定银行卡！</a>
+                                            </div>
                                         </div>
-                                        <div className="form__bar">
-                                            <button className="button able" style={{ width: '200px',marginTop:'20px'}}>更换银行卡</button>
+                                        :<div className="editCard">
+                                            <div className="form__wrapper">
+                                                <div className="card">
+                                                    <p><strong>用户名</strong>{acBank.bankName}</p>
+                                                    <p><strong>银行账号</strong>{acBank.bankNo}</p>
+                                                    <p><strong>开户行</strong>{acBank.bankName}</p>
+                                                </div>
+                                                <div className="form__bar">
+                                                    <button className="button able" style={{ width: '200px',marginTop:'20px'}} onClick={() => {
+                                                        this.bindCard()
+                                                    }}>更换银行卡</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                }
+
+
                             </div>
                         </div>
                     </Tab>
@@ -54,9 +70,10 @@ class BankCard extends React.Component{
     }
 }
 function mapStateToProps(state) {
-    const { auth } = state.toJS();
+    const { auth,member } = state.toJS();
     return {
-        auth
+        auth,
+        member
     };
 }
 export default connect(mapStateToProps)(BankCard);
