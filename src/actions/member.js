@@ -132,12 +132,12 @@ let memberActions = {
                         type:'success',
                         message:'提交成功'
                     };*/
-                    alert('充值成功');
+                    alert('成功');
                     dispatch(memberActions.getInfo());
                 }, 100);
             })
             .catch(err=>{
-                alert('充值失败');
+                alert('失败');
                 /*newState= {
                     code:1,
                     type:'fail',
@@ -146,6 +146,57 @@ let memberActions = {
                 dispatch(memberActions.stateModify(newState));*/
             });
     },
+
+    postOpenAccount:(pram) => (dispatch, member) => {
+    let newState={};
+    let conditions='';
+    if(JSON.stringify(pram)!={}){
+        for(var item in pram){
+            conditions += "&"+item+"="+pram[item];
+        }
+    }
+    let url = `http://172.16.1.234:9090/accounts?access_token=0db30c7d-cde4-4a6e-bcf5-e642c2eda816${conditions}`;
+    console.log(url);
+    fetch(url,{
+        method: "PUT",
+        mode:'cors',
+        cache: 'default',
+        headers: {
+            "Accept": "*/*"
+        },
+        //body: JSON.stringify(pram)
+    })
+        .then(function (response){
+            if (response.status == 200){
+                return response;
+            }else{
+                alert('连接不上');
+                dispatch(memberActions.statePostResultModify(newState));
+            }
+        })
+        .then((data) => data.json())
+        .then(data => {
+            setTimeout(() => {
+                //dispatch(investDetailActions.refreshPostResult(2));
+                /*newState= {
+                    code:2,
+                    type:'success',
+                    message:'提交成功'
+                };*/
+                alert('成功');
+                dispatch(memberActions.getInfo());
+            }, 100);
+        })
+        .catch(err=>{
+            alert('失败');
+            /*newState= {
+                code:1,
+                type:'fail',
+                message:'提交失败'
+            };
+            dispatch(memberActions.stateModify(newState));*/
+        });
+},
     //提现
     postWithdrawals:(pram) => (dispatch, member) => {
         let newState={};

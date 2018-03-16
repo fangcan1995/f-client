@@ -11,7 +11,15 @@ class BankCard extends React.Component{
         this.props.dispatch(memberActions.getInfo());
     }
     bindCard(){
-        alert('去开户');
+        let postData={
+            escrowCode:100100,
+            custId:123,
+            accountBalance:0,
+            freezingAmount:0,
+            availableBalance:0
+
+        };
+        this.props.dispatch(memberActions.postOpenAccount(postData));
     }
     render(){
         console.log(this.props);
@@ -25,7 +33,7 @@ class BankCard extends React.Component{
                         <div name="我的银行卡">
                             <div className="tab_content">
                                 {
-                                    (openAccountStatus === 0) ?<div className="addCard">
+                                    (openAccountStatus === 1) ?<div className="addCard">
                                             <p>为保证账户资金安全，请绑定本人的银行卡</p>
                                             <div className="grayCard">
                                                 <a href="javascript:void(0);" style={{color: '#31aaf5'}} onClick={() => {
