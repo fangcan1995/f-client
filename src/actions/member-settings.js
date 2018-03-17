@@ -67,9 +67,8 @@ let memberSettingsActions = {
     },
 
     filter: (pram) => (dispatch, memberLoans) => {
-        dispatch(memberSettingsActions.toggleClass(pram));
-        //dispatch(memberSettingsActions.refreshListFail(''));
-        dispatch(memberSettingsActions.getList(1,10,{status:pram}));
+        dispatch(memberSettingsActions.stateModify({isRead:pram}));
+        dispatch(memberSettingsActions.getList(1,10,{isRead:pram}));
 
     },
     //选项卡样式切换

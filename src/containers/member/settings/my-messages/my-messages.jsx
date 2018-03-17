@@ -3,21 +3,20 @@ import PropTypes from 'prop-types';
 import Pagination from '../../../../components/pagination/pagination';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
-import './message.less';
-import moment from "moment";
 import  memberSettingsActions  from '../../../../actions/member-settings';
 import { Checkbox,message,Select } from 'antd';
 import { connect } from 'react-redux';
+import './message.less';
 
 let selectIds = [];
 class MyMessages extends React.Component {
     constructor(props){
         super(props);
 
-        this.setReaded = this.setReaded.bind(this);
-        this.delete = this.delete.bind(this);
+        this.deleteMessage = this.deleteMessage.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onAllChange = this.onAllChange.bind(this);
+        this.setReaded= this.setReaded.bind(this);
 
     }
 
@@ -51,7 +50,6 @@ class MyMessages extends React.Component {
     deleteMessage(pram){
         console.log('删除');
         pram=pram.toString();
-        //console.log(pram);
         this.props.dispatch(memberSettingsActions.deleteMessage(pram));
         this.props.dispatch(memberSettingsActions.getList(0,10));
     }
@@ -93,6 +91,7 @@ class MyMessages extends React.Component {
     render() {
         console.log('---------myMessages------');
         console.log(this.props);
+        let {dispatch}=this.props;
         let {isRead,myList,readState,defaultChecked} = this.props.memberSettings.messages;
 
         return (
@@ -110,21 +109,15 @@ class MyMessages extends React.Component {
                                             </div>
                                             <div className="filter__cell">
                                                 <p className={(isRead === '') ? 'filter__opt filter__opt--active' : 'filter__opt'}
-                                                   onClick={() => {
-                                                       this.props.dispatch(memberSettingsActions.getList(1, 10,{isRead:''}));
-                                                   }}>全部</p>
+                                                   onClick={ () => { dispatch(memberSettingsActions.filter('')) } }>全部</p>
                                             </div>
                                             <div className="filter__cell">
                                                 <p className={(isRead === 0) ? 'filter__opt filter__opt--active' : 'filter__opt'}
-                                                   onClick={() => {
-                                                       this.props.dispatch(memberSettingsActions.getList(1, 10,{isRead:0}));
-                                                   }}>未读</p>
+                                                   onClick={ () => { dispatch(memberSettingsActions.filter(0)) } }>未读</p>
                                             </div>
                                             <div className="filter__cell">
                                                 <p className={(isRead === 1) ? 'filter__opt filter__opt--active' : 'filter__opt'}
-                                                   onClick={() => {
-                                                       this.props.dispatch(memberSettingsActions.getList(1, 10,{isRead:1}));
-                                                   }}>已读</p>
+                                                   onClick={ () => { dispatch(memberSettingsActions.filter(1)) } }>已读</p>
                                             </div>
                                         </div>
                                     </div>
@@ -155,7 +148,7 @@ class MyMessages extends React.Component {
                                                                     <li>{l.shortText}</li>
                                                                     <li onClick={()=>{this.setReaded(i,l.proId)}}>{l.longText}</li>
                                                                     <li>{l.dateTime}</li>
-                                                                    <li><a className="iconfont btn_del" onClick={()=>{this.delete(l.proId)}}></a></li>
+                                                                    <li><a className="iconfont btn_del" onClick={()=>{this.deleteMessage(l.proId)}}></a></li>
                                                                 </ul>
                                                                 {((readState.isShow[i]===1)?
                                                                     <div className="article" >
@@ -167,6 +160,11 @@ class MyMessages extends React.Component {
                                                             </div>
                                                         ))}
 
+                                                </div>
+                                                <div className="control">
+                                                    <Checkbox onChange={this.onAllChange} >
+                                                        <button className="del_botton" onClick={()=>{this.delete(selectIds)}}>删除</button>
+                                                    </Checkbox>
                                                 </div>
                                                 <Pagination config={
                                                     {
@@ -181,21 +179,12 @@ class MyMessages extends React.Component {
                                                 }>
                                                 </Pagination>
                                             </div>
-
                                             :`<div><p>暂无消息</p></div>`
                                 }
-                                <div className="control">
-                                    <Checkbox onChange={this.onAllChange} >
-                                        <button className="del_botton" onClick={()=>{this.delete(selectIds)}}>删除</button>
-                                    </Checkbox>
-
-                                </div>
-
                             </div>
                         </div>
                     </Tab>
                 </div>
-
             </div>
         )
     }
