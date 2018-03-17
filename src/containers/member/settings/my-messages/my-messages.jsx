@@ -8,21 +8,19 @@ import { Checkbox,message,Select } from 'antd';
 import { connect } from 'react-redux';
 import './message.less';
 
-let selectIds = [];
+let selectIds = [];  //用于保存全中的消息id
 class MyMessages extends React.Component {
     constructor(props){
         super(props);
-
         this.deleteMessage = this.deleteMessage.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onAllChange = this.onAllChange.bind(this);
         this.setReaded= this.setReaded.bind(this);
-
     }
-
     componentDidMount() {
         this.props.dispatch(memberSettingsActions.getList(1, 10));
     }
+    //读消息，并设为已读
     setReaded(index,id){
         let isRead=this.props.memberSettings.messages.readState.isRead;
         let isShow=this.props.memberSettings.messages.readState.isShow;
@@ -47,12 +45,14 @@ class MyMessages extends React.Component {
         }
         this.props.dispatch(memberSettingsActions.stateModify(newState));
     }
+    //删除一条或多条消息
     deleteMessage(pram){
         console.log('删除');
         pram=pram.toString();
         this.props.dispatch(memberSettingsActions.deleteMessage(pram));
         this.props.dispatch(memberSettingsActions.getList(0,10));
     }
+    //选去一个
     onChange(e) {
         let value=e.target.value;
         let isExist=selectIds.findIndex((value)=>{
@@ -66,6 +66,7 @@ class MyMessages extends React.Component {
         //console.log(selectIds);
 
     }
+    //全选
     onAllChange(e){
         let defaultChecked=this.props.memberSettings.messages.defaultChecked;
         for(var item in defaultChecked){
@@ -87,13 +88,11 @@ class MyMessages extends React.Component {
 
 
     }
-
     render() {
         console.log('---------myMessages------');
         console.log(this.props);
         let {dispatch}=this.props;
         let {isRead,myList,readState,defaultChecked} = this.props.memberSettings.messages;
-
         return (
             <div className="member__main myMessage">
                 <Crumbs/>
@@ -189,13 +188,10 @@ class MyMessages extends React.Component {
         )
     }
 }
-
 function mapStateToProps(state) {
-    const { auth,memberSettings } = state.toJS();
+    const { memberSettings } = state.toJS();
     return {
-        auth,
         memberSettings
-
     };
 }
 
