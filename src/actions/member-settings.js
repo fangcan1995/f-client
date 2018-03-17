@@ -4,7 +4,8 @@ import cookie from 'js-cookie';
 
 let memberSettingsActions = {
 
-    getList: (pageNum=1,pageSize=10,filter={}) => (dispatch, memberLoans) => {
+    //消息
+    getMessagesList: (pageNum=1,pageSize=10,filter={}) => (dispatch, memberLoans) => {
         let newState={};
         // 获取数据列表
         let conditions='';
@@ -26,7 +27,7 @@ let memberSettingsActions = {
                             message:'无响应'
                         }
                     };
-                    dispatch(memberSettingsActions.stateModify(newState));
+                    dispatch(memberSettingsActions.stateMessagesModify(newState));
                 }
             })
             .then((data) => data.json())
@@ -52,7 +53,7 @@ let memberSettingsActions = {
                     },
                     defaultChecked:defaultChecked
                 };
-                dispatch(memberSettingsActions.stateModify(newState));
+                dispatch(memberSettingsActions.stateMessagesModify(newState));
             }).catch(err=>{
             newState={
                 myList: {
@@ -60,26 +61,16 @@ let memberSettingsActions = {
                     message:'连接错误'
                 }
             };
-            dispatch(memberSettingsActions.stateModify(newState));
+            dispatch(memberSettingsActions.stateMessagesModify(newState));
         });
 
 
     },
-
-    filter: (pram) => (dispatch, memberLoans) => {
-        dispatch(memberSettingsActions.stateModify({isRead:pram}));
+    messagesFilter: (pram) => (dispatch, memberLoans) => {
+        dispatch(memberSettingsActions.stateMessagesModify({isRead:pram}));
         dispatch(memberSettingsActions.getList(1,10,{isRead:pram}));
-
     },
-    //选项卡样式切换
-    toggleClass:(pram)=>(dispatch, memberLoans)=>{
-        let newState={};
-        newState= {
-            status:pram
-        };
-        dispatch(memberSettingsActions.stateModify(newState));
-    },
-    //提交提前还款申请
+    //提交
     setReadState:(pram) => (dispatch, memberLoans) => {
         console.log(pram);
         let newState={};
@@ -107,7 +98,6 @@ let memberSettingsActions = {
 
             });
     },
-
     deleteMessage:(pram) => (dispatch, memberLoans) => {
         console.log(pram);
         let newState={};
@@ -136,15 +126,108 @@ let memberSettingsActions = {
             });
     },
 
+    //风险测评
+    getRiskAssessResult:(pram) => (dispatch, memberLoans) => {
+        let newState={};
+        let url=`http://172.16.4.5:8084/getloansList.php`;
+        fetch(url,{method:"get"})
+            .then(function (response){
+                if (response.status == 200){
+                    return response;
+                }else{
+                    newState={
+                        result:{
+                            data:{},
+                            message:'无响应'
+                        }
+                    };
+                    dispatch(memberSettingsActions.stateRiskAssessModify(newState));
+                }
+            })
+            .then((data) => data.json())
+            .then(data => {
+                newState={
+                    result:
+                        {
+
+                            requireEval:1,
+                            result:{},
+                            message:''
+                        },
+                    status:1,
+                };
+                dispatch(memberSettingsActions.stateRiskAssessModify(newState));
+            }).catch(err=>{
+            newState={
+                result: {
+                    data:{},
+                    message:'连接错误'
+                }
+            };
+            dispatch(memberSettingsActions.stateRiskAssessModify(newState));
+        })
+    },
+    getRiskAssessList:(pram) => (dispatch, memberLoans) => {
+        let newState={};
+        let url=`http://172.16.4.5:8084/getloansList.php?pageNum=1&pageSize=100`;
+        fetch(url,{method:"get"})
+            .then(function (response){
+                if (response.status == 200){
+                    return response;
+                }else{
+                    newState={
+                        result:{
+                            data:{},
+                            message:'无响应'
+                        }
+                    };
+                    dispatch(memberSettingsActions.stateRiskAssessModify(newState));
+                }
+            })
+            .then((data) => data.json())
+            .then(data => {
+                let defaultChecked=[];
+                /*console.log('默认选中状态');
+                for(var key in data.data.list){
+                    //var str='{"ques'+data.data.list[key].proId+'":0}';
+                    //defaultChecked.push(JSON.parse(str) );
+                    defaultChecked.push({});
+                }
+                console.log(defaultChecked);*/
+                newState={
+                    myList:
+                        {
+                            data:data.data,
+                            message:''
+                        },
+                    defaultChecked:defaultChecked
+                };
+                dispatch(memberSettingsActions.stateRiskAssessModify(newState));
+            }).catch(err=>{
+                newState={
+                    myList: {
+                        data:{},
+                        message:'连接错误'
+                    }
+                };
+                dispatch(memberSettingsActions.stateRiskAssessModify(newState));
+            })
+    },
+
 
 
 
     //修改状态
-    stateModify: json => ({
+    stateMessagesModify: json => ({
         type: 'mySettings/messages/MODIFY_STATE',
         payload: json
     }),
+    stateRiskAssessModify: json => ({
+        type: 'mySettings/riskAssess/MODIFY_STATE',
+        payload: json
+    }),
 
+    
 };
 export default memberSettingsActions;
 

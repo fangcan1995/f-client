@@ -4,7 +4,7 @@ import Pagination from '../../../../components/pagination/pagination';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import  memberSettingsActions  from '../../../../actions/member-settings';
-import { Checkbox,message,Select } from 'antd';
+import { Checkbox,message,Select,Button  } from 'antd';
 import { connect } from 'react-redux';
 import './message.less';
 
@@ -18,7 +18,7 @@ class MyMessages extends React.Component {
         this.setReaded= this.setReaded.bind(this);
     }
     componentDidMount() {
-        this.props.dispatch(memberSettingsActions.getList(1, 10));
+        this.props.dispatch(memberSettingsActions.getMessagesList(1, 10));
     }
     //读消息，并设为已读
     setReaded(index,id){
@@ -43,14 +43,14 @@ class MyMessages extends React.Component {
                 isShow:isShow,
             }
         }
-        this.props.dispatch(memberSettingsActions.stateModify(newState));
+        this.props.dispatch(memberSettingsActions.stateMessagesModify(newState));
     }
     //删除一条或多条消息
     deleteMessage(pram){
         console.log('删除');
         pram=pram.toString();
         this.props.dispatch(memberSettingsActions.deleteMessage(pram));
-        this.props.dispatch(memberSettingsActions.getList(0,10));
+        this.props.dispatch(memberSettingsActions.getMessagesList(0,10));
     }
     //选去一个
     onChange(e) {
@@ -80,7 +80,7 @@ class MyMessages extends React.Component {
             defaultChecked:defaultChecked
         }
         console.log(defaultChecked);
-        this.props.dispatch(memberSettingsActions.stateModify(newState));
+        this.props.dispatch(memberSettingsActions.stateMessagesModify(newState));
         selectIds=[];
         this.props.memberSettings.messages.myList.data.list.map((l, i) => (
             selectIds.push(l.proId)
@@ -108,15 +108,15 @@ class MyMessages extends React.Component {
                                             </div>
                                             <div className="filter__cell">
                                                 <p className={(isRead === '') ? 'filter__opt filter__opt--active' : 'filter__opt'}
-                                                   onClick={ () => { dispatch(memberSettingsActions.filter('')) } }>全部</p>
+                                                   onClick={ () => { dispatch(memberSettingsActions.messagesFilter('')) } }>全部</p>
                                             </div>
                                             <div className="filter__cell">
                                                 <p className={(isRead === 0) ? 'filter__opt filter__opt--active' : 'filter__opt'}
-                                                   onClick={ () => { dispatch(memberSettingsActions.filter(0)) } }>未读</p>
+                                                   onClick={ () => { dispatch(memberSettingsActions.messagesFilter(0)) } }>未读</p>
                                             </div>
                                             <div className="filter__cell">
                                                 <p className={(isRead === 1) ? 'filter__opt filter__opt--active' : 'filter__opt'}
-                                                   onClick={ () => { dispatch(memberSettingsActions.filter(1)) } }>已读</p>
+                                                   onClick={ () => { dispatch(memberSettingsActions.messagesFilter(1)) } }>已读</p>
                                             </div>
                                         </div>
                                     </div>
@@ -170,9 +170,10 @@ class MyMessages extends React.Component {
                                                         currentPage:  myList.data.pageNum,
                                                         pageSize: myList.data.pageSize,
                                                         totalPage: Math.ceil(myList.data.total/myList.data.pageSize),
+                                                        filter:isRead,
                                                         paging: (obj) => {
 
-                                                            this.props.dispatch(memberSettingsActions.getList(obj.currentPage, obj.pageCount,{isRead:isRead}));
+                                                            this.props.dispatch(memberSettingsActions.getMessagesList(obj.currentPage, obj.pageCount,{isRead:isRead}));
                                                         }
                                                     }
                                                 }>
