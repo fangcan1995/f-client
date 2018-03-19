@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import ReactSwipe from 'react-swipe';
+
+import { Carousel } from 'antd';
 
 import './home-page.less';
 import featureIcon1 from '../../assets/images/homePage/feature_icon_1.png';
@@ -20,7 +21,7 @@ import partnerBrand8 from '../../assets/images/homePage/partner_brand_8.png';
 
 import Floor from '../../components/home-page-floor/home-page-floor';
 
-import { getData } from '../../actions/home-page';
+import { getData, getNovice, getStandard, getNotice } from '../../actions/home-page';
 
 class HomePage extends Component {
   constructor(props) {
@@ -38,30 +39,77 @@ class HomePage extends Component {
     this.props.history.push('/login');
 
   }
-  handleClick(e){
-   console.log(e)
+  handleBannerClick(e){
+  //  console.log(e)
+   window.location.href=e;
+  }
+  handleSpecClick = (e) => {
+    e.preventDefault();
+    // console.log('aaaa')
+    this.props.history.push('/about/constant');
+
+  }
+  handleNoticeClick(e){
+    console.log(e);
+    this.props.history.push(`/about/news/notice${e}`)
+  }
+  handleMoreClick(){
+    console.log('22')
+    this.props.history.push('/about/news/notice')
+  }
+  handleComeInClick(){
+    this.props.history.push('/invest-list')
+  }
+  handleStandardClick(e){
+    console.log(e)
+    this.props.history.push(`/invest-list/${e}`)
+  }
+  handleAdClick(e){
+    console.log(e)
+    window.location.href(e)
+  }
+  handleCommediaClick(e){
+    console.log(e)
+  }
+  handleNewsClick(e){
+    console.log(e)
+  }
+  handleMimageClick(e){
+    console.log(e)
+  }
+  handleMoreMediaClick(){
+    console.log('1111')
+    this.props.history.push('/about/news/mediaReport')
+  }
+  handlePartnerClick(e){
+    console.log(e)
   }
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(getData());
+    dispatch(getNovice());
+    dispatch(getStandard());
+    // dispatch(getBanner());
+    dispatch(getNotice());
+    
   }
   render() {
     const { homePage } = this.props;
-    console.log(homePage)
+   console.log(homePage)
     return (
     <main className="main home-page" id="home-page">
       <div className="banner" >
         <div className="carousel" >
-            <ReactSwipe className="carousel" swipeOptions={this.swipeOptions}>
-                {/* <div>PANE 1</div>
-                <div>PANE 2</div>
-                <div>PANE 3</div> */}
-                {homePage.banner.banner.map((item)=>{
+            
+            <Carousel autoplay nextArrow prevArrow key={homePage.banner.length}>
+              {homePage.banner.map((item)=>{
                   return (
-                    <div><img src={item.imgsrc}  onClick={this.handleClick.bind(this,item.imgurl)}/></div>
+                    <div key={item.id}>
+                      <img className="carousel" src={item.imgsrc}  onClick={this.handleBannerClick.bind(this,item.imgurl)} />
+                    </div>
                   )
                 })}
-            </ReactSwipe>
+            </Carousel>
           {/* <div className="carousel__img" style={{ backgroundImage: `url(${require('../../assets/images/homePage/banner.png')})` }}></div> */}
         </div>
        
@@ -70,7 +118,7 @@ class HomePage extends Component {
             <p className="yield">
              新手专享年化收益率
               <br />
-              <em><span>12</span>%</em>
+              <em><span>{}</span>%</em>
             </p>
             <button type="button" className="login__btn" onClick={ this.handleLoginBtnClick }>立即登录</button>
             <p className="signup">
@@ -84,10 +132,10 @@ class HomePage extends Component {
       <div className="spec">
         <div className="wrapper">
           <ul className="spec__box">
-            <li className="spec__item"><em><span>5470</span>次</em><br />累计服务用户人次</li>
-            <li className="spec__item"><em><span>3,419.67</span>万</em><br />累计撮合交易额（元）</li>
-            <li className="spec__item"><em><span>109.82</span>万</em><br />已为客户赚取（元）</li>
-            <li className="spec__item spec__more"><a href="">查看详情&nbsp;></a></li>
+            <li className="spec__item"><em><span>{homePage.spec.pNumber}</span>次</em><br />累计服务用户人次</li>
+            <li className="spec__item"><em><span>{homePage.spec.profit}</span>万</em><br />累计撮合交易额（元）</li>
+            <li className="spec__item"><em><span>{homePage.spec.sumNumber}</span>万</em><br />已为客户赚取（元）</li>
+            <li className="spec__item spec__more"><a onClick={this.handleSpecClick}>查看详情&nbsp;></a></li>
           </ul>
         </div>
       </div>
@@ -116,8 +164,20 @@ class HomePage extends Component {
       <div className="wrapper">
         <div className="notice">
           <i className="notice__icon iconfont icon-gonggao"></i>
-          <p className="notice__text">关于巴巴汇金服反洗钱知识普及公告<time className="notice__date">[ 2017-1-6 ]</time></p>
-          <a href="" className="notice__more">更多 ></a>
+          <div className="notice__text">
+            <Carousel vertical="true" autoplay key={homePage.notice.length}>
+              {homePage.notice.map((item)=>{
+                        return (                         
+                            <div key={item.noticeId} className="notice__text" onClick={this.handleNoticeClick.bind(this,item.noticeId)}>
+                              <a >{item.noticeTitle}</a><span><time className="notice__date">[ {item.putTime} ]</time></span>
+                            </div>                        
+                        )
+                      })}
+            </Carousel>
+            
+          </div> 
+          {/* <p className="notice__text">关于巴巴汇金服反洗钱知识普及公告<time className="notice__date">[ 2017-1-6 ]</time></p> */}
+          <a onClick={this.handleMoreClick.bind(this)} className="notice__more">更多 ></a>
         </div>
         <Floor
           otherClassName="sprog"
@@ -133,24 +193,24 @@ class HomePage extends Component {
               </div>
               <div className="sprog__content">
                 <div className="sprog__item sprog__desc">
-                  <h4>新手专享（90）<i style={{ backgroundImage: `url(${sprogIcon})` }}></i></h4>
+                  <h4>{homePage.sprog.name}<i style={{ backgroundImage: `url(${sprogIcon})` }}></i></h4>
                   <p>
-                    <em><span>8</span>.0%+4.0%</em>
+                    <em><span>{homePage.sprog.annualRate}</span>.0%+0.0%</em>
                     <br />
                     预期年化收益率
                   </p>
                 </div>
                 <div className="sprog__item sprog__info">
-                  <p>已购人数：1600人</p>
+                  <p>已购人数：{homePage.sprog.investNumber}人</p>
                   <p>
-                    <em><span>3</span>个月</em>
+                    <em><span>{homePage.sprog.loanExpiry}</span>个月</em>
                     <br />
                     锁定期
                   </p>
                 </div>
                 <div className="sprog__item sprog__join">
-                  <button className="join__btn">立即加入</button>
-                  <p>剩余名额：240人</p>
+                  <button className="join__btn" onClick={this.handleComeInClick.bind(this)}>立即加入</button>
+                  {/* <p>剩余名额：{homePage.sprog.remain}人</p> */}
                 </div>
               </div>
             </div>
@@ -162,36 +222,75 @@ class HomePage extends Component {
           tip="风险自行承担&nbsp;&nbsp;投资需谨慎"
           >
           <ul className="standard__content">
-            <li className="standard__card">
-              <div className="card__scroll">
-                <div className="card__header">
-                  <h4 className="tit">汇车贷（一期）</h4>
-                  <p className="tip">起投金额&nbsp;<em>1.000</em>元</p>
-                  <ul className="tags">
-                    <li>按月付息，到期还本</li>
-                  </ul>
-                  <p className="desc"><em><span>3</span>个月</em><br />锁定期</p>
-                </div>
-                <div className="card__body">
-                  <p className="yield"><em><span>12</span>.6%+0.4%</em><br />预期年化收益率</p>
-                  <ul className="tags">
-                    <li>最新推出</li>
-                  </ul>
-                  <div className="progress">
-                    <div className="progress__bar">
-                      <div className="progress__bar--cur" style={{width: '65%'}}></div>
+          {
+            homePage.standard.map((item)=>{
+              if(item.type=='project'){
+              return (               
+                <li className="standard__card" key={item.id}>
+                  <div className="card__scroll">
+                    <div className="card__header">
+                      <h4 className="tit">{item.name}</h4>
+                      <p className="tip">起投金额&nbsp;<em>{item.minInvestAmount }</em>元</p>
+                      <ul className="tags">
+                        <li>{item.refundWayString }</li>
+                      </ul>
+                      <p className="desc"><em><span>{item.loanExpiry }</span>个月</em><br />锁定期</p>
                     </div>
-                    <p className="progress__percent">65%</p>
-                    <p className="progress__number">18.05万/30万</p>
+                    <div className="card__body">
+                      <p className="yield"><em><span>{item.annualRate/1}</span>.{item.annualRate %1}%+{item.BigDecimal }%</em><br />预期年化收益率</p>
+                      <ul className="tags">
+                        <li>最新推出</li>
+                      </ul>
+                      <div className="progress">
+                        <div className="progress__bar">
+                          <div className="progress__bar--cur" style={{width: `${item.investmentProgress}`}}></div>
+                        </div>
+                        <p className="progress__percent">{item.hadPercent}</p>
+                        <p className="progress__number">{item.moneyEnd }万/{item.money  }万</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="card__footer">
-                <a href="" className="join">立即加入</a>
-              </div>
-            </li>
+                  <div className="card__footer">
+                    <a onClick={this.handleStandardClick.bind(this,item.standardId)} className="join">立即加入</a>
+                  </div>
+                </li>
+              )}else if(item.type=="transfer"){
+                return (
+                    <li className="standard__card" key={item.investId}>
+                      <div className="card__scroll">
+                        <div className="card__header">
+                          <h4 className="tit">{item.name}</h4>
+                          <p className="tip">起投金额&nbsp;<em>{item.minInvestAmount }</em>元</p>
+                          <ul className="tags">
+                            <li>{item.refundWayString }</li>
+                          </ul>
+                          <p className="desc"><em><span>{item.loanExpiry }</span>个月</em><br />锁定期</p>
+                        </div>
+                        <div className="card__body">
+                          <p className="yield"><em><span>{item.annualRate /1}</span>.{item.annualRate %1}%+0%</em><br />预期年化收益率</p>
+                          <ul className="tags">
+                            <li>最新推出</li>
+                          </ul>
+                          <div className="progress">
+                            <div className="progress__bar">
+                              <div className="progress__bar--cur" style={{width: `${item.investmentProgress }`}}></div>
+                            </div>
+                            <p className="progress__percent">{item.hadPercent}</p>
+                            <p className="progress__number">{item.financed }万/{item.transAmt }万</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="card__footer">
+                        <a onClick={this.handleStandardClick.bind(this,item.standardId)} className="join">立即加入</a>
+                      </div>
+                    </li>
+                )
+              }
+            })
+          }
             
-            <li className="standard__card">
+            
+            {/* <li className="standard__card">
               <div className="card__scroll">
                 <div className="card__header">
                   <h4 className="tit">汇车贷（一期）</h4>
@@ -276,13 +375,24 @@ class HomePage extends Component {
               <div className="card__footer">
                 <a href="" className="join">立即加入</a>
               </div>
-            </li>
+            </li> */}
           </ul>
         </Floor>
         <div className="ad">
-          <div className="dynamicImg__outer">
+          <Carousel autoplay nextArrow prevArrow>
+              {
+                homePage.ad.map((item)=>{
+                  return (
+                    <div className="dynamicImg__outer" key={item.id} onClick={this.handleAdClick.bind(this,item.id)}>
+                      <img src={item.imgsrc} alt="" className="dynamicImg__inner" />
+                    </div>
+                  )
+                })
+              }
+          </Carousel>    
+          {/* <div className="dynamicImg__outer">
             <img src={require('../../assets/images/homePage/ad.jpg')} alt="" className="dynamicImg__inner" />
-          </div>
+          </div> */}
         </div>
         <div className="floor__group">
           <Floor
@@ -290,11 +400,24 @@ class HomePage extends Component {
             tit="公司动态"
             >
             <div className="news__content">
-              <div className="dynamicImg__outer">
+              <Carousel autoplay nextArrow prevArrow>
+                {homePage.media.commedia.map((item)=>{
+                  return (
+                    <div key={item.id} onClick={this.handleCommediaClick.bind(this,item.id)}>
+                      <div className="dynamicImg__outer">
+                        <img src={item.bgimag} alt="" className="news__img dynamicImg__inner" />
+                      </div>                     
+                      <p className="news__text">{item.tital}</p>
+                    </div>
+                  )
+                })}
+                
+              </Carousel>  
+              {/* <div className="dynamicImg__outer">
                 <img src={require('../../assets/images/homePage/small_tile.jpg')} alt="" className="news__img dynamicImg__inner" />
               </div>
               
-              <p className="news__text">巴巴汇金服资金存管上线</p>
+              <p className="news__text">巴巴汇金服资金存管上线</p> */}
             </div>
           </Floor>
           <Floor
@@ -304,18 +427,28 @@ class HomePage extends Component {
             <div className="media__content">
               <div className="media__group">
                 <ul className="media__reports">
-                  <li><i>[网贷之家]</i>近年来，移动互联网、大数据、金融巨头共同关注的重点领域，其中几个热点问题备受关注</li>
-                  <li><i>[中国经济导报]</i>通俗来讲，金融科技即科技在金融领域的应用，旨在创新金融产品和服务模式、降低交易成本</li>
-                  <li><i>[人民政协报]</i>业界不少专家认为，区块链技术与金融业相结合，将会对金融行业带来革命性影响</li>
-                  <li><i>[财经网]</i>全球传统巨头对待金融新科技并不保守，很多大银行将此视为新科技的颠覆下也迎来新的发展期</li>
+                  {
+                    homePage.media.newsmedia.map((item)=>{
+                      return (
+                        <li key={item.id} onClick={this.handleNewsClick.bind(this,item.id)}><i>[{item.medianame}]</i>{item.mediatital}</li>
+                      )
+                    })
+                  }
+                  {/* <li><i>[网贷之家]</i>近年来，移动互联网、大数据、金融巨头共同关注的重点领域，其中几个热点问题备受关注</li> */}
+                  
                 </ul>
                 <ul className="media__brands">
-                  <li><img src={require('../../assets/images/homePage/media_brand_1.jpg')} alt="" /></li>
-                  <li><img src={require('../../assets/images/homePage/media_brand_2.jpg')} alt="" /></li>
-                  <li><img src={require('../../assets/images/homePage/media_brand_3.jpg')} alt="" /></li>
+                  {
+                      homePage.media.mimage.map((item)=>{
+                        return (
+                          <li key={item.mimgID} onClick={this.handleMimageClick.bind(this,item.mimgID)}><img src={item.mimgsrc} alt="" /></li>
+                        )
+                      })
+                    }
+                  {/* <li><img src={require('../../assets/images/homePage/media_brand_1.jpg')} alt="" /></li> */}
                 </ul>
               </div>
-              <a className="media__more">查看更多 ></a>
+              <a className="media__more" onClick={this.handleMoreMediaClick.bind(this)}>查看更多 ></a>
             </div>
           </Floor>
         </div>
@@ -324,14 +457,15 @@ class HomePage extends Component {
           tit="合作伙伴"
           >
           <ul className="partner__box">
-            <li><a href=""><img src={partnerBrand1} alt="" /></a></li>
-            <li><a href=""><img src={partnerBrand2} alt="" /></a></li>
-            <li><a href=""><img src={partnerBrand3} alt="" /></a></li>
-            <li><a href=""><img src={partnerBrand4} alt="" /></a></li>
-            <li><a href=""><img src={partnerBrand5} alt="" /></a></li>
-            <li><a href=""><img src={partnerBrand6} alt="" /></a></li>
-            <li><a href=""><img src={partnerBrand7} alt="" /></a></li>
-            <li><a href=""><img src={partnerBrand8} alt="" /></a></li>
+            {
+              homePage.partner.map((item)=>{
+                return (
+                  <li key={item.id}><a onClick={this.handlePartnerClick.bind(this,item.id)}><img src={item.imgsrc} alt="" /></a></li>
+                )
+              })
+            }
+            {/* <li><a href=""><img src={partnerBrand1} alt="" /></a></li> */}
+            
           </ul>
         </Floor>
       </div>
