@@ -1,6 +1,16 @@
 import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 
+const urls = [
+    `http://172.16.4.5:8084/getloansList.php?access_token=930b366c-2e78-4c87-8f09-0b12b194b475`,  //获取消息列表
+    `http://172.16.4.5:8084/test.php?access_token=930b366c-2e78-4c87-8f09-0b12b194b475`, 　　　//消息设为已读
+    `http://172.16.4.5:8084/test.php?access_token=930b366c-2e78-4c87-8f09-0b12b194b475`,  //删除消息
+    `http://172.16.1.221:9090/homes/standard?access_token=930b366c-2e78-4c87-8f09-0b12b194b475`,
+    `http://172.16.1.221:9090/homes/ad?access_token=930b366c-2e78-4c87-8f09-0b12b194b475`,
+    `http://172.16.1.221:9090/homes/media?access_token=930b366c-2e78-4c87-8f09-0b12b194b475`,
+    `http://172.16.1.221:9090/homes/partner?access_token=930b366c-2e78-4c87-8f09-0b12b194b475`,
+]
+
 
 let memberSettingsActions = {
 
@@ -146,17 +156,21 @@ let memberSettingsActions = {
             })
             .then((data) => data.json())
             .then(data => {
+                var requireEval=1;
                 newState={
                     result:
                         {
 
-                            requireEval:1,
+                            requireEval:requireEval,
                             result:{},
                             message:''
                         },
-                    status:1,
+                    status:requireEval,
                 };
                 dispatch(memberSettingsActions.stateRiskAssessModify(newState));
+                if(requireEval===1){
+                    dispatch(memberSettingsActions.getRiskAssessList());
+                }
             }).catch(err=>{
             newState={
                 result: {
@@ -186,21 +200,11 @@ let memberSettingsActions = {
             })
             .then((data) => data.json())
             .then(data => {
-                let defaultChecked=[];
-                /*console.log('默认选中状态');
-                for(var key in data.data.list){
-                    //var str='{"ques'+data.data.list[key].proId+'":0}';
-                    //defaultChecked.push(JSON.parse(str) );
-                    defaultChecked.push({});
+                for(let index of data.data.list.keys()){
+                    data.data.list[index]=Object.assign({isChecked:''},data.data.list[index]);
                 }
-                console.log(defaultChecked);*/
                 newState={
-                    myList:
-                        {
-                            data:data.data,
-                            message:''
-                        },
-                    defaultChecked:defaultChecked
+                    myList:data.data.list,
                 };
                 dispatch(memberSettingsActions.stateRiskAssessModify(newState));
             }).catch(err=>{
@@ -213,9 +217,35 @@ let memberSettingsActions = {
                 dispatch(memberSettingsActions.stateRiskAssessModify(newState));
             })
     },
+    putRiskAssess:(pram) => (dispatch, memberLoans) => {
+        console.log(pram);
+        let newState={};
+        let url = `http://172.16.4.5:8084/test.php`;
+        fetch(url,{
+            method: "POST",
+            mode:'cors',
+            cache: 'default',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pram)
+        })
+            .then(function (response){
+                if (response.status == 200){
+                    return response;
+                }
+            })
+            .then((data) => data.json())
+            .then(data => {
+                alert('成功');
+                this.disabled(memberSettingsActions.getRiskAssessResult());
 
-
-
+            })
+            .catch(err=>{
+                alert('失败');
+            });
+    },
 
     //修改状态
     stateMessagesModify: json => ({

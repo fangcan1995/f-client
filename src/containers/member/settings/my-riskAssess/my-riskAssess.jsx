@@ -12,6 +12,7 @@ const RadioGroup = Radio.Group;
 class MyRiskAssess extends React.Component {
     constructor(props){
         super(props);
+        this.onChange = this.onChange.bind(this);
         this.state = {
             status:'',//0显示结果，1显示题目
             value: {
@@ -26,33 +27,55 @@ class MyRiskAssess extends React.Component {
     componentDidMount() {
         this.props.dispatch(memberSettingsActions.getRiskAssessResult());
     }
+    disabled(){
+        let {myList}=this.props.memberSettings.riskAssess;
+        let i=myList.findIndex((x)=>x.isChecked=='');
+
+        if(i!==-1){
+            return true
+        }else{
+            return false
+        }
+    }
     //选择答案
     onChange = (e) => {
-        console.log(e.target);
-        console.log(e.target.name+':'+e.target.value);
-
-        let defaultChecked=this.props.memberSettings.messages.defaultChecked;
-        /*defaultChecked*/
-        this.props.dispatch(memberSettingsActions.stateRiskAssessModify({status:1}))
+        let {myList}=this.props.memberSettings.riskAssess;
+        let i=myList.findIndex((x)=>x.proId==e.target.name);
+        myList[i].isChecked=e.target.value;
+        console.log('`````````````````');
+        console.log(myList);
+        this.props.dispatch(memberSettingsActions.stateRiskAssessModify({myList:myList}));
     }
     //提交答案
     handleSubmit = () => {
-        this.setState({ iconLoading: true });
+
+        let {myList}=this.props.memberSettings.riskAssess;
+        //let postJson={};
+        let result=[];
+        for (let index of myList.keys()){
+            result.push({proId:myList[index].proId,isChecked:myList[index].isChecked});
+        }
+
+        this.props.dispatch(memberSettingsActions.putRiskAssess(result));
     }
     //重新评估
     reset(){
-        console.log('重新评估');
-        this.props.dispatch(memberSettingsActions.stateRiskAssessModify({status:1}))
+
+        this.props.dispatch(memberSettingsActions.stateRiskAssessModify({status:1}));
+        this.props.dispatch(memberSettingsActions.getRiskAssessList());
+    }
+    componentDidMount() {
+        this.props.dispatch(memberSettingsActions.getRiskAssessResult());
+
     }
     render(){
         let {dispatch}=this.props
         let {riskAssess}=this.props.memberSettings;
-
-        console.log(riskAssess.defaultChecked);
-        if(riskAssess.status===1){
+        console.log(riskAssess);
+        /*if(riskAssess.status===1){
             console.log('获取列表');
             dispatch(memberSettingsActions.getRiskAssessList());
-        }
+        }*/
         return(
             <div className="member__main riskAssess">
                 <Crumbs/>
@@ -95,22 +118,22 @@ class MyRiskAssess extends React.Component {
                                         <div className="form__wrapper">
 
                                             {
-                                                (riskAssess.myList.data!='')?
-                                                    riskAssess.myList.data.list.map((l, i) => (
+                                                (riskAssess.myList.length>0)?
+                                                    riskAssess.myList.map((l, i) => (
                                                         <dl className="controls" key={`row-${i}`}>
                                                             <dt>1.您的投资目的是什么？</dt>
                                                             <dd>
 
-                                                                <RadioGroup onChange={this.onChange} value={riskAssess.defaultChecked[i]} name={`${l.proId}`}>
+                                                                <RadioGroup onChange={this.onChange} value={`${l.isChecked}`} name={`${l.proId}`}>
 
-                                                                    <Radio value={'A'}>A .我希望存点钱以备不时之需</Radio>
+                                                                    <Radio value={'A'}>A .我希望存点钱以备不时之需{}</Radio>
                                                                     <Radio value={'B'}>B .我希望保障我现有的资产价值，获取超过银行存款和通货膨胀率的收益</Radio>
                                                                     <Radio value={'C'}>C .在深思熟虑后愿意承担一定的风险</Radio>
                                                                     <Radio value={'D'}>D .我希望通过投资增加我未来的收入，获取一定的收益</Radio>
 
                                                                 </RadioGroup>
                                                                 {
-                                                                    riskAssess.defaultChecked[i]===0?
+                                                                    l.isChecked===''?
                                                                         <span className="error">必选</span>
                                                                         :``
                                                                 }
@@ -123,7 +146,9 @@ class MyRiskAssess extends React.Component {
 
                                             <div className="form__bar center">
 
-                                                <Button type="primary"  loading={this.state.iconLoading} onClick={this.handleSubmit} style={{width:'20%'}} className='large'>
+                                                <Button type="primary"  loading={this.state.iconLoading} onClick={this.handleSubmit} style={{width:'20%'}} className='large'
+                                                        disabled={this.disabled()}
+                                                >
                                                     立即评估
                                                 </Button>
 
@@ -132,9 +157,6 @@ class MyRiskAssess extends React.Component {
                                     </div>
                                     :``
                             }
-
-
-
                         </div>
                     </Tab>
                 </div>
