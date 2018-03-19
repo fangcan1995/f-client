@@ -57,7 +57,6 @@ class Login extends Component {
     );
   }
 }
-
 class PasswordForm extends Component {
   static propTypes = {
     form: PropTypes.object.isRequired,

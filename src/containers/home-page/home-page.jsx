@@ -21,7 +21,7 @@ import partnerBrand8 from '../../assets/images/homePage/partner_brand_8.png';
 
 import Floor from '../../components/home-page-floor/home-page-floor';
 
-import { getData, getNovice, getStandard, getNotice } from '../../actions/home-page';
+import { getData, getNovice, getStandard, getNotice, GetHomePage } from '../../actions/home-page';
 
 class HomePage extends Component {
   constructor(props) {
@@ -86,11 +86,18 @@ class HomePage extends Component {
   }
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(getData());
-    dispatch(getNovice());
-    dispatch(getStandard());
+    // dispatch(getData());
+    // dispatch(getNovice());
+    // dispatch(getStandard());
     // dispatch(getBanner());
-    dispatch(getNotice());
+    // dispatch(getNotice());
+    // dispatch(getSpecs());
+    dispatch(GetHomePage.getSpecs())
+    dispatch(GetHomePage.getNovice())
+    dispatch(GetHomePage.getStandard())
+    dispatch(GetHomePage.getBanner())
+    dispatch(GetHomePage.getNotice())
+    dispatch(GetHomePage.getData())
     
   }
   render() {
@@ -132,9 +139,9 @@ class HomePage extends Component {
       <div className="spec">
         <div className="wrapper">
           <ul className="spec__box">
-            <li className="spec__item"><em><span>{homePage.spec.pNumber}</span>次</em><br />累计服务用户人次</li>
-            <li className="spec__item"><em><span>{homePage.spec.profit}</span>万</em><br />累计撮合交易额（元）</li>
-            <li className="spec__item"><em><span>{homePage.spec.sumNumber}</span>万</em><br />已为客户赚取（元）</li>
+            <li className="spec__item"><em><span>{homePage.spec.memberCount}</span>次</em><br />累计服务用户人次</li>
+            <li className="spec__item"><em><span>{homePage.spec.detailAmountSum}</span>万</em><br />累计撮合交易额（元）</li>
+            <li className="spec__item"><em><span>{homePage.spec.earnAmountSum}</span>万</em><br />已为客户赚取（元）</li>
             <li className="spec__item spec__more"><a onClick={this.handleSpecClick}>查看详情&nbsp;></a></li>
           </ul>
         </div>

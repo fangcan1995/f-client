@@ -4,12 +4,7 @@ import Immutable from 'immutable';
 const initialState = Immutable.fromJS({
   isFetching: false,
   banner: [],
-  spec:{
-    pNumber:10000,
-    sumNumber:100000,
-    profit:1000,
-    
-  },
+  spec:{},
   notice:[],
   sprog:[],
  standard:[{form:'汇车贷（一期）',
@@ -65,7 +60,6 @@ export default createReducer(initialState, {
   ['homePage/GET_DATA_FULFILLED']: (state, action) => {
       const [ banner, spec, sprog, standard, ad, media, partner ] = actions.payload;
         return state.merge({
-            spec,
             ad,
             media,
             partner,
@@ -120,6 +114,18 @@ export default createReducer(initialState, {
     notice: action.payload,
   }),
   ['homePage/GET_NOTICE_REJECTED']: (state, action) => state.merge({
+    isFetching: false,
+    errorMessage: action.message
+  }),
+
+  ['homePage/GET_SPEC_PENDING']: (state, action) => state.merge({
+    isFetching: true,
+  }),
+  ['homePage/GET_SPEC_FULFILLED']: (state, action) => state.merge({
+    isFetching: false,
+    spec: action.payload,
+  }),
+  ['homePage/GET_SPEC_REJECTED']: (state, action) => state.merge({
     isFetching: false,
     errorMessage: action.message
   }),
