@@ -190,8 +190,9 @@ class MyMessages extends React.Component {
     }
 }
 function mapStateToProps(state) {
-    const { memberSettings } = state.toJS();
+    const { auth,memberSettings } = state.toJS();
     return {
+        auth,
         memberSettings
     };
 }
