@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import Pagination from '../../../../components/pagination/pagination';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
-import  memberSettingsActions  from '../../../../actions/member-settings';
-import { Checkbox,message,Select,Button  } from 'antd';
+import {myMessagesAc} from '../../../../actions/member-settings';
+import { Checkbox,message  } from 'antd';
+import parseJson2URL from '../../../../utils/parseJson2URL';
 import { connect } from 'react-redux';
 import './message.less';
 
@@ -16,83 +17,100 @@ class MyMessages extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.onAllChange = this.onAllChange.bind(this);
         this.setReaded= this.setReaded.bind(this);
+        this.filter=this.filter.bind(this);
     }
     componentDidMount() {
-        this.props.dispatch(memberSettingsActions.getMessagesList(1, 10));
+        this.props.dispatch(myMessagesAc.getMessagesList());
+    }
+    filter(parm){
+        this.props.dispatch(myMessagesAc.modifyState({readTag:parm,myList:''}));  //修改状态
+        this.props.dispatch(myMessagesAc.getMessagesList({readTag:parm}));  //获取数据
     }
     //读消息，并设为已读
     setReaded(index,id){
-        let isRead=this.props.memberSettings.messages.readState.isRead;
-        let isShow=this.props.memberSettings.messages.readState.isShow;
-        let noReadTotal=this.props.memberSettings.messages.myList.data.noReadTotal;
-
-        if(isRead[index]===0){
-            noReadTotal=noReadTotal-1;
-            isRead[index]=1;
-            this.props.dispatch(memberSettingsActions.setReadState(id));  //后台设为已读
-        }
-        (isShow[index]===0)?isShow[index]=1:isShow[index]=0;
+        let {list} = this.props.memberSettings.messages.myList.page;
+        let {readCount}=this.props.memberSettings.messages.myList;
+        (list[index].isShow=='0')?list[index].isShow='1':list[index].isShow='0';
+        if(list[index].readTag=='0'){
+            readCount=readCount-1;
+            list[index].readTag='1';
+            this.props.dispatch(myMessagesAc.setRead(Array.of(id)));  //后台设为已读
+        };
         let newState={
             myList:{
-                data:{
-                    noReadTotal:noReadTotal
-                }
-            },
-            readState:{
-                isRead:isRead,
-                isShow:isShow,
+                page:{
+                    list:list
+                },
+                readCount:readCount
             }
         }
-        this.props.dispatch(memberSettingsActions.stateMessagesModify(newState));
+        this.props.dispatch(myMessagesAc.modifyState(newState));   //显示消息内容
+
     }
     //删除一条或多条消息
     deleteMessage(pram){
-        console.log('删除');
-        pram=pram.toString();
-        this.props.dispatch(memberSettingsActions.deleteMessage(pram));
-        this.props.dispatch(memberSettingsActions.getMessagesList(0,10));
-    }
-    //选去一个
-    onChange(e) {
-        let value=e.target.value;
-        let isExist=selectIds.findIndex((value)=>{
-            return value ==e.target.value;
-        });
-        if(isExist===-1){
-            selectIds.push(value);
-        }else{
-            selectIds.splice(isExist,1);
+        /*如删除一条或多条数据，则重新获取数据，删除1条时，体验较差
+        最好删除一条时前端删除，实现比较麻烦，后期迭代
+        */
+        console.log('要删除的数据');
+        console.log(pram);
+        if(pram.length>0){
+            pram=pram.toString();
+            this.props.dispatch(myMessagesAc.deleteMessage(pram));
+            this.props.dispatch(myMessagesAc.modifyState({myList:''}));  //修改状态
+            this.props.dispatch(myMessagesAc.getMessagesList());
         }
-        //console.log(selectIds);
-
+    }
+    //选取一个
+    onChange(e) {
+        let {list} = this.props.memberSettings.messages.myList.page;
+        let index=list.findIndex((x)=>
+             x.id ==parseInt(e.target.value)
+        );
+        if(e.target.checked){
+            list[index].isChecked=1;
+            selectIds.push(list[index].id);
+        }else{
+            list[index].isChecked=0;
+            let selectIdsIndex=selectIds.findIndex((x)=>
+                x ==parseInt(e.target.value)
+            );
+            selectIds.splice(selectIdsIndex,1); //从选中的数组中删除
+        }
+        let newState={
+            myList:{
+                page:{
+                    list:list
+                },
+            }
+        }
+        this.props.dispatch(myMessagesAc.modifyState(newState));
     }
     //全选
     onAllChange(e){
-        let defaultChecked=this.props.memberSettings.messages.defaultChecked;
-        for(var item in defaultChecked){
-            if(e.target.checked){
-                defaultChecked[item]=1;
-            }else{
-                defaultChecked[item]=0;
+        let {list} = this.props.memberSettings.messages.myList.page;
+        if(e.target.checked){
+            for(let index of list.keys()){
+                list[index].isChecked=1;
+                selectIds.push(list[index].id);
             }
+        }else{
+            for(let index of list.keys()){
+                list[index].isChecked=0;
+            }
+            selectIds=[];
         }
         let newState={
-            defaultChecked:defaultChecked
+            myList:{
+                page:{
+                    list:list
+                },
+            }
         }
-        console.log(defaultChecked);
-        this.props.dispatch(memberSettingsActions.stateMessagesModify(newState));
-        selectIds=[];
-        this.props.memberSettings.messages.myList.data.list.map((l, i) => (
-            selectIds.push(l.proId)
-        ))
-
-
+        this.props.dispatch(myMessagesAc.modifyState(newState));   //
     }
     render() {
-        console.log('---------myMessages------');
-        console.log(this.props);
-        let {dispatch}=this.props;
-        let {isRead,myList,readState,defaultChecked} = this.props.memberSettings.messages;
+        let {myList,readTag} = this.props.memberSettings.messages;
         return (
             <div className="member__main myMessage">
                 <Crumbs/>
@@ -107,16 +125,16 @@ class MyMessages extends React.Component {
                                                 <h5>类型:</h5>
                                             </div>
                                             <div className="filter__cell">
-                                                <p className={(isRead === '') ? 'filter__opt filter__opt--active' : 'filter__opt'}
-                                                   onClick={ () => { dispatch(memberSettingsActions.messagesFilter('')) } }>全部</p>
+                                                <p className={(readTag === '') ? 'filter__opt filter__opt--active' : 'filter__opt'}
+                                                   onClick={ () => { this.filter('') } }>全部</p>
                                             </div>
                                             <div className="filter__cell">
-                                                <p className={(isRead === 0) ? 'filter__opt filter__opt--active' : 'filter__opt'}
-                                                   onClick={ () => { dispatch(memberSettingsActions.messagesFilter(0)) } }>未读</p>
+                                                <p className={(readTag === '0') ? 'filter__opt filter__opt--active' : 'filter__opt'}
+                                                   onClick={ () => { this.filter('0') }  }>未读</p>
                                             </div>
                                             <div className="filter__cell">
-                                                <p className={(isRead === 1) ? 'filter__opt filter__opt--active' : 'filter__opt'}
-                                                   onClick={ () => { dispatch(memberSettingsActions.messagesFilter(1)) } }>已读</p>
+                                                <p className={(readTag === '1') ? 'filter__opt filter__opt--active' : 'filter__opt'}
+                                                   onClick={ () => { this.filter('1') } }>已读</p>
                                             </div>
                                         </div>
                                     </div>
@@ -124,35 +142,39 @@ class MyMessages extends React.Component {
                             </div>
                             <div className="tab_content" style={{marginTop:'15px'}}>
                                 {
-                                    myList.data == '' ? <div><p>loading</p></div>
+                                    myList === '' ? <div><p>loading</p></div>
                                         :
-                                        myList.data.total > 0 ?
+                                        myList.page.total > 0 ?
                                             <div>
-                                                <p className="info" style={{textAlign:'right',paddingBottom:'10px'}}>（共{myList.data.total}条，{myList.data.noReadTotal}条未读）</p>
+                                                <p className="info" style={{textAlign:'right',paddingBottom:'10px'}}>
+                                                    （共{myList.page.total}条
+                                                        {(readTag === '')?`, ${myList.readCount}条未读`:``
+                                                    }）
+                                                </p>
                                                 <div className="list">
                                                     <ul className="thead">
-                                                        <li> 1</li>
-                                                        <li> 2</li>
+                                                        <li>&nbsp;</li>
+                                                        <li>&nbsp;</li>
                                                         <li>消息类型</li>
                                                         <li>内容</li>
                                                         <li>时间</li>
                                                         <li>操作</li>
                                                     </ul>
                                                     {
-                                                        myList.data.list.map((l, i) => (
+                                                        myList.page.list.map((l, i) => (
                                                             <div key={`row-${i}`}>
                                                                 <ul className="body">
-                                                                    <li><Checkbox onChange={this.onChange} value={`${l.proId}`} checked={defaultChecked[i]}></Checkbox></li>
-                                                                    <li>{(readState.isRead[i]===0)?<i className="iconfont noread"></i>:<i className="iconfont"></i>}</li>
-                                                                    <li>{l.shortText}</li>
-                                                                    <li onClick={()=>{this.setReaded(i,l.proId)}}>{l.longText}</li>
-                                                                    <li>{l.dateTime}</li>
-                                                                    <li><a className="iconfont btn_del" onClick={()=>{this.deleteMessage(l.proId)}}></a></li>
+                                                                    <li><Checkbox onChange={this.onChange} value={`${l.id}`} checked={l.isChecked}></Checkbox></li>
+                                                                    <li>{(l.readTag==='0')?<i className="iconfont noread"></i>:<i className="iconfont"></i>}</li>
+                                                                    <li><p>{l.msgProfile}</p></li>
+                                                                    <li onClick={()=>{this.setReaded(i,l.id)}}>{l.msgTitle}</li>
+                                                                    <li>{l.sendTime}</li>
+                                                                    <li><a className="iconfont btn_del" onClick={()=>{this.deleteMessage(l.id)}}></a></li>
                                                                 </ul>
-                                                                {((readState.isShow[i]===1)?
+                                                                {((l.isShow==='1')?
                                                                     <div className="article" >
                                                                         <p>
-                                                                            {l.longText}
+                                                                            {l.msgContent}
                                                                         </p>
                                                                     </div>
                                                                     :``)}
@@ -162,24 +184,29 @@ class MyMessages extends React.Component {
                                                 </div>
                                                 <div className="control">
                                                     <Checkbox onChange={this.onAllChange} >
-                                                        <button className="del_botton" onClick={()=>{this.delete(selectIds)}}>删除</button>
+                                                        <button className="del_botton" onClick={()=>{this.deleteMessage(selectIds)}}>删除</button>
                                                     </Checkbox>
                                                 </div>
                                                 <Pagination config={
                                                     {
-                                                        currentPage:  myList.data.pageNum,
-                                                        pageSize: myList.data.pageSize,
-                                                        totalPage: Math.ceil(myList.data.total/myList.data.pageSize),
-                                                        filter:isRead,
+                                                        currentPage:  myList.page.pageNum,
+                                                        pageSize: myList.page.pageSize,
+                                                        totalPage: myList.page.pages,
+                                                        filter:readTag,
                                                         paging: (obj) => {
-
-                                                            this.props.dispatch(memberSettingsActions.getMessagesList(obj.currentPage, obj.pageCount,{isRead:isRead}));
+                                                            this.props.dispatch(myMessagesAc.modifyState({myList:''}));  //修改状态
+                                                            this.props.dispatch(myMessagesAc.getMessagesList(
+                                                                {
+                                                                    pageNum:obj.currentPage,
+                                                                    readTag:readTag
+                                                                }
+                                                                ))
                                                         }
                                                     }
                                                 }>
                                                 </Pagination>
                                             </div>
-                                            :`<div><p>暂无消息</p></div>`
+                                            :<div><p>暂无消息</p></div>
                                 }
                             </div>
                         </div>

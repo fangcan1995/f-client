@@ -41,6 +41,7 @@ class MyRiskAssess extends React.Component {
     onChange = (e) => {
         let {myList}=this.props.memberSettings.riskAssess;
         let i=myList.findIndex((x)=>x.proId==e.target.name);
+
         myList[i].isChecked=e.target.value;
         console.log('`````````````````');
         console.log(myList);

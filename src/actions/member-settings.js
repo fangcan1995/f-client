@@ -1,17 +1,82 @@
 import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
+import { API_CONFIG } from './../config/api';
+import parseJson2URL from './../utils/parseJson2URL';
 
-const urls = [
-    `http://172.16.4.5:8084/getloansList.php?access_token=930b366c-2e78-4c87-8f09-0b12b194b475`,  //获取消息列表
-    `http://172.16.4.5:8084/test.php?access_token=930b366c-2e78-4c87-8f09-0b12b194b475`, 　　　//消息设为已读
-    `http://172.16.4.5:8084/test.php?access_token=930b366c-2e78-4c87-8f09-0b12b194b475`,  //删除消息
-    `http://172.16.1.221:9090/homes/standard?access_token=930b366c-2e78-4c87-8f09-0b12b194b475`,
-    `http://172.16.1.221:9090/homes/ad?access_token=930b366c-2e78-4c87-8f09-0b12b194b475`,
-    `http://172.16.1.221:9090/homes/media?access_token=930b366c-2e78-4c87-8f09-0b12b194b475`,
-    `http://172.16.1.221:9090/homes/partner?access_token=930b366c-2e78-4c87-8f09-0b12b194b475`,
-]
+const url_getList=`http://172.16.1.234:9090/message/mail/page?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`;  //获取消息列表
+const url_setRead=`http://172.16.1.234:9090/message/mail/read?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`; //设为已读
+const url_delete=`http://172.16.1.234:9090/message/mail?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`; //删除
 
-
+export const myMessagesAc= {
+    getMessagesList: (params) => {
+        return {
+            type: 'mySettings/messages/FETCH',
+            async payload() {
+                params = parseJson2URL(params);
+                const res = await cFetch(`${url_getList}&` + params, {method: 'GET'}, false);
+                const {code, data} = res;
+                if (data.page.total > 0) {
+                    for (let index of data.page.list.keys()) {
+                        data.page.list[index] = Object.assign({isShow: '0',isChecked: 0}, data.page.list[index]);
+                    }
+                }
+                if (code == 0) {
+                    return {myList: data};
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    setRead: (pram) => {
+        return {
+            type: 'mySettings/messages/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_setRead}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: `[${pram}]`,
+                    },
+                    false);
+                if (res.code == 0) {
+                    return {readResult: res};
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    deleteMessage: (pram,dispatch) => {
+        return {
+            type: 'mySettings/messages/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_delete}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: `[${pram}]`,
+                    },
+                    false);
+                if (res.code == 0) {
+                    return {deleteResult: res};
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    modifyState: (prams) => {
+        return {
+            type: 'mySettings/messages/MODIFY_STATE',
+            payload() {
+                return prams
+            }
+        }
+    },
+}
 let memberSettingsActions = {
 
     //消息
@@ -76,6 +141,7 @@ let memberSettingsActions = {
 
 
     },
+
     messagesFilter: (pram) => (dispatch, memberLoans) => {
         dispatch(memberSettingsActions.stateMessagesModify({isRead:pram}));
         dispatch(memberSettingsActions.getList(1,10,{isRead:pram}));
@@ -89,6 +155,7 @@ let memberSettingsActions = {
             method: "POST",
             mode:'cors',
             cache: 'default',
+
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

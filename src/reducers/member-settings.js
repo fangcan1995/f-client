@@ -3,24 +3,16 @@ import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
     messages:{
-        myList:{
-            data:'',
-            message:''
-        },
-        isRead: '',
-        readState:{
-            isRead:'',
-            isShow:'',
-        },
-        defaultChecked:''
+        isFetching:false,
+        myList:'',
+        readTag: '',
+        readResult:{},
+        deleteResult:{}
     },
     riskAssess:{
-        status:'',
-        myList:{
-            data:'',
-            message:''
-        },
-        defaultChecked:'',
+        status:1,
+        myList:[],
+        //defaultChecked:'',
         result:{
             requireEval:'',  //是否需要风险评估
             result:'',
@@ -37,9 +29,22 @@ const initialState = Immutable.fromJS({
 });
 
 export default createReducer(initialState, {
+    ['mySettings/messages/FETCH_PENDING']:(state,action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['mySettings/messages/FETCH_FULFILLED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        messages:action.payload
+    }),
+    ['mySettings/messages/FETCH_REJECTED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
     ['mySettings/messages/MODIFY_STATE']:(state,action) => state.mergeDeep({
         messages:action.payload
     }),
+
+
     ['mySettings/riskAssess/MODIFY_STATE']:(state,action) => state.mergeDeep({
         riskAssess:action.payload
     }),
