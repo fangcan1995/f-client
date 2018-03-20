@@ -5,6 +5,8 @@ import Floor from '../../../components/home-page-floor/home-page-floor';
 import { Modal, Button } from 'antd';
 import { connect } from 'react-redux';
 import Login from '../../login/login'
+import { showModal,hideModal } from '../../../actions/login-modal';
+import LoginModal from '../../../components/login-modal/login-modal'
 
 class Loan extends Component {
   state = {
@@ -13,33 +15,12 @@ class Loan extends Component {
     footer:null
   }
   showModal = () => {
-    this.setState({
-      visible: true,
-    });
+    const { dispatch } = this.props;
+    dispatch(showModal())
   }
-  handleOk = () => {
-    this.setState({
-      ModalText: 'The modal dialog will be closed after two seconds',
-      confirmLoading: true,
-    });
-    const ctiemout = setTimeout(() => {
-      this.setState({
-        visible: false,
-        confirmLoading: false,
-      });
-    }, 2000);
-  }
-  handleCancel = () => {
-    console.log('Clicked cancel button');
-    this.setState({
-      visible: false,
-    });
-  }
-  componentWillUnmount(){
-    clearTimeout(this.ctiemout)
-  }
+  
   render(){
-    const { auth } = this.props;
+    const { auth ,loginModal} = this.props;
     console.log(auth)
     if(auth.isAuthenticated){
       return (
@@ -103,7 +84,6 @@ class Loan extends Component {
               onOk={this.handleOk}
               confirmLoading={this.state.confirmLoading}
               onCancel={this.handleCancel}
-              className='modal'
             >
              
               <div className='layui-layer'>
@@ -286,20 +266,21 @@ class Loan extends Component {
                 </li>
               </ul>
             </Floor>
-            <div className='modal'>
-            <Modal title="您还未登录，请先登录"
+            
+            {/* <Modal title="您还未登录，请先登录"
               visible={this.state.visible}
               onOk={this.handleOk}
               confirmLoading={this.state.confirmLoading}
               onCancel={this.handleCancel}
-              footer
-              
+              footer={this.state.footer}
+              className='modal'
             >
              
               <Login/>
               
-            </Modal>
-            </div>
+            </Modal> */}
+            <LoginModal/>
+           
             <Floor
               otherClassName="faq"
               tit="常见问题"
@@ -335,9 +316,10 @@ class Loan extends Component {
   
 };
 function select(state) {
-  const { auth } = state.toJS();
+  const { auth ,loginModal} = state.toJS();
   return {
-    auth
+    auth,
+    loginModal
   };
 }
 export default connect(select)(Loan);

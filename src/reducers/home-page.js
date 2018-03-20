@@ -46,29 +46,48 @@ const initialState = Immutable.fromJS({
       imgsrc:'1231',
       id:'11111111'
   }],
-  
+  com:{
+    affTypeId:5,
+    affTypeName:'gong',
+    companyList:[]
+  },
+  med:{
+    mediaReportInfosDtoList:[]
+  },
+  par:{
+    partnerCompanyInfosDtoList:[]
+  }
 });
 
 export default createReducer(initialState, {
   ['homePage/GET_DATA_PENDING']: (state, action) => state.merge({
     isFetching: true,
   }),
-  // ['homePage/GET_DATA_FULFILLED']: (state, action) => state.merge({
-  //   isFetching: false,
-  //   data: action.payload
-  // }),
+ 
   ['homePage/GET_DATA_FULFILLED']: (state, action) => {
-      const [ banner, spec, sprog, standard, ad, media, partner ] = actions.payload;
+      const { companyNewsDto, mediaReportsDto, partnerCompanysDto } = action.payload;
         return state.merge({
-            ad,
-            media,
-            partner,
+          com:companyNewsDto,
+          med:mediaReportsDto,
+          par:partnerCompanysDto,
         })
     },
   ['homePage/GET_DATA_REJECTED']: (state, action) => state.merge({
     isFetching: false,
     errorMessage: action.message
   }),
+
+  // ['homePage/GET_DATA_PENDING']: (state, action) => state.merge({
+  //   isFetching: true,
+  // }),
+  // ['homePage/GET_DATA_FULFILLED']: (state, action) => state.merge({
+  //   isFetching: false,
+  //   affiches: action.payload,
+  // }),
+  // ['homePage/GET_DATA_REJECTED']: (state, action) => state.merge({
+  //   isFetching: false,
+  //   errorMessage: action.message
+  // }),
 
   ['homePage/GET_NOVICE_PENDING']: (state, action) => state.merge({
     isFetching: true,

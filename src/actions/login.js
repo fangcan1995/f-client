@@ -38,3 +38,11 @@ export const setVerifyCodeCd = cd => {
     payload: cd,
   }
 }
+
+export const setSignup = (e) => {
+  return {
+    type: 'login/SET_SIGNUP', 
+    payload: e,
+  }
+}
+

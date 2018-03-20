@@ -21,7 +21,7 @@ import partnerBrand8 from '../../assets/images/homePage/partner_brand_8.png';
 
 import Floor from '../../components/home-page-floor/home-page-floor';
 
-import { getData, getNovice, getStandard, getNotice, GetHomePage } from '../../actions/home-page';
+import { getData, getNovice, getStandard, getNotice, getBanner,getSpecs } from '../../actions/home-page';
 
 class HomePage extends Component {
   constructor(props) {
@@ -32,6 +32,7 @@ class HomePage extends Component {
       speed: 400,
       auto: 3000,
       stopPropagation: false}
+     
  }
   handleLoginBtnClick = (e) => {
     e.preventDefault();
@@ -85,24 +86,20 @@ class HomePage extends Component {
     console.log(e)
   }
   componentDidMount() {
-    const { dispatch } = this.props;
-    // dispatch(getData());
-    // dispatch(getNovice());
-    // dispatch(getStandard());
-    // dispatch(getBanner());
-    // dispatch(getNotice());
-    // dispatch(getSpecs());
-    dispatch(GetHomePage.getSpecs())
-    dispatch(GetHomePage.getNovice())
-    dispatch(GetHomePage.getStandard())
-    dispatch(GetHomePage.getBanner())
-    dispatch(GetHomePage.getNotice())
-    dispatch(GetHomePage.getData())
+    const { dispatch ,homePage} = this.props;
+    dispatch(getData());
+    dispatch(getNovice());
+    dispatch(getStandard());
+    dispatch(getBanner());
+    dispatch(getNotice());
+    dispatch(getSpecs());
+    
     
   }
   render() {
     const { homePage } = this.props;
-   console.log(homePage)
+    const companyList = homePage.com.companyList
+   console.log(companyList )
     return (
     <main className="main home-page" id="home-page">
       <div className="banner" >
@@ -297,95 +294,10 @@ class HomePage extends Component {
           }
             
             
-            {/* <li className="standard__card">
-              <div className="card__scroll">
-                <div className="card__header">
-                  <h4 className="tit">汇车贷（一期）</h4>
-                  <p className="tip">起投金额&nbsp;<em>1.000</em>元</p>
-                  <ul className="tags">
-                    <li>按月付息，到期还本</li>
-                  </ul>
-                  <p className="desc"><em><span>3</span>个月</em><br />锁定期</p>
-                </div>
-                <div className="card__body">
-                  <p className="yield"><em><span>12</span>.6%+0.4%</em><br />预期年化收益率</p>
-                  <ul className="tags">
-                    <li>最新推出</li>
-                  </ul>
-                  <div className="progress">
-                    <div className="progress__bar">
-                      <div className="progress__bar--cur" style={{width: '65%'}}></div>
-                    </div>
-                    <p className="progress__percent">65%</p>
-                    <p className="progress__number">18.05万/30万</p>
-                  </div>
-                </div>
-              </div>
-              <div className="card__footer">
-                <a href="" className="join">立即加入</a>
-              </div>
-            </li>
-
-            <li className="standard__card">
-              <div className="card__scroll">
-                <div className="card__header">
-                  <h4 className="tit">汇车贷（一期）</h4>
-                  <p className="tip">起投金额&nbsp;<em>1.000</em>元</p>
-                  <ul className="tags">
-                    <li>按月付息，到期还本</li>
-                  </ul>
-                  <p className="desc"><em><span>3</span>个月</em><br />锁定期</p>
-                </div>
-                <div className="card__body">
-                  <p className="yield"><em><span>12</span>.6%+0.4%</em><br />预期年化收益率</p>
-                  <ul className="tags">
-                    <li>最新推出</li>
-                  </ul>
-                  <div className="progress">
-                    <div className="progress__bar">
-                      <div className="progress__bar--cur" style={{width: '65%'}}></div>
-                    </div>
-                    <p className="progress__percent">65%</p>
-                    <p className="progress__number">18.05万/30万</p>
-                  </div>
-                </div>
-              </div>
-              <div className="card__footer">
-                <a href="" className="join">立即加入</a>
-              </div>
-            </li>
-
-            <li className="standard__card">
-              <div className="card__scroll">
-                <div className="card__header">
-                  <h4 className="tit">汇车贷（一期）</h4>
-                  <p className="tip">起投金额&nbsp;<em>1.000</em>元</p>
-                  <ul className="tags">
-                    <li>按月付息，到期还本</li>
-                  </ul>
-                  <p className="desc"><em><span>3</span>个月</em><br />锁定期</p>
-                </div>
-                <div className="card__body">
-                  <p className="yield"><em><span>12</span>.6%+0.4%</em><br />预期年化收益率</p>
-                  <ul className="tags">
-                    <li>最新推出</li>
-                  </ul>
-                  <div className="progress">
-                    <div className="progress__bar">
-                      <div className="progress__bar--cur" style={{width: '65%'}}></div>
-                    </div>
-                    <p className="progress__percent">65%</p>
-                    <p className="progress__number">18.05万/30万</p>
-                  </div>
-                </div>
-              </div>
-              <div className="card__footer">
-                <a href="" className="join">立即加入</a>
-              </div>
-            </li> */}
+            
           </ul>
         </Floor>
-        <div className="ad">
+        {/* <div className="ad">//广告待定
           <Carousel autoplay nextArrow prevArrow>
               {
                 homePage.ad.map((item)=>{
@@ -397,24 +309,24 @@ class HomePage extends Component {
                 })
               }
           </Carousel>    
-          {/* <div className="dynamicImg__outer">
+          <div className="dynamicImg__outer">
             <img src={require('../../assets/images/homePage/ad.jpg')} alt="" className="dynamicImg__inner" />
-          </div> */}
-        </div>
+          </div>
+        </div> */}
         <div className="floor__group">
           <Floor
             otherClassName="news"
-            tit="公司动态"
+            tit={homePage.com.affTypeName}
             >
             <div className="news__content">
               <Carousel autoplay nextArrow prevArrow>
-                {homePage.media.commedia.map((item)=>{
+                {homePage.com.companyList.map((item)=>{
                   return (
-                    <div key={item.id} onClick={this.handleCommediaClick.bind(this,item.id)}>
+                    <div key={item.affInfoId} onClick={this.handleCommediaClick.bind(this,item.affInfoId)}>
                       <div className="dynamicImg__outer">
-                        <img src={item.bgimag} alt="" className="news__img dynamicImg__inner" />
+                        <img src={item.affInfoIcon} alt="" className="news__img dynamicImg__inner" />
                       </div>                     
-                      <p className="news__text">{item.tital}</p>
+                      <p className="news__text">{item.affInfoName}</p>
                     </div>
                   )
                 })}

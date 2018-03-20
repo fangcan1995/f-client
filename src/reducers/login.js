@@ -6,6 +6,7 @@ const initialState = Immutable.fromJS({
   imageCodeImg: '',
   verifyCode: {},
   verifyCodeCd: 0,
+  signup:true
 });
 
 export default createReducer(initialState, {
@@ -38,5 +39,12 @@ export default createReducer(initialState, {
     verifyCodeCd: action.payload
   }),
 
+  ['login/SET_SIGNUP']: (state, action) => state.merge({
+    signup: !action.payload
+  }),
 
+  // ['login/SET_SIGNUP_FULFILLED']: (state, action) => state.merge({
+  //   isFetching: false,
+  //   signup: !action.payload
+  // }),
 })

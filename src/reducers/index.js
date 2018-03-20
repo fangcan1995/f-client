@@ -1,5 +1,6 @@
 import auth from './auth';
 import login from './login';
+import loginModal from './login-modal';
 import signup from './signup';
 import homePage from './home-page';
 import constantReducer from './constantReducer';
@@ -15,6 +16,7 @@ import member from './member';
 export {
     auth,
     login,
+    loginModal,
     signup,
     aboutReducer,
     homePage,

@@ -5,7 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Form, Input, Checkbox, Button, Tabs, Row, Col, message } from 'antd';
 
 import { loginUser } from '../../actions/auth';
-import { sendVerifyCode, getImageCode, setVerifyCodeCd } from '../../actions/login';
+import { sendVerifyCode, getImageCode, setVerifyCodeCd,setSignup } from '../../actions/login';
 
 import { hex_md5 } from '../../utils/md5';
 import readBlobAsDataURL from '../../utils/readBlobAsDataURL';
@@ -13,6 +13,7 @@ import parseJson2URL from '../../utils/parseJson2URL';
 import parseQueryString from '../../utils/parseQueryString';
 
 import Card from '../../components/login-card/login-card';
+import Signup from '../signup/signup'
 import './login.less';
 
 const createForm = Form.create;
@@ -31,17 +32,27 @@ function noop() {
   return false;
 }
 class Login extends Component {
+  state={
+    signup:true
+  }
+  
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(getImageCode());
   }
+  handleSignupClick(){
+    const { dispatch } = this.props;
+    dispatch(setSignup(this.state.signup))
+  }
   render() {
-    return (
+    const {login}=this.props;
+    if(login.signup){
+       return (
       <main className="main login">
         <div className="wrapper">
           <Card
             tit="登录"
-            tip={ <span>没有账号？<Link to="/signup">立即注册</Link></span> }
+            tip={ <span>没有账号？<a onClick={this.handleSignupClick.bind(this)}>立即注册</a></span> }
             >
             <Tabs defaultActiveKey="1">
               <TabPane tab="密码登录" key="1">
@@ -54,7 +65,14 @@ class Login extends Component {
           </Card>
         </div>
       </main>
+      // <span>没有账号？<Link to="/signup">立即注册</Link></span>
     );
+    }else{
+      return (
+        <Signup/>
+      )
+    }
+   
   }
 }
 class PasswordForm extends Component {

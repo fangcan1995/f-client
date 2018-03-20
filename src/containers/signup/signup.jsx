@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import { Form, Input, Button, Checkbox, Row, Col, message } from 'antd';
 import { signupUser, sendVerifyCode, getImageCode, checkUserExist, setVerifyCodeCd } from '../../actions/signup';
+import { setSignup } from '../../actions/login';
 import { loginUser } from '../../actions/auth';
 import { hex_md5 } from '../../utils/md5';
 import parseJson2URL from '../../utils/parseJson2URL';
@@ -40,6 +41,7 @@ class Signup extends Component {
   }
   componentDidMount() {
     const { dispatch } = this.props;
+
     dispatch(getImageCode());
   }
   handleImageCodeImgClick = e => {
@@ -158,6 +160,14 @@ class Signup extends Component {
     };
     setFields(newValue);
   }
+  state={
+    signup:false
+  }
+  handleLoginClick(){
+    const { dispatch } = this.props;
+    dispatch(setSignup(this.state.signup))
+    this.props.history.push('/login');
+  }
 
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, getFieldValue } = this.props.form;
@@ -248,7 +258,7 @@ class Signup extends Component {
         <div className="wrapper">
           <Card
             tit="注册"
-            tip={ <span>已有账号？<Link to="/login">立即登录</Link></span> }
+            tip={ <span>已有账号？<a onClick={this.handleLoginClick.bind(this)}>立即登录</a></span> }
             >
             <Form layout="horizontal" onSubmit={this.handleSubmit}>
               <FormItem
@@ -262,6 +272,7 @@ class Signup extends Component {
                     type="text"
                   />
                 )}
+                {/* <span>已有账号？<Link to="/login">立即登录</Link></span> */}
               </FormItem>
               <FormItem
                 { ...formItemLayout }

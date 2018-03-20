@@ -1,28 +1,43 @@
 import cFetch from './../utils/cFetch';
 import { API_CONFIG } from './../config/api';
 
-const urls = [
-  `http://172.16.1.221:9090/homes/ad`,
-  `http://172.16.1.221:9090/homes/media`,
-  `http://172.16.1.221:9090/homes/partner`,
-] 
+// const urls = [
+//   `http://172.16.1.221:9090/homes/affiches?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`,
+// ] 
+
+// export const  getData = () => {
+//     console.log('aaa111')
+//   return {
+//       type: 'homePage/GET_DATA', 
+//       async payload () {
+//           return Promise.all(
+//               urls.map(url => cFetch(url, {method: 'GET'}, false)
+//               .then(body => {
+//                   if ( body.error ) {
+//                       return Promise.reject(body)
+//                   } else {
+//                       return body
+//                   }
+//               })
+//             ))         
+//       }
+//   }
+// }
 
 export const  getData = () => {
-    console.log('aaa111')
+  console.log('aaa777')
   return {
-      type: 'homePage/GET_DATA', 
-      async payload () {
-          return Promise.all(
-              urls.map(url => cFetch(url, {method: 'GET'}, false)
-              .then(body => {
-                  if ( body.error ) {
-                      return Promise.reject(body)
-                  } else {
-                      return body
-                  }
-              })
-            ))         
+    type: 'homePage/GET_DATA',
+    async payload() {
+      const res = await cFetch(`http://172.16.1.221:9090/homes/affiches?access_token=d2e027cd-550a-4255-9402-ac9d9b873e65` , { method: 'GET' }, false);
+      const { code, data } = res;
+      if ( code == 0 ) {
+          console.log(data)
+        return data || {};
+      } else {
+        throw res;
       }
+    }
   }
 }
 
@@ -112,16 +127,6 @@ export const getNovice  = (list) => {
     }
   }
 
-  export const GetHomePage= {
-    
-      getBanner,
-      getData,
-      getNotice,
-      getStandard,
-      getNovice,
-      getSpecs,
-    
-  }
 // export const getData = () => {
 //   return {
 //     type: 'homePage/GET_DATA',
