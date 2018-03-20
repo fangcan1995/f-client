@@ -10,6 +10,8 @@ const url_delete=`http://172.16.1.234:9090/message/mail?access_token=8b1ae302-f5
 const url_getResult=`http://172.16.1.221:9090/members/riskEvaluation/result?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`;  //获取风险测评结果
 const url_getRList=`http://172.16.1.221:9090/members/riskEvaluation?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`;  //获取风险测评题目
 const url_putRList=`http://172.16.1.221:9090/members/riskEvaluation?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`;  //提交测评结果
+
+const url_getAuthInfo=`http://172.16.1.221:9090/members/certification?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`; //获取个人信息
 export const myMessagesAc= {
     getMessagesList: (params) => {
         return {
@@ -149,74 +151,26 @@ export const myRiskAssessAc={
         }
     },
 }
-export const myAuthInfo={
+export const myAuthInfoAc={
     getResult: () => {
         return {
-            type: 'mySettings/riskAssess/FETCH',
+            type: 'mySettings/authInfo/FETCH',
             async payload() {
-                const res = await cFetch(`${url_getResult}`, {method: 'GET'}, false);
+                const res = await cFetch(`${url_getAuthInfo}`, {method: 'GET'}, false);
                 const {code, data} = res;
                 /*console.log('***************');
                 console.log(url_getResult);
                 console.log(data);*/
 
                 if (code == 0) {
-                    return {
-                        result: data,
-                        status:data.requireEval
-                    };
+                    return data;
                 } else {
                     throw res;
                 }
             }
         }
     },
-    getRiskAssessList: () => {
-        return {
-            type: 'mySettings/riskAssess/FETCH',
-            async payload() {
-                const res = await cFetch(`${url_getRList}` , {method: 'GET'}, false);
-                const {code, data} = res;
-                if (code == 0) {
-                    for(let index of data.keys()){
-                        data[index]=Object.assign({isChecked:''},data[index]);
-                    }
-                    return {myList: data};
-                } else {
-                    throw res;
-                }
-            }
-        }
-    },
-    putRiskAssess: (pram,dispatch) => {
-        pram=JSON.stringify(pram)
-        return {
-            type: 'mySettings/riskAssess/FETCH',
-            async payload() {
-                const res = await cFetch(`${url_putRList}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: pram,
-                    },
-                    false);
-                if (res.code == 0) {
-                    return {postResult: res};
-                } else {
-                    throw res;
-                }
-            }
-        }
-    },
-    modifyState: (prams) => {
-        return {
-            type: 'mySettings/riskAssess/MODIFY_STATE',
-            payload() {
-                return prams
-            }
-        }
-    },
+
 }
 
 
