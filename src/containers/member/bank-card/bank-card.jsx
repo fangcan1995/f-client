@@ -57,7 +57,6 @@ class BankCard extends React.Component{
                                         </div>
                                 }
 
-
                             </div>
                         </div>
                     </Tab>
