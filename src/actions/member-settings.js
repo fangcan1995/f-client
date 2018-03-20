@@ -3,17 +3,20 @@ import cookie from 'js-cookie';
 import { API_CONFIG } from './../config/api';
 import parseJson2URL from './../utils/parseJson2URL';
 
-const url_getList=`http://172.16.1.234:9090/message/mail/page?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`;  //获取消息列表
+const url_getMList=`http://172.16.1.234:9090/message/mail/page?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`;  //获取消息列表
 const url_setRead=`http://172.16.1.234:9090/message/mail/read?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`; //设为已读
-const url_delete=`http://172.16.1.234:9090/message/mail?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`; //删除
+const url_delete=`http://172.16.1.234:9090/message/mail?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`; //删除消息
 
+const url_getResult=`http://172.16.1.221:9090/members/riskEvaluation/result?access_token=564ddc2e-88f7-4140-827e-8aaf472f7e41`;  //获取风险测评结果
+const url_getRList=`http://172.16.1.221:9090/members/riskEvaluation?access_token=564ddc2e-88f7-4140-827e-8aaf472f7e41`;  //获取风险测评题目
+const url_putRList=`http://172.16.1.221:9090/members/riskEvaluation?access_token=564ddc2e-88f7-4140-827e-8aaf472f7e41`;  //提交测评结果
 export const myMessagesAc= {
     getMessagesList: (params) => {
         return {
             type: 'mySettings/messages/FETCH',
             async payload() {
                 params = parseJson2URL(params);
-                const res = await cFetch(`${url_getList}&` + params, {method: 'GET'}, false);
+                const res = await cFetch(`${url_getMList}&` + params, {method: 'GET'}, false);
                 const {code, data} = res;
                 if (data.page.total > 0) {
                     for (let index of data.page.list.keys()) {
@@ -77,8 +80,76 @@ export const myMessagesAc= {
         }
     },
 }
-let memberSettingsActions = {
+export const myRiskAssessAc={
+    getResult: () => {
+        return {
+            type: 'mySettings/riskAssess/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_getResult}`, {method: 'GET'}, false);
+                const {code, data} = res;
+                /*console.log('***************');
+                console.log(url_getResult);
+                console.log(data);*/
 
+                if (code == 0) {
+                    return {
+                        result: data,
+                        status:data.requireEval
+                    };
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    getRiskAssessList: () => {
+        return {
+            type: 'mySettings/riskAssess/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_getRList}` , {method: 'GET'}, false);
+                const {code, data} = res;
+                if (code == 0) {
+                    for(let index of data.keys()){
+                        data[index]=Object.assign({isChecked:''},data[index]);
+                    }
+                    return {myList: data};
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    putRiskAssess: (pram,dispatch) => {
+        pram=JSON.stringify(pram)
+        return {
+            type: 'mySettings/riskAssess/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_putRList}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: pram,
+                    },
+                    false);
+                if (res.code == 0) {
+                    return {postResult: res};
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    modifyState: (prams) => {
+        return {
+            type: 'mySettings/riskAssess/MODIFY_STATE',
+            payload() {
+                return prams
+            }
+        }
+    },
+}
+/*let memberSettingsActions = {
     //消息
     getMessagesList: (pageNum=1,pageSize=10,filter={}) => (dispatch, memberLoans) => {
         let newState={};
@@ -141,7 +212,6 @@ let memberSettingsActions = {
 
 
     },
-
     messagesFilter: (pram) => (dispatch, memberLoans) => {
         dispatch(memberSettingsActions.stateMessagesModify({isRead:pram}));
         dispatch(memberSettingsActions.getList(1,10,{isRead:pram}));
@@ -326,5 +396,5 @@ let memberSettingsActions = {
 
     
 };
-export default memberSettingsActions;
+export default memberSettingsActions;*/
 
