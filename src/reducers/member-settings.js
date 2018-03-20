@@ -10,20 +10,10 @@ const initialState = Immutable.fromJS({
         deleteResult:{}
     },
     riskAssess:{
-        status:1,
-        myList:[],
-        //defaultChecked:'',
-        result:{
-            requireEval:'',  //是否需要风险评估
-            result:'',
-            message:''
-        },
-        postResult:{
-            code:0,
-            type:'',
-            message:'',
-            description:''
-        },
+        status:'',
+        myList:'',
+        result:{},
+        postResult:'',
     }
 
 });
@@ -45,6 +35,17 @@ export default createReducer(initialState, {
     }),
 
 
+    ['mySettings/riskAssess/FETCH_PENDING']:(state,action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['mySettings/riskAssess/FETCH_FULFILLED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        riskAssess:action.payload
+    }),
+    ['mySettings/riskAssess/FETCH_REJECTED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
     ['mySettings/riskAssess/MODIFY_STATE']:(state,action) => state.mergeDeep({
         riskAssess:action.payload
     }),

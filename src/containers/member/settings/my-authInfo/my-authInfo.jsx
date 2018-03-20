@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import './authInfo.less';
-
-export default class MyAuthInfo extends React.Component {
+import { connect } from 'react-redux';
+import {myRiskAssessAc} from '../../../../actions/member-settings';
+class MyAuthInfo extends React.Component {
     render(){
         return(
             <div className="member__main">
@@ -58,4 +59,13 @@ export default class MyAuthInfo extends React.Component {
         )
     }
 }
+
+function mapStateToProps(state) {
+    const { auth,memberSettings } = state.toJS();
+    return {
+        auth,
+        memberSettings
+    };
+}
+export default connect(mapStateToProps)(MyAuthInfo);
 

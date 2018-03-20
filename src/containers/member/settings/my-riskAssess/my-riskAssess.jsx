@@ -4,17 +4,17 @@ import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import { connect } from 'react-redux';
 import {myRiskAssessAc} from '../../../../actions/member-settings';
-import  memberSettingsActions  from '../../../../actions/member-settings';
 import './riskAssess.less';
-import { Radio,Button,message } from 'antd';
-const RadioGroup = Radio.Group;
+import { Radio,Button } from 'antd';
 
+const RadioGroup = Radio.Group;
 
 class MyRiskAssess extends React.Component {
     constructor(props){
         super(props);
         this.onChange = this.onChange.bind(this);
         this.reset = this.reset.bind(this);
+        this.disabled= this.disabled.bind(this);
         this.state = {
             loading: false,
             iconLoading: false,
@@ -26,11 +26,15 @@ class MyRiskAssess extends React.Component {
     }
     disabled(){
         let {myList}=this.props.memberSettings.riskAssess;
-        let i=myList.findIndex((x)=>x.isChecked=='');
-        if(i!==-1){
-            return true
-        }else{
-            return false
+        if(myList!=''){
+            let i=myList.findIndex(
+                (x)=>x.isChecked==''
+            );
+            if(i!==-1){
+                return true
+            }else{
+                return false
+            }
         }
     }
     //选择答案
@@ -38,23 +42,26 @@ class MyRiskAssess extends React.Component {
         let {myList}=this.props.memberSettings.riskAssess;
         let i=myList.findIndex((x)=>x.examId==e.target.name);
         myList[i].isChecked=e.target.value;
-        this.props.dispatch(memberSettingsActions.stateRiskAssessModify({myList:myList}));
+        this.props.dispatch(myRiskAssessAc.modifyState({myList:myList}));
     }
     //提交答案
     handleSubmit = () => {
-
-        let {myList}=this.props.memberSettings.riskAssess;
+        let {myList,result}=this.props.memberSettings.riskAssess;
         let questionAndAnswerDtoList=[];
         for (let index of myList.keys()){
             questionAndAnswerDtoList.push({questionId:myList[index].examId,answerCode:myList[index].isChecked});
         }
-        let putJson={
-            riskResultId:1,
-            questionAndAnswerDtoList:questionAndAnswerDtoList
+        let putJson={};
+        if(result.riskResultId){
+            putJson={
+                riskResultId:result.riskResultId,
+                questionAndAnswerDtoList:questionAndAnswerDtoList
+            }
+        }else{
+            putJson={
+                questionAndAnswerDtoList:questionAndAnswerDtoList
+            }
         }
-        console.log('要提交的数据是');
-        console.log(putJson);
-        console.log('结束');
         this.props.dispatch(myRiskAssessAc.putRiskAssess(putJson));
     }
     //重新评估
@@ -62,15 +69,14 @@ class MyRiskAssess extends React.Component {
         this.props.dispatch(myRiskAssessAc.modifyState({status:1}));
     }
     render(){
-        let {dispatch}=this.props
+        let {dispatch}=this.props;
         let {riskAssess}=this.props.memberSettings;
         let {result,myList,status,postResult}=riskAssess;
 
         if(postResult.code==='0'){
-            window.location.reload();
+            window.location.reload();  //提交答案后重载页面
         }
         return(
-
             <div className="member__main riskAssess">
                 <Crumbs/>
                 <div className="member__cbox">
@@ -105,7 +111,7 @@ class MyRiskAssess extends React.Component {
                                             </li>
                                         </ul>
                                     </div>
-                                    :(status===1)?
+                                    :(status==='1')?
                                     <div className="riskAssessApp">
                                         <div className="form__wrapper">
 
