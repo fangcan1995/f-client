@@ -5,7 +5,6 @@ const initialState = Immutable.fromJS({
     isFetching:false,
     accountsInfo:{
         basicInfo:{
-            realName:''
         },
         amount:{
             availableBalance:''
@@ -17,13 +16,17 @@ const initialState = Immutable.fromJS({
             bankName:'',
             bankNo:'',
         },
+        result:{
+
+        }
 
     },
 
     charts:{
         chartsMonth:'',
         chartsDay:'',
-    }
+    },
+
 
 
 

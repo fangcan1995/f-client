@@ -4,34 +4,76 @@ import Crumbs from '../../../components/crumbs/crumbs';
 import Tab from '../../../components/tab/tab';
 import './withdrawals.less';
 import CountDownButton from '../../../components/countDownButton/countDownButton';
+
 import { connect } from 'react-redux';
-import  memberActions  from '../../../actions/member';
-import {toMoney,toNumber} from  '../../../assets/js/famatData';
+import {memberAc} from '../../../actions/member';
+import {toMoney} from  '../../../assets/js/famatData';
+import  {checkMoney,addCommas}  from '../../../assets/js/cost';
+import {Button} from 'antd';
 class Withdrawals extends React.Component{
     constructor(props) {
         super(props);
+        this.state={
+            value:'',
+            tips:'',
+            disabled:true,
+        }
         this.withdrawals= this.withdrawals.bind(this);
+        this.handleChange= this.handleChange.bind(this);
+
     }
     componentDidMount() {
-        this.props.dispatch(memberActions.getInfo());
+        this.props.dispatch(memberAc.getInfo());
     }
     bindCard(){
         alert('去开户');
     }
     withdrawals(value){
-        //console.log(this.props);
         value=this.refs.amount.value;
-        let postData={
-            escrowCode:100100,
-            amount:value,
-            type:3
-        };
-        this.props.dispatch(memberActions.postData(postData));
+        this.props.dispatch(memberAc.withdrawals(value));
+    }
+    handleChange(event){
+        let result=checkMoney({
+            'value':event.target.value,
+            'type':0,
+            'min_v':1,
+            'max_v':this.props.member.accountsInfo.amount.availableBalance,
+            'label':'提现金额',
+            'interval':1
+        });
+        if(result[0]==false){
+            if(result[1]==1){
+                this.setState({
+                    value: event.target.value,
+                    tips:`${result[2]}`,
+                    disabled:true
+                });
+            }else{
+                this.setState({
+                    value: 0,
+                    tips:`${result[2]}`,
+                    disabled:true
+                });
+            }
+
+        }else {
+            this.setState(
+                {
+                    value: event.target.value,
+                    tips: ``,
+                    disabled:false
+                });
+        }
     }
     render(){
         console.log(this.props);
-        let {openAccountStatus,amount}=this.props.member.accountsInfo;
-        console.log(openAccountStatus);
+        let {openAccountStatus,amount,result}=this.props.member.accountsInfo;
+
+        if(result.code==='0'){
+            this.props.dispatch(memberAc.modifyState({result:''}));
+            this.refs.amount.value='';
+            this.props.dispatch(memberAc.getInfo());
+        }
         return (
             <div className="member__main withdrawals">
                 <Crumbs/>
@@ -53,11 +95,19 @@ class Withdrawals extends React.Component{
                                             <dl className="form__bar">
                                                 <dt><label>提现金额</label></dt>
                                                 <dd>
-                                                    <input name="transAmt" id="transAmt"   maxLength={20} type="text" className="textInput moneyInput" ref="amount" />
+                                                    <input name="transAmt" id="transAmt"   maxLength={20} type="text" className="textInput moneyInput" ref="amount"
+                                                           onChange={this.handleChange}
+                                                    />
                                                     <i className="unit">元</i>
-                                                    <span className="tips error"></span>
                                                 </dd>
                                             </dl>
+                                            <div className="form__bar">
+                                                {(this.state.tips!='')?
+                                                <div className="errorMessages">
+                                                    {this.state.tips}
+                                                </div>:``
+                                                }
+                                            </div>
                                             {/*<dl className="form__bar">
                                         <dt><label>交易密码</label></dt>
                                         <dd>
@@ -89,7 +139,11 @@ class Withdrawals extends React.Component{
 
                                     </dl>*/}
                                             <div className="form__bar">
-                                                <button className="button able" style={{ width: '200px',marginTop:'20px'}} onClick={this.withdrawals}>确定</button>
+                                                {/*<button className="button able" style={{ width: '200px',marginTop:'20px'}} onClick={this.withdrawals}>确定</button>*/}
+                                                <Button type="primary" htmlType="submit" className="pop__large" onClick={this.withdrawals}
+                                                 disabled={this.state.disabled}>
+                                                    确认
+                                                </Button>
                                             </div>
                                         </div>
                                 }

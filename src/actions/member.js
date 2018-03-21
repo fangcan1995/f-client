@@ -1,14 +1,14 @@
 import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import {addCommas,checkMoney} from './../assets/js/cost';
-
+import { message } from 'antd';
 const url_memberInfo=`http://172.16.1.234:9090/accounts/my/info?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`; //获取会员信息
 const url_incomeMonth=`http://172.16.1.234:9090/accounts/income/month?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`; //获取月收益统计
 const url_incomeDay=`http://172.16.1.234:9090/accounts/income/day?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`; //获取日收益统计
 
-const url_openAccount=`http://172.16.1.234:9090/accounts?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`; //开户
-const url_operation=`http://172.16.1.234:9090/accounts/my/info?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`; //充值1、支付2、提现3、转账（满标）4、转账（还款）
-
+const url_openAccount=`http://172.16.1.234:9090/accounts?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173&custId=123&escrowCode=100100&accountBalance=0&freezingAmount=0&availableBalance=0`; //开户
+const url_recharge=`http://172.16.1.234:9090/accounts/operation?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173&escrowCode=100100&type=1`; //充值
+const url_withdrawals=`http://172.16.1.234:9090/accounts/operation?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173&escrowCode=100100&type=3`; //提现
 
 
 export const memberAc= {
@@ -16,12 +16,14 @@ export const memberAc= {
         return {
             type: 'member/FETCH',
             async payload() {
-                const res = await cFetch(`${url_memberInfo}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_memberInfo}`,{method: 'GET'}, false);
                 const {code, data} = res;
+                console.log('发回的数据');
+                console.log(data);
                 if (code == 0) {
                     return {
                         basicInfo:{
-                            realName:data.baseInfo.realName,
+                            trueName:data.baseInfo.trueName,
                         },
                         amount:data.accountInfo,
                         redInfo:data.memberRedInfo,
@@ -105,14 +107,60 @@ export const memberAc= {
                     },
                     false);
                 if (res.code == 0) {
-                    return {readResult: res};
+                    message.success('开户成功');
+                    return {result: res};
                 } else {
                     throw res;
                 }
             }
         }
     },
-    //提交充值或提现申请  type 1 充值 3提现
+    //充值
+    recharge: (pram) => {
+        return {
+            type: 'member/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_recharge}&amount=`+pram, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: ``,
+                    },
+                    false);
+                if (res.code == 0) {
+                    message.success('充值成功');
+                    return {result: res};
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    //提现
+    withdrawals: (pram) => {
+
+        return {
+            type: 'member/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_withdrawals}&amount=`+pram, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: ``,
+                    },
+                    false);
+                if (res.code == 0) {
+                    message.success('提现成功');
+                    return {result: res};
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    /*//提交充值或提现申请  type 1 充值 3提现
     postOperation: (pram) => {
         return {
             type: 'member/FETCH',
@@ -132,11 +180,11 @@ export const memberAc= {
                 }
             }
         }
-    },
+    },*/
 
     modifyState: (prams) => {
         return {
-            type: 'mySettings/messages/MODIFY_STATE',
+            type: 'member/MODIFY_STATE',
             payload() {
                 return prams
             }

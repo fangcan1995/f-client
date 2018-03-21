@@ -5,13 +5,13 @@ import Tab from '../../../components/tab/tab';
 import Crumbs from '../../../components/crumbs/crumbs';
 import { connect } from 'react-redux';
 import  memberActions  from '../../../actions/member';
-
+import {memberAc} from '../../../actions/member';
 class BankCard extends React.Component{
     componentDidMount() {
-        this.props.dispatch(memberActions.getInfo());
+        this.props.dispatch(memberAc.getInfo());
     }
     bindCard(){
-        let postData={
+       /* let postData={
             escrowCode:100100,
             custId:123,
             accountBalance:0,
@@ -19,12 +19,24 @@ class BankCard extends React.Component{
             availableBalance:0
 
         };
-        this.props.dispatch(memberActions.postOpenAccount(postData));
+        this.props.dispatch(memberActions.postOpenAccount(postData));*/
+        this.props.dispatch(memberAc.postOpenAccount());
+    }
+    changeCard(){
+        //alert('更换银行卡');
+        this.props.dispatch(memberAc.postOpenAccount());
     }
     render(){
+
+        let {openAccountStatus,acBank,basicInfo,result}=this.props.member.accountsInfo;
+
+        /*console.log('----------------');
         console.log(this.props);
-        let {openAccountStatus,acBank}=this.props.member.accountsInfo;
-        console.log(openAccountStatus);
+        console.log(basicInfo);*/
+        if(result.code==='0'){
+            this.props.dispatch(memberAc.modifyState({result:''}));
+            this.props.dispatch(memberAc.getInfo());
+        }
         return (
             <div className="member__main">
                 <Crumbs />
@@ -33,28 +45,33 @@ class BankCard extends React.Component{
                         <div name="我的银行卡">
                             <div className="tab_content">
                                 {
-                                    (openAccountStatus === 1) ?<div className="addCard">
+                                    (openAccountStatus === 0) ?<div className="addCard">
                                             <p>为保证账户资金安全，请绑定本人的银行卡</p>
                                             <div className="grayCard">
                                                 <a href="javascript:void(0);" style={{color: '#31aaf5'}} onClick={() => {
                                                     this.bindCard()
-                                                }}> 绑定银行卡！</a>
+                                                }}>
+                                                    <i className="iconfont add"></i>
+                                                    <p>绑定银行卡！</p>
+                                                </a>
                                             </div>
                                         </div>
-                                        :<div className="editCard">
+                                        :(openAccountStatus === 1) ?
+                                        <div className="editCard">
                                             <div className="form__wrapper">
                                                 <div className="card">
-                                                    <p><strong>用户名</strong>{acBank.bankName}</p>
+                                                    <p><strong>用户名</strong>{basicInfo.trueName}</p>
                                                     <p><strong>银行账号</strong>{acBank.bankNo}</p>
                                                     <p><strong>开户行</strong>{acBank.bankName}</p>
                                                 </div>
                                                 <div className="form__bar">
                                                     <button className="button able" style={{ width: '200px',marginTop:'20px'}} onClick={() => {
-                                                        this.bindCard()
+                                                        this.changeCard()
                                                     }}>更换银行卡</button>
                                                 </div>
                                             </div>
                                         </div>
+                                        :``
                                 }
 
                             </div>

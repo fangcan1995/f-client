@@ -4,16 +4,22 @@ import Crumbs from '../../../components/crumbs/crumbs';
 import Tab from '../../../components/tab/tab';
 
 import { connect } from 'react-redux';
-import  memberActions  from '../../../actions/member';
 import {memberAc} from '../../../actions/member';
 import {toMoney,toNumber} from  '../../../assets/js/famatData';
-
+import  {checkMoney,addCommas}  from '../../../assets/js/cost';
+import {Button} from 'antd';
 import './recharge.less';
 
 class Recharge extends React.Component{
     constructor(props) {
         super(props);
+        this.state={
+            value:'',
+            tips:'',
+            disabled:true,
+        };
         this.recharge= this.recharge.bind(this);
+        this.handleChange= this.handleChange.bind(this);
     }
     componentDidMount() {
         this.props.dispatch(memberAc.getInfo());
@@ -22,21 +28,53 @@ class Recharge extends React.Component{
     bindCard(){
         alert('去开户');
     }
+    handleChange(event){
+        let result=checkMoney({
+            'value':event.target.value,
+            'type':0,
+            'min_v':10,
+            'max_v':100000000,
+            'label':'充值金额',
+            'interval':1
+        });
+        if(result[0]==false){
+            if(result[1]==1){
+                this.setState({
+                    value: event.target.value,
+                    tips:`${result[2]}`,
+                    disabled:true
+                });
+            }else{
+                this.setState({
+                    value: 0,
+                    tips:`${result[2]}`,
+                    disabled:true
+                });
+            }
+
+        }else {
+            this.setState(
+                {
+                    value: event.target.value,
+                    tips: ``,
+                    disabled:false
+                });
+        }
+    }
     recharge(value){
-        //console.log(this.props);
         value=this.refs.amount.value;
-        let postData={
-            escrowCode:100100,
-            amount:value,
-            type:1
-        };
-        this.props.dispatch(memberActions.postData(postData));
+        this.props.dispatch(memberAc.recharge(value));
     }
     render(){
 
         console.log(this.props);
-        let {openAccountStatus,amount}=this.props.member.accountsInfo;
-        console.log(openAccountStatus);
+        let {openAccountStatus,amount,result}=this.props.member.accountsInfo;
+
+        if(result.code==='0'){
+            this.props.dispatch(memberAc.modifyState({result:''}));
+            this.refs.amount.value='';
+            this.props.dispatch(memberAc.getInfo());
+        }
         return (
             <div className="member__main recharge">
                 <Crumbs/>
@@ -59,20 +97,27 @@ class Recharge extends React.Component{
                                             <dl className="form__bar">
                                                 <dt><label>充值金额:</label></dt>
                                                 <dd>
-                                                    <input  maxLength={20} type="text" className="textInput moneyInput" ref="amount"/>
+                                                    <input  maxLength={10} type="text" className="textInput moneyInput" ref="amount" onChange={this.handleChange}　/>
                                                     <span className="unit">元</span>
-                                                    <span className="tips error"></span>
+
                                                 </dd>
                                             </dl>
+
                                             {/*<div className="form__bar">
                                                 <p>充值后可用余额: <i id="money">1,000.00</i>元</p>
                                             </div>*/}
                                             <div className="form__bar">
-                                                <button className="button able" style={{width: '200px', marginTop: '20px'}}
-                                                    onClick={this.recharge}
-                                                >
-                                                    确定
-                                                </button>
+                                                {(this.state.tips!='')?
+                                                    <div className="errorMessages">
+                                                        {this.state.tips}
+                                                    </div>:``
+                                                }
+                                            </div>
+                                            <div className="form__bar">
+                                                <Button type="primary" htmlType="submit" className="pop__large" onClick={this.recharge}
+                                                        disabled={this.state.disabled}>
+                                                    确认
+                                                </Button>
                                             </div>
                                         </div>
                                 }
