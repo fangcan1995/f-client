@@ -61,7 +61,7 @@ export default class MyAvatar extends React.Component {
         const imageUrl = this.state.imageUrl;
         return (
             <Upload
-                name="avatarFile"
+                name="file"
                 className="memberPhoto"
                 multiple={false}
                 showUploadList={false}

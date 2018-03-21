@@ -2,18 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Crumbs from '../../../components/crumbs/crumbs';
 import Tab from '../../../components/tab/tab';
-import './recharge.less';
+
 import { connect } from 'react-redux';
 import  memberActions  from '../../../actions/member';
-import {toMoney,toNumber} from  '../../../assets/js/famatData'
+import {memberAc} from '../../../actions/member';
+import {toMoney,toNumber} from  '../../../assets/js/famatData';
+
+import './recharge.less';
+
 class Recharge extends React.Component{
     constructor(props) {
         super(props);
         this.recharge= this.recharge.bind(this);
     }
     componentDidMount() {
-        this.props.dispatch(memberActions.getInfo());
-
+        this.props.dispatch(memberAc.getInfo());
     }
 
     bindCard(){
