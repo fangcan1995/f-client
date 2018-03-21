@@ -3,15 +3,15 @@ import cookie from 'js-cookie';
 import { API_CONFIG } from './../config/api';
 import parseJson2URL from './../utils/parseJson2URL';
 
-const url_getMList=`http://172.16.1.234:9090/message/mail/page?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`;  //获取消息列表
-const url_setRead=`http://172.16.1.234:9090/message/mail/read?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`; //设为已读
-const url_delete=`http://172.16.1.234:9090/message/mail?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`; //删除消息
+const url_getMList=`http://172.16.1.234:9090/message/mail/page?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`;  //获取消息列表
+const url_setRead=`http://172.16.1.234:9090/message/mail/read?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`; //设为已读
+const url_delete=`http://172.16.1.234:9090/message/mail?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`; //删除消息
 
-const url_getResult=`http://172.16.1.221:9090/members/riskEvaluation/result?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`;  //获取风险测评结果
-const url_getRList=`http://172.16.1.221:9090/members/riskEvaluation?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`;  //获取风险测评题目
-const url_putRList=`http://172.16.1.221:9090/members/riskEvaluation?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`;  //提交测评结果
+const url_getResult=`http://172.16.1.221:9090/members/riskEvaluation/result?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`;  //获取风险测评结果
+const url_getRList=`http://172.16.1.221:9090/members/riskEvaluation?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`;  //获取风险测评题目
+const url_putRList=`http://172.16.1.221:9090/members/riskEvaluation?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`;  //提交测评结果
 
-const url_getAuthInfo=`http://172.16.1.221:9090/members/certification?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`; //获取个人信息
+const url_getAuthInfo=`http://172.16.1.221:9090/members/certification?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`; //获取个人信息
 export const myMessagesAc= {
     getMessagesList: (params) => {
         return {
@@ -163,10 +163,18 @@ export const myAuthInfoAc={
                 console.log(data);*/
 
                 if (code == 0) {
-                    return data;
+                    return {info:data};
                 } else {
                     throw res;
                 }
+            }
+        }
+    },
+    modifyState: (prams) => {
+        return {
+            type: 'mySettings/authInfo/MODIFY_STATE',
+            payload() {
+                return prams
             }
         }
     },

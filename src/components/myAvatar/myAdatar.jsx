@@ -33,6 +33,8 @@ export default class MyAvatar extends React.Component {
         if (info.file.status === 'done') {
             //message.success(`${info.file.name} file uploaded successfully`);
             // Get this url from response in real world.
+            console.log('---------上传的东西------------');
+            console.log(info.file.originFileObj);
             this.getBase64(info.file.originFileObj, imageUrl => {
                 this.setState({
                 imageUrl,
