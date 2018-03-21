@@ -82,6 +82,9 @@ class HomePage extends Component {
     console.log('1111')
     this.props.history.push('/about/news/mediaReport')
   }
+  handleMedIcoClick(e){
+    console.log(e)
+  }
   handlePartnerClick(e){
     console.log(e)
   }
@@ -98,8 +101,8 @@ class HomePage extends Component {
   }
   render() {
     const { homePage } = this.props;
-    const companyList = homePage.com.companyList
-   console.log(companyList )
+    
+   console.log(homePage )
     return (
     <main className="main home-page" id="home-page">
       <div className="banner" >
@@ -122,7 +125,7 @@ class HomePage extends Component {
             <p className="yield">
              新手专享年化收益率
               <br />
-              <em><span>{}</span>%</em>
+              <em><span>{homePage.sprog.annualRate}</span>%</em>
             </p>
             <button type="button" className="login__btn" onClick={ this.handleLoginBtnClick }>立即登录</button>
             <p className="signup">
@@ -199,7 +202,7 @@ class HomePage extends Component {
                 <div className="sprog__item sprog__desc">
                   <h4>{homePage.sprog.name}<i style={{ backgroundImage: `url(${sprogIcon})` }}></i></h4>
                   <p>
-                    <em><span>{homePage.sprog.annualRate}</span>.0%+0.0%</em>
+                    <em><span>{homePage.sprog.annualRate}</span>.0%</em>
                     <br />
                     预期年化收益率
                   </p>
@@ -341,15 +344,15 @@ class HomePage extends Component {
           </Floor>
           <Floor
             otherClassName="media"
-            tit="媒体报道"
+            tit={homePage.med.affTypeName}
             >
             <div className="media__content">
               <div className="media__group">
                 <ul className="media__reports">
                   {
-                    homePage.media.newsmedia.map((item)=>{
+                    homePage.med.mediaReportInfosDtoList.map((item)=>{
                       return (
-                        <li key={item.id} onClick={this.handleNewsClick.bind(this,item.id)}>{item.mediatital}</li>
+                        <li key={item.affInfoId} onClick={this.handleNewsClick.bind(this,item.affInfoId)}>{item.affInfoName}</li>
                       )
                     })
                   }
@@ -357,14 +360,14 @@ class HomePage extends Component {
                   
                 </ul>
                 <ul className="media__brands">
-                  {
+                  {/* {
                       homePage.media.mimage.map((item)=>{
                         return (
                           <li key={item.mimgID} onClick={this.handleMimageClick.bind(this,item.mimgID)}><img src={item.mimgsrc} alt="" /></li>
                         )
                       })
-                    }
-                  {/* <li><img src={require('../../assets/images/homePage/media_brand_1.jpg')} alt="" /></li> */}
+                    } */}
+                  <li><a><img src={homePage.med.affTypeIcon} alt="" key={homePage.med.affTypeId} onClick={this.handleMedIcoClick.bind(this,homePage.med.affTypeId)}/></a></li>
                 </ul>
               </div>
               <a className="media__more" onClick={this.handleMoreMediaClick.bind(this)}>查看更多 ></a>
@@ -373,13 +376,13 @@ class HomePage extends Component {
         </div>
         <Floor
           otherClassName="partner"
-          tit="合作伙伴"
+          tit={homePage.par.affInfoName}
           >
           <ul className="partner__box">
             {
-              homePage.partner.map((item)=>{
+              homePage.par.partnerCompanyInfosDtoList.map((item)=>{
                 return (
-                  <li key={item.id}><a onClick={this.handlePartnerClick.bind(this,item.id)}><img src={item.imgsrc} alt="" /></a></li>
+                  <li key={item.affInfoId}><a onClick={this.handlePartnerClick.bind(this,item.affInfoUrl)}><img src={item.affInfoIcon} alt="" /></a></li>
                 )
               })
             }

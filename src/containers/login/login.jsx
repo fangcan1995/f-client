@@ -46,6 +46,7 @@ class Login extends Component {
   }
   render() {
     const {login}=this.props;
+    console.log(this.props)
     if(login.signup){
        return (
       <main className="main login">
