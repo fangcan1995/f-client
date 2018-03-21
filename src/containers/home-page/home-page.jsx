@@ -349,7 +349,7 @@ class HomePage extends Component {
                   {
                     homePage.media.newsmedia.map((item)=>{
                       return (
-                        <li key={item.id} onClick={this.handleNewsClick.bind(this,item.id)}><i>[{item.medianame}]</i>{item.mediatital}</li>
+                        <li key={item.id} onClick={this.handleNewsClick.bind(this,item.id)}>{item.mediatital}</li>
                       )
                     })
                   }

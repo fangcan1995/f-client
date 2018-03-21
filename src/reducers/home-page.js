@@ -48,7 +48,7 @@ const initialState = Immutable.fromJS({
   }],
   com:{
     affTypeId:5,
-    affTypeName:'gong',
+    affTypeName:'公司动态',
     companyList:[]
   },
   med:{
