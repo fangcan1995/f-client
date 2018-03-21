@@ -12,6 +12,8 @@ const url_getRList=`http://172.16.1.221:9090/members/riskEvaluation?access_token
 const url_putRList=`http://172.16.1.221:9090/members/riskEvaluation?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`;  //提交测评结果
 
 const url_getAuthInfo=`http://172.16.1.221:9090/members/certification?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`; //获取个人信息
+const url_password=`???`; //修改登录密码
+const url_postPhone=`http://172.16.1.221:9090/members/photo?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`;  //修改头像
 export const myMessagesAc= {
     getMessagesList: (params) => {
         return {
@@ -133,7 +135,7 @@ export const myRiskAssessAc={
                         },
                         body: pram,
                     },
-                    false);
+                    2000);
                 if (res.code == 0) {
                     return {postResult: res};
                 } else {
@@ -164,6 +166,48 @@ export const myAuthInfoAc={
 
                 if (code == 0) {
                     return {info:data};
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    postPassword: (pram,dispatch) => {
+        pram=JSON.stringify(pram)
+        return {
+            type: 'mySettings/authInfo/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_password}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: pram,
+                    },
+                    false);
+                if (res.code == 0) {
+                    return {postResult: res};
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    postPhone: (pram,dispatch) => {
+        pram=JSON.stringify(pram)
+        return {
+            type: 'mySettings/authInfo/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_password}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: pram,
+                    },
+                    false);
+                if (res.code == 0) {
+                    return {postResult: res};
                 } else {
                     throw res;
                 }

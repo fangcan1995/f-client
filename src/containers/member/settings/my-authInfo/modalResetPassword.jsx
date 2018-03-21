@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form,Row,Input,Button,Checkbox,Col,Alert } from 'antd';
 import { connect } from 'react-redux';
-
+import {myAuthInfoAc} from '../../../../actions/member-settings';
 import { hex_md5 } from '../../../../utils/md5';
 
 const passwordRegExp = /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*?_., ]).*$/;
@@ -25,13 +25,12 @@ class ModalResetPassword extends React.Component {
                 return false;
             }
             let appInfo={
-                password:hex_md5(form.getFieldsValue().password),
-                verifyCode:form.getFieldsValue().verifyCode,
-                projectId:this.props.info.currentId
+                oldPassword:hex_md5(form.getFieldsValue().oldPassword),
+                newPassword:hex_md5(form.getFieldsValue().newPassword),
             }
             console.log('提交后台的数据是');
             console.log(appInfo);
-            dispatch(memberLoansActions.postRepaymentApp(appInfo));
+            dispatch(myAuthInfoAc.postPassword(appInfo));
 
         });
     }

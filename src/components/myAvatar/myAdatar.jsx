@@ -26,77 +26,35 @@ export default class MyAvatar extends React.Component {
         return isImg && isLt1M;
     }
     handleChange = (info) => {
-        if (info.file.status === 'uploading') {
+        console.log('--------------');
+        console.log(info);
+
+        console.log(info.file);
+        let newFile=info.file;
+        console.log('文件');
+        console.log(newFile);
+        if (newFile.status === 'uploading') {
             this.setState({ loading: true });
             return;
         }
-        if (info.file.status === 'done') {
+        if (newFile.status === 'done') {
             //message.success(`${info.file.name} file uploaded successfully`);
             // Get this url from response in real world.
             console.log('---------上传的东西------------');
-            console.log(info.file.originFileObj);
-            this.getBase64(info.file.originFileObj, imageUrl => {
+            console.log(newFile.originFileObj);
+            this.getBase64(newFile.originFileObj, imageUrl => {
                 this.setState({
                 imageUrl,
                 loading: false,
                 })
             });
-        }else if (info.file.status === 'error') {
+        }else if (newFile.status === 'error') {
             message.error(`上传失败`);
 
         }
     }
     render() {
        let disableChange=this.props.disableChange || false; //是否可以替换
-        /*if(this.props.disableChange){
-            disableChange=true;
-        }*/
-        /*const props = {
-            name:"avatar",
-            action: '//jsonplaceholder.typicode.com/posts/',
-            headers: {
-                authorization: 'authorization-text',
-            },
-            multiple: false,
-            className:"memberPhoto",
-            showUploadList:false,
-            beforeUpload(file, fileList) {
-                console.log(file, fileList);
-                const isJPG = file.type === 'image/jpeg'||'image/png'||'image/jpg';
-                if (!isJPG) {
-                    message.error('不支持您上次的文件格式!');
-                }
-                const isLt1M = file.size / 1024 / 1024 < 1;
-                if (!isLt1M) {
-                    message.error('图片大小不能超出1M!');
-                }
-                return isJPG && isLt1M;
-                /!*return new Promise((resolve) => {
-                    console.log('start check');
-                    setTimeout(() => {
-                        console.log('check finshed');
-                        resolve(file);
-                    }, 3000);
-                });*!/
-            },
-            onChange(info) {
-                if (info.file.status !== 'uploading') {
-                    console.log(info.file, info.fileList);
-                }
-                if (info.file.status === 'done') {
-                    message.success(`${info.file.name} file uploaded successfully`);
-                    this.getBase64(info.file.originFileObj, imageUrl => {
-                        this.setState({
-                            imageUrl,
-                            loading: false,
-                        })
-                    });
-                } else if (info.file.status === 'error') {
-                    message.error(`上传失败`);
-
-                }
-            },
-        };*/
         const uploadButton = (
             <Avatar size="large" className="memberPhoto" src={require('../../assets/images/account/picture.png')} />
         );
@@ -107,7 +65,7 @@ export default class MyAvatar extends React.Component {
                 className="memberPhoto"
                 multiple={false}
                 showUploadList={false}
-                action="//jsonplaceholder.typicode.com/posts/"
+                action="http://172.16.1.221:9090/members/photo?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173"
                 beforeUpload={this.beforeUpload}
                 onChange={this.handleChange}
                 disabled={disableChange}

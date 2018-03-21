@@ -66,13 +66,15 @@ class MyRiskAssess extends React.Component {
     }
     //重新评估
     reset(){
-        this.props.dispatch(myRiskAssessAc.modifyState({status:1}));
+        console.log('-----');
+        this.props.dispatch(myRiskAssessAc.modifyState({status:'1'}));
     }
     render(){
         let {dispatch}=this.props;
-        let {riskAssess}=this.props.memberSettings;
+        let {riskAssess,isFetching}=this.props.memberSettings;
         let {result,myList,status,postResult}=riskAssess;
-
+        console.log('***');
+        console.log(status);
         if(postResult.code==='0'){
             window.location.reload();  //提交答案后重载页面
         }

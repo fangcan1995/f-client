@@ -2,6 +2,7 @@ import { createReducer } from 'redux-immutablejs';
 import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
+    isFetching:false,
     messages:{
         isFetching:false,
         myList:'',
@@ -16,7 +17,9 @@ const initialState = Immutable.fromJS({
         postResult:'',
     },
     authInfo:{
-
+        modalResetPassword:false,
+        info:'',
+        postResult:'',
     }
 
 });
