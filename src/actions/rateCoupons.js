@@ -1,5 +1,33 @@
-import cFetch from './../../../../utils/cFetch';
+import cFetch from '../utils/cFetch';
 import cookie from 'js-cookie';
+import parseJson2URL from './../utils/parseJson2URL';
+
+let url_myRateCoupons=`http://172.16.1.221:9090/members/memberRateCoupons?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`; //获取加息券
+export const myRateCouponsAc={
+    getData: (params) => {
+        return {
+            type: 'myRateCoupons/FETCH',
+            async payload() {
+                params = parseJson2URL(params);
+                const res = await cFetch(`${url_myRateCoupons}&`+params,{method: 'GET'}, false);
+                const {code, data} = res;
+                console.log('发回的数据');
+                console.log(data);
+                if (code == 0) {
+                    return data;
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+
+    toggleClass: id => ({
+        type: 'TOGGLE_CLASS',
+        payload: id
+    }),
+}
+/*
 let actionsRateCoupons = {
     getData: (pageNum=1,pageSize=10,filter={}) => (dispatch, myRedEnvelopes) => {
         let conditions='';
@@ -54,4 +82,4 @@ let actionsRateCoupons = {
 
 
 };
-export default actionsRateCoupons;
+export default actionsRateCoupons;*/
