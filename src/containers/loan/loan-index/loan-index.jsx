@@ -18,11 +18,40 @@ class Loan extends Component {
     const { dispatch } = this.props;
     dispatch(showModal())
   }
+  showModal1 = () => {
+    this.setState({
+      visible: true,
+    })
+  }
+  handleOk = () => {
+    this.setState({
+      ModalText: 'The modal dialog will be closed after two seconds',
+      confirmLoading: true,
+    });
+    
+  }
   
+  handleCancel = () => {
+    console.log('Clicked cancel button');
+    const { dispatch } = this.props;
+    console.log(3)
+    dispatch(hideModal())
+  }
+
+  handleCancel1 = () => {
+    console.log('Clicked cancel button');
+    this.setState({
+      visible: false,
+    })
+  }
+  componentWillUnmount(){
+   
+  }
   render(){
     const { auth ,loginModal} = this.props;
     console.log(auth)
-    if(auth.isAuthenticated){
+    // auth.isAuthenticated
+    if(true){
       return (
         
         <main className="main loan-index" id="loan-index">
@@ -65,17 +94,17 @@ class Loan extends Component {
                 <li className="loanType__1">
                   <h4>车贷</h4>
                   <p>适用于公务员、事业单位、银行、<br />最高可借<br /><em>100 万</em></p>
-                  <a className="" onClick={this.showModal}>点击申请</a>
+                  <a className="" onClick={this.showModal1}>点击申请</a>
                 </li>
                 <li className="loanType__2">
                   <h4>房贷</h4>
                   <p>适用于公务员、事业单位、银行、<br />最高可借<br /><em>50 万</em></p>
-                  <a className="" onClick={this.showModal}>点击申请</a>
+                  <a className="" onClick={this.showModal1}>点击申请</a>
                 </li>
                 <li className="loanType__3">
                   <h4>信用贷</h4>
                   <p>适用于公务员、事业单位、银行、<br />最高可借<br /><em>100 万</em></p>
-                  <a className="" onClick={this.showModal}>点击申请</a>
+                  <a className="" onClick={this.showModal1}>点击申请</a>
                 </li>
               </ul>
             </Floor>
@@ -83,7 +112,8 @@ class Loan extends Component {
               visible={this.state.visible}
               onOk={this.handleOk}
               confirmLoading={this.state.confirmLoading}
-              onCancel={this.handleCancel}
+              onCancel={this.handleCancel1}
+              footer={this.state.footer}
             >
              
               <div className='layui-layer'>
@@ -91,7 +121,7 @@ class Loan extends Component {
                     <main className="main loanApp">
                         <div className="pop_pub"></div>
                         <div className="pop_main pop_loanApp">
-                            <form action="#" id="frm" method="post">
+                            <form  id="frm" method="post">
                                 <div className="fl">
                                     <dl className="form_bar">
                                         <dt><label>借款金额</label></dt>
@@ -266,19 +296,6 @@ class Loan extends Component {
                 </li>
               </ul>
             </Floor>
-            
-            {/* <Modal title="您还未登录，请先登录"
-              visible={this.state.visible}
-              onOk={this.handleOk}
-              confirmLoading={this.state.confirmLoading}
-              onCancel={this.handleCancel}
-              footer={this.state.footer}
-              className='modal'
-            >
-             
-              <Login/>
-              
-            </Modal> */}
             <LoginModal/>
            
             <Floor

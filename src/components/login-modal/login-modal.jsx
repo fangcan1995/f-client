@@ -3,7 +3,7 @@ import { Modal, Button } from 'antd';
 import { connect } from 'react-redux';
 import Login from '../../containers/login/login'
 import { showModal,hideModal } from '../../actions/login-modal';
-import '../../containers/loan/loan-index/loan-index.less';
+import '../../components/login-modal/login-modal.less';
 
 class LoginModal  extends Component {
     state = {
@@ -20,12 +20,12 @@ class LoginModal  extends Component {
           ModalText: 'The modal dialog will be closed after two seconds',
           confirmLoading: true,
         });
-        const ctiemout = setTimeout(() => {
-          this.setState({
-            visible: false,
-            confirmLoading: false,
-          });
-        }, 2000);
+        // const ctiemout = setTimeout(() => {
+        //   this.setState({
+        //     visible: false,
+        //     confirmLoading: false,
+        //   });
+        // }, 2000);
       }
       
       handleCancel = () => {
