@@ -3,50 +3,28 @@ import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
     reStatus:0,
-    data:{
-        list:[],
-        pageNum:1,
-        total:0,
-        pageSize:10,
-    },
-    loaded:false,
+    data:``,
+    isFetching:false,
 });
 
 
 export default createReducer(initialState, {
-    ['FETCH_START']: (state, action) => state.merge({
-        data:{
-            total:0,
-        },
+    ['myRedEnvelopes/FETCH_PENDING']: (state, action) => state.merge({
+        isFetching: true,
     }),
-    ['FETCH_SUCCESS']: (state, action) => state.merge({
+    ['myRedEnvelopes/FETCH_FULFILLED']: (state, action) => state.merge({
+        isFetching: false,
         data: action.payload,
-        loaded: true,
     }),
-    ['FETCH_FAIL']: (state, action) => state.merge({
-        loaded: true,
+    ['myRedEnvelopes/FETCH_REJECTED']: (state, action) => state.merge({
+        isFetching: false,
+        errorMessage: action.message
     }),
     ['TOGGLE_CLASS']: (state, action) => state.merge({
         reStatus: action.payload,
+        data:``
     })
 })
 
 
-/*
-export default function myRedEnvelopes(state=initialState, action) {
-    console.log('---------');
-    console.log(action);
-    switch (action.type) {
-        case 'FETCH_START':
-            return state;
-        case 'FETCH_SUCCESS':
-            return Immutable.fromJS(state).set('data',action.payload).set('loaded',true).toJS();
-        case 'FETCH_FAIL':
-            return Immutable.fromJS(state).set('loaded', true).toJS();
-        case 'TOGGLE_CLASS':
-            return Immutable.fromJS(state).set('reStatus',action.payload).toJS();
-        default:
-            return state;
-    }
 
-};*/

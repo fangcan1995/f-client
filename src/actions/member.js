@@ -2,13 +2,13 @@ import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import {addCommas,checkMoney} from './../assets/js/cost';
 import { message } from 'antd';
-const url_memberInfo=`http://172.16.1.234:9090/accounts/my/info?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`; //获取会员信息
-const url_incomeMonth=`http://172.16.1.234:9090/accounts/income/month?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`; //获取月收益统计
-const url_incomeDay=`http://172.16.1.234:9090/accounts/income/day?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`; //获取日收益统计
+const url_memberInfo=`http://172.16.1.234:9090/accounts/my/info?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792`; //获取会员信息
+const url_incomeMonth=`http://172.16.1.234:9090/accounts/income/month?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792`; //获取月收益统计
+const url_incomeDay=`http://172.16.1.234:9090/accounts/income/day?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792`; //获取日收益统计
 
-const url_openAccount=`http://172.16.1.234:9090/accounts?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173&custId=123&escrowCode=100100&accountBalance=0&freezingAmount=0&availableBalance=0`; //开户
-const url_recharge=`http://172.16.1.234:9090/accounts/operation?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173&escrowCode=100100&type=1`; //充值
-const url_withdrawals=`http://172.16.1.234:9090/accounts/operation?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173&escrowCode=100100&type=3`; //提现
+const url_openAccount=`http://172.16.1.234:9090/accounts?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792&custId=123&escrowCode=100100&accountBalance=0&freezingAmount=0&availableBalance=0`; //开户
+const url_recharge=`http://172.16.1.234:9090/accounts/operation?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792&escrowCode=100100&type=1`; //充值
+const url_withdrawals=`http://172.16.1.234:9090/accounts/operation?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792&escrowCode=100100&type=3`; //提现
 
 
 export const memberAc= {
@@ -192,12 +192,13 @@ export const memberAc= {
     },
 }
 
+/*
 let memberActions = {
 
     getMonth:()=>(dispatch,member)=>{
         let newState={};
         // 获取统计数据
-        let url = `http://172.16.1.234:9090/accounts/income/month?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`;
+        let url = `http://172.16.1.234:9090/accounts/income/month?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -250,7 +251,7 @@ let memberActions = {
     getInfo:()=>(dispatch,member)=>{
         let newState={};
         // 获取统计数据
-        let url = `http://172.16.1.234:9090/accounts/my/info?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`;
+        let url = `http://172.16.1.234:9090/accounts/my/info?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -294,14 +295,14 @@ let memberActions = {
                 conditions += "&"+item+"="+pram[item];
             }
         }
-        let url = `http://172.16.1.234:9090/accounts/operation?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173${conditions}`;
+        let url = `http://172.16.1.234:9090/accounts/operation?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792${conditions}`;
         console.log(url);
         fetch(url,{
             method: "PUT",
             mode:'cors',
             cache: 'default',
             headers: {
-                "Accept": "*/*"
+                "Accept": "*!/!*"
             },
             //body: JSON.stringify(pram)
         })
@@ -317,23 +318,23 @@ let memberActions = {
             .then(data => {
                 setTimeout(() => {
                     //dispatch(investDetailActions.refreshPostResult(2));
-                    /*newState= {
+                    /!*newState= {
                         code:2,
                         type:'success',
                         message:'提交成功'
-                    };*/
+                    };*!/
                     alert('成功');
                     dispatch(memberActions.getInfo());
                 }, 100);
             })
             .catch(err=>{
                 alert('失败');
-                /*newState= {
+                /!*newState= {
                     code:1,
                     type:'fail',
                     message:'提交失败'
                 };
-                dispatch(memberActions.stateModify(newState));*/
+                dispatch(memberActions.stateModify(newState));*!/
             });
     },
     //开户
@@ -345,14 +346,14 @@ let memberActions = {
             conditions += "&"+item+"="+pram[item];
         }
     }
-    let url = `http://172.16.1.234:9090/accounts?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173${conditions}`;
+    let url = `http://172.16.1.234:9090/accounts?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792${conditions}`;
     console.log(url);
     fetch(url,{
         method: "PUT",
         mode:'cors',
         cache: 'default',
         headers: {
-            "Accept": "*/*"
+            "Accept": "*!/!*"
         },
         //body: JSON.stringify(pram)
     })
@@ -368,29 +369,29 @@ let memberActions = {
         .then(data => {
             setTimeout(() => {
                 //dispatch(investDetailActions.refreshPostResult(2));
-                /*newState= {
+                /!*newState= {
                     code:2,
                     type:'success',
                     message:'提交成功'
-                };*/
+                };*!/
                 alert('成功');
                 dispatch(memberActions.getInfo());
             }, 100);
         })
         .catch(err=>{
             alert('失败');
-            /*newState= {
+            /!*newState= {
                 code:1,
                 type:'fail',
                 message:'提交失败'
             };
-            dispatch(memberActions.stateModify(newState));*/
+            dispatch(memberActions.stateModify(newState));*!/
         });
 },
     //提现
     postWithdrawals:(pram) => (dispatch, member) => {
         let newState={};
-        let url = `http://172.16.1.234:9090/accounts/operation?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173&`;
+        let url = `http://172.16.1.234:9090/accounts/operation?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792&`;
         fetch(url,{
             method: "POST",
             mode:'cors',
@@ -441,4 +442,4 @@ let memberActions = {
     }),
 }
 
-export default memberActions;
+export default memberActions;*/

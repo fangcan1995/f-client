@@ -6,22 +6,27 @@ import Pagination from '../../../../components/pagination/pagination';
 import './redEnvelopes.less';
 import moment from "moment";
 import { connect } from 'react-redux';
-import actionsRedEnvelopes from './actions_redEnvelopes';
+import {redEnvelopesAc} from '../../../../actions/redEnvelopes';
 
 class MyRedEnvelopes extends React.Component {
     componentDidMount () {
-        this.props.dispatch(actionsRedEnvelopes.getData());
+        this.props.dispatch(redEnvelopesAc.getData());
+    }
+    filter(pram){
+        this.props.dispatch(redEnvelopesAc.toggleClass(pram));
+        this.props.dispatch(redEnvelopesAc.getData({reStatus:pram}));
     }
     render() {
         let {myRedEnvelopes,auth, dispatch} = this.props;
-        let {reStatus,data,loaded}=myRedEnvelopes;
+        let {reStatus,data}=myRedEnvelopes;
+        console.log(data);
         return (
             <div className="member__main">
                 <Crumbs/>
                 <div className="member__cbox">
                     <Tab>
                         <div name="我的红包">
-                            <div className="filter">
+                            <div className="filter" style={{marginTop:'15px'}}>
                                 <div className="filter__outer">
                                     <div className="filter__inner">
                                         <div className="filter__row">
@@ -30,22 +35,22 @@ class MyRedEnvelopes extends React.Component {
                                             </div>
                                             <div className="filter__cell">
                                                 <p className={(reStatus===0)?'filter__opt filter__opt--active':'filter__opt'}
-                                                   onClick={() => {dispatch(actionsRedEnvelopes.filter(0))}}>全部
+                                                   onClick={() => {this.filter(0)}}>全部
                                                 </p>
                                             </div>
                                             <div className="filter__cell">
                                                 <p className={(reStatus===1)?'filter__opt filter__opt--active':'filter__opt'}
-                                                   onClick={() => {dispatch(actionsRedEnvelopes.filter(1))}}>未使用
+                                                   onClick={() => {this.filter(1)}}>未使用
                                                 </p>
                                             </div>
                                             <div className="filter__cell">
                                                 <p className={(reStatus===2)?'filter__opt filter__opt--active':'filter__opt'}
-                                                   onClick={() => {dispatch(actionsRedEnvelopes.filter(2))}}>已使用
+                                                   onClick={() => {this.filter(2)}}>已使用
                                                 </p>
                                             </div>
                                             <div className="filter__cell">
                                                 <p className={(reStatus===3)?'filter__opt filter__opt--active':'filter__opt'}
-                                                   onClick={() => {dispatch(actionsRedEnvelopes.filter(3))}}>已过期
+                                                   onClick={() => {this.filter(3)}}>已过期
                                                 </p>
                                             </div>
                                         </div>
@@ -90,9 +95,14 @@ class MyRedEnvelopes extends React.Component {
                                             {
                                                 currentPage: data.pageNum,
                                                 pageSize: data.pageSize,
-                                                totalPage: Math.ceil(data.total/data.pageSize),
+                                                totalPage: data.pages,
                                                 paging: (obj) => {
-                                                    dispatch(actionsRedEnvelopes.getData(obj.currentPage,obj.pageCount,{reStatus: reStatus}))
+                                                    dispatch(redEnvelopesAc.toggleClass({reStatus: reStatus}));
+                                                    dispatch(redEnvelopesAc.getData({
+                                                        pageNum:obj.currentPage,
+                                                        pageSize:obj.pageCount,
+                                                        reStatus: reStatus
+                                                    }))
                                                 }
                                             }
                                         }>
@@ -106,11 +116,14 @@ class MyRedEnvelopes extends React.Component {
                 <div className="member__cbox">
                     <Tab>
                         <div name="温馨提示">
-                            <div className="m-wxts">
-                                <p> 1. 投资时需满足红包使用规则，才可使用；<br/>
-                                    2. 使用过程遇到问题时，请（工作日9:00-20:00）咨询客服<br/>
-                                </p>
+                            <div className="tab_content">
+                                <div className="m-wxts">
+                                    <p> 1. 投资时需满足红包使用规则，才可使用；<br/>
+                                        2. 使用过程遇到问题时，请（工作日9:00-20:00）咨询客服<br/>
+                                    </p>
+                                </div>
                             </div>
+
                         </div>
                     </Tab>
                 </div>

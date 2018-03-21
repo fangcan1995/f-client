@@ -123,8 +123,8 @@ export default (
                             <Route path={`${match.url}/super-list`} component={userIsAuthenticated(SuperPartnerDetail)} />
                             <Route path={`${match.url}/partner-list`} component={userIsAuthenticated(PartnerList)} />
                             <Route path={`${match.url}/partner-detail`} component={userIsAuthenticated(PartnerDetail)} />
-                            <Route path={`${match.url}/my-redEnvelopes`} component={userIsAuthenticated(MyRedEnvelopes)} />
-                            <Route path={`${match.url}/my-rateCoupons`} component={userIsAuthenticated(MyRateCoupons)} />
+                            <Route path={`${match.url}/my-redEnvelopes`} component={MyRedEnvelopes} />
+                            <Route path={`${match.url}/my-rateCoupons`} component={MyRateCoupons} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>
