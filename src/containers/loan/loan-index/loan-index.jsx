@@ -1,34 +1,48 @@
 import React,{Component} from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import './loan-index.less';
 import Floor from '../../../components/home-page-floor/home-page-floor';
-import { Modal, Button } from 'antd';
+import { message, Modal, Button } from 'antd';
 import { connect } from 'react-redux';
 import Login from '../../login/login'
 import { showModal,hideModal } from '../../../actions/login-modal';
 import LoginModal from '../../../components/login-modal/login-modal'
+import { getApplyData,checkForm ,formData,postLoanData} from '../../../actions/loan-index'
+import {checkMoney} from '../../../assets/js/cost';
+import parseJson2URL from '../../../utils/parseJson2URL';
 
 class Loan extends Component {
   state = {
     ModalText: 'Content of the modal dialog',
     visible: false,
-    footer:null
+    visible2: false,
+    footer:null,
   }
   showModal = () => {
     const { dispatch } = this.props;
     dispatch(showModal())
+    
   }
-  showModal1 = () => {
+  showModal1  (loanType) {
     this.setState({
       visible: true,
     })
+    const { dispatch } = this.props;
+    console.log(loanType)
+    dispatch(getApplyData(loanType))
   }
   handleOk = () => {
     this.setState({
       ModalText: 'The modal dialog will be closed after two seconds',
       confirmLoading: true,
     });
-    
+    const ctiemout = setTimeout(() => {
+      this.setState({
+        visible2: false,
+        confirmLoading: false,
+      });
+    }, 2000);
   }
   
   handleCancel = () => {
@@ -42,14 +56,69 @@ class Loan extends Component {
     console.log('Clicked cancel button');
     this.setState({
       visible: false,
+      visible2: false,
     })
   }
+  onBlur = ()=>{
+    const {loans,dispatch} = this.props;
+    console.log(this.refs.money.value)
+    
+    const money={
+      value:parseInt(this.refs.money.value),
+      type:0,
+      min_v:100,
+      max_v:loans.maxAmount,
+      label:'',
+      interval:100
+    }
+    const loanMoney = checkMoney(money)
+    console.log(loanMoney)
+    dispatch(checkForm(loanMoney))
+    
+  }
+  checkLast=()=>{
+    const {loans,dispatch} = this.props;
+    if(!loans.form[0]){
+      this.refs.money.value=null
+    }
+  }
+  
+  handleSubmit(e){
+    const {loans,dispatch} = this.props;
+    e.preventDefault();
+    
+    const applyAmt = this.refs.money.value;
+    const loanExpiry =this.refs.loanExpiry.value;
+    const loanPurpose=this.refs.loanPurpose.value;
+    const repayType =this.refs.repayType.value;
+    const graphValidateCode=this.refs.graphValidateCode.value;
+    const loanType=this.refs.loanType.value
+    const formDatas={
+      loanExpiry,loanPurpose,repayType,graphValidateCode,applyAmt,loanType
+    }
+    console.log(loanExpiry,loanPurpose,repayType,graphValidateCode)
+    
+    dispatch(formData(formDatas))
+    console.log(formDatas)
+    dispatch(postLoanData(formDatas))
+    
+    const hide = message.loading('提交申请中，您稍等~', 0);
+    // Dismiss manually and asynchronously
+    setTimeout(hide, 2000);
+    
+    setTimeout(() => {
+        this.setState({
+          visible: false,
+          visible2:true
+        });
+      }, 2000); 
+  }
   componentWillUnmount(){
-   
+    // clearTimeout(this.ctiemout)
   }
   render(){
-    const { auth ,loginModal} = this.props;
-    console.log(auth)
+    const { auth ,loginModal,loans} = this.props;
+    console.log(loans)
     // auth.isAuthenticated
     if(true){
       return (
@@ -94,17 +163,17 @@ class Loan extends Component {
                 <li className="loanType__1">
                   <h4>车贷</h4>
                   <p>适用于公务员、事业单位、银行、<br />最高可借<br /><em>100 万</em></p>
-                  <a className="" onClick={this.showModal1}>点击申请</a>
+                  <a className="" onClick={this.showModal1.bind(this,0)}>点击申请</a>
                 </li>
                 <li className="loanType__2">
                   <h4>房贷</h4>
                   <p>适用于公务员、事业单位、银行、<br />最高可借<br /><em>50 万</em></p>
-                  <a className="" onClick={this.showModal1}>点击申请</a>
+                  <a className="" onClick={this.showModal1.bind(this,1)}>点击申请</a>
                 </li>
                 <li className="loanType__3">
                   <h4>信用贷</h4>
                   <p>适用于公务员、事业单位、银行、<br />最高可借<br /><em>100 万</em></p>
-                  <a className="" onClick={this.showModal1}>点击申请</a>
+                  <a className="" onClick={this.showModal1.bind(this,2)}>点击申请</a>
                 </li>
               </ul>
             </Floor>
@@ -121,19 +190,19 @@ class Loan extends Component {
                     <main className="main loanApp">
                         <div className="pop_pub"></div>
                         <div className="pop_main pop_loanApp">
-                            <form  id="frm" method="post">
+                            <form id="frm" onSubmit={this.handleSubmit.bind(this)}>
                                 <div className="fl">
                                     <dl className="form_bar">
                                         <dt><label>借款金额</label></dt>
                                         <dd>
-                                            <input name="loanAmt" id="loanAmt" type="text" className="textInput moneyInput" maxLength="20"/>
+                                            <input name="loanAmt" id="loanAmt" type="text" className="textInput moneyInput" maxLength="20" required ref='money' onBlur={this.onBlur}/>
                                             <span className="unit">元</span>
                                         </dd>
                                     </dl>
                                     <dl className="form_bar">
                                         <dt><label>借款期限</label></dt>
                                         <dd>
-                                            <select name="loanExpiry" id="loanExpiry" className="textInput">
+                                            <select name="loanExpiry" id="loanExpiry" className="textInput" required ref='loanExpiry'>
                                                 <option value="3" defaultValue="">3个月</option>
                                                 <option value="6">6个月</option>
                                                 <option value="12">12个月</option>
@@ -143,63 +212,66 @@ class Loan extends Component {
                                     <dl className="form_bar">
                                         <dt><label>还款方式</label></dt>
                                         <dd>
-                                            <select name="refundWay" id="refundWay" className="textInput">
-                                                <option value="2" defaultValue="">按月付息，到期还本</option>
-                                                <option value="3">一次性还本还息</option>
-                                                <option value="1">等本等息</option>
-                                                <option value="1">等额本金</option>
+                                            <select name="refundWay" id="refundWay" className="textInput" ref='repayType'>
+                                                <option value="1" defaultValue="">按月付息，到期还本</option>
+                                                <option value="2">一次性还本还息</option>
+                                                <option value="3" disabled>等本等息</option>
+                                                <option value="4" disabled>等额本金</option>
                                             </select>
                                         </dd>
                                     </dl>
                                     <div className="form_bar">
                                         <dt><label>借款用途</label></dt>
                                         <dd>
-                                            <select name="loanPurpose" id="loanPurpose" className="textInput">
+                                            <select name="loanPurpose" id="loanPurpose" className="textInput" required ref='loanPurpose'>
                                                 <option value="" defaultValue="">请选择</option>
                                                 <option value="1">经营</option>
                                                 <option value="2">消费</option>
                                                 <option value="3">资金周转</option>
-                                                <option value="3">其他</option>
+                                                <option value="4">其他</option>
                                             </select>
                                         </dd>
                                     </div>
                                     <dl className="form_bar">
                                         <dt><label>验证码</label></dt>
                                         <dd>
-                                            <input name="validateCode" id="imgcode" type="text" className="textInput w140" placeholder="请输入验证码" maxLength="6"/>
+                                            <input name="validateCode" id="imgcode" type="text" className="textInput w140" placeholder="请输入验证码" maxLength="6" required ref='graphValidateCode' onBlur={this.checkLast}/>
                                             <img src="/images/account/pt1.png" data-url="/user/captcha" id="img-code" title="看不清？点击图片更换验证码" className="vCode" />
                                         </dd>
                                     </dl>
                                     <div className="ps">
-                                        <span className="tips"></span>
+                                        {
+                                          loans.form?loans.form[0]?null:<span className="tips">{loans.form[2]}</span>:null
+                                        }
                                     </div>
                                     <div className="form_bar">
-                                        <button className="btn">点击确认</button>
+                                        <button className="btn" ref='btn'>点击确认</button>
                                     </div>
                                 </div>
                                 <div className="fr">
                                     <div className="member_info">
-                                        <ul>
+                                        <ul key={loans.memberId}>
                                             <li>
-                                                <strong>姓名:</strong>张三
+                                                <strong>姓名:</strong>{loans.trueName}
                                             </li>
                                             <li>
-                                                <strong>手机号码:</strong>15942010456
+                                                <strong>手机号码:</strong>{loans.mobilePhone}
                                             </li>
                                             <li>
-                                                <strong>身份证号:</strong>210503198817103622
+                                                <strong>身份证号:</strong>{loans.identityCard }
                                             </li>
                                         </ul>
                                     </div>
                                     <dl>
                                         <dt><h3>最高额度：</h3></dt>
-                                        <dd>平台用户最高借款金额为200000.00元<br/>剩余借款额度随借款笔数和金额的增加而减少。</dd>
+                                        <dd>平台用户最高借款金额为{loans.maxAmount}.00元<br/>剩余借款额度随借款笔数和金额的增加而减少。</dd>
                                     </dl>
                                     <dl>
                                         <dt><h3>申请条件：</h3></dt>
                                         <dd id="sqtj">以借款人的信用情况为基础，巴巴汇平台评估借款人资质后，对其授信一定额度发标借款。</dd>
                                     </dl>
                                 </div>
+                                <input type='hidden' value={loans.loanType} ref='loanType'/>
                             </form>
                         </div>
             
@@ -208,6 +280,18 @@ class Loan extends Component {
               </div>
               
               
+            </Modal>
+            <Modal title="提示信息" visible={this.state.visible2}
+              confirmLoading={this.state.confirmLoading}
+              onOk={this.handleOk} onCancel={this.handleCancel1}
+              footer={[
+                <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.handleOk}>
+                  确定
+                </Button>,
+              ]}
+            >
+              <p className='ant-modal-header'>{loans.applyMessage}</p>
+              <p className='ant-modal-header'><Link to='/my-loan/my-loan' className='loans'>去看我的借款</Link></p>
             </Modal>
             <Floor
               otherClassName="faq"
@@ -333,10 +417,11 @@ class Loan extends Component {
   
 };
 function select(state) {
-  const { auth ,loginModal} = state.toJS();
+  const { auth ,loginModal,loans} = state.toJS();
   return {
     auth,
-    loginModal
+    loginModal,
+    loans
   };
 }
 export default connect(select)(Loan);

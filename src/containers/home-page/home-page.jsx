@@ -24,16 +24,7 @@ import Floor from '../../components/home-page-floor/home-page-floor';
 import { getData, getNovice, getStandard, getNotice, getBanner,getSpecs } from '../../actions/home-page';
 
 class HomePage extends Component {
-  constructor(props) {
-    super(props)
-     this.swipeOptions={
-      continuous: true,
-      startSlide: 0,
-      speed: 400,
-      auto: 3000,
-      stopPropagation: false}
-     
- }
+  
   handleLoginBtnClick = (e) => {
     e.preventDefault();
     console.log('aaaa')
@@ -108,7 +99,7 @@ class HomePage extends Component {
       <div className="banner" >
         <div className="carousel" >
             
-            <Carousel autoplay nextArrow prevArrow key={homePage.banner.length}>
+            <Carousel autoplay touchMove='true' key={homePage.banner.length}>
               {homePage.banner.map((item)=>{
                   return (
                     <div key={item.id}>
@@ -172,7 +163,7 @@ class HomePage extends Component {
         <div className="notice">
           <i className="notice__icon iconfont icon-gonggao"></i>
           <div className="notice__text">
-            <Carousel vertical="true" autoplay key={homePage.notice.length}>
+            <Carousel vertical="true" autoplay key={homePage.notice.length} dots='false'>
               {homePage.notice.map((item)=>{
                         return (                         
                             <div key={item.noticeId} className="notice__text" onClick={this.handleNoticeClick.bind(this,item.noticeId)}>
@@ -223,7 +214,8 @@ class HomePage extends Component {
             </div>
           </div>
         </Floor>
-        <Floor
+        {
+          homePage.standard.length?<Floor
           otherClassName="standard"
           tit="散标/债权"
           tip="风险自行承担&nbsp;&nbsp;投资需谨慎"
@@ -299,7 +291,9 @@ class HomePage extends Component {
             
             
           </ul>
-        </Floor>
+        </Floor>:null
+        }
+        
         {/* <div className="ad">//广告待定
           <Carousel autoplay nextArrow prevArrow>
               {
@@ -322,7 +316,7 @@ class HomePage extends Component {
             tit={homePage.com.affTypeName}
             >
             <div className="news__content">
-              <Carousel autoplay nextArrow prevArrow>
+              <Carousel autoplay nextArrow prevArrow dots='false'>
                 {homePage.com.companyList.map((item)=>{
                   return (
                     <div key={item.affInfoId} onClick={this.handleCommediaClick.bind(this,item.affInfoId)}>

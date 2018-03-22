@@ -20,12 +20,12 @@ class LoginModal  extends Component {
           ModalText: 'The modal dialog will be closed after two seconds',
           confirmLoading: true,
         });
-        // const ctiemout = setTimeout(() => {
-        //   this.setState({
-        //     visible: false,
-        //     confirmLoading: false,
-        //   });
-        // }, 2000);
+        const ctiemout = setTimeout(() => {
+          this.setState({
+            visible: false,
+            confirmLoading: false,
+          });
+        }, 2000);
       }
       
       handleCancel = () => {

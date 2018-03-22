@@ -1,6 +1,7 @@
 import auth from './auth';
 import login from './login';
 import loginModal from './login-modal';
+import loans from './loan-index';
 import signup from './signup';
 import homePage from './home-page';
 import constantReducer from './constantReducer';
@@ -17,6 +18,7 @@ export {
     auth,
     login,
     loginModal,
+    loans,
     signup,
     aboutReducer,
     homePage,
