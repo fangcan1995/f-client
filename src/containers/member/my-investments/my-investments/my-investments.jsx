@@ -10,21 +10,63 @@ import ModalPlan from './modalPlan';
 import ModalTransfer from './modalTransfer';
 import moment from "moment";
 import { connect } from 'react-redux';
-import actionsMyInvestments from './actions_myInvestments';
+import actionsMyInvestments from '../../../../actions/member-investments';
+import {memberInvestAc} from "../../../../actions/member-investments";
+import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import './investments.less';
 class MyInvestments extends React.Component{
+
     componentDidMount () {
-        this.props.dispatch(actionsMyInvestments.getData(1));
+        this.props.dispatch(memberInvestAc.getPie());
+        this.props.dispatch(memberInvestAc.getList());
+    }
+    filter(pram){
+        this.props.dispatch(memberInvestAc.stateModify({status:pram,myList:``}));
+        this.props.dispatch(memberInvestAc.getList({status:pram}));
+    }
+    toggleModal(modal,visile,id){
+        let {dispatch}=this.props;
+        let myReceiving_new={};
+        if(modal=='modalPlan'){
+            if(visile){
+                //dispatch(actionsMyInvestments.getPlanList(id));//获取某项目回款计划
+                console.log('---------------------');
+                myReceiving_new={
+                    modalPlan: true,
+                    currentId: id,
+                };
+                dispatch(memberInvestAc.stateModify(myReceiving_new));
+            }else{
+                myReceiving_new={
+                    modalPlan: false,
+                    currentId: '',
+                };
+                dispatch(memberInvestAc.stateModify(myReceiving_new));
+            }
+        }else if(modal=='modalTransfer'){
+
+            if(visile){
+                myReceiving_new={
+                    modalTransfer: true,
+                    currentId: id,
+                };
+                dispatch(memberInvestAc.stateModify(myReceiving_new));
+            }else{
+
+                myReceiving_new={
+                    modalTransfer: false,
+                    currentId: '',
+                };
+                dispatch(memberInvestAc.stateModify(myReceiving_new));
+            }
+        }
+
     }
     transferCallback(){
         let {dispatch}=this.props;
-        //dispatch(actionsMyInvestments.refreshPostResult(0));
-        let myReceiving_new= {
-            postResult:0
-        };
-        dispatch(actionsMyInvestments.stateModify(myReceiving_new));
-        dispatch(actionsMyInvestments.toggleModal('modalTransfer',false,''));
-        dispatch(actionsMyInvestments.filter(2));
+        dispatch(actionsMyInvestments.stateModify({postResult:``}));
+        this.toggleModal('modalTransfer',false,'');
+        this.filter(2);
     }
     render(){
         //let {myInvestments,dispatch} = this.props;
@@ -32,10 +74,9 @@ class MyInvestments extends React.Component{
         console.log(this.props);
 
         let {dispatch}=this.props;
-        let {myInvestments}=this.props.memberInvestments;
+        let {myInvestments,isFetching}=this.props.memberInvestments;
         let {myList,charts,status,modalPlan,modalTransfer,currentPro,currentId}=myInvestments;
-        console.log(currentPro);
-        //let {status,myList,charts,modalPlan,modalTransfer,currentPro,currentId}=myInvestments;
+
         let thead=[];
         thead[0]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>还款方式</th><th>投资金额(元)</th><th>投资时间</th><th>投资进度</th></tr>;
         thead[1]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>投资金额(元)</th><th>投资时间</th><th>下期回款日期</th><th>下期回款金额(元)</th><th>操作</th></tr>;
@@ -46,35 +87,32 @@ class MyInvestments extends React.Component{
         return(
             <div className="member__main">
                 <Crumbs/>
-                <div className="member__cbox">
-                    <Tab>
-                        <div name="我的投资" className="chart">
-                            <Tab>
-                                <div name="投资总额">
-                                    {(JSON.stringify(charts.data)=='{}')?(<p>{charts.message}</p>)
-                                        :(<PieChart
-                                            data={charts.data.totalInvestment.data}
+                {(charts=='')?``
+                    :<div className="member__cbox">
+                        <Tab>
+                            <div name="我的投资" className="chart">
+                                <Tab>
+                                    <div name="投资总额">
+                                        <PieChart
+                                            data={charts.totalInvestment.data}
                                             style={{height: '300px', width: '930px'}}
                                             totalTitle="投资总额"
                                         >
-                                        </PieChart>)
-
-                                    }
-                                </div>
-                                <div name="累计收益">
-                                    {(JSON.stringify(charts.data)=='{}')?(<p>{charts.message}</p>)
-                                        :(<PieChart
-                                            data={charts.data.accumulatedIncome.data}
+                                        </PieChart>
+                                    </div>
+                                    <div name="累计收益">
+                                        <PieChart
+                                            data={charts.accumulatedIncome.data}
                                             style={{height: '300px', width: '930px'}}
                                             totalTitle="投资总额"
                                         >
-                                        </PieChart>)
-                                    }
-                                </div>
-                            </Tab>
-                        </div>
-                    </Tab>
-                </div>
+                                        </PieChart>
+                                    </div>
+                                </Tab>
+                            </div>
+                        </Tab>
+                    </div>
+                }
                 <div className="member__cbox"  style={{ padding:'20px 30px' }}>
                     <div className="filter">
                         <div className="filter__outer">
@@ -85,27 +123,27 @@ class MyInvestments extends React.Component{
                                     </div>
                                     <div className="filter__cell">
                                         <p className={(status===1)?'filter__opt filter__opt--active':'filter__opt'}
-                                           onClick={ () => { dispatch(actionsMyInvestments.filter(1)) } }>招标中</p>
+                                           onClick={ () => { this.filter(1) } }>招标中</p>
                                     </div>
                                     <div className="filter__cell">
                                         <p className={(status===2)?'filter__opt filter__opt--active':'filter__opt'}
-                                           onClick={ () => { dispatch(actionsMyInvestments.filter(2)) } }>回款中</p>
+                                           onClick={ () => { this.filter(2) } }>回款中</p>
                                     </div>
                                     <div className="filter__cell">
                                         <p className={(status===3)?'filter__opt filter__opt--active':'filter__opt'}
-                                           onClick={ () => { dispatch(actionsMyInvestments.filter(3)) } }>已回款</p>
+                                           onClick={ () => { this.filter(3) } }>已回款</p>
                                     </div>
                                     <div className="filter__cell">
                                         <p className={(status===4)?'filter__opt filter__opt--active':'filter__opt'}
-                                           onClick={ () => { dispatch(actionsMyInvestments.filter(4)) } }>转让申请</p>
+                                           onClick={ () => { this.filter(4) } }>转让申请</p>
                                     </div>
                                     <div className="filter__cell">
                                         <p className={(status===5)?'filter__opt filter__opt--active':'filter__opt'}
-                                           onClick={ () => { dispatch(actionsMyInvestments.filter(5)) } }>转让中</p>
+                                           onClick={ () => { this.filter(5) } }>转让中</p>
                                     </div>
                                     <div className="filter__cell">
                                         <p className={(status===6)?'filter__opt filter__opt--active':'filter__opt'}
-                                           onClick={ () => { dispatch(actionsMyInvestments.filter(6)) } }>已转出</p>
+                                           onClick={ () => { this.filter(6) } }>已转出</p>
                                     </div>
 
                                 </div>
@@ -114,92 +152,118 @@ class MyInvestments extends React.Component{
                         </div>
 
                     </div>
-                    {(JSON.stringify(myList.data)=='{}')?(<p>{myList.message}</p>)
-                        :(
-                            <div  className="table__wrapper">
-                                <table className={`tableList table${status}`}>
-                                    <thead>
-                                    {thead[status-1]}
-                                    </thead>
-
-                                    {(myList.data.total>0)?(
-                                            <tbody>
-                                            {
-                                                myList.data.list.map((l, i) => (
-                                                    (status===1)?(
-                                                        <tr key={`row-${i}`}>
-                                                            <td><p><a href="#">{l.proName}</a></p></td>
-                                                            <td>{l.proMoney}</td><td>{l.loanExpiry}</td><td>{l.loanRefundWay}</td><td>{l.proMoneyEnd}</td><td>{l.inveCreateTime}</td><td>{l.proMoneyPercent}%</td>
-                                                        </tr>
-                                                    ):((status===2)?(
-                                                        <tr key={`row-${i}`}>
-                                                            <td><p><a href="#">{l.proName}</a></p></td>
-                                                            <td>{l.proMoney}</td><td>{l.loanExpiry}</td><td>{l.proMoneyEnd}</td><td>{l.inveCreateTime}</td><td>{l.earnShdEarnDate}</td><td>{l.earnShdEarnAmou}</td>
-                                                            <td>
-                                                                <a onClick={() => dispatch(actionsMyInvestments.toggleModal('modalPlan',true,l.investId))}>回款计划</a>
-                                                                <a onClick={() => dispatch(actionsMyInvestments.toggleModal('modalTransfer',true,l.investId))}>债权转让</a>
-                                                                <a href="">投资合同</a>
-                                                            </td>
-                                                        </tr>
-                                                    ):((status===3)?(
-                                                        <tr key={`row-${i}`}>
-                                                            <td><p><a href="#">{l.proName}</a></p></td>
-                                                            <td>{l.proMoney}</td><td>{l.loanExpiry}</td><td>{l.proMoneyEnd}</td><td>{l.inveCreateTime}</td><td>{l.earnRemittancAmou}</td><td>{l.earnRealEarnDate}</td>
-                                                            <td>
-                                                                <a onClick={() => dispatch(actionsMyInvestments.toggleModal('modalPlan',true,l.investId))}>回款计划</a>
-                                                                <a href="">投资合同</a>
-                                                            </td>
-                                                        </tr>
-                                                    ):((status===4)?(
-                                                        <tr key={`row-${i}`}>
-                                                            <td>--</td>
-                                                            <td><p><a href="#">{l.proName}</a></p></td>
-                                                            <td>{l.proMoneyEnd}</td><td>{l.transAmt}</td><td>{l.transFee}</td><td>{l.transApplyTime}</td>
-                                                            <td>
-                                                                {l.transStatus}
-                                                            </td>
-                                                        </tr>
-                                                    ):((status===5)?(
-                                                        <tr key={`row-${i}`}>
-                                                            <td>{l.transNo}</td>
-                                                            <td><p><a href="#">{l.proName}</a></p></td>
-                                                            <td>{l.transAmt}</td><td>{l.transFinanced}</td><td>{l.transSchedule}</td><td>{l.transPutDate}</td>
-                                                            <td>
-                                                                {l.transStatus}
-                                                            </td>
-                                                        </tr>
-                                                    ):((status===6)?(
-                                                        <tr key={`row-${i}`}>
-                                                            <td>{l.transNo}</td>
-                                                            <td><p><a href="#">{l.proName}</a></p></td>
-                                                            <td>{l.transAmt}</td><td>{l.transferDate}</td>
-                                                            <td>
-                                                                <a href="">投资合同</a>
-                                                            </td>
-                                                        </tr>
-                                                    ):(''))))))
+                    {(myList === '') ? <Loading isShow={isFetching}/>
+                        :
+                        <div className="table__wrapper">
+                            {(myList.total > 0) ?
+                                <div>
+                                    <table className={`tableList table${status}`}>
+                                        <thead>
+                                        {thead[status - 1]}
+                                        </thead>
+                                        {(myList.total > 0) ? (
+                                                <tbody>
+                                                {
+                                                    myList.list.map((l, i) => (
+                                                        (status === 1) ? (
+                                                            <tr key={`row-${i}`}>
+                                                                <td><p><a href={`/invest-list/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                <td>{l.proMoney}</td>
+                                                                <td>{l.loanExpiry}</td>
+                                                                <td>{l.loanRefundWay}</td>
+                                                                <td>{l.proMoneyEnd}</td>
+                                                                <td>{l.inveCreateTime}</td>
+                                                                <td>{l.proMoneyPercent}%</td>
+                                                            </tr>
+                                                        ) : ((status === 2) ? (
+                                                            <tr key={`row-${i}`}>
+                                                                <td><p><a href={`/invest-list/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                <td>{l.proMoney}</td>
+                                                                <td>{l.loanExpiry}</td>
+                                                                <td>{l.proMoneyEnd}</td>
+                                                                <td>{l.inveCreateTime}</td>
+                                                                <td>{l.earnShdEarnDate}</td>
+                                                                <td>{l.earnShdEarnAmou}</td>
+                                                                <td>
+                                                                    <a onClick={() => this.toggleModal('modalPlan', true, l.investId)}>回款计划</a>
+                                                                    <a onClick={() => dispatch(actionsMyInvestments.toggleModal('modalTransfer', true, l.investId))}>债权转让</a>
+                                                                    <a href="">投资合同</a>
+                                                                </td>
+                                                            </tr>
+                                                        ) : ((status === 3) ? (
+                                                            <tr key={`row-${i}`}>
+                                                                <td><p><a href={`/invest-list/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                <td>{l.proMoney}</td>
+                                                                <td>{l.loanExpiry}</td>
+                                                                <td>{l.proMoneyEnd}</td>
+                                                                <td>{l.inveCreateTime}</td>
+                                                                <td>{l.earnRemittancAmou}</td>
+                                                                <td>{l.earnRealEarnDate}</td>
+                                                                <td>
+                                                                    <a onClick={() => this.toggleModal('modalPlan', true, l.investId)}>回款计划</a>
+                                                                    <a href="">投资合同</a>
+                                                                </td>
+                                                            </tr>
+                                                        ) : ((status === 4) ? (
+                                                            <tr key={`row-${i}`}>
+                                                                <td>--</td>
+                                                                <td><p><a href={`/invest-list/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                <td>{l.proMoneyEnd}</td>
+                                                                <td>{l.transAmt}</td>
+                                                                <td>{l.transFee}</td>
+                                                                <td>{l.transApplyTime}</td>
+                                                                <td>{l.transStatus}</td>
+                                                            </tr>
+                                                        ) : ((status === 5) ? (
+                                                            <tr key={`row-${i}`}>
+                                                                <td>{l.transNo}</td>
+                                                                <td><p><a href={`/invest-list/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                <td>{l.transAmt}</td>
+                                                                <td>{l.transFinanced}</td>
+                                                                <td>{l.transSchedule}</td>
+                                                                <td>{l.transPutDate}</td>
+                                                                <td>
+                                                                    {l.transStatus}
+                                                                </td>
+                                                            </tr>
+                                                        ) : ((status === 6) ? (
+                                                            <tr key={`row-${i}`}>
+                                                                <td>{l.transNo}</td>
+                                                                <td><p><a href={`/invest-list/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                <td>{l.transAmt}</td>
+                                                                <td>{l.transferDate}</td>
+                                                                <td>
+                                                                    <a href="">投资合同</a>
+                                                                </td>
+                                                            </tr>
+                                                        ) : (''))))))
+                                                    ))
+                                                }
+                                                </tbody>)
+                                            : (<tbody><p className="noRecord">暂无记录</p></tbody>)
+                                        }
+                                    </table>
+                                    <Pagination config={
+                                        {
+                                            currentPage: myList.pageNum,
+                                            pageSize: myList.pageSize,
+                                            totalPage: myList.pages,
+                                            //filter: status,
+                                            paging: (obj) => {
+                                                dispatch(memberInvestAc.getList(
+                                                    {
+                                                        pageNum:obj.currentPage,
+                                                        pageSize:obj.pageCount,
+                                                        status:status
+                                                    }
                                                 ))
                                             }
-                                            </tbody>)
-                                        :(<tbody><p className="noRecord">暂无记录</p></tbody>)
-                                    }
-                                </table>
-                                {(myList.data.total>0)?(
-                                        <Pagination config = {
-                                            {
-                                                currentPage:myList.data.pageNum,
-                                                pageSize:myList.data.pageSize,
-                                                totalPage:Math.ceil(myList.data.total/myList.data.pageSize),
-                                                filter:status,
-                                                paging:(obj)=>{
-                                                    dispatch(actionsMyInvestments.getList(obj.currentPage,obj.pageCount,{status:status}));
-                                                }
-                                            }
-                                        } ></Pagination>)
-                                    :('')}
-
-                            </div>
-                        )
+                                        }
+                                    }></Pagination>
+                                </div>
+                                : <NoRecord isShow={true} />
+                            }
+                        </div>
                     }
                 </div>
                 <Modal
@@ -208,13 +272,16 @@ class MyInvestments extends React.Component{
                     visible={modalPlan}
                     width="680px"
                     footer={null}
-                    onCancel={() => dispatch(actionsMyInvestments.toggleModal('modalPlan',false,''))}
+                    onCancel={() => this.toggleModal('modalPlan',false,'')}
                 >
                     {modalPlan===true?
-                        <ModalPlan currentPro={
+                        <ModalPlan info={
                             {
                                 currentId:currentPro.currentId,
-                                planData:currentPro.planData,
+                                /*callback:(obj)=>{
+                                    console.log('aaaaaaaaaa');
+                                    this.toggleModal('modalPlan',false,'');
+                                }*/
                             }
 
                         }

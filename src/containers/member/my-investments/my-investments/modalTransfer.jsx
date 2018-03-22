@@ -4,7 +4,9 @@ import  {getData}  from '../../../../assets/js/getData';
 import  {poundage,addCommas,checkMoney}  from '../../../../assets/js/cost';
 import { Checkbox,message,Alert } from 'antd';
 import { connect } from 'react-redux';
-import actionsMyInvestments from './actions_myInvestments';
+import {memberInvestAc} from "../../../../actions/member-investments";
+import {BbhAlert} from '../../../../components/bbhAlert/bbhAlert';
+
 class ModalTransfer extends React.Component {
     constructor(props) {
         super(props);
@@ -25,7 +27,9 @@ class ModalTransfer extends React.Component {
             }
         }
     }
-
+    componentDidMount () {
+        this.props.dispatch(memberInvestAc.getTransfer(this.props.info.currentId));
+    }
     onChange(e) {
         this.setState({
             isRead: e.target.checked
@@ -90,15 +94,13 @@ class ModalTransfer extends React.Component {
         }
         // 提交后台
         let json={investId: this.props.info.currentId,moneyEnd:this.state.amount};
-        this.props.dispatch(actionsMyInvestments.postTransfer(json),()=>{
+        this.props.dispatch(memberInvestAc.postTransfer(json),()=>{
             console.log(1);
         });
 
 
     }
-    componentWillMount () {
-        this.props.dispatch(actionsMyInvestments.getTransfer(this.props.info.currentId));
-    }
+
     message(message,description,type){
         this.setState({
             formHide:true,
@@ -113,18 +115,17 @@ class ModalTransfer extends React.Component {
     render() {
         console.log(this.props);
         let {callback}=this.props.info;
-        let {postResult}=this.props.memberInvestments.myInvestments;
-        let {transferData}=this.props.memberInvestments.myInvestments.transferInfo;
+        let {postResult,transferInfo}=this.props.memberInvestments.myInvestments;
         let {amount,tips,isRead,postSwitch} =this.state;
         return (
             <div className="pop__transfer">
                 {
-                    (postResult === 0) ?
-                        (JSON.stringify(transferData)=='{}')?('')
+                    (postResult === ``) ?
+                        (transferInfo===``)?('')
                         :(<div className="form__wrapper">
                                 <dl className="form__bar">
                                     <dt><label>实际投资金额:</label></dt>
-                                    <dd><i id="Accountbalance" className="money">{transferData.transFinanced}</i> 元</dd>
+                                    <dd><i id="Accountbalance" className="money">{transferInfo.transFinanced}</i> 元</dd>
                                 </dl>
                                 <dl className="form__bar">
                                     <dt><label>转让金额:</label></dt>
@@ -138,7 +139,7 @@ class ModalTransfer extends React.Component {
                                     <dt><label>手续费：</label></dt>
                                     <dd>
                                         <i id="cost"
-                                           className="money">{addCommas(poundage(amount, transferData.proTransferFee))}</i>
+                                           className="money">{addCommas(poundage(amount, transferInfo.proTransferFee))}</i>
                                         元
                                     </dd>
                                 </dl>
@@ -146,7 +147,7 @@ class ModalTransfer extends React.Component {
                                     <dt><label>预期到账金额：</label></dt>
                                     <dd><i id="money" className="money">
                                         {amount != 0 ?
-                                            addCommas(amount - poundage(amount, transferData.proTransferFee))
+                                            addCommas(amount - poundage(amount, transferInfo.proTransferFee))
                                             : `0.00`
                                         }
                                     </i>元
@@ -168,33 +169,29 @@ class ModalTransfer extends React.Component {
                                     <button className="button able" onClick={this.handleSubmit}>确认</button>
                                 </div>
                             </div>)
-                        :''
-                }
-                {
-                    (postResult===1)?
-                        <div className="form__wrapper">
-                            <Alert
-                                message='失败'
-                                description='连接失败，请重试'
-                                type='success'
-                                showIcon
+                        :
+                        <div>
+                            <BbhAlert
+                                info={{
+                                    message:'失败',
+                                    description:'连接失败，请重试',
+                                    type:'error',
+                                    callback:(obj)=>{
+                                        callback();
+                                    }
+                                }}
                             />
-                            <button className="button able" style={{marginTop:'30px'}} onClick={() => callback() }>确定</button>
-                        </div>
-                        :''
-                }
-                {
-                    (postResult===2)?
-                        <div className="form__wrapper">
-                            <Alert
-                                message='成功'
-                                description='您的申请已经提交'
-                                type='success'
-                                showIcon
+                            <BbhAlert
+                                info={{
+                                    message:'成功',
+                                    description:'您的申请已经提交',
+                                    type:'success',
+                                    callback:(obj)=>{
+                                        callback();
+                                    }
+                                }}
                             />
-                            <button className="button able" style={{marginTop:'30px'}} onClick={() => callback() }>确定</button>
                         </div>
-                        :''
                 }
             </div>
         );

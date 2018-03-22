@@ -245,7 +245,7 @@ export const repaymentsAc={
         payload: json
     }),
 }
-let memberLoansActions = {
+/*let memberLoansActions = {
     //打开关闭模态框
     toggleModal:(modal,visile,id)=>(dispatch, memberLoans) => {
         let newState={};
@@ -277,7 +277,7 @@ let memberLoansActions = {
 
     },
 
-    /*我的借款*/
+    /!*我的借款*!/
     getData: (status) => (dispatch, memberLoans) => {
         dispatch(memberLoansActions.getPie());
         dispatch(memberLoansActions.getList(1,10,{status:status}));
@@ -494,7 +494,7 @@ let memberLoansActions = {
             });
     },
 
-    /*还款计划*/
+    /!*还款计划*!/
     getRepaymentPlanData: (status) => (dispatch, memberLoans) => {
         dispatch(memberLoansActions.getRepaymentPlanPie());
         dispatch(memberLoansActions.getRepaymentPlanList(1,10));
@@ -685,5 +685,5 @@ let memberLoansActions = {
         payload: json
     }),
 };
-export default memberLoansActions;
+export default memberLoansActions;*/
 

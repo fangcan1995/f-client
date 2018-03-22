@@ -1,6 +1,135 @@
-import cFetch from './../../../../utils/cFetch';
+import cFetch from '../utils/cFetch';
 import cookie from 'js-cookie';
-import {addCommas,checkMoney} from '../../../../assets/js/cost';
+import {addCommas,checkMoney} from '../assets/js/cost';
+import parseJson2URL from './../utils/parseJson2URL';
+
+const token=`?access_token=9c29f71c-a734-472f-a931-f63a876e1922`;
+const url_investCharts=`http://172.16.1.234:9090/members/invest/statistics${token}`; //统计图数据
+const url_investList=`http://172.16.1.234:9090/members/investments${token}`;//获取投资列表
+const url_planList=`http://172.16.4.62:9090/members/investments/receiving/`  //获取回款记录
+const url_postTransferApp=`http://172.16.4.5:8084/test.php`;//转让申请
+const url_getTransfer=`http://172.16.4.62:9090/members/investments/transfer/`; //获取债转详情
+const url_repaymentsAll=`http://172.16.1.221:9090/members/loans/repayments/all/`;//项目提前还款时获取详情
+
+
+export const memberInvestAc={
+    getPie: () => {
+        return {
+            type: 'myInvest/investments/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_investCharts}` , {method: 'GET'}, false);
+                const {code, data} = res;
+                if (code == 0) {
+                    let {totalInvestmentDto,accumulatedIncomeDto}=data.data;
+                    let charts={
+                        totalInvestment:{
+                            data:[
+                                {name:'招标中',value:totalInvestmentDto.proMoneyBidding,instruction:`${addCommas(totalInvestmentDto.proMoneyBidding)}元`},
+                                {name:'回款中',value:totalInvestmentDto.proMoneyInBack,instruction:`${addCommas(totalInvestmentDto.proMoneyInBack)}元`},
+                                {name:'已回款',value:totalInvestmentDto.proMoneyBacked,instruction:`${addCommas(totalInvestmentDto.proMoneyBacked)}元`},
+                                {name:'已转出',value:totalInvestmentDto.proMoneyOut,instruction:`${addCommas(totalInvestmentDto.proMoneyOut)}元`}
+                            ]
+                        },
+                        accumulatedIncome:{
+                            data:[
+                                {name:'回款中',value:accumulatedIncomeDto.earnMoneyInBack,instruction:`${addCommas(accumulatedIncomeDto.earnMoneyInBack)}元`},
+                                {name:'已回款',value:accumulatedIncomeDto.earnMoneyBacked,instruction:`${addCommas(accumulatedIncomeDto.earnMoneyBacked)}元` },
+                            ]
+                        },
+                    };
+                    return {
+                        charts:charts
+                    };
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    getList: (params) => {
+        return {
+            type: 'myInvest/investments/FETCH',
+            async payload() {
+                params = parseJson2URL(params);
+                const res = await cFetch(`${url_investList}&`+params,{method: 'GET'}, false);
+                const {code, data} = res;
+                console.log('发回的数据');
+                console.log(data);
+                console.log(code);
+                if (code == 0) {
+                    return {
+                        myList:data,
+                    };
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    getPlanList:(param) => {
+        return {
+            type: 'myInvest/investments/FETCH',
+            async payload() {
+
+                const res = await cFetch(`${url_planList}${param}${token}`,{method: 'GET'}, false);
+                const {code, data} = res;
+                if (code == 0) {
+                    return {
+                        planList:data,
+                    };
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    //债转详情
+    getTransfer: (pram) => {
+        return {
+            type: 'myInvest/investments/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_getTransfer}${pram}${token}` , {method: 'GET'}, false);
+                const {code, data} = res;
+                if (code == 0) {
+                    transferInfo:data
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    //债转申请
+    postTransfer:(params) =>  {
+        params = parseJson2URL(params);
+        return {
+            type: 'myInvest/investments/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_postTransferApp}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: params,
+                    },
+                    false);
+                return {postResult: res};
+                /*if (res.code == 0) {
+                    return {postResult: res};
+                } else {
+                    throw res;
+                }*/
+            }
+        }
+    },
+
+
+    //修改状态
+    stateModify: json => ({
+        type: 'myInvest/investments/MODIFY_STATE',
+        payload: json
+    }),
+}
+
 
 let actionsMyInvestments = {
     getData: (status) => (dispatch, myInvestments) => {

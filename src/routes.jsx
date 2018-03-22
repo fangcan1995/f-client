@@ -105,8 +105,8 @@ export default (
                     <MemberSidebar {...props}>
                         <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/my-investments`} />
-                            <Route path={`${match.url}/my-investments`} component={userIsAuthenticated(MyInvestments)} />
-                            <Route path={`${match.url}/receiving`} component={userIsAuthenticated(Receiving)} />
+                            <Route path={`${match.url}/my-investments`} component={MyInvestments} />
+                            <Route path={`${match.url}/receiving`} component={Receiving} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>

@@ -1,44 +1,59 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from "moment";
-export default class ModalPlan extends React.Component {
+import { connect } from 'react-redux';
+import {memberInvestAc} from "../../../../actions/member-investments";
+class ModalPlan extends React.Component {
+    componentDidMount () {
+        this.props.dispatch(memberInvestAc.getPlanList(this.props.info.currentId));
+    }
     render() {
-        let {currentId,planData}=this.props.currentPro;
+        let {currentId,planList}=this.props.myInvestments;
+        let {callback}=this.props.info;
         return (
                     <div className="table__wrapper">
-                        {(JSON.stringify(planData)=='{}')?(<p></p>)
-                            :(
-                                <table className="tableList">
-                                    <thead>
-                                        <tr>
-                                            <th>回款时间</th>
-                                            <th>回款期数</th>
-                                            <th>已回款（元）</th>
-                                            <th>待回本金（元）</th>
-                                            <th>待回利息（元）</th>
-                                            <th>逾期罚息（元）</th>
+                        {(planList==='')?``
+                            :
+                            <table className="tableList">
+                                <thead>
+                                <tr>
+                                    <th>回款时间</th>
+                                    <th>回款期数</th>
+                                    <th>已回款（元）</th>
+                                    <th>待回本金（元）</th>
+                                    <th>待回利息（元）</th>
+                                    <th>逾期罚息（元）</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {(planList.length>0)?
+                                    planList.map((l, i) => (
+                                        <tr key={`row-${i}`}>
+                                            <td>{moment(l.earnShdEarnDate).format('YYYY-MM-DD')}</td>
+                                            <td>{l.earnIssue}</td>
+                                            <td>{l.earnIint2}</td>
+                                            <td>{l.earnCapital}</td>
+                                            <td>{l.earnIint}</td>
+                                            <td>{l.lateIint}</td>
                                         </tr>
-                                    </thead>
-
-                                    <tbody>
-                                    {(planData.length>0)?
-                                        planData.map((l, i) => (
-                                            <tr key={`row-${i}`}>
-                                                <td>{moment(l.earnShdEarnDate).format('YYYY-MM-DD')}</td>
-                                                <td>{l.earnIssue}</td>
-                                                <td>{l.earnIint2}</td>
-                                                <td>{l.earnCapital}</td>
-                                                <td>{l.earnIint}</td>
-                                                <td>{l.lateIint}</td>
-                                            </tr>
-                                        ))
+                                    ))
                                     :(<tr colSpan="6"><p className="noRecord">暂无记录</p></tr>)
-                                    }
-                                    </tbody>
+                                }
+                                </tbody>
 
-                                </table>
-                            )}
+                            </table>
+                            }
                     </div>
         );
     }
 };
+
+function mapStateToProps(state) {
+    const { auth,memberInvestments } = state.toJS();
+    return {
+        auth,
+        memberInvestments,
+    };
+}
+export default connect(mapStateToProps)(ModalPlan);

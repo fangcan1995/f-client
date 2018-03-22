@@ -3,29 +3,20 @@ import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
     myInvestments:{
-        charts:{
-            data:{},
-            message:''
-        },
-        myList:{
-            data:{},
-            message:''
-        },
+        charts:``,
+        myList:``,
         status: 1,
         modalPlan: false,
         modalTransfer: false,
         currentId:'',
-        postResult:0,
-        currentPro:{
+        postResult:``,
+        /*currentPro:{
             currentId:'',
             planData:[],
             message:''
-        },
-        transferInfo:{
-            currentId:'',
-            transferData:{},
-            message:''
-        }
+        },*/
+        planList:``,
+        transferInfo:``
     },
     myReceiving:{
         charts:{
@@ -37,21 +28,36 @@ const initialState = Immutable.fromJS({
             message:''
         },
     },
-    /*myList:{
-        data:{},
-        message:''
-    },
-    charts:{
-        doneDto:{},
-        todoDto:{},
-        message:''
-    },
-    status: 1,*/
+
 });
 
 export default createReducer(initialState, {
+    ['myInvest/investments/FETCH_PENDING']:(state,action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['myInvest/investments/FETCH_FULFILLED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        myInvestments:action.payload
+    }),
+    ['myInvest/investments/FETCH_REJECTED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
     ['myInvest/investments/MODIFY_STATE']:(state,action) => state.mergeDeep({
         myInvestments:action.payload
+    }),
+
+
+    ['myInvest/receiving/FETCH_PENDING']:(state,action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['myInvest/receiving/FETCH_FULFILLED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        myReceiving:action.payload
+    }),
+    ['myInvest/receiving/FETCH_REJECTED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
     }),
     ['myInvest/receiving/MODIFY_STATE']:(state,action) => state.mergeDeep({
         myReceiving:action.payload
