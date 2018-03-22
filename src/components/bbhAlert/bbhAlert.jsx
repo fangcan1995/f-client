@@ -1,10 +1,7 @@
 import React from 'react';
 import './bbhAlert.less';
 import { Button,Alert } from 'antd';
-export default class BbhAlert extends React.Component{
-    /*constructor(props){
-        super(props);
-    }*/
+export  class BbhAlert extends React.Component{
     render(){
         let {info}=this.props;
         return(
@@ -22,5 +19,30 @@ export default class BbhAlert extends React.Component{
             </div>
         )
     }
-
+}
+export  class Loading extends React.Component{
+    render(){
+        let {isShow}=this.props;
+        return(
+            <div className="tips_loading">
+                {(isShow===true)?
+                    `页面加载中...`
+                    :``
+                }
+            </div>
+        )
+    }
+}
+export  class NoRecord extends React.Component{
+    render(){
+        let {isShow}=this.props;
+        return(
+            <div className="tips_noRecord">
+                {(isShow===true)?
+                    `暂无记录`
+                    :``
+                }
+            </div>
+        )
+    }
 }

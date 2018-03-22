@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import  {addCommas}  from '../../../../assets/js/cost';
 import { Form,Row,Input,Button,Checkbox,Col } from 'antd';
 import { connect } from 'react-redux';
-import BbhAlert from '../../../../components/bbhAlert/bbhAlert';
+import {BbhAlert} from '../../../../components/bbhAlert/bbhAlert';
 import  {memberLoansAc}  from '../../../../actions/member-loans';
 import { hex_md5 } from '../../../../utils/md5';
 import moment from "moment";

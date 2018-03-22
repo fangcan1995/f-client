@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import  {addCommas}  from '../../../../assets/js/cost';
-import { Form,Row,Input,Button,Checkbox,Col,Alert } from 'antd';
+import { Form,Row,Input,Button,Checkbox,Col } from 'antd';
 import { connect } from 'react-redux';
-import  memberLoansActions  from '../../../../actions/member-loans';
+import  {repaymentsAc}  from '../../../../actions/member-loans';
+import {BbhAlert} from '../../../../components/bbhAlert/bbhAlert';
 import { hex_md5 } from '../../../../utils/md5';
 import moment from "moment";
 const createForm = Form.create;
@@ -13,8 +14,8 @@ function noop() {
 }
 
 class ModalRepayment extends React.Component {
-    componentWillMount () {
-        this.props.dispatch(memberLoansActions.getRepayment(this.props.info.currentId));
+    componentDidMount () {
+        this.props.dispatch(repaymentsAc.getRepayment(this.props.info.currentId));
     }
     handleSubmit = (e) => {
         e.preventDefault();
@@ -28,7 +29,7 @@ class ModalRepayment extends React.Component {
                 verifyCode:form.getFieldsValue().verifyCode,
                 projectId:this.props.currentId,
             }
-            dispatch(memberLoansActions.postRepayment(appInfo));
+            dispatch(repaymentsAc.postRepayment(appInfo));
 
         });
     }
@@ -37,15 +38,12 @@ class ModalRepayment extends React.Component {
         dispatch: PropTypes.func.isRequired
     }
     render() {
-        console.log('还款弹框');
-        console.log(this.props);
         let {callback}=this.props.info;
-        let {postResult}=this.props.memberLoans.repaymentPlans;
-        let {repaymentData}=this.props.memberLoans.repaymentPlans.repaymentInfo;
+        let {postResult,projectInfo}=this.props.memberLoans.repaymentPlans;
         const { getFieldDecorator,getFieldValue } = this.props.form;
         const passwordProps = getFieldDecorator('password', {
             rules: [
-                { required: true, min: 4, message: '密码至少为 4 个字符' }
+                { required: true, min: 6, message: '密码至少为 6 个字符' }
             ]
         });
         const verifyCodeProps = getFieldDecorator('verify_code', {
@@ -70,41 +68,40 @@ class ModalRepayment extends React.Component {
         return (
             <div className="pop__repayment">
                 {
-                    (postResult === 0) ?
-                        (JSON.stringify(repaymentData) == '{}') ? ('')
-                            :
-                            <div className="form__wrapper">
+                    (postResult === ``) ?
+                        (projectInfo === '') ? ``
+                            : <div className="form__wrapper">
                                 <dl className="form__bar">
                                     <dt><label>项目名称：</label></dt>
-                                    <dd>{repaymentData.name}</dd>
+                                    <dd>{projectInfo.name}</dd>
                                 </dl>
                                 <dl className="form__bar">
                                         <dt><label>还款期数：</label></dt>
-                                        <dd>{repaymentData.rpmtIssue} 期</dd>
+                                        <dd>{projectInfo.rpmtIssue} 期</dd>
                                     </dl>
                                 <dl className="form__bar">
                                     <dt><label>应还日期：</label></dt>
-                                    <dd>{moment(repaymentData.shdRpmtDate).format('YYYY-MM-DD')}</dd>
+                                    <dd>{moment(projectInfo.shdRpmtDate).format('YYYY-MM-DD')}</dd>
                                 </dl>
                                 <dl className="form__bar">
                                     <dt><label>应还本金：</label></dt>
-                                    <dd><p>{addCommas(repaymentData.rpmtCapital)} 元</p></dd>
+                                    <dd><p>{addCommas(projectInfo.rpmtCapital)} 元</p></dd>
                                 </dl>
                                 <dl className="form__bar">
                                     <dt><label>应还利息：</label></dt>
-                                    <dd>{addCommas(repaymentData.rpmtIint)} 元</dd>
+                                    <dd>{addCommas(projectInfo.rpmtIint)} 元</dd>
                                 </dl>
                                 <dl className="form__bar">
                                     <dt><label>应还罚息：</label></dt>
-                                    <dd>{addCommas(repaymentData.lateTotal)} 元</dd>
+                                    <dd>{addCommas(projectInfo.lateTotal)} 元</dd>
                                 </dl>
 {/*                                <dl className="form__bar">
                                     <dt><label>应还罚金：</label></dt>
-                                    <dd>{addCommas(repaymentData.e)} 元</dd>
+                                    <dd>{addCommas(projectInfo.e)} 元</dd>
                                 </dl>*/}
                                 <dl className="form__bar">
                                     <dt><label>还款总额：</label></dt>
-                                    <dd>{addCommas(repaymentData.rpmtTotal)} 元</dd>
+                                    <dd>{addCommas(projectInfo.rpmtTotal)} 元</dd>
                                 </dl>
                                 <Form layout="horizontal" onSubmit={this.handleSubmit}>
                                     <FormItem
@@ -155,33 +152,28 @@ class ModalRepayment extends React.Component {
                                     </FormItem>
                                 </Form>
                             </div>
-                        : ''
-                }
-                {
-                    (postResult===1)?
-                        <div className="form__wrapper">
-                            <Alert
-                                message='失败'
-                                description='连接失败，请重试'
-                                type='success'
-                                showIcon
+                        : <div>
+                            <BbhAlert
+                                info={{
+                                    message:'失败',
+                                    description:'连接失败，请重试',
+                                    type:'error',
+                                    callback:(obj)=>{
+                                        callback();
+                                    }
+                                }}
                             />
-                            <button className="button able" style={{marginTop:'30px'}} onClick={() => callback() }>确定</button>
-                        </div>
-                        :''
-                }
-                {
-                    (postResult===2)?
-                        <div className="form__wrapper">
-                            <Alert
-                                message='成功'
-                                description='您的申请已经提交'
-                                type='success'
-                                showIcon
+                            <BbhAlert
+                                info={{
+                                    message:'成功',
+                                    description:'您的申请已经提交',
+                                    type:'success',
+                                    callback:(obj)=>{
+                                        callback();
+                                    }
+                                }}
                             />
-                            <button className="button able" style={{marginTop:'30px'}} onClick={() => callback() }>确定</button>
                         </div>
-                        :''
                 }
             </div>
 

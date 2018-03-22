@@ -4,16 +4,23 @@ import {addCommas,checkMoney} from './../assets/js/cost';
 import parseJson2URL from './../utils/parseJson2URL';
 
 const token=`?access_token=9c29f71c-a734-472f-a931-f63a876e1922`;
-const url_charts=`http://172.16.1.221:9090/members/loans/statistics${token}`; //统计图数据
+const url_loansCharts=`http://172.16.1.221:9090/members/loans/statistics${token}`; //统计图数据
 const url_loansList=`http://172.16.1.221:9090/members/loans${token}`;//获取借款列表
-const url_repaymentsAll=`http://172.16.1.221:9090/members/loans/repayments/all/`;//项目提前还款
+const url_repaymentsAll=`http://172.16.1.221:9090/members/loans/repayments/all/`;//项目提前还款时获取详情
 const url_postRepaymentsAll=`http://172.16.4.5:8084/test.php`;//项目提前还款申请
+
+const url_repaymentsCharts=`http://172.16.1.221:9090/members/loans/repayments/statistics${token}`; //统计图数据
+const url_repaymentsList=`http://172.16.1.221:9090/members/loans/repayments${token}`;//获取借款列表
+const url_proList=`http://172.16.1.221:9090/members/loans/proName${token}`;//获取还款中和已完结的项目列表
+const url_repayment=`http://172.16.1.221:9090/members/loans/repayments/`;//还款时获取详情
+const url_postRepayment=`http://172.16.4.5:8084/test.php`;//还款申请
+
 export const memberLoansAc={
     getPie: () => {
         return {
             type: 'myLoans/myLoans/FETCH',
             async payload() {
-                const res = await cFetch(`${url_charts}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_loansCharts}` , {method: 'GET'}, false);
                 const {code, data} = res;
                 if (code == 0) {
                     let {totalLoanDto,accumulatedInterestDto}=data;
@@ -34,11 +41,7 @@ export const memberLoansAc={
                         },
                     };
                     return {
-                        charts:
-                            {
-                                data:charts,
-                                message:''
-                            }
+                        charts:charts
                     };
                 } else {
                     throw res;
@@ -83,7 +86,6 @@ export const memberLoansAc={
             }
         }
     },
-
     //提交提前还款申请
     postRepaymentApp: (params,dispatch) => {
         params = parseJson2URL(params);
@@ -107,21 +109,142 @@ export const memberLoansAc={
             }
         }
     },
-
-
-
-
     //修改状态
     stateModify: json => ({
         type: 'myLoans/myLoans/MODIFY_STATE',
         payload: json
     }),
+}
+export const repaymentsAc={
+    getPie: () => {
+        return {
+            type: 'myLoans/repaymentPlans/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_repaymentsCharts}` , {method: 'GET'}, false);
+                const {code, data} = res;
+                if (code == 0) {
+                    let {allRepaymentDto,todoRepaymentsDto,doneRepaymentsDto}=data;
+                    let charts={
+                        repayments:{
+                            data:[
+                                {name:'逾期未还',value:allRepaymentDto.overdueNoRepay[1],instruction:`${allRepaymentDto.overdueNoRepay[0]}笔 ${addCommas(allRepaymentDto.overdueNoRepay[1])}元`  },
+                                {name:'待还款',value:allRepaymentDto.repayments[1],instruction:`${allRepaymentDto.repayments[0]}笔 ${addCommas(allRepaymentDto.repayments[1])}元`},
+                                {name:'逾期已还',value:allRepaymentDto.overdueRepay[1],instruction:`${allRepaymentDto.overdueRepay[0]}笔 ${addCommas(allRepaymentDto.overdueRepay[1])}元`},
+                                {name:'已提前还款',value:allRepaymentDto.advanceRepay[1],instruction:`${allRepaymentDto.advanceRepay[0]}笔 ${addCommas(allRepaymentDto.advanceRepay[1])}元`},
+                                {name:'已正常还款',value:allRepaymentDto.normalRepay[1],instruction:`${allRepaymentDto.normalRepay[0]}笔 ${addCommas(allRepaymentDto.normalRepay[1])}元`}
+                            ]
+                        },
+                        todoDto:{
+                            data:[
+                                {name:'未还本金',value:todoRepaymentsDto.todoCapital,instruction:`${addCommas(todoRepaymentsDto.todoCapital)}元`  },
+                                {name:'未还利息',value:todoRepaymentsDto.todoIint,instruction:`${addCommas(todoRepaymentsDto.todoIint)}元`  },
+                                {name:'未还罚息',value:todoRepaymentsDto.todoLateIint,instruction:`${addCommas(todoRepaymentsDto.todoLateIint)}元`  },
+                                {name:'未还罚金',value:todoRepaymentsDto.todoLateFine,instruction:`${addCommas(todoRepaymentsDto.todoLateFine)}元`  },
+                            ]
+                        },
+                        doneDto:{
+                            data:[
+                                {name:'已还本金',value:doneRepaymentsDto.doneCapital,instruction:`${addCommas(doneRepaymentsDto.doneCapital)}元`  },
+                                {name:'已还利息',value:doneRepaymentsDto.doneIint,instruction:`${addCommas(doneRepaymentsDto.doneIint)}元`  },
+                                {name:'已还罚息',value:doneRepaymentsDto.doneLateIint,instruction:`${addCommas(doneRepaymentsDto.doneLateIint)}元`  },
+                                {name:'已还罚金',value:doneRepaymentsDto.doneLateFine,instruction:`${addCommas(doneRepaymentsDto.doneLateFine)}元`  },
+                            ]
+                        },
+                    };
+                    return {
+                        charts:charts
+                    };
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    getList: (params) => {
+        return {
+            type: 'myLoans/repaymentPlans/FETCH',
+            async payload() {
+                params = parseJson2URL(params);
+                const res = await cFetch(`${url_repaymentsList}&`+params,{method: 'GET'}, false);
+                const {code, data} = res;
+                console.log('发回的数据');
+                console.log(`${url_repaymentsList}&`+params);
+                console.log(data);
+                if (code == 0) {
+                    return {
+                        myList:data,
+                    };
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    getProList: () => {
+        return {
+            type: 'myLoans/repaymentPlans/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_proList}`,{method: 'GET'}, false);
+                const {code, data} = res;
+                if (code == 0) {
+                    return {
+                        proList:data,
+                    };
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    getRepayment: (pram) => {
+        return {
+            type: 'myLoans/repaymentPlans/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_repayment}${pram}${token}` , {method: 'GET'}, false);
+                console.log(`${url_repayment}${pram}${token}`);
+                const {code, data} = res;
+                if (code == 0) {
+                    console.log('返回的还款信息');
+                    console.log(data);
+                    return {
+                        projectInfo: data
+                    };
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    //提交提前还款申请
+    postRepayment: (params,dispatch) => {
+        params = parseJson2URL(params);
+        //JSON.stringify(params)
+        return {
+            type: 'myLoans/repaymentPlans/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_postRepaymentsAll}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: params,
+                    },
+                    false);
+                return {postResult: res};
+                /*if (res.code == 0) {
+                    return {postResult: res};
+                } else {
+                    throw res;
+                }*/
+            }
+        }
+    },
+
     stateRepaymentPlanModify: json => ({
         type: 'myLoans/repaymentPlans/MODIFY_STATE',
         payload: json
     }),
 }
-
 let memberLoansActions = {
     //打开关闭模态框
     toggleModal:(modal,visile,id)=>(dispatch, memberLoans) => {
@@ -377,6 +500,7 @@ let memberLoansActions = {
         dispatch(memberLoansActions.getRepaymentPlanList(1,10));
         dispatch(memberLoansActions.getProList());
     },
+
     getRepaymentPlanPie:()=>(dispatch,memberLoans)=>{
         let newState={};
         // 获取统计数据

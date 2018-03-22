@@ -8,7 +8,8 @@ import {addCommas} from '../../../../assets/js/cost';
 import { Modal,Select,DatePicker } from 'antd';
 import ModalRepayment from './modalRepayment';
 import { connect } from 'react-redux';
-import  memberLoansActions  from '../../../../actions/member-loans';
+import  {repaymentsAc}  from '../../../../actions/member-loans';
+import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import './repaymentPlans.less';
 
 import moment from 'moment';
@@ -19,101 +20,115 @@ const Option = Select.Option;
 class RepaymentPlans extends React.Component{
     constructor(props) {
         super(props);
-        this.handleChange = this.handleChange.bind(this);
+        this.state={
+        }
+        this.selectProject = this.selectProject.bind(this);
         this.handleDateStartChange = this.handleDateStartChange.bind(this);
         this.handleDateEndChange = this.handleDateEndChange.bind(this);
     }
     componentDidMount () {
-        this.props.dispatch(memberLoansActions.getRepaymentPlanData(1));
+        this.props.dispatch(repaymentsAc.getPie());
+        this.props.dispatch(repaymentsAc.getList());
+        this.props.dispatch(repaymentsAc.getProList());
     }
-    handleChange(e) {
-        let filter={
-            projectId:e,
-            dateStart:this.props.memberLoans.repaymentPlans.dateStart,
-            dateEnd:this.props.memberLoans.repaymentPlans.dateEnd,
+    //按项目查询
+    selectProject(e) {
+        let filter={};
+        if(e!=''){
+            filter.projectId=e
         };
-        let newState={};
-        newState.projectId=e;
-        this.props.dispatch(memberLoansActions.stateRepaymentPlanModify(newState));
-        this.props.dispatch(memberLoansActions.getRepaymentPlanList(1,10,filter));
+        let {dateStart,dateEnd}=this.props.memberLoans.repaymentPlans;
+        if(dateStart!=='') filter.dateStart=dateStart;
+        if(dateEnd!=='') filter.dateEnd=dateEnd;
+        this.props.dispatch(repaymentsAc.stateRepaymentPlanModify({myList:``,projectId:e}));
+        this.props.dispatch(repaymentsAc.getList(filter));
     }
     handleDateStartChange(date,dateString) {
-        dateString=dateString+' 00:00:00';
-        let filter={
-            projectId:this.props.memberLoans.repaymentPlans.projectId,
-            dateStart:dateString,
-            dateEnd:this.props.memberLoans.repaymentPlans.dateEnd,
+        let filter={};
+        if(dateString!=''){
+            dateString=dateString+' 00:00:00';
+            filter.dateStart=dateString
         };
-        let newState={};
-        newState.dateStart=dateString;
-        this.props.dispatch(memberLoansActions.stateRepaymentPlanModify(newState));
-        this.props.dispatch(memberLoansActions.getRepaymentPlanList(1,10,filter));
+        let {projectId,dateEnd}=this.props.memberLoans.repaymentPlans;
+        if(projectId!=='') filter.projectId=projectId;
+        if(dateEnd!=='') filter.dateEnd=dateEnd;
+
+        this.props.dispatch(repaymentsAc.stateRepaymentPlanModify({myList:``,dateStart:dateString}));
+        this.props.dispatch(repaymentsAc.getList(filter));
     }
     handleDateEndChange(date,dateString) {
-        dateString=dateString+' 23:59:59';
-        let filter={
-            projectId:this.props.memberLoans.repaymentPlans.projectId,
-            dateStart:this.props.memberLoans.repaymentPlans.dateStart,
-            dateEnd:dateString,
+        let filter={};
+        if(dateString!=''){
+            dateString=dateString+' 23:59:59';
+            filter.dateEnd=dateString
         };
-        let newState={};
-        newState.dateEnd=dateString;
-        this.props.dispatch(memberLoansActions.stateRepaymentPlanModify(newState));
-        this.props.dispatch(memberLoansActions.getRepaymentPlanList(1,10,filter));
+        let {projectId,dateStart}=this.props.memberLoans.repaymentPlans;
+        if(projectId!=='') filter.projectId=projectId;
+        if(dateStart!=='') filter.dateStart=dateStart;
+        this.props.dispatch(repaymentsAc.stateRepaymentPlanModify({myList:``,dateEnd:dateString}));
+        this.props.dispatch(repaymentsAc.getList(filter));
+    }
+    toggleModal(visile,id) {
+        let {dispatch}=this.props;
+        if(visile){
+            dispatch(repaymentsAc.stateRepaymentPlanModify({modalRepayment:true,currentId:id}));
+        }else{
+            dispatch(repaymentsAc.stateRepaymentPlanModify({modalRepayment:false,currentId:``}));
+        }
     }
     repaymentCallback(){
         let {dispatch}=this.props;
-        let newState= {postResult:0};
-        dispatch(memberLoansActions.stateModify(newState));
-        dispatch(memberLoansActions.toggleModal('modalRepayment',false,''));
-        this.props.dispatch(memberLoansActions.getRepaymentPlanData(1));
+        //dispatch(repaymentsAc.stateRepaymentPlanModify({postResult:0}));
+        this.toggleModal(false,'');
+        this.props.dispatch(repaymentsAc.getPie());
+        this.props.dispatch(repaymentsAc.getList());
+
     }
     render(){
-        console.log('-------myLoans--------');
         let {dispatch}=this.props;
-        let {repaymentPlans}=this.props.memberLoans;
-        let {myList,charts,modalRepayment,currentId,proList}=repaymentPlans;
+        let {repaymentPlans,isFetching}=this.props.memberLoans;
+        let {myList,charts,modalRepayment,currentId,proList,projectId,dateStart,dateEnd}=repaymentPlans;
+        console.log('-------还款数据--------');
+        console.log(myList);
         return(
             <div className="member__main" id="area">
                 <Crumbs/>
-                <div className="member__cbox">
+                {(charts==='')?``
+                :<div className="member__cbox">
                     <Tab>
                         <div name="还款统计" className="chart">
                             <Tab>
                                 <div name="还款总额">
-                                    {(JSON.stringify(charts.data)=='{}')?(<p>{charts.message}</p>)
-                                        :(<PieChart
-                                            data={charts.data.repayments.data}
+
+                                        <PieChart
+                                            data={charts.repayments.data}
                                             style={{height: '300px', width: '930px'}}
                                             totalTitle="借款总额"
                                         >
-                                        </PieChart>)
-                                    }
+                                        </PieChart>
                                 </div>
                                 <div name="未还金额">
-                                    {(JSON.stringify(charts.data)=='{}')?(<p>{charts.message}</p>)
-                                        :(<PieChart
-                                            data={charts.data.todoDto.data}
+                                    <PieChart
+                                            data={charts.todoDto.data}
                                             style={{height: '300px', width: '930px'}}
                                             totalTitle="累计利息"
                                         >
-                                        </PieChart>)
-                                    }
+                                        </PieChart>
+
                                 </div>
                                 <div name="已还金额">
-                                    {(JSON.stringify(charts.data)=='{}')?(<p>{charts.message}</p>)
-                                        :(<PieChart
-                                            data={charts.data.doneDto.data}
+                                        (<PieChart
+                                            data={charts.doneDto.data}
                                             style={{height: '300px', width: '930px'}}
                                             totalTitle="累计利息"
                                         >
-                                        </PieChart>)
-                                    }
+                                        </PieChart>
                                 </div>
                             </Tab>
                         </div>
                     </Tab>
                 </div>
+                }
                 <div className="member__cbox repayRecord">
                     <Tab>
                         <div name="还款记录">
@@ -128,15 +143,17 @@ class RepaymentPlans extends React.Component{
                                                 <Select
                                                     defaultValue=""
                                                     style={{ width: 210 }}
-                                                    onChange={this.handleChange}
+                                                    onChange={this.selectProject}
                                                     getPopupContainer={() => document.getElementById('area')}
                                                 >
                                                     <Option value="">全部</Option>
                                                     {
-                                                        proList.map((l, i) => (
-                                                        <Option value={`${l.id}`} key={`row-${i}`}>{l.name}</Option>
-                                                        ))
+                                                        (proList==='')?``
+                                                            :proList.map((l, i) => (
+                                                                <Option value={`${l.id}`} key={`row-${i}`}>{l.name}</Option>
+                                                            ))
                                                     }
+
                                                 </Select>
                                             </div>
                                             <div className="filter__cell">
@@ -166,8 +183,8 @@ class RepaymentPlans extends React.Component{
                                     </div>
                                 </div>
                             </div>
-                            {(myList.data == '') ? (<p>{myList.message}</p>)
-                                    : (myList.data.total > 0) ?
+                            {(myList === '') ? <Loading isShow={isFetching} />
+                                    : (myList.total > 0) ?
                                     <div className="table__wrapper">
                                         <table className={`tableList`}>
                                             <thead>
@@ -184,7 +201,7 @@ class RepaymentPlans extends React.Component{
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {myList.data.list.map((l, i) => (
+                                            {myList.list.map((l, i) => (
                                                 <tr key={`row-${i}`}>
                                                     <td><p><a href={`/invest-list/${l.projectId}`} target="_blank">{l.name}</a></p></td>
                                                     <td>{moment(l.shdRpmtDate).format('YYYY-MM-DD')}{/*应还日期*/}</td>
@@ -199,7 +216,7 @@ class RepaymentPlans extends React.Component{
                                                             (l.proStatus==3)? '还款':''
                                                         }
                                                         {
-                                                            (l.proStatus==4||l.proStatus==5)? <a onClick={() => dispatch(memberLoansActions.toggleModal('modalRepayment', true, l.projectId))}>还款</a>:''
+                                                            (l.proStatus==4||l.proStatus==5)? <a onClick={() => this.toggleModal( true, l.projectId)}>还款</a>:''
                                                         }
 
                                                     </td>
@@ -211,16 +228,25 @@ class RepaymentPlans extends React.Component{
 
                                         <Pagination config = {
                                             {
-                                                currentPage:myList.data.pageNum,
-                                                pageSize:myList.data.pageSize,
-                                                totalPage:Math.ceil(myList.data.total/myList.data.pageSize),
+                                                currentPage:myList.pageNum,
+                                                pageSize:myList.pageSize,
+                                                totalPage:myList.pages,
                                                 paging:(obj)=>{
-                                                    dispatch(memberLoansActions.getRepaymentPlanList(obj.currentPage,obj.pageCount,{}));
+                                                    dispatch(repaymentsAc.stateRepaymentPlanModify({myList:``}));
+                                                    dispatch(repaymentsAc.getList(
+                                                        {
+                                                            pageNum:obj.currentPage,
+                                                            pageSize:obj.pageCount,
+                                                            projectId:projectId,
+                                                            dateStart:dateStart,
+                                                            dateEnd:dateEnd
+                                                        }
+                                                    ));
                                                 }
                                             }
                                         } ></Pagination>
                                     </div>
-                                    :<p>暂无记录</p>
+                                    :<NoRecord isShow={true} />
                             }
                         </div>
                     </Tab>

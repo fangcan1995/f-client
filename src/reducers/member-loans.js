@@ -2,11 +2,9 @@ import { createReducer } from 'redux-immutablejs';
 import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
+    isFetching:false,
     myLoans:{
-        charts:{
-            data:{},
-            message:''
-        },
+        charts:``,
         myList:'',
         status: 1,
         modalRepaymentApp: false,
@@ -15,25 +13,16 @@ const initialState = Immutable.fromJS({
         projectInfo:''
     },
     repaymentPlans:{
-        charts:{
-            data:{},
-            message:''
-        },
-        myList:{
-            data:{},
-            message:''
-        },
+        charts:``,
+        myList:``,
         projectId:'',
         dateStart:'',
         dateEnd:'',
         modalRepayment: false,
-        proList:[],
+        proList:``,
         currentId:'',
-        postResult:0,
-        repaymentInfo:{
-            repaymentData:{},
-            message:''
-        }
+        postResult:``,
+        projectInfo:``
     },
 });
 
