@@ -10,6 +10,7 @@ export default class Pagination extends Component{
             groupCount:5,
             startPage:1,
         }
+
     }
     componentDidMount() {
         this.setState({
@@ -45,7 +46,6 @@ export default class Pagination extends Component{
             this.go(currentPage, true);
         },0);
     }
-
     create(){
         const {
             totalPage,
@@ -167,29 +167,55 @@ export default class Pagination extends Component{
     }
     render(){
         const Pages = this.create.bind(this)();
-        return(
-            <div className="pagination">
-                <div className = "bar">
-                    <span>每页显示</span>
-                    <div className = "select">
-                        <ul className ="hide">
-                            <li id="pageCount" onClick = { this.choosePageCount.bind(this) }>10</li>
-                            <li onClick = { this.confirmPageCount.bind(this,10) }>10</li>
-                            <li onClick = { this.confirmPageCount.bind(this,20) }>20</li>
-                            <li onClick = { this.confirmPageCount.bind(this,30) }>30</li>
-                            <li onClick = { this.confirmPageCount.bind(this,50) }>50</li>
-                        </ul>
+        if(this.props.config.totalPage>1){
+            return(
+                <div className="pagination" >
+                    <div className = "bar">
+                        <span>每页显示</span>
+                        <div className = "select">
+                            <ul className ="hide">
+                                <li id="pageCount" onClick = { this.choosePageCount.bind(this) }>10</li>
+                                <li onClick = { this.confirmPageCount.bind(this,10) }>10</li>
+                                <li onClick = { this.confirmPageCount.bind(this,20) }>20</li>
+                                <li onClick = { this.confirmPageCount.bind(this,30) }>30</li>
+                                <li onClick = { this.confirmPageCount.bind(this,50) }>50</li>
+                            </ul>
+                        </div>
                     </div>
+                    <ul className = "page">
+                        { Pages }
+                        <li className="jump">到第<input type="text" className="pagination__page" value={this.state.page} onChange = {this.jumpPage} />页
+                            <button className="pagination__button" onClick = {this.jumpPage}>确定</button>
+                        </li>
+
+                    </ul>
                 </div>
-                <ul className = "page">
-                    { Pages }
-                    <li className="jump">到第<input type="text" className="pagination__page" value={this.state.page} onChange = {this.jumpPage} />页
-                        <button className="pagination__button" onClick = {this.jumpPage}>确定</button>
-                    </li>
+            );
+        }else{
+            return(
+                <div className="pagination" hidden={true}>
+                    <div className = "bar">
+                        <span>每页显示</span>
+                        <div className = "select">
+                            <ul className ="hide">
+                                <li id="pageCount" onClick = { this.choosePageCount.bind(this) }>10</li>
+                                <li onClick = { this.confirmPageCount.bind(this,10) }>10</li>
+                                <li onClick = { this.confirmPageCount.bind(this,20) }>20</li>
+                                <li onClick = { this.confirmPageCount.bind(this,30) }>30</li>
+                                <li onClick = { this.confirmPageCount.bind(this,50) }>50</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <ul className = "page">
+                        { Pages }
+                        <li className="jump">到第<input type="text" className="pagination__page" value={this.state.page} onChange = {this.jumpPage} />页
+                            <button className="pagination__button" onClick = {this.jumpPage}>确定</button>
+                        </li>
 
-                </ul>
+                    </ul>
+                </div>
+            )
+        }
 
-            </div>
-        );
     }
 }

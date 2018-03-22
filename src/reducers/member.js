@@ -6,9 +6,7 @@ const initialState = Immutable.fromJS({
     accountsInfo:{
         basicInfo:{
         },
-        amount:{
-            availableBalance:''
-        },
+        amount:'',
         redInfo:{},
         couponInfo:{},
         openAccountStatus:'',   //是否开户

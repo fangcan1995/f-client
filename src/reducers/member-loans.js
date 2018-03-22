@@ -7,10 +7,7 @@ const initialState = Immutable.fromJS({
             data:{},
             message:''
         },
-        myList:{
-            data:'',
-            message:''
-        },
+        myList:'',
         status: 1,
         modalRepaymentApp: false,
         currentId:'',
@@ -44,8 +41,32 @@ const initialState = Immutable.fromJS({
 });
 
 export default createReducer(initialState, {
+    ['myLoans/myLoans/FETCH_PENDING']: (state, action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['myLoans/myLoans/FETCH_FULFILLED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        myLoans: action.payload,
+    }),
+    ['myLoans/myLoans/FETCH_REJECTED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
     ['myLoans/myLoans/MODIFY_STATE']:(state,action) => state.mergeDeep({
         myLoans:action.payload
+    }),
+
+
+    ['myLoans/repaymentPlans/FETCH_PENDING']: (state, action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['myLoans/repaymentPlans/FETCH_FULFILLED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        repaymentPlans: action.payload,
+    }),
+    ['myLoans/repaymentPlans/FETCH_REJECTED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
     }),
     ['myLoans/repaymentPlans/MODIFY_STATE']:(state,action) => state.mergeDeep({
         repaymentPlans:action.payload

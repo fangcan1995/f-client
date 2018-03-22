@@ -1,6 +1,118 @@
 import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import {addCommas,checkMoney} from './../assets/js/cost';
+import parseJson2URL from './../utils/parseJson2URL';
+
+const token=`?access_token=9c29f71c-a734-472f-a931-f63a876e1922`;
+const url_charts=`http://172.16.1.221:9090/members/loans/statistics${token}`; //统计图数据
+const url_loansList=`http://172.16.1.221:9090/members/loans${token}`;//获取借款列表
+const url_repaymentsAll=`http://172.16.1.221:9090/members/loans/repayments/all/`;//项目提前还款
+export const memberLoansAc={
+    getPie: () => {
+        return {
+            type: 'myLoans/myLoans/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_charts}` , {method: 'GET'}, false);
+                const {code, data} = res;
+                if (code == 0) {
+                    let {totalLoanDto,accumulatedInterestDto}=data;
+                    let charts={
+                        totalLoan:{
+                            data:[
+                                {name:'申请中',value:totalLoanDto.loaningMoney,instruction:`${addCommas(totalLoanDto.loaningMoney)}元`  },
+                                {name:'招标中',value:totalLoanDto.investingMoney,instruction:`${addCommas(totalLoanDto.investingMoney)}元`},
+                                {name:'还款中',value:totalLoanDto.repayingMoney,instruction:`${addCommas(totalLoanDto.repayingMoney)}元`},
+                                {name:'已结清',value:totalLoanDto.settleMoney,instruction:`${addCommas(totalLoanDto.settleMoney)}元`}
+                            ]
+                        },
+                        accumulatedInterest:{
+                            data:[
+                                {name:'还款中',value:accumulatedInterestDto.repayingIint,instruction:`${addCommas(accumulatedInterestDto.repayingIint)}元`  },
+                                {name:'已结清',value:accumulatedInterestDto.settleIint,instruction:`${addCommas(accumulatedInterestDto.settleIint)}元`  },
+                            ]
+                        },
+                    };
+                    return {
+                        charts:
+                            {
+                                data:charts,
+                                message:''
+                            }
+                    };
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    getList: (params) => {
+        return {
+            type: 'myLoans/myLoans/FETCH',
+            async payload() {
+                params = parseJson2URL(params);
+                const res = await cFetch(`${url_loansList}&`+params,{method: 'GET'}, false);
+                const {code, data} = res;
+                console.log('发回的数据');
+                console.log(data);
+                console.log(code);
+                if (code == 0) {
+                    return {
+                        myList:data,
+                    };
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    getProject: (pram) => {
+        return {
+            type: 'myLoans/myLoans/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_repaymentsAll}${pram}${token}` , {method: 'GET'}, false);
+                const {code, data} = res;
+                if (code == 0) {
+                    let {totalLoanDto,accumulatedInterestDto}=data;
+                    let charts={
+                        totalLoan:{
+                            data:[
+                                {name:'申请中',value:totalLoanDto.loaningMoney,instruction:`${addCommas(totalLoanDto.loaningMoney)}元`  },
+                                {name:'招标中',value:totalLoanDto.investingMoney,instruction:`${addCommas(totalLoanDto.investingMoney)}元`},
+                                {name:'还款中',value:totalLoanDto.repayingMoney,instruction:`${addCommas(totalLoanDto.repayingMoney)}元`},
+                                {name:'已结清',value:totalLoanDto.settleMoney,instruction:`${addCommas(totalLoanDto.settleMoney)}元`}
+                            ]
+                        },
+                        accumulatedInterest:{
+                            data:[
+                                {name:'还款中',value:accumulatedInterestDto.repayingIint,instruction:`${addCommas(accumulatedInterestDto.repayingIint)}元`  },
+                                {name:'已结清',value:accumulatedInterestDto.settleIint,instruction:`${addCommas(accumulatedInterestDto.settleIint)}元`  },
+                            ]
+                        },
+                    };
+                    return {
+                        repaymentInfo:
+                            {
+                                repaymentData:data,
+                                message:''
+                            }
+                    };
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+
+    //修改状态
+    stateModify: json => ({
+        type: 'myLoans/myLoans/MODIFY_STATE',
+        payload: json
+    }),
+    stateRepaymentPlanModify: json => ({
+        type: 'myLoans/repaymentPlans/MODIFY_STATE',
+        payload: json
+    }),
+}
 
 let memberLoansActions = {
     //打开关闭模态框
@@ -39,22 +151,24 @@ let memberLoansActions = {
         dispatch(memberLoansActions.getPie());
         dispatch(memberLoansActions.getList(1,10,{status:status}));
     },
+
     getPie:()=>(dispatch,memberLoans)=>{
         let newState={};
         // 获取统计数据
-        let url = `http://172.16.1.221:9090/members/loans/statistics?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f`;
+        let url = `http://172.16.1.221:9090/members/loans/statistics?access_token=9c29f71c-a734-472f-a931-f63a876e1922`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
                     return response;
                 }else{
+                    let {totalLoanDto,accumulatedInterestDto}=data;
                     newState={
                         charts:{
                             data:{},
                             message:'无响应'
                         }
                     };
-                    dispatch(memberLoansActions.stateModify(newState));
+
 
                 }
             })
@@ -108,7 +222,7 @@ let memberLoansActions = {
             }
         }
         //let url=`http://172.16.4.5:8084/getloansList.php?pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
-        let url=`http://172.16.1.221:9090/members/loans?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
+        let url=`http://172.16.1.221:9090/members/loans?access_token=9c29f71c-a734-472f-a931-f63a876e1922&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -147,7 +261,7 @@ let memberLoansActions = {
     },
     getRepaymentApp:(pram)=>(dispatch, memberLoans)=>{
         let newState={};
-        let url=`http://172.16.1.221:9090/members/loans/repayments/all/${pram}?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f`;
+        let url=`http://172.16.1.221:9090/members/loans/repayments/all/${pram}?access_token=9c29f71c-a734-472f-a931-f63a876e1922`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -258,7 +372,7 @@ let memberLoansActions = {
     getRepaymentPlanPie:()=>(dispatch,memberLoans)=>{
         let newState={};
         // 获取统计数据
-        let url = `http://172.16.1.221:9090/members/loans/repayments/statistics?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f`;
+        let url = `http://172.16.1.221:9090/members/loans/repayments/statistics?access_token=9c29f71c-a734-472f-a931-f63a876e1922`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -322,7 +436,7 @@ let memberLoansActions = {
                 }
             }
         }
-        let url=`http://172.16.1.221:9090/members/loans/repayments?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
+        let url=`http://172.16.1.221:9090/members/loans/repayments?access_token=9c29f71c-a734-472f-a931-f63a876e1922&pageNum=${pageNum}&pageSize=${pageSize}${conditions}`;
         console.log(url);
         fetch(url,{method:"get"})
             .then(function (response){
@@ -350,7 +464,7 @@ let memberLoansActions = {
     getProList: () => (dispatch, memberLoans) => {
         let newState={};
         // 获取数据列表
-        let url=`http://172.16.1.221:9090/members/loans/proName?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f`;
+        let url=`http://172.16.1.221:9090/members/loans/proName?access_token=9c29f71c-a734-472f-a931-f63a876e1922`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -375,7 +489,7 @@ let memberLoansActions = {
     //还款
     getRepayment:(pram)=>(dispatch, memberLoans)=>{
         let newState={};
-        let url=`http://172.16.1.221:9090/members/loans/repayments/${pram}?access_token=7f94aba6-35ff-40ee-87d7-2bb7671eee6f`;
+        let url=`http://172.16.1.221:9090/members/loans/repayments/${pram}?access_token=9c29f71c-a734-472f-a931-f63a876e1922`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){

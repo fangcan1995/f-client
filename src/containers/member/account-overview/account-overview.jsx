@@ -28,7 +28,7 @@ class AccountOverview extends React.Component{
                 <div className="crumb">
                     <div>
                         <b>您所在的位置：</b>
-                        <a href="">首页</a>&nbsp;&gt;
+                        <a href="/">首页</a>&nbsp;&gt;
                         <a href="" className="actice">我的账户</a>
                     </div>
                 </div>
@@ -69,22 +69,24 @@ class AccountOverview extends React.Component{
                         </div>
                     </div>
                 </div>
-                <div className="member__cbox pieChart">
-                    <Tab>
-                        <div name="账户总资产">
-                            <PieChart
-                                data={[
-                                    {name:'散标资产',value:amount.investAmount,instruction: `${addCommas(amount.investAmount)}元` },
-                                    {name:'可用余额',value:amount.availableBalance,instruction: `${addCommas(amount.availableBalance)}元` },
-                                    {name:'冻结金额',value:amount.freezingAmount,instruction: `${addCommas(amount.freezingAmount)}元` },
-                                ]}
-                                style={{height: '300px', width: '930px'}}
-                                totalTitle="资产总额"
-                            >
-                            </PieChart>
-                        </div>
-                    </Tab>
-                </div>
+                {(amount==='')?``
+                    :<div className="member__cbox pieChart">
+                        <Tab>
+                            <div name="账户总资产">
+                                <PieChart
+                                    data={[
+                                        {name:'散标资产',value:amount.investAmount,instruction: `${addCommas(amount.investAmount)}元` },
+                                        {name:'可用余额',value:amount.availableBalance,instruction: `${addCommas(amount.availableBalance)}元` },
+                                        {name:'冻结金额',value:amount.freezingAmount,instruction: `${addCommas(amount.freezingAmount)}元` },
+                                    ]}
+                                    style={{height: '300px', width: '930px'}}
+                                    totalTitle="资产总额"
+                                >
+                                </PieChart>
+                            </div>
+                        </Tab>
+                    </div>
+                    }
                 <div className="member__cbox">
                     <Tab>
                         <div name="收益情况" className="chart">

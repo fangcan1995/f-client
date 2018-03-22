@@ -4,6 +4,7 @@ import  {addCommas}  from '../../../../assets/js/cost';
 import { Form,Row,Input,Button,Checkbox,Col,Alert } from 'antd';
 import { connect } from 'react-redux';
 import  memberLoansActions  from '../../../../actions/member-loans';
+import  {memberLoansAc}  from '../../../../actions/member-loans';
 import { hex_md5 } from '../../../../utils/md5';
 import moment from "moment";
 const createForm = Form.create;
@@ -13,7 +14,7 @@ function noop() {
 }
 class ModalRepaymentApp extends React.Component {
     componentWillMount () {
-        this.props.dispatch(memberLoansActions.getRepaymentApp(this.props.info.currentId));
+        this.props.dispatch(memberLoansAc.getProject(this.props.info.currentId));
     }
     static propTypes = {
         form: PropTypes.object.isRequired,

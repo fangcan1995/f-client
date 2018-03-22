@@ -9,11 +9,13 @@ import { Modal } from 'antd';
 import ModalRepaymentApp from './modalRepaymentApp';
 import { connect } from 'react-redux';
 import  memberLoansActions  from '../../../../actions/member-loans';
+import  {memberLoansAc}  from '../../../../actions/member-loans';
 import moment from "moment";
 import './my-loan.less';
 class MyLoans extends React.Component {
     componentDidMount () {
-        this.props.dispatch(memberLoansActions.getData(1));
+        this.props.dispatch(memberLoansAc.getPie());
+        this.props.dispatch(memberLoansAc.getList({status:1}));
     }
     repaymentCallback(){
         let {dispatch}=this.props;
@@ -21,8 +23,41 @@ class MyLoans extends React.Component {
             postResult:0
         };
         dispatch(memberLoansActions.stateModify(newState));
-        dispatch(memberLoansActions.toggleModal('modalRepaymentApp',false,''));
+        this.toggleModal('modalRepaymentApp',false,'');
         dispatch(memberLoansActions.filter(3));
+    }
+    filter(pram){
+        this.props.dispatch(memberLoansAc.stateModify({status:pram,myList:``}));
+        this.props.dispatch(memberLoansAc.getList({status:pram}));
+    }
+    toggleModal(modal,visile,id) {
+        let newState={};
+        if(modal=='modalRepaymentApp'){
+            if(visile){
+                newState={
+                    modalRepaymentApp: true,
+                    currentId: id,
+                };
+                this.props.dispatch(memberLoansAc.stateModify(newState));
+            }else{
+                newState={
+                    modalRepaymentApp: false,
+                    currentId: '',
+                };
+                this.props.dispatch(memberLoansAc.stateModify(newState));
+            }
+        }/*else if(modal=='modalRepayment'){
+            if(visile){
+                newState.modalRepayment=true;
+                newState.currentId= id,
+                    this.props.dispatch(memberLoansAc.stateRepaymentPlanModify(newState));
+            }else{
+                newState.modalRepayment=false;
+                newState.currentId= '',
+                    this.props.dispatch(memberLoansAc.stateRepaymentPlanModify(newState));
+            }
+        }*/
+
     }
     render(){
         console.log('-------myLoans--------');
@@ -76,28 +111,28 @@ class MyLoans extends React.Component {
                                     </div>
                                     <div className="filter__cell">
                                         <p className={(status===1)?'filter__opt filter__opt--active':'filter__opt'}
-                                           onClick={ () => { dispatch(memberLoansActions.filter(1)) } }>申请中</p>
+                                           onClick={ () => { this.filter(1) } }>申请中</p>
                                     </div>
                                     <div className="filter__cell">
                                         <p className={(status===2)?'filter__opt filter__opt--active':'filter__opt'}
-                                           onClick={ () => { dispatch(memberLoansActions.filter(2)) } }>招标中</p>
+                                           onClick={ () => { this.filter(2) } }>招标中</p>
                                     </div>
                                     <div className="filter__cell">
                                         <p className={(status===3)?'filter__opt filter__opt--active':'filter__opt'}
-                                           onClick={ () => { dispatch(memberLoansActions.filter(3)) } }>还款中</p>
+                                           onClick={ () => { this.filter(3) } }>还款中</p>
                                     </div>
                                     <div className="filter__cell">
                                         <p className={(status===4)?'filter__opt filter__opt--active':'filter__opt'}
-                                           onClick={ () => { dispatch(memberLoansActions.filter(4)) } }>已结清</p>
+                                           onClick={ () => { this.filter(4) } }>已结清</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {(JSON.stringify(myList.data) == '{}') ? (<p>{myList.message}</p>)
-                        : (
+                    {(myList==='') ? (<p></p>)
+                        :
                             <div className="table__wrapper">
-                                {(myList.data.total > 0) ? (
+                                {(myList.total > 0) ? (
                                     <div>
                                         <table className={`tableList table${status}`}>
                                             <thead>
@@ -105,7 +140,7 @@ class MyLoans extends React.Component {
                                             </thead>
                                             <tbody>
                                             {
-                                                myList.data.list.map((l, i) => (
+                                                myList.list.map((l, i) => (
                                                         (status === 1) ? (
                                                             <tr key={`row-${i}`}>
                                                                 <td>--</td>
@@ -140,7 +175,7 @@ class MyLoans extends React.Component {
                                                                     {
                                                                         l.refundStatus=='0'?('提前还款申请中')
                                                                             :(
-                                                                                <a onClick={() => dispatch(memberLoansActions.toggleModal('modalRepaymentApp', true, l.projectId))}>提前还款</a>
+                                                                                <a onClick={() => this.toggleModal('modalRepaymentApp', true, l.projectId)}>提前还款</a>
                                                                             )
                                                                     }
                                                                     <a href="">借款合同</a>
@@ -167,12 +202,12 @@ class MyLoans extends React.Component {
                                             }
                                             </tbody>
                                         </table>
-                                        <Pagination config = {
+                                        <Pagination  config = {
                                             {
-                                                currentPage:myList.data.pageNum,
-                                                pageSize:myList.data.pageSize,
-                                                totalPage:Math.ceil(myList.data.total/myList.data.pageSize),
-                                                filter:status,
+                                                currentPage:myList.pageNum,
+                                                pageSize:myList.pageSize,
+                                                totalPage:myList.pages,
+                                                //filter:status,
                                                 paging:(obj)=>{
                                                     dispatch(memberLoansActions.getList(obj.currentPage,obj.pageCount,{status:status}));
                                                 }
@@ -182,14 +217,13 @@ class MyLoans extends React.Component {
                                     ): '暂无记录'
                                 }
                             </div>
-                        )
                     }
                 </div>
                 <Modal
                     title="提前还款申请"
                     wrapClassName="vertical-center-modal"
                     visible={modalRepaymentApp}
-                    width="520px"
+                    width="420px"
                     footer={null}
                     onCancel={() => this.repaymentCallback()}
                 >
