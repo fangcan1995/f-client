@@ -171,7 +171,7 @@ export default class TransferDetailMaster extends React.Component {
                                         </ul>
                                         <div className="form_bar">
                                             {
-                                                (member.user='')? <a className="btn" href="#">我要登录</a>
+                                                (member.user='')? <a className="btn" href="#">我要登录(增加仅限新手，重新测评)</a>
                                                     : (!member.isOpenAccount)?<a className="btn" href="#">立即开户</a>
                                                     :(!member.isFxpg)?<a className="btn" href="#">立即风险评估</a>
                                                         :(member.accountBalance<investAmount)? <a className="btn" href="#">立即充值</a>

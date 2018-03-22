@@ -100,10 +100,10 @@ class InvestDetailMaster extends React.Component {
                     button=<a  className="btn" onClick={()=>{window.location.href="http://www.baidu.com?redirect"}}>立即开户</a>
                 }else{
                     if(!member.isFxpg){
-                        button=<a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,project.id)}>立即风险评估</a>
+                        button=<a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,project.id)}>立即风险评估（级别不够）</a>
                     }else{
                         if((member.accountBalance<investAmount)){
-                            button=<a className="btn" onClick={() => this.toggleModal(`modalRecharge`,true,project.id)}>立即充值</a>
+                            button=<a className="btn" onClick={() => this.toggleModal(`modalRecharge`,true,project.id)}>立即充值(仅限新手)</a>
                         }else{
                             console.log('this.state.tips='+this.state.tips);
                             if(this.state.tips!=''){
