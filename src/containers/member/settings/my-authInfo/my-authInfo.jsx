@@ -137,11 +137,6 @@ class MyAuthInfo extends React.Component {
                                 </tbody>
                             </table>
                         </div>
-                        <div name="头像设置">
-                            <div className="tab_content">
-                                <MyAvatar/>
-                            </div>
-                        </div>
                     </Tab>
 
                 </div>

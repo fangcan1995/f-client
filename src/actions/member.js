@@ -2,16 +2,17 @@ import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import {addCommas,checkMoney} from './../assets/js/cost';
 import { message } from 'antd';
-const url_memberInfo=`http://172.16.1.234:9090/accounts/my/info?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792`; //获取会员信息
-const url_incomeMonth=`http://172.16.1.234:9090/accounts/income/month?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792`; //获取月收益统计
-const url_incomeDay=`http://172.16.1.234:9090/accounts/income/day?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792`; //获取日收益统计
+const url_memberInfo=`http://172.16.1.234:9090/accounts/my/info?access_token=9c29f71c-a734-472f-a931-f63a876e1922`; //获取会员信息
+const url_incomeMonth=`http://172.16.1.234:9090/accounts/income/month?access_token=9c29f71c-a734-472f-a931-f63a876e1922`; //获取月收益统计
+const url_incomeDay=`http://172.16.1.234:9090/accounts/income/day?access_token=9c29f71c-a734-472f-a931-f63a876e1922`; //获取日收益统计
 
-const url_openAccount=`http://172.16.1.234:9090/accounts?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792&custId=123&escrowCode=100100&accountBalance=0&freezingAmount=0&availableBalance=0`; //开户
-const url_recharge=`http://172.16.1.234:9090/accounts/operation?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792&escrowCode=100100&type=1`; //充值
-const url_withdrawals=`http://172.16.1.234:9090/accounts/operation?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792&escrowCode=100100&type=3`; //提现
+const url_openAccount=`http://172.16.1.234:9090/accounts?access_token=9c29f71c-a734-472f-a931-f63a876e1922&custId=123&escrowCode=100100&accountBalance=0&freezingAmount=0&availableBalance=0`; //开户
+const url_recharge=`http://172.16.1.234:9090/accounts/operation?access_token=9c29f71c-a734-472f-a931-f63a876e1922&escrowCode=100100&type=1`; //充值
+const url_withdrawals=`http://172.16.1.234:9090/accounts/operation?access_token=9c29f71c-a734-472f-a931-f63a876e1922&escrowCode=100100&type=3`; //提现
 
 
 export const memberAc= {
+
     getInfo: (params) => {
         return {
             type: 'member/FETCH',
@@ -198,7 +199,7 @@ let memberActions = {
     getMonth:()=>(dispatch,member)=>{
         let newState={};
         // 获取统计数据
-        let url = `http://172.16.1.234:9090/accounts/income/month?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792`;
+        let url = `http://172.16.1.234:9090/accounts/income/month?access_token=9c29f71c-a734-472f-a931-f63a876e1922`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -251,7 +252,7 @@ let memberActions = {
     getInfo:()=>(dispatch,member)=>{
         let newState={};
         // 获取统计数据
-        let url = `http://172.16.1.234:9090/accounts/my/info?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792`;
+        let url = `http://172.16.1.234:9090/accounts/my/info?access_token=9c29f71c-a734-472f-a931-f63a876e1922`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -295,7 +296,7 @@ let memberActions = {
                 conditions += "&"+item+"="+pram[item];
             }
         }
-        let url = `http://172.16.1.234:9090/accounts/operation?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792${conditions}`;
+        let url = `http://172.16.1.234:9090/accounts/operation?access_token=9c29f71c-a734-472f-a931-f63a876e1922${conditions}`;
         console.log(url);
         fetch(url,{
             method: "PUT",
@@ -346,7 +347,7 @@ let memberActions = {
             conditions += "&"+item+"="+pram[item];
         }
     }
-    let url = `http://172.16.1.234:9090/accounts?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792${conditions}`;
+    let url = `http://172.16.1.234:9090/accounts?access_token=9c29f71c-a734-472f-a931-f63a876e1922${conditions}`;
     console.log(url);
     fetch(url,{
         method: "PUT",
@@ -391,7 +392,7 @@ let memberActions = {
     //提现
     postWithdrawals:(pram) => (dispatch, member) => {
         let newState={};
-        let url = `http://172.16.1.234:9090/accounts/operation?access_token=9cf1b242-8bcf-4a95-bada-2caabfd43792&`;
+        let url = `http://172.16.1.234:9090/accounts/operation?access_token=9c29f71c-a734-472f-a931-f63a876e1922&`;
         fetch(url,{
             method: "POST",
             mode:'cors',

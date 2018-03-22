@@ -14,7 +14,7 @@ import {toMoney,toNumber} from  '../../../assets/js/famatData';
 
 class AccountOverview extends React.Component{
     componentDidMount() {
-        this.props.dispatch(memberAc.getInfo());
+        //this.props.dispatch(memberAc.getInfo());
         this.props.dispatch(memberAc.getMonth());
         this.props.dispatch(memberAc.getDay());
     }

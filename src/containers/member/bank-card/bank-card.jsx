@@ -8,7 +8,7 @@ import  memberActions  from '../../../actions/member';
 import {memberAc} from '../../../actions/member';
 class BankCard extends React.Component{
     componentDidMount() {
-        this.props.dispatch(memberAc.getInfo());
+        //this.props.dispatch(memberAc.getInfo());
     }
     bindCard(){
        /* let postData={

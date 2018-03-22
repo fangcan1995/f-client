@@ -22,7 +22,7 @@ class Recharge extends React.Component{
         this.handleChange= this.handleChange.bind(this);
     }
     componentDidMount() {
-        this.props.dispatch(memberAc.getInfo());
+        //this.props.dispatch(memberAc.getInfo());
     }
 
     bindCard(){

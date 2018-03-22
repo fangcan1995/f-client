@@ -23,7 +23,7 @@ class Withdrawals extends React.Component{
 
     }
     componentDidMount() {
-        this.props.dispatch(memberAc.getInfo());
+        //this.props.dispatch(memberAc.getInfo());
     }
     bindCard(){
         alert('去开户');
