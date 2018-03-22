@@ -2,6 +2,7 @@ import { createReducer } from 'redux-immutablejs';
 import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
+    isFetching:false,
     myInvestments:{
         charts:``,
         myList:``,
@@ -19,14 +20,8 @@ const initialState = Immutable.fromJS({
         transferInfo:``
     },
     myReceiving:{
-        charts:{
-            data:{},
-            message:''
-        },
-        myList:{
-            data:{},
-            message:''
-        },
+        charts:``,
+        myList:``,
     },
 
 });

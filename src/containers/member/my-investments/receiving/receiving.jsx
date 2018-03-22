@@ -4,62 +4,60 @@ import PieChart from '../../../../components/charts/pie';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
-import actionsMyReceiving from './actions_myReceiving';
+import {memberReceivingAc} from "../../../../actions/member-investments";
 import './receiving.less';
 import { connect } from 'react-redux';
+import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import moment from "moment";
 class Receiving extends React.Component{
     componentDidMount () {
-        this.props.dispatch(actionsMyReceiving.getData());
+        this.props.dispatch(memberReceivingAc.getPie());
+        this.props.dispatch(memberReceivingAc.getList());
     }
     render(){
         let {dispatch}=this.props;
-        let {myReceiving}=this.props.memberInvestments;
+        let {myReceiving,isFetching}=this.props.memberInvestments;
         let {myList,charts}=myReceiving;
         return(
             <div className="member__main receiving">
                 <Crumbs/>
-                <div className="member__cbox">
-                    <Tab>
-                        <div name="回款统计" className="chart">
-                            <Tab>
-                                <div name="已回金额">
-                                    {
-                                        JSON.stringify(charts.data) != "{}"?
-                                            <PieChart
-                                                data={charts.data.doneDto.data}
-                                                style={{height: '300px', width: '930px'}}
-                                                totalTitle="已回金额"
-                                            >
-                                            </PieChart>
-                                            :<p>{charts.message}</p>
-                                    }
-                                </div>
-                                <div name="未回金额">
-                                    {
-                                        JSON.stringify(charts.data) != "{}"?
-                                            <PieChart
-                                                data={charts.data.todoDto.data}
-                                                style={{height: '300px', width: '930px'}}
-                                                totalTitle="未回金额"
-                                            >
-                                            </PieChart>
-                                            :<p>{charts.message}</p>
-                                    }
-                                </div>
-                            </Tab>
-                        </div>
-                    </Tab>
-                </div>
+                {(charts==='')?``
+                    :<div className="member__cbox">
+                        <Tab>
+                            <div name="回款统计" className="chart">
+                                <Tab>
+                                    <div name="已回金额">
+                                        <PieChart
+                                            data={charts.doneDto.data}
+                                            style={{height: '300px', width: '930px'}}
+                                            totalTitle="已回金额"
+                                        >
+                                        </PieChart>
+
+                                    </div>
+                                    <div name="未回金额">
+                                        <PieChart
+                                            data={charts.data.todoDto.data}
+                                            style={{height: '300px', width: '930px'}}
+                                            totalTitle="未回金额"
+                                        >
+                                        </PieChart>
+                                    </div>
+                                </Tab>
+                            </div>
+                        </Tab>
+                    </div>
+                }
                 <div className="member__cbox" style={{ padding:'20px 30px' }}>
-                    {(JSON.stringify(myList) == '{}') ? (<p>{myList.message}</p>)
-                        : (
-                            (myList.data.total > 0) ? (
-                                    <div className="table__wrapper">
+                    {(myList === '') ? <Loading isShow={isFetching} />
+                        :<div  className="table__wrapper">
+                            {(myList.total > 0) ? (
+                                    <div>
                                         {
-                                            myList.data.list.map((l, i) => (
+                                            myList.list.map((l, i) => (
                                                 <dl key={`row-${i}`}>
-                                                    <dt><p><a href="#">{l.proName}</a></p><strong>{l.proStatus}</strong></dt>
+                                                    <dt><p><a href="#">{l.proName}</a></p><strong>{l.proStatus}</strong>
+                                                    </dt>
                                                     <dd>投资金额：{l.proMoneyEnd}元</dd>
                                                     <dd>投资日期：{moment(l.inveCreateTime).format('YYYY-MM-DD')}</dd>
                                                     <dd>收益率：{l.proAnnualRate}%</dd>
@@ -73,21 +71,27 @@ class Receiving extends React.Component{
                                                 </dl>
                                             ))
                                         }
-
-                                        <Pagination config = {
+                                        <Pagination config={
                                             {
-                                                currentPage:myList.data.pageNum,
-                                                pageSize:myList.data.pageSize,
-                                                totalPage:Math.ceil(myList.data.total/myList.data.pageSize),
-                                                paging:(obj)=>{
-                                                    dispatch(actionsMyReceiving.getList(obj.currentPage,obj.pageCount));
+                                                currentPage: myList.pageNum,
+                                                pageSize: myList.pageSize,
+                                                totalPage: myList.pages,
+                                                paging: (obj) => {
+                                                    this.props.dispatch(memberReceivingAc.stateModify({myList:``}));
+                                                    dispatch(memberReceivingAc.getList(
+                                                        {
+                                                            pageNum:obj.currentPage,
+                                                            pageSize:obj.pageCount,
+                                                        }
+                                                    ))
                                                 }
                                             }
-                                        } ></Pagination>
+                                        }></Pagination>
                                     </div>
                                 )
-                                : '暂无记录'
-                        )
+                                : <NoRecord isShow={true} />
+                            }
+                        </div>
                     }
                 </div>
             </div>

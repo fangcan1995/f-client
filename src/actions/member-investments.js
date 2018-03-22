@@ -6,11 +6,13 @@ import parseJson2URL from './../utils/parseJson2URL';
 const token=`?access_token=9c29f71c-a734-472f-a931-f63a876e1922`;
 const url_investCharts=`http://172.16.1.234:9090/members/invest/statistics${token}`; //统计图数据
 const url_investList=`http://172.16.1.234:9090/members/investments${token}`;//获取投资列表
-const url_planList=`http://172.16.4.62:9090/members/investments/receiving/`  //获取回款记录
+const url_planList=`http://172.16.1.234:9090/members/investments/receiving/`  //获取回款记录
 const url_postTransferApp=`http://172.16.4.5:8084/test.php`;//转让申请
-const url_getTransfer=`http://172.16.4.62:9090/members/investments/transfer/`; //获取债转详情
-const url_repaymentsAll=`http://172.16.1.221:9090/members/loans/repayments/all/`;//项目提前还款时获取详情
+const url_getTransfer=`http://172.16.1.234:9090/members/investments/transfer/`; //获取债转详情
 
+
+const url_receivingCharts=`http://172.16.1.234:9090/members/investments/receiving/statistics`;//回款统计
+const url_receivingList=`http://172.16.1.234:9090/members/investments/receiving`;//回款列表
 
 export const memberInvestAc={
     getPie: () => {
@@ -129,7 +131,67 @@ export const memberInvestAc={
         payload: json
     }),
 }
+export const memberReceivingAc={
+    getPie: () => {
+        return {
+            type: 'myInvest/receiving/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_receivingCharts}` , {method: 'GET'}, false);
+                const {code, data} = res;
+                if (code == 0) {
+                    let {doneDto,todoDto}=data.data;
+                    let charts={
+                        doneDto:{
+                            data:[
+                                {name:'已回利息',value:doneDto.earnTotalIint,instruction:`${addCommas(doneDto.earnTotalIint)}元`},
+                                {name:'已回本金',value:doneDto.earnTotalCapital,instruction:`${addCommas(doneDto.earnTotalCapital)}元`},
+                                {name:'已回罚息',value:doneDto.earnTotalLateIint,instruction:`${addCommas(doneDto.earnTotalLateIint)}元`},
 
+                            ]
+                        },
+                        todoDto:{
+                            data:[
+                                {name:'未回利息',value:todoDto.earnTotalIinting,instruction:`${addCommas(todoDto.earnTotalIinting)}元`},
+                                {name:'未回本金',value:todoDto.earnTotalCapital,instruction:`${addCommas(todoDto.earnTotalCapital)}元` },
+                                {name:'未回罚息',value:todoDto.earnTotalLateIint,instruction:`${addCommas(todoDto.earnTotalLateIint)}元` },
+                            ]
+                        },
+                    };
+                    return {
+                        charts:charts
+                    };
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    getList: (params) => {
+        return {
+            type: 'myInvest/receiving/FETCH',
+            async payload() {
+                params = parseJson2URL(params);
+                const res = await cFetch(`${url_receivingList}&`+params,{method: 'GET'}, false);
+                const {code, data} = res;
+                console.log('发回的数据');
+                console.log(data);
+                console.log(code);
+                if (code == 0) {
+                    return {
+                        myList:data,
+                    };
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    //修改状态
+    stateModify: json => ({
+        type: 'myInvest/receiving/MODIFY_STATE',
+        payload: json
+    }),
+}
 
 let actionsMyInvestments = {
     getData: (status) => (dispatch, myInvestments) => {

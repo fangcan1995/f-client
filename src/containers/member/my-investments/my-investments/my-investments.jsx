@@ -250,6 +250,7 @@ class MyInvestments extends React.Component{
                                             totalPage: myList.pages,
                                             //filter: status,
                                             paging: (obj) => {
+                                                this.props.dispatch(memberInvestAc.stateModify({status:status,myList:``}));
                                                 dispatch(memberInvestAc.getList(
                                                     {
                                                         pageNum:obj.currentPage,
@@ -278,10 +279,6 @@ class MyInvestments extends React.Component{
                         <ModalPlan info={
                             {
                                 currentId:currentPro.currentId,
-                                /*callback:(obj)=>{
-                                    console.log('aaaaaaaaaa');
-                                    this.toggleModal('modalPlan',false,'');
-                                }*/
                             }
 
                         }
