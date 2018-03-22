@@ -7,6 +7,7 @@ const token=`?access_token=9c29f71c-a734-472f-a931-f63a876e1922`;
 const url_charts=`http://172.16.1.221:9090/members/loans/statistics${token}`; //统计图数据
 const url_loansList=`http://172.16.1.221:9090/members/loans${token}`;//获取借款列表
 const url_repaymentsAll=`http://172.16.1.221:9090/members/loans/repayments/all/`;//项目提前还款
+const url_postRepaymentsAll=`http://172.16.4.5:8084/test.php`;//项目提前还款申请
 export const memberLoansAc={
     getPie: () => {
         return {
@@ -72,29 +73,9 @@ export const memberLoansAc={
                 const res = await cFetch(`${url_repaymentsAll}${pram}${token}` , {method: 'GET'}, false);
                 const {code, data} = res;
                 if (code == 0) {
-                    let {totalLoanDto,accumulatedInterestDto}=data;
-                    let charts={
-                        totalLoan:{
-                            data:[
-                                {name:'申请中',value:totalLoanDto.loaningMoney,instruction:`${addCommas(totalLoanDto.loaningMoney)}元`  },
-                                {name:'招标中',value:totalLoanDto.investingMoney,instruction:`${addCommas(totalLoanDto.investingMoney)}元`},
-                                {name:'还款中',value:totalLoanDto.repayingMoney,instruction:`${addCommas(totalLoanDto.repayingMoney)}元`},
-                                {name:'已结清',value:totalLoanDto.settleMoney,instruction:`${addCommas(totalLoanDto.settleMoney)}元`}
-                            ]
-                        },
-                        accumulatedInterest:{
-                            data:[
-                                {name:'还款中',value:accumulatedInterestDto.repayingIint,instruction:`${addCommas(accumulatedInterestDto.repayingIint)}元`  },
-                                {name:'已结清',value:accumulatedInterestDto.settleIint,instruction:`${addCommas(accumulatedInterestDto.settleIint)}元`  },
-                            ]
-                        },
-                    };
+                    console.log(data);
                     return {
-                        repaymentInfo:
-                            {
-                                repaymentData:data,
-                                message:''
-                            }
+                        projectInfo: data
                     };
                 } else {
                     throw res;
@@ -102,6 +83,33 @@ export const memberLoansAc={
             }
         }
     },
+
+    //提交提前还款申请
+    postRepaymentApp: (params,dispatch) => {
+        params = parseJson2URL(params);
+        return {
+            type: 'myLoans/myLoans/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_postRepaymentsAll}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: params,
+                    },
+                    false);
+                return {postResult: res};
+                /*if (res.code == 0) {
+                    return {postResult: res};
+                } else {
+                    throw res;
+                }*/
+            }
+        }
+    },
+
+
+
 
     //修改状态
     stateModify: json => ({

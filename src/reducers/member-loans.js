@@ -11,11 +11,8 @@ const initialState = Immutable.fromJS({
         status: 1,
         modalRepaymentApp: false,
         currentId:'',
-        postResult:0,
-        repaymentInfo:{
-            repaymentData:{},
-            message:''
-        }
+        postResult:``,
+        projectInfo:''
     },
     repaymentPlans:{
         charts:{
