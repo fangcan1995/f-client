@@ -1,9 +1,11 @@
 import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import parseJson2URL from './../utils/parseJson2URL';
+import urls from './../utils/url';
 
-const url_sblist=`http://172.16.1.234:9090/invest/projects/loan/page?access_token=2ceea2a3-62cf-42bd-866b-d2c4fefe334b`;//获取散标列表
-const url_transferlist=`http://172.16.1.234:9090/invest/transfer/loan/page?access_token=2ceea2a3-62cf-42bd-866b-d2c4fefe334b`;//获取债转标列表
+const token=`2ceea2a3-62cf-42bd-866b-d2c4fefe334b`;
+const url_sblist=`${urls}/invest/projects/loan/page?access_token=${token}`;//获取散标列表
+const url_transferlist=`${urls}/invest/transfer/loan/page?access_token=${token}`;//获取债转标列表
 
 export const sbListAc={
     getList: (params) => {
@@ -106,7 +108,7 @@ export const tranferListAc={
 
             }
         }
-        let url=`http://172.16.1.234:9090/invest/projects/loan/page.php?access_token=41822fb5-9a4d-4d3f-b22f-3ba5be25920f&pageNum=${pageNum}&pageSize=${pageSize}${filterConditions}${sortConditions}`;
+        let url=`${urls}/invest/projects/loan/page.php?access_token=41822fb5-9a4d-4d3f-b22f-3ba5be25920f&pageNum=${pageNum}&pageSize=${pageSize}${filterConditions}${sortConditions}`;
 
         console.log('-------------url------------');
         console.log(url);
@@ -155,7 +157,7 @@ export const tranferListAc={
 
             }
         }
-        let url=`http://172.16.1.234:9090/invest/transfer/loan/page?access_token=41822fb5-9a4d-4d3f-b22f-3ba5be25920f&pageNum=${pageNum}&pageSize=${pageSize}${sortConditions}`
+        let url=`${urls}/invest/transfer/loan/page?access_token=41822fb5-9a4d-4d3f-b22f-3ba5be25920f&pageNum=${pageNum}&pageSize=${pageSize}${sortConditions}`
         console.log('-------------url------------');
         console.log(url);
         fetch(url,{method:"get"})

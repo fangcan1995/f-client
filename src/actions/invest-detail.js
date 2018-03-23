@@ -1,15 +1,16 @@
 import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import {addCommas,checkMoney} from './../assets/js/cost';
+import urls from './../utils/url';
 
 const token=`2ceea2a3-62cf-42bd-866b-d2c4fefe334b`;
-const url_invest_projects_loan=`http://172.16.1.234:9090/invest/projects/loan`; //投资信息
-const url_invest_transfer_loan=`http://172.16.1.234:9090/invest/transfer/loan` //债转投资信息
-const url_projects_info=`http://172.16.1.234:9090/invest/projects/info`  ;//标的详情
-const url_projects_record=`http://172.16.1.234:9090/invest/projects/record`;   //获取散标投资记录
-const url_transfer_record=`http://172.16.1.234:9090/invest/transfer/record`;//获取转让标投资记录
-const url_rpmtplan_page=`http://172.16.1.234:9090/invest/rpmtplan/page`;//获取还款记录
-const url_post_index=`` //提交投资申请
+const url_invest_projects_loan=`${urls}/invest/projects/loan`; //投资信息
+const url_invest_transfer_loan=`${urls}/invest/transfer/loan` //债转投资信息
+const url_projects_info=`${urls}/invest/projects/info`  ;//标的详情
+const url_projects_record=`${urls}/invest/projects/record`;   //获取散标投资记录
+const url_transfer_record=`${urls}/invest/transfer/record`;//获取转让标投资记录
+const url_rpmtplan_page=`${urls}/invest/rpmtplan/page`;//获取还款记录
+const url_post_index=``; //提交投资申请
 
 let investDetailActions = {
 
