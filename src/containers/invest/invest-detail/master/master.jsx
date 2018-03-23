@@ -109,7 +109,7 @@ class InvestDetailMaster extends React.Component {
                         </dl>
                         {/*投资区域*/}
                         <div className="m-invest">
-                            <IndexBox investInfo={investInfo} auth={auth} member={member} />
+                            <InvestBox investInfo={investInfo} auth={auth} member={member} />
                         </div>
 
                     </div>
@@ -242,7 +242,7 @@ class InvestDetailMaster extends React.Component {
         )
     }
 }
-class IndexBox extends React.Component {
+class InvestBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

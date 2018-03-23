@@ -47,6 +47,18 @@ export default createReducer(initialState, {
         isFetching: false,
         errorMessage: action.message
     }),
+    //investTransferRecords
+    ['investDetail/investTransferRecords/FETCH_PENDING']: (state, action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['investDetail/investTransferRecords/FETCH_FULFILLED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        investTransferRecords: action.payload,
+    }),
+    ['investDetail/investTransferRecords/FETCH_REJECTED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
     //
     ['investDetail/repayRecords/FETCH_PENDING']: (state, action) => state.mergeDeep({
         isFetching: true,

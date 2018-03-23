@@ -22,12 +22,7 @@ class InvestDetail extends React.Component{
         dispatch(investDetailActions.getInvestRecords(proId));//投资记录
         dispatch(investDetailActions.getRepayRecords(proId)); //还款记录
 
-        //this.props.dispatch(investDetailActions.getData(proId));
-        //dispatch(investDetailActions.getInvestInfo(proId));
-        /*dispatch(investDetailActions.getMemberInfo(proId));
-        dispatch(investDetailActions.getLoanInfo(proId));
-        dispatch(investDetailActions.getInvestRecords(proId));
-        dispatch(investDetailActions.getRepayRecords(proId));*/
+
     }
     render(){
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);

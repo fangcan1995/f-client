@@ -14,7 +14,7 @@ class TransferList extends Component {
     }
     componentDidMount () {
         //this.props.dispatch(tranferListAc.getTransferList(1,10,{},{status:2}));
-        this.props.dispatch(tranferListAc.getList({status:2}));
+        this.props.dispatch(tranferListAc.getList({status:``}));
     }
     sort(type){
         let transferList=this.props.investList.transferList;
@@ -23,19 +23,22 @@ class TransferList extends Component {
         for(var i in sort){
             newSort[i]=0;
         };
+        let orderBy={};
         switch (sort[type]){
             case 0:
                 newSort[type]=1;
+                orderBy={sortBy:`-${type}`}
                 break;
             case 1:
                 newSort[type]=2;
+                orderBy={sortBy:`${type}`}
                 break;
             case 2:
                 newSort[type]=0;
                 break;
         }
-        let orderBy={};
-        orderBy[type]=newSort[type];
+
+
 
         this.props.dispatch(tranferListAc.stateRepaymentPlanModify({sort:newSort}));
         this.props.dispatch(tranferListAc.getList(orderBy));

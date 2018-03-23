@@ -15,7 +15,7 @@ class SubjectList extends Component {
     }
     componentDidMount () {
         //this.props.dispatch(sbListAc.getList({status:2}));
-        this.props.dispatch(sbListAc.getList({status:2}));
+        this.props.dispatch(sbListAc.getList({status:``}));
     }
     todoFilter(filter){
         for (var key in filter) {
@@ -60,7 +60,7 @@ class SubjectList extends Component {
         for(var i in sort){
             newSort[i]=0;
         };
-        switch (sort[type]){
+        /*switch (sort[type]){
             case 0:
                 newSort[type]=1;
                 break;
@@ -70,9 +70,24 @@ class SubjectList extends Component {
             case 2:
                 newSort[type]=0;
                 break;
-        }
+        }*/
         let orderBy={};
-        orderBy[type]=newSort[type];
+        switch(sort[type]){
+            case 0:
+                newSort[type]=1;
+                orderBy={sortBy:`-${type}`}
+                break;
+            case 1:
+                newSort[type]=2;
+                orderBy={sortBy:`${type}`}
+                break;
+            case 2:
+                newSort[type]=0;
+                break;
+        }
+
+        //orderBy[type]=newSort[type];
+
         this.props.dispatch(sbListAc.stateSbModify({sort:newSort}));
         let prams=Object.assign(this.todoFilter(filter),orderBy);
         this.props.dispatch(sbListAc.getList(prams));

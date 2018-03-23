@@ -16,6 +16,7 @@ export const sbListAc={
                 const res = await cFetch(`${url_sblist}&`+params,{method: 'GET'}, false);
                 const {code, data} = res;
                 console.log('发回的数据');
+                console.log(`${url_sblist}&`+params);
                 console.log(data);
                 if (code == 0) {
                     return {

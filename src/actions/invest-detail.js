@@ -30,6 +30,22 @@ let investDetailActions = {
         }
     }
 },
+    //债转标投资信息
+    getTransferInvestInfo: (transferId) => {
+        return {
+            type: 'investDetail/investInfo/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_invest_transfer_loan}/${transferId}?access_token=${token}` , {method: 'GET'}, false);
+                const {code, data} = res;
+                if (code == 0) {
+                    return data;
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+
     //获取标的详情-信息披露部分
     getLoanInfo: (id) => {
         return {
@@ -61,6 +77,24 @@ let investDetailActions = {
             }
         }
     },
+
+    //获取债转标投资记录
+    getTransferInvestRecords: (id) => {
+        return {
+            type: 'investDetail/investTransferRecords/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_transfer_record}?access_token=${token}&pageNum=1&pageSize=1000&projectId=${id}` , {method: 'GET'}, false);
+
+                const {code, data} = res;
+                if (code == 0) {
+                    return data;
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+
     //获取还款记录
     getRepayRecords: (id) => {
         return {
@@ -78,25 +112,24 @@ let investDetailActions = {
     },
 
 
-    getData: (id) => (dispatch, investDetail) => {
+    /*getData: (id) => (dispatch, investDetail) => {
         let url=`${url_invest_projects_loan}/${id}?access_token=${token}`;
         dispatch(investDetailActions.getInvestInfo(url,id));
         dispatch(investDetailActions.getMemberInfo(id));
         dispatch(investDetailActions.getLoanInfo(id));
         dispatch(investDetailActions.getInvestRecords(id));
         dispatch(investDetailActions.getRepayRecords(id));
-    },
+    },*/
 
-    getTransferData: (pid,transferId) => (dispatch, investDetail) => {
+    /*getTransferData: (pid,transferId) => (dispatch, investDetail) => {
         let url=`${url_invest_transfer_loan}/${transferId}?access_token=${token}`;
         dispatch(investDetailActions.getInvestInfo(url,transferId));
         dispatch(investDetailActions.getMemberInfo(pid));
         dispatch(investDetailActions.getLoanInfo(pid));
         dispatch(investDetailActions.getInvestRecords(pid));
         dispatch(investDetailActions.getTransferInvestRecords(transferId));
-
         dispatch(investDetailActions.getRepayRecords(pid));
-    },
+    },*/
 
     /*获取散标详情*/
     /*getInvestInfo: (url,id) => (dispatch, investDetail) => {
@@ -218,7 +251,7 @@ let investDetailActions = {
     },*/
 
     /*获取转让标投资记录*/
-    getTransferInvestRecords: (id) => (dispatch, investDetail) => {
+    /*getTransferInvestRecords: (id) => (dispatch, investDetail) => {
         let newState={};
         // 获取数据列表
         let url=`${url_transfer_record}?access_token=${token}&pageNum=1&pageSize=1000&projectId=${id}`;
@@ -243,7 +276,7 @@ let investDetailActions = {
         });
 
 
-    },
+    },*/
 
     /*获取还款记录*/
     /*getRepayRecords: (id) => (dispatch, investDetail) => {
