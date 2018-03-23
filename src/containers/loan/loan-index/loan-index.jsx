@@ -5,7 +5,7 @@ import './loan-index.less';
 import Floor from '../../../components/home-page-floor/home-page-floor';
 import { message, Modal, Button } from 'antd';
 import { connect } from 'react-redux';
-import Login from '../../login/login'
+import { getImageCode } from '../../../actions/login'
 import { showModal,hideModal } from '../../../actions/login-modal';
 import LoginModal from '../../../components/login-modal/login-modal'
 import { getApplyData,checkForm ,formData,postLoanData} from '../../../actions/loan-index'
@@ -34,15 +34,14 @@ class Loan extends Component {
   }
   handleOk = () => {
     this.setState({
-      ModalText: 'The modal dialog will be closed after two seconds',
-      confirmLoading: true,
+      visible2: false,
     });
-    const ctiemout = setTimeout(() => {
-      this.setState({
-        visible2: false,
-        confirmLoading: false,
-      });
-    }, 2000);
+    // const ctiemout = setTimeout(() => {
+    //   this.setState({
+    //     visible2: false,
+    //     confirmLoading: false,
+    //   });
+    // }, 2000);
   }
   
   handleCancel = () => {
@@ -82,6 +81,11 @@ class Loan extends Component {
       this.refs.money.value=null
     }
   }
+
+  handleImageCodeImgClick = e => {
+    const { dispatch } = this.props;
+    dispatch(getImageCode());
+  }
   
   handleSubmit(e){
     const {loans,dispatch} = this.props;
@@ -118,9 +122,10 @@ class Loan extends Component {
   }
   render(){
     const { auth ,loginModal,loans} = this.props;
+    const { imageCodeImg } = this.props.login;
     console.log(loans)
     // auth.isAuthenticated
-    if(true){
+    if(auth.isAuthenticated){
       return (
         
         <main className="main loan-index" id="loan-index">
@@ -236,7 +241,7 @@ class Loan extends Component {
                                         <dt><label>验证码</label></dt>
                                         <dd>
                                             <input name="validateCode" id="imgcode" type="text" className="textInput w140" placeholder="请输入验证码" maxLength="6" required ref='graphValidateCode' onBlur={this.checkLast}/>
-                                            <img src="/images/account/pt1.png" data-url="/user/captcha" id="img-code" title="看不清？点击图片更换验证码" className="vCode" />
+                                            <img src={imageCodeImg} data-url="/user/captcha" id="img-code" title="看不清？点击图片更换验证码" className="vCode" onClick={ this.handleImageCodeImgClick } />
                                         </dd>
                                     </dl>
                                     <div className="ps">
@@ -417,11 +422,12 @@ class Loan extends Component {
   
 };
 function select(state) {
-  const { auth ,loginModal,loans} = state.toJS();
+  const { auth ,loginModal,loans,login} = state.toJS();
   return {
     auth,
     loginModal,
-    loans
+    loans,
+    login
   };
 }
 export default connect(select)(Loan);

@@ -1,8 +1,9 @@
 import cFetch from './../utils/cFetch';
 import { API_CONFIG } from './../config/api';
+import urls from '../utils/url'
 
 // const urls = [
-//   `http://172.16.1.221:9090/homes/affiches?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`,
+//   `${urls}/homes/affiches?access_token=8b1ae302-f58e-4517-a6a1-69c9b94662e8`,
 // ] 
 
 // export const  getData = () => {
@@ -29,7 +30,7 @@ export const  getData = () => {
   return {
     type: 'homePage/GET_DATA',
     async payload() {
-      const res = await cFetch(`http://172.16.1.221:9090/homes/affiches?access_token=9a1631ce-3f84-42a4-aaba-30e7077129a8` , { method: 'GET' }, false);
+      const res = await cFetch(`${urls}/homes/affiches?access_token=48f2eb3a-192c-4231-9ff4-af2d8e9023f6` , { method: 'GET' }, false);
       const { code, data } = res;
       if ( code == 0 ) {
           console.log(data)
@@ -47,7 +48,7 @@ export const getNovice  = (list) => {
     return {
       type: 'homePage/GET_NOVICE',
       async payload() {
-        const res = await cFetch(`http://172.16.1.234:9090/invest/homes/novice?access_token=9a1631ce-3f84-42a4-aaba-30e7077129a8&list[${list}].loanExpiry=3&list[${list}].num=1` , { method: 'GET' }, false);
+        const res = await cFetch(`${urls}/invest/homes/novice?access_token=48f2eb3a-192c-4231-9ff4-af2d8e9023f6&list[${list}].loanExpiry=3&list[${list}].num=1` , { method: 'GET' }, false);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)
@@ -64,7 +65,7 @@ export const getNovice  = (list) => {
     return {
       type: 'homePage/GET_STANDARD',
       async payload() {
-        const res = await cFetch(`http://172.16.1.234:9090/invest/homes/standard?access_token=9a1631ce-3f84-42a4-aaba-30e7077129a8&num=4` , { method: 'GET' }, false);
+        const res = await cFetch(`${urls}/invest/homes/standard?access_token=48f2eb3a-192c-4231-9ff4-af2d8e9023f6&num=4` , { method: 'GET' }, false);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)
@@ -81,7 +82,7 @@ export const getNovice  = (list) => {
     return {
       type: 'homePage/GET_BANNER',
       async payload() {
-        const res = await cFetch(`http://172.16.1.221:9090/homes/banners?access_token=9a1631ce-3f84-42a4-aaba-30e7077129a8` , { method: 'GET' }, false);
+        const res = await cFetch(`${urls}/homes/banners?access_token=48f2eb3a-192c-4231-9ff4-af2d8e9023f6` , { method: 'GET' }, false);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)
@@ -98,7 +99,7 @@ export const getNovice  = (list) => {
     return {
       type: 'homePage/GET_NOTICE',
       async payload() {
-        const res = await cFetch(`http://172.16.1.221:9090/homes/notices?access_token=9a1631ce-3f84-42a4-aaba-30e7077129a8` , { method: 'GET' }, false);
+        const res = await cFetch(`${urls}/homes/notices?access_token=48f2eb3a-192c-4231-9ff4-af2d8e9023f6` , { method: 'GET' }, false);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)
@@ -115,7 +116,7 @@ export const getNovice  = (list) => {
     return {
       type: 'homePage/GET_SPEC',
       async payload() {
-        const res = await cFetch(`http://172.16.1.221:9090/homes/statistics?access_token=9a1631ce-3f84-42a4-aaba-30e7077129a8` , { method: 'GET' }, false);
+        const res = await cFetch(`${urls}/homes/statistics?access_token=48f2eb3a-192c-4231-9ff4-af2d8e9023f6` , { method: 'GET' }, false);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)

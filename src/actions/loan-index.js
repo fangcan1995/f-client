@@ -4,6 +4,7 @@ import cFetch from '../utils/cFetch';
 import readBlobAsDataURL from '../utils/readBlobAsDataURL';
 // import { LOGIN, LOGOUT } from './../constants/actions-type';
 import { API_CONFIG } from './../config/api';
+import urls from '../utils/url'
 
 export const getImageCode = () => {
   return {
@@ -38,7 +39,7 @@ export const getApplyData = (loanType ) => {
     type: 'loan/GET_APPLY_DATA',
     data:{loanType},
     async payload() {
-        const res = await cFetch('http://172.16.1.228:9090/loans/apply/qualification?access_token=9c29f71c-a734-472f-a931-f63a876e1922' , { method: 'GET' } , false);
+        const res = await cFetch(`${urls}/loans/apply/qualification?access_token=48f2eb3a-192c-4231-9ff4-af2d8e9023f6` , { method: 'GET' } , false);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)
@@ -80,7 +81,7 @@ export const checkForm = (e) => {
       type: 'loan/POST_LOAN_DATA',
       // async/await配合promise处理异步
       async payload() {
-        const res = await cFetch('http://172.16.1.228:9090/loans/apply?access_token=9c29f71c-a734-472f-a931-f63a876e1922' , { 
+        const res = await cFetch(`${urls}/loans/apply?access_token=48f2eb3a-192c-4231-9ff4-af2d8e9023f6` , { 
           method: 'POST', 
           headers: {
                 'Content-Type': 'application/json'
