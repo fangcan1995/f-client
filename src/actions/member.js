@@ -4,7 +4,7 @@ import {addCommas,checkMoney} from './../assets/js/cost';
 import { message } from 'antd';
 import urls from './../utils/url';
 
-const token=`2ceea2a3-62cf-42bd-866b-d2c4fefe334b`;
+const token=`b1b3685c-0b71-491e-a9fb-10d26a6c74d4`;
 const url_memberInfo=`${urls}/accounts/my/info?access_token=${token}`; //获取会员信息
 const url_incomeMonth=`${urls}/accounts/income/month?access_token=${token}`; //获取月收益统计
 const url_incomeDay=`${urls}/accounts/income/day?access_token=${token}`; //获取日收益统计
@@ -28,12 +28,16 @@ export const memberAc= {
                     return {
                         basicInfo:{
                             trueName:data.baseInfo.trueName,
+                            memberId:data.baseInfo.memberId
                         },
                         amount:data.accountInfo,
                         redInfo:data.memberRedInfo,
                         couponInfo:data.memberCoupon,
                         openAccountStatus:data.openAccountStatus,
                         acBack:data.acBank,
+                        userName:data.member.userName,
+                        photo:data.member.photo,
+
                     };
                 } else {
                     throw res;

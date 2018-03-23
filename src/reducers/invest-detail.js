@@ -23,6 +23,42 @@ export default createReducer(initialState, {
         isFetching: false,
         errorMessage: action.message
     }),
+    //
+    ['investDetail/loanInfo/FETCH_PENDING']: (state, action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['investDetail/loanInfo/FETCH_FULFILLED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        loanInfo: action.payload,
+    }),
+    ['investDetail/loanInfo/FETCH_REJECTED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
+    //
+    ['investDetail/investRecords/FETCH_PENDING']: (state, action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['investDetail/investRecords/FETCH_FULFILLED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        investRecords: action.payload,
+    }),
+    ['investDetail/investRecords/FETCH_REJECTED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
+    //
+    ['investDetail/repayRecords/FETCH_PENDING']: (state, action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['investDetail/repayRecords/FETCH_FULFILLED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        repayRecords: action.payload,
+    }),
+    ['investDetail/repayRecords/FETCH_REJECTED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
     /*['investDetail/investInfo/MODIFY_STATE']:(state,action) => state.mergeDeep({
         investInfo:action.payload
     }),*/

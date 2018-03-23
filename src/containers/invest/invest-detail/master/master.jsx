@@ -4,12 +4,13 @@ import  {getData}  from '../../../../assets/js/getData';
 import {  Link} from 'react-router-dom';
 import StepperInput from '../../../../components/stepperInput/stepperInput';
 import { Modal } from 'antd';
-import {income} from "../../../../assets/js/cost";
+import {income,addCommas} from "../../../../assets/js/cost";
 import ModalInvest from '../modal-invest/modalInvest';
 import ModalRecharge from '../modal-recharge/modaRecharge'
 import ModalRiskAssess from '../modal-riskAssess/modal-riskAssess';
 import { connect } from 'react-redux';
 import  investDetailActions  from '../../../../actions/invest-detail';
+import  {memberAc}  from '../../../../actions/member';
 import moment from "moment";
 
 class InvestDetailMaster extends React.Component {
@@ -29,6 +30,7 @@ class InvestDetailMaster extends React.Component {
     }
     componentDidMount () {
         //console.log(this.props);
+        this.props.dispatch(memberAc.getInfo());
         this.props.dispatch(investDetailActions.getInvestInfo(this.props.id));
     }
     //模态框开启关闭
@@ -59,104 +61,11 @@ class InvestDetailMaster extends React.Component {
     render(){
         let {investAmount}=this.state;
         let {dispatch}=this.props;
-        console.log('----------this.props--------------');
-        console.log(this.props);
+
         let {investInfo}=this.props.investDetail;
         let {member,auth}=this.props;
-        let mInvest=``;
 
-        /*if(investInfo.status!=2){
-            mInvest=<div className="form_area">
-                <ul className="m-amount">
-                    <li><strong>开放金额：</strong>{investInfo.money}元</li>
-                </ul>
-                {this.getStatusName(investInfo.status,investInfo.id)}
-            </div>
-        }else{
-            let button=``;
-            if(JSON.stringify(member.data) == '{}'){
-                button=<Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} className="btn">我要登录</Link>;
-            }else{
-                if(!member.isOpenAccount){
-                    button=<a  className="btn" onClick={()=>{window.location.href="http://www.baidu.com?redirect"}}>立即开户</a>
-                }else{
-                    if(!member.isFxpg){
-                        button=<a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,investInfo.id)}>立即风险评估（级别不够）</a>
-                    }else{
-                        if((member.accountBalance<investAmount)){
-                            button=<a className="btn" onClick={() => this.toggleModal(`modalRecharge`,true,investInfo.id)}>立即充值(仅限新手)</a>
-                        }else{
-                            console.log('this.state.tips='+this.state.tips);
-                            if(this.state.tips!=''){
-                                button=<a className='btn end'>立即投资</a>
-                            }else{
-                                button=<a className='btn' onClick={() => this.toggleModal(`modalInvest`,true,investInfo.id)}>立即投资</a>
-                            }
 
-                        }
-                    }
-                }
-            }
-            mInvest=<div className="form_area">
-                <ul className="m-amount">
-                    <li><strong>开放金额：</strong>{investInfo.money}元</li>
-                    <li><strong>可投金额：</strong>{investInfo.surplusAmount}元</li>
-                </ul>
-                <StepperInput config = {
-                    {
-                        defaultValue:investInfo.minInvestAmount, //默认金额
-                        min:investInfo.minInvestAmount,
-                        max:(investInfo.maxInvestAmount<investInfo.surplusAmount)?investInfo.maxInvestAmount:investInfo.surplusAmount,
-                        step:investInfo.increaseAmount,
-                        callback:(obj)=>{
-                            this.setState({
-                                tips:obj.tips,
-                                investAmount:parseFloat(obj.value),
-                                code:obj.code
-                            });
-                        }
-                    }
-                }
-                >
-                </StepperInput>
-                <div className="tips__area">
-                    {this.state.tips!=''? <span className="tips error">{this.state.tips}</span>
-                        :''}
-                </div>
-                <ul className="others">
-                    <li>
-                        <i className="iconfont icon-user"></i>
-                        <strong>我的可用余额：</strong>
-                        {
-                            (JSON.stringify(member) == '{}')? <Link  to={`/login?redirect=%2invest-detail%${project.id}`} className="btn">登陆查看</Link>
-                                : `${member.accountBalance} 元`
-                        }
-                    </li>
-                    <li>
-                        <strong>可用红包总计：</strong>
-                        {
-                            (JSON.stringify(member) == '{}')? <Link  to={`/login?redirect=%2invest-detail%${project.id}`} className="btn">登陆查看</Link>
-                                : `${member.redAmount} 元`
-                        }
-                    </li>
-                    <li>
-                        <strong>可用加息券：</strong>
-                        {
-                            (JSON.stringify(member) == '{}')? <Link  to={`/login?redirect=%2invest-detail%${project.id}`} className="btn">登陆查看</Link>
-                                : `${member.rateNum} 张`
-                        }
-                    </li>
-                    <li><strong>预期可赚取：</strong> <i id="money">
-                        {(investAmount==0)?income(project.minInvestAmount,(project.annualRate),project.loanExpiry,'m')
-                            :income(this.state.investAmount,(project.annualRate),project.loanExpiry,'m')
-                        }
-
-                    </i>元
-                    </li>
-                </ul>
-                {button}
-            </div>
-        }*/
         return (
             <div>
                 <div>
@@ -200,7 +109,6 @@ class InvestDetailMaster extends React.Component {
                         </dl>
                         {/*投资区域*/}
                         <div className="m-invest">
-                            {mInvest}
                             <IndexBox investInfo={investInfo} auth={auth} member={member} />
                         </div>
 
@@ -377,8 +285,6 @@ class IndexBox extends React.Component {
     }
     render(){
         let {member,auth}=this.props;
-        //console.log(this.props.status);
-        console.log(this.props);
         let investInfo=this.props.investInfo;
         console.log('-----------auth---------');
         console.log(this.props);
@@ -455,22 +361,22 @@ class IndexBox extends React.Component {
                             <i className="iconfont icon-user"></i>
                             <strong>我的可用余额：</strong>
                             {
-                                (auth.isAuthenticated)? <Link  to={`/login?redirect=%2invest-detail%${project.id}`} className="btn">登陆查看</Link>
-                                    : `${member.accountBalance} 元`
+                                (auth.isAuthenticated)? `${member.accountBalance} 元`
+                                    : <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
                             }
                         </li>
                         <li>
                             <strong>可用红包总计：</strong>
                             {
-                                (JSON.stringify(member) == '{}')? <Link  to={`/login?redirect=%2invest-detail%${project.id}`} className="btn">登陆查看</Link>
-                                    : `${member.redAmount} 元`
+                                (JSON.stringify(member) == '{}')? `${member.redAmount} 元`
+                                    : <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
                             }
                         </li>
                         <li>
                             <strong>可用加息券：</strong>
                             {
-                                (JSON.stringify(member) == '{}')? <Link  to={`/login?redirect=%2invest-detail%${project.id}`} className="btn">登陆查看</Link>
-                                    : `${member.rateNum} 张`
+                                (JSON.stringify(member) == '{}')? `${member.rateNum} 张`
+                                    : <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
                             }
                         </li>
                         <li><strong>预期可赚取：</strong> <i id="money">

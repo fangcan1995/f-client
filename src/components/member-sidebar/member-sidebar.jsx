@@ -19,9 +19,10 @@ class MemberSidebar extends React.Component {
         this.props.dispatch(memberAc.getInfo());
     }
     render(){
-        console.log('----------------');
+        console.log('member----------------');
         console.log(this.props);
         let {member}=this.props;
+        console.log(member);
         let {accountsInfo}=member;
         return (
             <main className="main member">
@@ -29,8 +30,8 @@ class MemberSidebar extends React.Component {
                     <div className="member__sidebar">
                         <div className="member__info">
                             <div className="info">
-                                <MyAvatar/>
-                                <div className="username">{ accountsInfo.userName}</div>
+                                <MyAvatar photo={member.accountsInfo.photo}/>
+                                <div className="username">{ member.accountsInfo.userName}</div>
                                 <div className="step">
                                     <i className="iconfont icon-phone able1" onClick={()=>{this.props.history.push('/my-account/recharge')}}></i>
                                     <i className={`iconfont icon-card able${accountsInfo.openAccountStatus}`} onClick={()=>{this.props.history.push('/my-account/bank-card')}}></i>

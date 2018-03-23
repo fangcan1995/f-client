@@ -5,7 +5,7 @@ import parseJson2URL from './../utils/parseJson2URL';
 import urls from './../utils/url';
 
 
-const token=`2ceea2a3-62cf-42bd-866b-d2c4fefe334b`;
+const token=`b1b3685c-0b71-491e-a9fb-10d26a6c74d4`;
 
 const url_investCharts=`${urls}/members/invest/statistics?access_token=${token}`; //统计图数据
 const url_investList=`${urls}/members/investments?access_token=${token}`;//获取投资列表

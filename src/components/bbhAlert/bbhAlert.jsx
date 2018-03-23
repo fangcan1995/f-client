@@ -35,11 +35,12 @@ export  class Loading extends React.Component{
 }
 export  class NoRecord extends React.Component{
     render(){
-        let {isShow}=this.props;
+        let {isShow,title}=this.props;
         return(
             <div className="tips_noRecord">
                 {(isShow===true)?
-                    `暂无记录`
+                    (!title)?`暂无记录`:`${title}`
+
                     :``
                 }
             </div>

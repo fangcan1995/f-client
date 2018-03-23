@@ -54,9 +54,16 @@ export default class MyAvatar extends React.Component {
         }
     }
     render() {
+        let {photo}=this.props;
        let disableChange=this.props.disableChange || false; //是否可以替换
+        let photo_url=``;
+        if(photo){
+            photo_url=photo;
+        }else{
+            photo_url=`http://www.baba88.com/static/quote_518/images/logo.png`;
+        }
         const uploadButton = (
-            <Avatar size="large" className="memberPhoto" src={require('../../assets/images/account/picture.png')} />
+            <Avatar size="large" className="memberPhoto" src={photo_url} />
         );
         const imageUrl = this.state.imageUrl;
         return (

@@ -4,7 +4,7 @@ import { API_CONFIG } from './../config/api';
 import parseJson2URL from './../utils/parseJson2URL';
 import urls from './../utils/url';
 
-const token=`2ceea2a3-62cf-42bd-866b-d2c4fefe334b`;
+const token=`b1b3685c-0b71-491e-a9fb-10d26a6c74d4`;
 
 const url_getMList=`${urls}/message/mail/page?access_token=${token}`;  //获取消息列表
 const url_setRead=`${urls}/message/mail/read?access_token=${token}`; //设为已读

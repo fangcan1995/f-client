@@ -18,6 +18,10 @@ class InvestDetail extends React.Component{
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
         let proId=pathSnippets[1];
         let {dispatch}=this.props;
+        dispatch(investDetailActions.getLoanInfo(proId)); //借款人信息披露
+        dispatch(investDetailActions.getInvestRecords(proId));//投资记录
+        dispatch(investDetailActions.getRepayRecords(proId)); //还款记录
+
         //this.props.dispatch(investDetailActions.getData(proId));
         //dispatch(investDetailActions.getInvestInfo(proId));
         /*dispatch(investDetailActions.getMemberInfo(proId));
@@ -28,58 +32,24 @@ class InvestDetail extends React.Component{
     render(){
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
         let proId=pathSnippets[1];
-        console.log('---------------this.props----------');
         let {investDetail}=this.props;
         let {investInfo,memberInfo,loanInfo,investRecords,repayRecords}=investDetail;
         let project=investInfo.data;
-        console.log(project);
+
         return (
             <main className="main sbDetail">
                 <div className="wrapper">
-                    <InvestDetailMaster
-                        id={proId}
-                        /*investInfo={investInfo}
-                        memberInfo={memberInfo}*/
-                    >
-                        <div className="form_area">
-                            {
-                                (project)?
-                                    (project.status!='2')?
-                                        <div>
-                                            <ul className="m-amount">
-                                                <li><strong>开放金额：</strong>{project.money}元</li>
-                                            </ul>
-                                            <div className="form_area">
-                                                <div className="form__bar">
-                                                    <a className="btn_unable" href="javascript:void(0);">不能投资</a>
-                                                    <Button type="primary"  className="pop-button" disabled={false}>不能投资</Button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        :''
-                                    :''
-                            }
-                        </div>
-                    </InvestDetailMaster>
+                    <InvestDetailMaster id={proId} />
                     <div className="tab_info">
                         <Tab>
-                            <div name="项目信息">
-
-                                {/*<BorrowerInfo
-                                        loanInfo={loanInfo}
-                                />*/}
+                            <div name="项目信息" >
+                                <BorrowerInfo />
                             </div>
-                            <div name="投标记录" >
-                                {/*<InvestRecords
-                                    investRecords={investRecords}
-                                    pageSize={10}
-                                />*/}
+                            <div name="投标记录" style={{marginBottom:'30px'}}>
+                                <InvestRecords pageSize={10}/>
                             </div>
-                            <div name="还款记录">
-                                {/*<RepayRecords
-                                    repayRecords={repayRecords}
-                                    pageSize={10}
-                                />*/}
+                            <div name="还款记录" style={{marginBottom:'30px'}}>
+                                <RepayRecords pageSize={10}/>
                             </div>
                             <div name="风险信息">
                                 <ul className="m-notice">

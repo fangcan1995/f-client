@@ -3,7 +3,7 @@ import cookie from 'js-cookie';
 import {addCommas,checkMoney} from './../assets/js/cost';
 import parseJson2URL from './../utils/parseJson2URL';
 import urls from './../utils/url';
-const token=`2ceea2a3-62cf-42bd-866b-d2c4fefe334b`;
+const token=`b1b3685c-0b71-491e-a9fb-10d26a6c74d4`;
 
 const url_loansCharts=`${urls}/members/loans/statistics?access_token=${token}`; //统计图数据
 const url_loansList=`${urls}/members/loans?access_token=${token}`;//获取借款列表
