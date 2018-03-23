@@ -4,19 +4,17 @@ import Immutable from 'immutable';
 const initialState = Immutable.fromJS({
     isFetching:false,
     accountsInfo:{
-        basicInfo:{
-        },
+        basicInfo:``,
         amount:'',
-        redInfo:{},
-        couponInfo:{},
+        redInfo:``,
+        couponInfo:``,
         openAccountStatus:'',   //是否开户
+
         acBank:{
             bankName:'',
             bankNo:'',
         },
-        result:{
-
-        }
+        result:``
 
     },
 

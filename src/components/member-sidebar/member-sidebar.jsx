@@ -22,23 +22,19 @@ class MemberSidebar extends React.Component {
         console.log('----------------');
         console.log(this.props);
         let {member}=this.props;
-        let {accountsInfo}=member
+        let {accountsInfo}=member;
         return (
             <main className="main member">
                 <div className="wrapper">
                     <div className="member__sidebar">
                         <div className="member__info">
                             <div className="info">
-                                {/*<figure className="avatar">
-                            <img src={require('../../assets/images/account/picture.png')} id="tx" />
-                        </figure>*/}
-                                {/*<Avatar src={require('../../assets/images/account/picture.png')} id="tx" />*/}
                                 <MyAvatar/>
-                                <div className="username">{ }</div>
+                                <div className="username">{ accountsInfo.userName}</div>
                                 <div className="step">
                                     <i className="iconfont icon-phone able1" onClick={()=>{this.props.history.push('/my-account/recharge')}}></i>
                                     <i className={`iconfont icon-card able${accountsInfo.openAccountStatus}`} onClick={()=>{this.props.history.push('/my-account/bank-card')}}></i>
-                                    <i className={`iconfont icon-fxcp able${accountsInfo.riskStatus}`} onClick={()=>{this.props.history.push('/my-settings/my-riskAssess')}}></i>
+                                    <i className={`iconfont icon-fxcp able${accountsInfo.riskStatus || 0}`} onClick={()=>{this.props.history.push('/my-settings/my-riskAssess')}}></i>
                                 </div>
                             </div>
                             <div className="action">
@@ -94,10 +90,6 @@ class MemberSidebar extends React.Component {
         );
     }
 }
-/*const MemberSidebar =  ({ location, match, history, auth, ...props }) => {
-
-
-};*/
 
 function mapStateToProps(state) {
     const { auth,member } = state.toJS();
