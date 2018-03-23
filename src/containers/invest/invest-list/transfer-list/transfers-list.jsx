@@ -4,20 +4,21 @@ import { Link } from 'react-router-dom';
 import { Progress } from 'antd';
 import { connect } from 'react-redux';
 import moment from "moment";
-import  investListActions  from '../../../../actions/invest-list';
+import {tranferListAc} from "../../../../actions/invest-list"
 import Pagination from '../../../../components/pagination/pagination';
+import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import '../invest-list.less';
 class TransferList extends Component {
     constructor(props) {
         super(props);
     }
     componentDidMount () {
-        this.props.dispatch(investListActions.getTransferList(1,10,{},{status:2}));
+        //this.props.dispatch(tranferListAc.getTransferList(1,10,{},{status:2}));
+        this.props.dispatch(tranferListAc.getTransferList());
     }
     sort(type){
         let transferList=this.props.investList.transferList;
         let sort=transferList.sort;
-        //let filter=transferList.filter;
         let newSort=Object.assign({},sort);
         for(var i in sort){
             newSort[i]=0;
@@ -35,8 +36,9 @@ class TransferList extends Component {
         }
         let orderBy={};
         orderBy[type]=newSort[type];
-        this.props.dispatch(investListActions.stateRepaymentPlanModify({sort:newSort}));
-        this.props.dispatch(investListActions.getTransferList(1,10,{},orderBy));
+
+        this.props.dispatch(tranferListAc.stateRepaymentPlanModify({sort:newSort}));
+        this.props.dispatch(tranferListAc.getTransferList(orderBy));
     }
     getStatusName(status,id,transferId){
         let investButton=``;
@@ -65,7 +67,7 @@ class TransferList extends Component {
     }
     render(){
         let {dispatch}=this.props;
-        let {transferList}=this.props.investList;
+        let {transferList,isFetching}=this.props.investList;
         let {list,sort}=transferList;
         return (
             <main className="main transfer-list">
@@ -77,61 +79,65 @@ class TransferList extends Component {
                     </div>
                 </div>
                 {
-                    list.data ==''? <div><p className="loading">loading</p></div>
-                        : list.data.total > 0 ?
+                    list ===''? <Loading isShow={isFetching} />
+                        :
                             <div className="table__wrapper">
-                                <table className="tableList">
-                                    <thead>
-                                    <tr>
-                                        <th>项目名称</th>
-                                        <th>投资总额</th>
-                                        <th className={`order${sort.annualRate}`} onClick={() => {this.sort('annualRate')}}>预期年化收益率<i></i></th>
-                                        <th className={`order${sort.transferPeriod}`} onClick={() => {this.sort('transferPeriod')}}>投资期限<i></i></th>
-                                        <th className={`order${sort.putDate}`} onClick={() => {this.sort('putDate')}}>发布时间<i></i></th>
-                                        <th className={`order${sort.surplusAmount}`} onClick={() => {this.sort('surplusAmount')}}>剩余金额<i></i></th>
-                                        <th>投资人数</th>
-                                        <th className={`order${sort.investmentProgress}`} onClick={() => {this.sort('investmentProgress')}}>投资进度<i></i></th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {
-                                        list.data.list.map((l, i) => (
-                                            <tr key={`row-${i}`}>
-                                                <td className="t_table">
-                                                    <p><a href={"/invest-detail/" + l['proId']}  title="longText">{l.transNo}</a></p>
-                                                </td>
-                                                <td className="rtxt">{l.transAmt}元</td>
-                                                <td><em className="redTxt">{l.annualRate}%</em></td>
-                                                <td>{l.transferPeriod}个月</td>
-                                                <td>{moment(l.putDate).format('YYYY-MM-DD')}</td>
-                                                <td className="rtxt">{l.surplusAmount}元</td>
-                                                <td>{l.investNumber}人</td>
-                                                <td style={{ width: 170}}>
-                                                    <Progress percent={parseInt(l.investmentProgress)} size="small" />
-                                                </td>
-                                                <td>
-                                                    {this.getStatusName(l.transStatus,l.projectId,l.id)}
+                                {(list.total) > 0 ?
+                                <div>
+                                    <table className="tableList">
+                                        <thead>
+                                        <tr>
+                                            <th>项目名称</th>
+                                            <th>投资总额</th>
+                                            <th className={`order${sort.annualRate}`} onClick={() => {this.sort('annualRate')}}>预期年化收益率<i></i></th>
+                                            <th className={`order${sort.transferPeriod}`} onClick={() => {this.sort('transferPeriod')}}>投资期限<i></i></th>
+                                            <th className={`order${sort.putDate}`} onClick={() => {this.sort('putDate')}}>发布时间<i></i></th>
+                                            <th className={`order${sort.surplusAmount}`} onClick={() => {this.sort('surplusAmount')}}>剩余金额<i></i></th>
+                                            <th>投资人数</th>
+                                            <th className={`order${sort.investmentProgress}`} onClick={() => {this.sort('investmentProgress')}}>投资进度<i></i></th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {
+                                            list.data.list.map((l, i) => (
+                                                <tr key={`row-${i}`}>
+                                                    <td className="t_table">
+                                                        <p><a href={"/invest-detail/" + l['proId']}  title="longText">{l.transNo}</a></p>
+                                                    </td>
+                                                    <td className="rtxt">{l.transAmt}元</td>
+                                                    <td><em className="redTxt">{l.annualRate}%</em></td>
+                                                    <td>{l.transferPeriod}个月</td>
+                                                    <td>{moment(l.putDate).format('YYYY-MM-DD')}</td>
+                                                    <td className="rtxt">{l.surplusAmount}元</td>
+                                                    <td>{l.investNumber}人</td>
+                                                    <td style={{ width: 170}}>
+                                                        <Progress percent={parseInt(l.investmentProgress)} size="small" />
+                                                    </td>
+                                                    <td>
+                                                        {this.getStatusName(l.transStatus,l.projectId,l.id)}
 
-                                                </td>
-                                            </tr>
-                                        ))
-                                    }
-                                    </tbody>
-                                </table>
-
-                                <Pagination config = {
-                                    {
-                                        currentPage:list.data.pageNum,
-                                        pageSize:list.data.pageSize,
-                                        totalPage:Math.ceil(list.data.total/list.data.pageSize),
-                                        paging:(obj)=>{
-                                            dispatch(investListActions.getTransferList(obj.currentPage,obj.pageCount,{},sort));
+                                                    </td>
+                                                </tr>
+                                            ))
                                         }
-                                    }
-                                } ></Pagination>
+                                        </tbody>
+                                    </table>
+                                    <Pagination config = {
+                                        {
+                                            currentPage:list.pageNum,
+                                            pageSize:list.pageSize,
+                                            totalPage:list.pages,
+                                            paging:(obj)=>{
+                                                let parms=Object.assign({pageNum:obj.currentPage,pageSize:obj.pageSize},sort)
+                                                dispatch(tranferListAc.getTransferList(parms));
+                                            }
+                                        }
+                                    } ></Pagination>
+                                </div>
+                                : <NoRecord isShow={true} title={`暂无标的`} />
+                                }
                             </div>
-                            : <div>暂无标的</div>
                 }
             </div>
             </main>

@@ -1,7 +1,61 @@
 import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
-import {addCommas,checkMoney} from './../assets/js/cost';
+import parseJson2URL from './../utils/parseJson2URL';
 
+const url_sblist=`http://172.16.1.234:9090/invest/projects/loan/page?access_token=41822fb5-9a4d-4d3f-b22f-3ba5be25920f`;//获取散标列表
+const url_transferlist=`http://172.16.1.234:9090/invest/transfer/loan/page?access_token=41822fb5-9a4d-4d3f-b22f-3ba5be25920f`;//获取债转标列表
+
+export const sbListAc={
+    getList: (params) => {
+        return {
+            type: 'investList/sbList/FETCH',
+            async payload() {
+                params = parseJson2URL(params);
+                const res = await cFetch(`${url_sblist}&`+params,{method: 'GET'}, false);
+                const {code, data} = res;
+                console.log('发回的数据');
+                console.log(data);
+                if (code == 0) {
+                    return {
+                        list:data
+                    };
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    //修改状态
+    stateSbModify: json => ({
+        type: 'investList/sbList/MODIFY_STATE',
+        payload: json
+    }),
+};
+export const tranferListAc={
+    getList: (params) => {
+        return {
+            type: 'investList/transferList/FETCH',
+            async payload() {
+                params = parseJson2URL(params);
+                const res = await cFetch(`${url_transferlist}&`+params,{method: 'GET'}, false);
+                const {code, data} = res;
+                console.log('发回的数据');
+                console.log(data);
+                if (code == 0) {
+                    return {
+                        list:data
+                    };
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    stateRepaymentPlanModify: json => ({
+        type: 'investList/transferList/MODIFY_STATE',
+        payload: json
+    }),
+};
 let investListActions = {
     /*getData: (status) => (dispatch, investList) => {
         dispatch(investListActions.getList(1,10,{status:status}));
@@ -52,7 +106,7 @@ let investListActions = {
 
             }
         }
-        let url=`http://172.16.1.234:9090/invest/projects/loan/page.php?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c&pageNum=${pageNum}&pageSize=${pageSize}${filterConditions}${sortConditions}`;
+        let url=`http://172.16.1.234:9090/invest/projects/loan/page.php?access_token=41822fb5-9a4d-4d3f-b22f-3ba5be25920f&pageNum=${pageNum}&pageSize=${pageSize}${filterConditions}${sortConditions}`;
 
         console.log('-------------url------------');
         console.log(url);
@@ -101,7 +155,7 @@ let investListActions = {
 
             }
         }
-        let url=`http://172.16.1.234:9090/invest/transfer/loan/page?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c&pageNum=${pageNum}&pageSize=${pageSize}${sortConditions}`
+        let url=`http://172.16.1.234:9090/invest/transfer/loan/page?access_token=41822fb5-9a4d-4d3f-b22f-3ba5be25920f&pageNum=${pageNum}&pageSize=${pageSize}${sortConditions}`
         console.log('-------------url------------');
         console.log(url);
         fetch(url,{method:"get"})

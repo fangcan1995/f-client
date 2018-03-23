@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import { Progress } from 'antd';
 import { connect } from 'react-redux';
 import moment from "moment";
-import  investListActions  from '../../../../actions/invest-list';
+import {sbListAc} from "../../../../actions/invest-list";
 import Pagination from '../../../../components/pagination/pagination';
+import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import '../invest-list.less';
 class SubjectList extends Component {
     constructor(props) {
@@ -13,15 +14,43 @@ class SubjectList extends Component {
         this.multiFilter = this.multiFilter.bind(this);
     }
     componentDidMount () {
-        this.props.dispatch(investListActions.getList(1,10,{},{status:2}));
+        //this.props.dispatch(sbListAc.getList({status:2}));
+        this.props.dispatch(sbListAc.getList());
+    }
+    todoFilter(filter){
+        for (var key in filter) {
+            if(filter[key]==='') {
+                delete filter[key];
+            }else{
+                if(key=='rateGroup'){
+                    switch(filter[key]){
+                        case '':
+                            break;
+                        case 1:
+                            Object.assign(filter,{annualRateStart:6,annualRateEnd:8})
+                            break;
+                        case 2:
+                            Object.assign(filter,{annualRateStart:8,annualRateEnd:10})
+                            break;
+                        case 3:
+                            Object.assign(filter,{annualRateStart:10,annualRateEnd:12})
+                            break;
+                    }
+                    delete filter[key];
+                }
+
+            }
+        }
+        return Object.assign({},filter);
     }
     multiFilter(type,value){
         let filter=this.props.investList.sbList.filter;
         //修改
         filter[type]=value;
-        this.props.dispatch(investListActions.stateSbModify({filter:filter}));
-        this.props.dispatch(investListActions.stateSbModify({list:{data:'',message:''}}));
-        this.props.dispatch(investListActions.getList(1,10,filter,{status:2}));
+        //this.props.dispatch(sbListAc.stateSbModify({filter:filter}));
+
+        this.props.dispatch(sbListAc.stateSbModify({filter:filter,list:``}));
+        this.props.dispatch(sbListAc.getList(this.todoFilter(filter)));
     }
     sort(type){
         let sbList=this.props.investList.sbList;
@@ -44,13 +73,13 @@ class SubjectList extends Component {
         }
         let orderBy={};
         orderBy[type]=newSort[type];
-        this.props.dispatch(investListActions.stateSbModify({sort:newSort}));
-        this.props.dispatch(investListActions.getList(1,10,filter,orderBy));
+        this.props.dispatch(sbListAc.stateSbModify({sort:newSort}));
+        let prams=Object.assign(this.todoFilter(filter),orderBy);
+        this.props.dispatch(sbListAc.getList(prams));
     }
     getStatusName(status,id){
         let investButton=``;
         switch(status){
-
             case 1:
                 investButton=<Link to={`/invest-detail/${id}`} className="btn end">待发布</Link>;
                 break;
@@ -75,7 +104,7 @@ class SubjectList extends Component {
     }
     render(){
         let {dispatch}=this.props;
-        let {sbList}=this.props.investList;
+        let {sbList,isFetching}=this.props.investList;
         let {list,filter,sort}=sbList;
         let {noviceLoan,loanExpiry,rateGroup}=filter;
         console.log('--------------this.props--------------');
@@ -156,62 +185,68 @@ class SubjectList extends Component {
                         </div>
                     </div>
                     {
-                        (list.data == '')? <div><p className="loading">loading</p></div>
-                            : list.data.total > 0 ?
-                                <div className="table__wrapper">
-                                    <table className="tableList">
-                                        <thead>
-                                        <tr>
-                                            <th>项目名称</th>
-                                            <th>投资总额</th>
-                                            <th className={`order${sort.annualRate}`} onClick={() => {this.sort('annualRate')}}>预期年化收益率<i></i></th>
-                                            <th className={`order${sort.loanExpiry}`} onClick={() => {this.sort('loanExpiry')}}>投资期限<i></i></th>
-                                            <th className={`order${sort.putTime}`} onClick={() => {this.sort('putTime')}}>发布时间<i></i></th>
-                                            <th className={`order${sort.surplusAmount}`} onClick={() => {this.sort('surplusAmount')}}>剩余金额<i></i></th>
-                                            <th>投资人数</th>
-                                            <th className={`order${sort.investmentProgress}`} onClick={() => {this.sort('investmentProgress')}}>投资进度<i></i></th>
-                                            <th></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {
-                                            list.data.list.map((l, i) => (
-                                                <tr key={`row-${i}`}>
-                                                    <td className="t_table">
-                                                        <p><Link to={"/invest-detail/" + l['id']} title="longText">{l.name}</Link></p>
-                                                    </td>
-                                                    <td className="rtxt">{l.money}元</td>
-                                                    <td><em className="redTxt">{l.annualRate}%</em></td>
-                                                    <td>{l.loanExpiry}个月</td>
-                                                    <td>{moment(l.putTime).format('YYYY-MM-DD')}</td>
-                                                    <td className="rtxt">{l.surplusAmount}元</td>
-                                                    <td>{l.investNumber}人</td>
-                                                    <td style={{ width: 170}}>
-                                                        <Progress percent={parseInt(l.investmentProgress)} size="small" />
-                                                    </td>
-                                                    <td>
-                                                        {this.getStatusName(l.status,l.id)}
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        }
-                                        </tbody>
-                                    </table>
-
-                                    <Pagination config = {
-                                        {
-                                            currentPage:list.data.pageNum,
-                                            pageSize:list.data.pageSize,
-                                            totalPage:Math.ceil(list.data.total/list.data.pageSize),
-                                            paging:(obj)=>{
-                                                dispatch(investListActions.getList(obj.currentPage,obj.pageCount,filter,sort));
+                        (list === '')? <Loading isShow={isFetching} />
+                            :
+                            <div className="table__wrapper">
+                                { (list.total>0)?
+                                    <div>
+                                        <table className="tableList">
+                                            <thead>
+                                            <tr>
+                                                <th>项目名称</th>
+                                                <th>投资总额</th>
+                                                <th className={`order${sort.annualRate}`} onClick={() => {this.sort('annualRate')}}>预期年化收益率<i></i></th>
+                                                <th className={`order${sort.loanExpiry}`} onClick={() => {this.sort('loanExpiry')}}>投资期限<i></i></th>
+                                                <th className={`order${sort.putTime}`} onClick={() => {this.sort('putTime')}}>发布时间<i></i></th>
+                                                <th className={`order${sort.surplusAmount}`} onClick={() => {this.sort('surplusAmount')}}>剩余金额<i></i></th>
+                                                <th>投资人数</th>
+                                                <th className={`order${sort.investmentProgress}`} onClick={() => {this.sort('investmentProgress')}}>投资进度<i></i></th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {
+                                                list.data.list.map((l, i) => (
+                                                    <tr key={`row-${i}`}>
+                                                        <td className="t_table">
+                                                            <p><Link to={"/invest-detail/" + l['id']} title="longText">{l.name}</Link></p>
+                                                        </td>
+                                                        <td className="rtxt">{l.money}元</td>
+                                                        <td><em className="redTxt">{l.annualRate}%</em></td>
+                                                        <td>{l.loanExpiry}个月</td>
+                                                        <td>{moment(l.putTime).format('YYYY-MM-DD')}</td>
+                                                        <td className="rtxt">{l.surplusAmount}元</td>
+                                                        <td>{l.investNumber}人</td>
+                                                        <td style={{ width: 170}}>
+                                                            <Progress percent={parseInt(l.investmentProgress)} size="small" />
+                                                        </td>
+                                                        <td>
+                                                            {this.getStatusName(l.status,l.id)}
+                                                        </td>
+                                                    </tr>
+                                                ))
                                             }
-                                        }
-                                    } ></Pagination>
-                                </div>
-                                : <div><p className="noRecord">暂无标的</p></div>
+                                            </tbody>
+                                        </table>
+                                        <Pagination config = {
+                                            {
+                                                currentPage:list.pageNum,
+                                                pageSize:list.pageSize,
+                                                totalPage:list.pages,
+                                                paging:(obj)=>{
+                                                    this.props.dispatch(sbListAc.stateSbModify({filter:filter,list:``}));
+                                                    let prams=Object.assign({pageNum:obj.currentPage,pageSize:obj.pageSize},this.todoFilter(filter),sort)
+                                                    dispatch(sbListAc.getList(prams));
+                                                }
+                                            }
+                                        } ></Pagination>
+                                    </div>
+                                    :<NoRecord isShow={true} />
+                                }
+                            </div>
                     }
                 </div>
+
             </main>
         )
     }

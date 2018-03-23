@@ -2,11 +2,9 @@ import { createReducer } from 'redux-immutablejs';
 import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
+    isFetching:false,
     sbList:{
-        list:{
-            data:'',
-            message:''
-        },
+        list:``,
         filter:{
             noviceLoan:'',
             loanExpiry:'',
@@ -21,10 +19,7 @@ const initialState = Immutable.fromJS({
         }
     },
     transferList:{
-        list:{
-            data:'',
-            message:''
-        },
+        list:``,
         sort:{
             annualRate:0,
             transferPeriod:0,
@@ -36,8 +31,31 @@ const initialState = Immutable.fromJS({
 });
 
 export default createReducer(initialState, {
+    ['investList/sbList/FETCH_PENDING']: (state, action) => state.merge({
+        isFetching: true,
+    }),
+    ['investList/sbList/FETCH_FULFILLED']: (state, action) => state.merge({
+        isFetching: false,
+        sbList: action.payload,
+    }),
+    ['investList/sbList/FETCH_REJECTED']: (state, action) => state.merge({
+        isFetching: false,
+        errorMessage: action.message
+    }),
     ['investList/sbList/MODIFY_STATE']:(state,action) => state.mergeDeep({
         sbList:action.payload
+    }),
+
+    ['investList/transferList/FETCH_PENDING']: (state, action) => state.merge({
+        isFetching: true,
+    }),
+    ['investList/transferList/FETCH_FULFILLED']: (state, action) => state.merge({
+        isFetching: false,
+        transferList: action.payload,
+    }),
+    ['investList/transferList/FETCH_REJECTED']: (state, action) => state.merge({
+        isFetching: false,
+        errorMessage: action.message
     }),
     ['investList/transferList/MODIFY_STATE']:(state,action) => state.mergeDeep({
         transferList:action.payload
