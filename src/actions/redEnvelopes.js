@@ -1,8 +1,11 @@
 import cFetch from '../utils/cFetch';
 import cookie from 'js-cookie';
 import parseJson2URL from './../utils/parseJson2URL';
+import urls from './../utils/url';
 
-let url_myRedEnvelopes=`http://172.16.1.221:9090/members/memberRedEnvelopes?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`; //获取红包
+const token=`b1b3685c-0b71-491e-a9fb-10d26a6c74d4`;
+
+let url_myRedEnvelopes=`${urls}/members/memberRedEnvelopes?access_token=${token}`; //获取红包
 export const redEnvelopesAc={
     getData: (params) => {
         return {

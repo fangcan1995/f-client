@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from "moment";
+import { connect } from 'react-redux';
 import Pagination from '../../../../components/pagination/pagination';
-
-export default class InvestRecords extends React.Component{
+import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
+class InvestRecords extends React.Component{
     constructor(props) {
         super(props);
         this.changePage = this.changePage.bind(this);
@@ -17,19 +18,19 @@ export default class InvestRecords extends React.Component{
         });
     }
     render(){
-        //console.log('------投资记录-----');
-        //console.log(this.props);
-        let {investRecords,callback,pageSize,pageNum} =this.props;
-        let {data}=investRecords;
-        let {list}=data;
-        if(data.list.length>0){
+
+        let {investRecords,isFetching}=this.props.investDetail;
+        let {callback,pageSize,pageNum} =this.props;
+
+        let {list}=investRecords;
+        if(investRecords.total>0){
             list=list.slice((this.state.pageNum-1)*pageSize,(this.state.pageNum-1)*pageSize+pageSize);
         }
+
         return (
             <ul  className="m-record">
-                {
-                    (data == "{}") ? <li>{data.message}</li>
-                        : (data.total>0)?
+                {(investRecords === '') ? <li><Loading isShow={isFetching} /></li>
+                    : (investRecords.total>0)?
                         <li>
                             <div className="table__wrapper">
                                 <table className="tableList">
@@ -60,16 +61,24 @@ export default class InvestRecords extends React.Component{
                                 {
                                     currentPage: this.state.pageNum,
                                     pageSize: pageSize,
-                                    totalPage: Math.ceil(data.total/pageSize),
+                                    totalPage: Math.ceil(investRecords.total/pageSize),
                                     paging: (obj) => {
                                         this.changePage(obj.currentPage);
                                     }
                                 }
                             }></Pagination>
                         </li>
-                            :<li>暂无记录</li>
+                        :<li><NoRecord isShow={true}/></li>
                 }
             </ul>
         );
     }
 }
+function mapStateToProps(state) {
+    const { auth,investDetail } = state.toJS();
+    return {
+        auth,
+        investDetail
+    };
+}
+export default connect(mapStateToProps)(InvestRecords);

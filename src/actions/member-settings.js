@@ -2,18 +2,21 @@ import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import { API_CONFIG } from './../config/api';
 import parseJson2URL from './../utils/parseJson2URL';
+import urls from './../utils/url';
 
-const url_getMList=`http://172.16.1.234:9090/message/mail/page?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`;  //获取消息列表
-const url_setRead=`http://172.16.1.234:9090/message/mail/read?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`; //设为已读
-const url_delete=`http://172.16.1.234:9090/message/mail?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`; //删除消息
+const token=`b1b3685c-0b71-491e-a9fb-10d26a6c74d4`;
 
-const url_getResult=`http://172.16.1.221:9090/members/riskEvaluation/result?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`;  //获取风险测评结果
-const url_getRList=`http://172.16.1.221:9090/members/riskEvaluation?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`;  //获取风险测评题目
-const url_putRList=`http://172.16.1.221:9090/members/riskEvaluation?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`;  //提交测评结果
+const url_getMList=`${urls}/message/mail/page?access_token=${token}`;  //获取消息列表
+const url_setRead=`${urls}/message/mail/read?access_token=${token}`; //设为已读
+const url_delete=`${urls}/message/mail?access_token=${token}`; //删除消息
 
-const url_getAuthInfo=`http://172.16.1.221:9090/members/certification?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`; //获取个人信息
-const url_password=`???`; //修改登录密码
-const url_postPhone=`http://172.16.1.221:9090/members/photo?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173`;  //修改头像
+const url_getResult=`${urls}/members/riskEvaluation/result?access_token=${token}`;  //获取风险测评结果
+const url_getRList=`${urls}/members/riskEvaluation?access_token=${token}`;  //获取风险测评题目
+const url_putRList=`${urls}/members/riskEvaluation?access_token=${token}`;  //提交测评结果
+
+const url_getAuthInfo=`${urls}/members/certification?access_token=${token}`; //获取个人信息
+const url_password=`${urls}/???`; //修改登录密码
+const url_postPhone=`${urls}/members/photo?access_token=${token}`;  //修改头像
 export const myMessagesAc= {
     getMessagesList: (params) => {
         return {

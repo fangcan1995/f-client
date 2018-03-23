@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from "moment";
+import { connect } from 'react-redux';
 import Pagination from '../../../../components/pagination/pagination';
+import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 
-
-export default class RepayRecords extends React.Component{
+class RepayRecords extends React.Component{
     constructor(props) {
         super(props);
         this.changePage = this.changePage.bind(this);
@@ -18,19 +19,20 @@ export default class RepayRecords extends React.Component{
         });
     }
     render(){
-        //console.log('------还款记录-----');
-        //console.log(this.props);
-        let {repayRecords,callback,pageSize,pageNum} =this.props;
-        let {data}=repayRecords;
-        let {list}=data;
-        if(data.list.length>0){
-            list=list.slice((this.state.pageNum-1)*pageSize,(this.state.pageNum-1)*pageSize+pageSize);
+
+        let {repayRecords,isFetching}=this.props.investDetail;
+        let {callback,pageSize,pageNum} =this.props;
+        let {list}=repayRecords;
+        if(repayRecords.total>0){
+            if(repayRecords.list.length>0){
+                list=list.slice((this.state.pageNum-1)*pageSize,(this.state.pageNum-1)*pageSize+pageSize);
+            }
         }
         return (
             <ul  className="m-record">
                 {
-                    (data == "{}") ? <li>{data.message}</li>
-                        : (data.total>0)?
+                    (repayRecords == '') ? <li><Loading isShow={isFetching} /></li>
+                        : (repayRecords.total>0)?
                         <li>
                             <div className="table__wrapper">
                                 <table className="tableList">
@@ -66,16 +68,24 @@ export default class RepayRecords extends React.Component{
                                 {
                                     currentPage: this.state.pageNum,
                                     pageSize: pageSize,
-                                    totalPage: Math.ceil(data.total/pageSize),
+                                    totalPage: Math.ceil(repayRecords.total/pageSize),
                                     paging: (obj) => {
                                         this.changePage(obj.currentPage);
                                     }
                                 }
                             }></Pagination>
                         </li>
-                        :<li>暂无记录</li>
+                        :<li><NoRecord isShow={true}/></li>
                 }
             </ul>
         );
     }
 }
+function mapStateToProps(state) {
+    const { auth,investDetail } = state.toJS();
+    return {
+        auth,
+        investDetail
+    };
+}
+export default connect(mapStateToProps)(RepayRecords);

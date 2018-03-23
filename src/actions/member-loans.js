@@ -2,18 +2,19 @@ import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import {addCommas,checkMoney} from './../assets/js/cost';
 import parseJson2URL from './../utils/parseJson2URL';
+import urls from './../utils/url';
+const token=`b1b3685c-0b71-491e-a9fb-10d26a6c74d4`;
 
-const token=`?access_token=9c29f71c-a734-472f-a931-f63a876e1922`;
-const url_loansCharts=`http://172.16.1.221:9090/members/loans/statistics${token}`; //统计图数据
-const url_loansList=`http://172.16.1.221:9090/members/loans${token}`;//获取借款列表
-const url_repaymentsAll=`http://172.16.1.221:9090/members/loans/repayments/all/`;//项目提前还款时获取详情
+const url_loansCharts=`${urls}/members/loans/statistics?access_token=${token}`; //统计图数据
+const url_loansList=`${urls}/members/loans?access_token=${token}`;//获取借款列表
+const url_repaymentsAll=`${urls}/members/loans/repayments/all/`;//项目提前还款时获取详情
 const url_postRepaymentsAll=`http://172.16.4.5:8084/test.php`;//项目提前还款申请
 
-const url_repaymentsCharts=`http://172.16.1.221:9090/members/loans/repayments/statistics${token}`; //统计图数据
-const url_repaymentsList=`http://172.16.1.221:9090/members/loans/repayments${token}`;//获取借款列表
-const url_proList=`http://172.16.1.221:9090/members/loans/proName${token}`;//获取还款中和已完结的项目列表
-const url_repayment=`http://172.16.1.221:9090/members/loans/repayments/`;//还款时获取详情
-const url_postRepayment=`http://172.16.4.5:8084/test.php`;//还款申请
+const url_repaymentsCharts=`${urls}/members/loans/repayments/statistics?access_token=${token}`; //统计图数据
+const url_repaymentsList=`${urls}/members/loans/repayments?access_token=${token}`;//获取借款列表
+const url_proList=`${urls}/members/loans/proName?access_token=${token}`;//获取还款中和已完结的项目列表
+const url_repayment=`${urls}/members/loans/repayments/`;//还款时获取详情
+const url_postRepayment=`${urls}/test.php`;//还款申请
 
 export const memberLoansAc={
     getPie: () => {
@@ -73,7 +74,7 @@ export const memberLoansAc={
         return {
             type: 'myLoans/myLoans/FETCH',
             async payload() {
-                const res = await cFetch(`${url_repaymentsAll}${pram}${token}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_repaymentsAll}${pram}?access_token=${token}` , {method: 'GET'}, false);
                 const {code, data} = res;
                 if (code == 0) {
                     console.log(data);
@@ -200,8 +201,8 @@ export const repaymentsAc={
         return {
             type: 'myLoans/repaymentPlans/FETCH',
             async payload() {
-                const res = await cFetch(`${url_repayment}${pram}${token}` , {method: 'GET'}, false);
-                console.log(`${url_repayment}${pram}${token}`);
+                const res = await cFetch(`${url_repayment}${pram}?access_token=${token}` , {method: 'GET'}, false);
+                console.log(`${url_repayment}${pram}?access_token=${token}`);
                 const {code, data} = res;
                 if (code == 0) {
                     console.log('返回的还款信息');

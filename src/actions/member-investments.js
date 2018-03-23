@@ -2,17 +2,20 @@ import cFetch from '../utils/cFetch';
 import cookie from 'js-cookie';
 import {addCommas,checkMoney} from '../assets/js/cost';
 import parseJson2URL from './../utils/parseJson2URL';
+import urls from './../utils/url';
 
-const token=`?access_token=9c29f71c-a734-472f-a931-f63a876e1922`;
-const url_investCharts=`http://172.16.1.234:9090/members/invest/statistics${token}`; //统计图数据
-const url_investList=`http://172.16.1.234:9090/members/investments${token}`;//获取投资列表
-const url_planList=`http://172.16.1.234:9090/members/investments/receiving/`  //获取回款记录
+
+const token=`b1b3685c-0b71-491e-a9fb-10d26a6c74d4`;
+
+const url_investCharts=`${urls}/members/invest/statistics?access_token=${token}`; //统计图数据
+const url_investList=`${urls}/members/investments?access_token=${token}`;//获取投资列表
+const url_planList=`${urls}/members/investments/receiving/`  //获取回款记录
 const url_postTransferApp=`http://172.16.4.5:8084/test.php`;//转让申请
-const url_getTransfer=`http://172.16.1.234:9090/members/investments/transfer/`; //获取债转详情
+const url_getTransfer=`${urls}/members/investments/transfer/`; //获取债转详情
 
 
-const url_receivingCharts=`http://172.16.1.234:9090/members/investments/receiving/statistics`;//回款统计
-const url_receivingList=`http://172.16.1.234:9090/members/investments/receiving`;//回款列表
+const url_receivingCharts=`${urls}/members/investments/receiving/statistics`;//回款统计
+const url_receivingList=`${urls}/members/investments/receiving`;//回款列表
 
 export const memberInvestAc={
     getPie: () => {
@@ -73,7 +76,7 @@ export const memberInvestAc={
             type: 'myInvest/investments/FETCH',
             async payload() {
 
-                const res = await cFetch(`${url_planList}${param}${token}`,{method: 'GET'}, false);
+                const res = await cFetch(`${url_planList}${param}?access_token=${token}`,{method: 'GET'}, false);
                 const {code, data} = res;
                 if (code == 0) {
                     return {
@@ -90,7 +93,7 @@ export const memberInvestAc={
         return {
             type: 'myInvest/investments/FETCH',
             async payload() {
-                const res = await cFetch(`${url_getTransfer}${pram}${token}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_getTransfer}${pram}?access_token=${token}` , {method: 'GET'}, false);
                 const {code, data} = res;
                 if (code == 0) {
                     transferInfo:data
@@ -193,7 +196,7 @@ export const memberReceivingAc={
     }),
 }
 
-let actionsMyInvestments = {
+/*let actionsMyInvestments = {
     getData: (status) => (dispatch, myInvestments) => {
         dispatch(actionsMyInvestments.getPie());
         dispatch(actionsMyInvestments.getList(1,10,{status:status}));
@@ -484,7 +487,7 @@ let actionsMyInvestments = {
                 dispatch(actionsMyInvestments.stateModify(myReceiving_new));
             });
     },
-    /*refreshChartsSuccess: json => ({
+    /!*refreshChartsSuccess: json => ({
         type: 'FETCH_CHARTS_SUCCESS',
         payload: json
     }),
@@ -548,7 +551,7 @@ let actionsMyInvestments = {
         payload:json,
 
     }),
-*/
+*!/
     //-------------------------------------
     stateModify: json => ({
         type: 'myInvest/investments/MODIFY_STATE',
@@ -556,5 +559,5 @@ let actionsMyInvestments = {
     })
 
 };
-export default actionsMyInvestments;
+export default actionsMyInvestments;*/
 
