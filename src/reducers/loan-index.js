@@ -1,5 +1,6 @@
 import { createReducer } from 'redux-immutablejs';
 import Immutable from 'immutable';
+import { message } from 'antd';
 const initialState = Immutable.fromJS({
   isFetching: false,
   identityCard:'',
@@ -13,7 +14,8 @@ const initialState = Immutable.fromJS({
   loanType:0,
   formData:{},
   applyMessage:'',
-  errorMessage:''
+  errorMessage:'',
+  postinged:false
 });
 
 export default createReducer(initialState, {
@@ -41,15 +43,22 @@ export default createReducer(initialState, {
       formData: action.payload
     }),
 
-    ['loan/POST_LOAN_DATA_PENDING']: (state, action) => state.merge({
-      isFetching: true,
-    }),
-    ['loan/POST_LOAN_DATA_FULFILLED']: (state, action) => state.merge({
+    ['loan/POST_LOAN_DATA_PENDING']: (state, action) => {
+        return state.merge({
+        isFetching: true,
+      })
+    },
+    ['loan/POST_LOAN_DATA_FULFILLED']: (state, action) => {
+      return state.merge({
+          isFetching: false,
+          applyMessage: action.payload,
+          postinged:true
+        })
+    },
+    ['loan/POST_LOAN_DATA_REJECTED']: (state, action) => {
+      console.log(action)
+      return state.merge({
       isFetching: false,
-      applyMessage: action.payload
-    }),
-    ['loan/POST_LOAN_DATA_REJECTED']: (state, action) => state.merge({
-      isFetching: false,
-      errorMessage: action.message
-    }),
+      errorMessage: action.payload.msg
+    })},
 })
