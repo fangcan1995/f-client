@@ -10,6 +10,8 @@ const url_projects_info=`${urls}/invest/projects/info`  ;//标的详情
 const url_projects_record=`${urls}/invest/projects/record`;   //获取散标投资记录
 const url_transfer_record=`${urls}/invest/transfer/record`;//获取转让标投资记录
 const url_rpmtplan_page=`${urls}/invest/rpmtplan/page`;//获取还款记录
+const url_redEnvelopes=`http://172.16.1.234:9090/members/memberRedEnvelopes/list`;
+const url_RateCoupons=`http://172.16.1.234:9090/members/memberRateCoupons/list`;
 
 const url_post_index=``; //提交投资申请
 
@@ -110,6 +112,40 @@ let investDetailActions = {
             }
         }
     },
+
+    //获取可用红包
+    getRedEnvelopes: (id) => {
+        return {
+            type: 'investDetail/redEnvelopes/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_redEnvelopes}?access_token=${token}&projectId=${id}` , {method: 'GET'}, false);
+                const {code, data} = res;
+                if (code == 0) {
+                    return data;
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+
+    //获取可用加息券
+    getRateCoupons: (id) => {
+        return {
+            type: 'investDetail/rateCoupons/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_RateCoupons}?access_token=${token}&projectId=${id}` , {method: 'GET'}, false);
+                const {code, data} = res;
+                if (code == 0) {
+                    return data;
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+
+
 
 
     /*getData: (id) => (dispatch, investDetail) => {

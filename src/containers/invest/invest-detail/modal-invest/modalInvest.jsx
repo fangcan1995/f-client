@@ -11,16 +11,23 @@ import  investDetailActions  from '../../../../actions/invest-detail';
 class ModalInvest extends React.Component {
     constructor(props) {
         super(props);
-        let {investAmount} = props.config;
+
         //console.log(props.config);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
         this.state = {
-            value: investAmount,  //投资金额
+            //value: investAmount,  //投资金额
             tips: '',  //错误提示
             isRead: false,
         }
     }
+    componentDidMount () {
+        //console.log(this.props);
+        this.props.dispatch(investDetailActions.getRedEnvelopes(this.props.id));
+        this.props.dispatch(investDetailActions.getRateCoupons(this.props.id));
+    }
+
+
     onChange(e) {
         this.setState({
             isRead: e.target.checked
@@ -45,79 +52,46 @@ class ModalInvest extends React.Component {
         this.props.dispatch(investDetailActions.postInvest({Amount:1000}));
     }
 
-    loadData() {
-        let data = getData(`http://localhost:9002/members/investments/transfer/id`);
-        if (data) {
-        } else {
-            let mockDate = {
-                data: {
-                    pId: 1,
-                    redEnvelopes: [
-                        {id: '5', title: '100元返现红包'},
-                        {id: '7', title: '58元返现红包'},
-                    ]
-                    ,
-                    rateCoupons: [
-                        {id: '4', title: '1%加息券'},
-                        {id: '2', title: '0.8%加息券'},
-                    ],
-                    /*proMinInvestAmount:1000,
-                    proMaxInvestAmount:10000, //标的投资上限制
-                    proIncreaseAmount:100,
-                    restMoney:5000,//标的剩余金额*/
-
-
-                },
-                code: "0",
-                message: "SUCCESS",
-            };
-
-            this.setState({
-                info: mockDate.data
-            }, () => {
-                console.log(this.state.info);
-            });
-        }
-    }
-
-    componentDidMount() {
-        //this.loadData();
-    }
-
     render() {
+        let {investAmount} = this.props.config;
         console.log('-----this.props.project-------');
         let {postResult}=this.props.investDetail;
-        let project = this.props.investDetail.investInfo.data;
-        console.log(project);
-        let {minInvestAmount, maxInvestAmount, surplusAmount, increaseAmount, annualRate, loanApplyExpiry} = project;
+        let project = this.props.investDetail.investInfo;
+        let {redEnvelopes,rateCoupons}=this.props.investDetail;
+        console.log('红本本');
+        console.log(redEnvelopes);
+        let {minInvestAmount, maxInvestAmount, surplusAmount, increaseAmount, annualRate, loanExpiry} = project;
         /*let {redEnvelopes,rateCoupons}=this.state.info;
         let {proMinInvestAmount,proMaxInvestAmount,proIncreaseAmount,rate,loanApplyExpiry,callback}=this.props.config;*/
-        if(postResult.code==0) {
+        if(postResult===``) {
             return (
                 <div className="pop__invest">
                     <div className="form__wrapper" id="area" >
                         <dl className="form__bar">
                             <dt><label>投资金额:</label></dt>
                             <dd>
-                                <span id="money" className="money">{addCommas(this.state.value)}</span>元
+                                <span id="money" className="money">{investAmount}</span>元
                             </dd>
                         </dl>
                         <dl className="form__bar">
                             <dt><label>使用红包:</label></dt>
                             <dd>
-                                {/*<Select
-                                            defaultValue={redEnvelopes[0].id}
-                                            style={{ width: 300 }}
-                                            onChange={this.handleChange}
-                                            getPopupContainer={() => document.getElementById('area')}
-                                        >
-                                            <Option value="0">不使用红包</Option>
-                                            {
-                                                redEnvelopes.map((item, index) => (
-                                                    <Option value={`${item.id}`} key={`row-${index}`}>{item.title}</Option>
-                                                ))
-                                            }
-                                        </Select>*/}
+                                {(redEnvelopes==='')?``
+                                :<Select
+                                        defaultValue={redEnvelopes[0].reAmount}
+                                        style={{ width: 300 }}
+                                        onChange={this.handleChange}
+                                        getPopupContainer={() => document.getElementById('area')}
+                                    >
+                                        <Option value="0">不使用红包</Option>
+                                        {
+                                            redEnvelopes.map((item, index) => (
+                                                <Option value={`${item.reAmount}`} key={`row-${index}`}>{item.reAmount}元 {item.reTypeName}</Option>
+                                            ))
+                                        }
+                                    </Select>
+                                }
+
                             </dd>
                         </dl>
                         <dl className="form__bar">
@@ -136,13 +110,28 @@ class ModalInvest extends React.Component {
                                                 ))
                                             }
                                         </Select>*/}
+                                {(rateCoupons==='')?``
+                                    :<Select
+                                        defaultValue={rateCoupons[0].rcAmount}
+                                        style={{ width: 300 }}
+                                        onChange={this.handleChange}
+                                        getPopupContainer={() => document.getElementById('area')}
+                                    >
+                                        <Option value="0">不使用加息券</Option>
+                                        {
+                                            rateCoupons.map((item, index) => (
+                                                <Option value={`${item.rcAmount}`} key={`row-${index}`}>{item.rcAmount}% 加息券</Option>
+                                            ))
+                                        }
+                                    </Select>
+                                }
                             </dd>
                         </dl>
                         <dl className="form__bar">
                             <dt><label>预期赚取：</label></dt>
                             <dd>
                                 <span id="money"
-                                      className="money">{income(this.state.value, annualRate, loanApplyExpiry, 'm')}</span>元
+                                      className="money">{income(investAmount, annualRate, loanExpiry, 'm')}</span>元
                             </dd>
                         </dl>
                         <div className="form__bar">
@@ -180,17 +169,18 @@ class ModalInvest extends React.Component {
             )
         }else{
             return(
-                <div className="pop__invest">error</div>
+                <div className="pop__invest">等待开发</div>
             )
         }
     }
 }
 
 function mapStateToProps(state) {
-    const { auth,investDetail } = state.toJS();
+    const { auth,investDetail,member } = state.toJS();
     return {
         auth,
-        investDetail
+        investDetail,
+        member
     };
 }
 export default connect(mapStateToProps)(ModalInvest);

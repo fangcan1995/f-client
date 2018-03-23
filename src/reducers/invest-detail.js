@@ -9,6 +9,8 @@ const initialState = Immutable.fromJS({
     investTransferRecords:``,
     repayRecords:``,
     postResult:``,
+    redEnvelopes:``,
+    rateCoupons:``,
 });
 
 export default createReducer(initialState, {
@@ -68,6 +70,30 @@ export default createReducer(initialState, {
         repayRecords: action.payload,
     }),
     ['investDetail/repayRecords/FETCH_REJECTED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
+    //红包
+    ['investDetail/redEnvelopes/FETCH_PENDING']: (state, action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['investDetail/redEnvelopes/FETCH_FULFILLED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        redEnvelopes: action.payload,
+    }),
+    ['investDetail/redEnvelopes/FETCH_REJECTED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
+    //加息券
+    ['investDetail/rateCoupons/FETCH_PENDING']: (state, action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['investDetail/rateCoupons/FETCH_FULFILLED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        rateCoupons: action.payload,
+    }),
+    ['investDetail/rateCoupons/FETCH_REJECTED']: (state, action) => state.mergeDeep({
         isFetching: false,
         errorMessage: action.message
     }),

@@ -9,7 +9,7 @@ const initialState = Immutable.fromJS({
         redInfo:``,
         couponInfo:``,
         openAccountStatus:'',   //是否开户
-
+        riskStatus:'',//是否测评0 未测评 1
         acBank:{
             bankName:'',
             bankNo:'',

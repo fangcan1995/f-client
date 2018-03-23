@@ -35,6 +35,7 @@ export const memberAc= {
                         couponInfo:data.memberCoupon,
                         openAccountStatus:data.openAccountStatus,
                         acBack:data.acBank,
+                        riskStatus:data.riskStatus,
                         userName:data.member.userName,
                         photo:data.member.photo,
 
