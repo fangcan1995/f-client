@@ -28,6 +28,7 @@ class InvestDetailMaster extends React.Component {
         }
     }
     componentDidMount () {
+        //console.log(this.props);
         this.props.dispatch(investDetailActions.getInvestInfo(this.props.id));
     }
     //模态框开启关闭
@@ -61,7 +62,7 @@ class InvestDetailMaster extends React.Component {
         console.log('----------this.props--------------');
         console.log(this.props);
         let {investInfo}=this.props.investDetail;
-        let member=this.props;
+        let {member,auth}=this.props;
         let mInvest=``;
 
         /*if(investInfo.status!=2){
@@ -158,106 +159,101 @@ class InvestDetailMaster extends React.Component {
         }*/
         return (
             <div>
-
-                        <div>
-                            <div className="master">
-                                <dl className="info">
-                                    <dt className="title">
-                                        <h2>抵押标</h2>
-                                        <p>{investInfo.name||``}</p>
-                                    </dt>
-                                    <dd className="content">
-                                        <dl className="item1">
-                                            <dt className="subtitle">预期年化回报率</dt>
-                                            <dd>
-                                                <i>{investInfo.annualRate}</i>%
-                                                {(investInfo.noviceLoan=='1') ?
-                                                    <div className="addtips"><strong>新手</strong></div>
-                                                    :''
-                                                }
-                                            </dd>
-
-                                        </dl>
-                                        <dl className="item2">
-                                            <dt className="subtitle">锁定期限</dt>
-                                            <dd><i>{investInfo.loanExpiry}</i>个月</dd>
-                                        </dl>
-                                        <dl className="item3">
-                                            <dt className="subtitle">起投金额</dt>
-                                            <dd><i>{investInfo.minInvestAmount}</i>元</dd>
-                                        </dl>
-                                        <dl className="progressbar">
-                                            <dt><div className="finished" style={{ width:`${investInfo.investmentProgress}%`}}><i className="iconfont">&#xe64d;</i></div></dt>
-                                            <dd><strong>投资进度：<em>{investInfo.investmentProgress}%</em></strong></dd>
-                                        </dl>
-                                        <ul className="safe">
-                                            <li><i className="iconfont icon-star"></i>国企背景</li>
-                                            <li><i className="iconfont icon-user"></i>真实借款</li>
-                                            <li><i className="iconfont icon-heart"></i>实物抵押</li>
-                                            <li><i className="iconfont icon-money"></i>{investInfo.refundWayString}</li>
-                                        </ul>
+                <div>
+                    <div className="master">
+                        <dl className="info">
+                            <dt className="title">
+                                <h2>抵押标</h2>
+                                <p>{investInfo.name||``}</p>
+                            </dt>
+                            <dd className="content">
+                                <dl className="item1">
+                                    <dt className="subtitle">预期年化回报率</dt>
+                                    <dd>
+                                        <i>{investInfo.annualRate}</i>%
+                                        {(investInfo.noviceLoan=='1') ?
+                                            <div className="addtips"><strong>新手</strong></div>
+                                            :''
+                                        }
                                     </dd>
-                                </dl>
-                                {/*投资区域*/}
-                                <div className="m-invest">
-                                        {mInvest}
-                                    <IndexBox investInfo={investInfo} />
-                                </div>
 
-                            </div>
-                            <ul className="detail steps">
-                                <li className="step1"><i className="iconfont icon-1"></i>
-                                    <dl>
-                                        <dt>项目上线</dt>
-                                        <dd>上线日期：
-                                            {(investInfo.putTime)?
-                                                moment(investInfo.putTime).format('YYYY-MM-DD')
-                                                :``
-                                            }
-                                            </dd>
-                                    </dl>
-                                </li>
-                                <li className="step2"><i className="iconfont icon-2"></i>
-                                    <dl>
-                                        <dt>项目募集<em>(募集总时间:{investInfo.collectDays}天)</em></dt>
-                                        <dd>结束日期：
-                                            {(investInfo.endDate)?
-                                                moment(investInfo.endDate).format('YYYY-MM-DD')
-                                                :``
-                                            }
-                                            </dd>
-                                    </dl>
-                                </li>
-                                <li className="step3"><i className="iconfont icon-3"></i>
-                                    <dl>
-                                        <dt>项目放款</dt>
-                                        <dd>放款日期：
-                                            {(investInfo.fkDateTemp)?
-                                                (investInfo.fkDateTemp!='')?
-                                                moment(investInfo.fkDateTemp).format('YYYY-MM-DD')
-                                                    :`— —`
-                                                :``
-                                            }
-                                        </dd>
-                                    </dl>
-                                </li>
-                                <li className="step4"><i className="iconfont icon-4"></i>
-                                    <dl>
-                                        <dt>项目还款</dt>
-                                        <dd>还款日期：
-                                            {(investInfo.repaymentDateString)?
-                                                (investInfo.repaymentDateString!='')?
-                                                    `${investInfo.repaymentDateString} `
-                                                    :`— —`
-                                                :``
-                                            }
-                                        </dd>
-                                    </dl>
-                                </li>
-                            </ul>
+                                </dl>
+                                <dl className="item2">
+                                    <dt className="subtitle">锁定期限</dt>
+                                    <dd><i>{investInfo.loanExpiry}</i>个月</dd>
+                                </dl>
+                                <dl className="item3">
+                                    <dt className="subtitle">起投金额</dt>
+                                    <dd><i>{investInfo.minInvestAmount}</i>元</dd>
+                                </dl>
+                                <dl className="progressbar">
+                                    <dt><div className="finished" style={{ width:`${investInfo.investmentProgress}%`}}><i className="iconfont">&#xe64d;</i></div></dt>
+                                    <dd><strong>投资进度：<em>{investInfo.investmentProgress}%</em></strong></dd>
+                                </dl>
+                                <ul className="safe">
+                                    <li><i className="iconfont icon-star"></i>国企背景</li>
+                                    <li><i className="iconfont icon-user"></i>真实借款</li>
+                                    <li><i className="iconfont icon-heart"></i>实物抵押</li>
+                                    <li><i className="iconfont icon-money"></i>{investInfo.refundWayString}</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                        {/*投资区域*/}
+                        <div className="m-invest">
+                            {mInvest}
+                            <IndexBox investInfo={investInfo} auth={auth} member={member} />
                         </div>
 
-
+                    </div>
+                    <ul className="detail steps">
+                        <li className="step1"><i className="iconfont icon-1"></i>
+                            <dl>
+                                <dt>项目上线</dt>
+                                <dd>上线日期：
+                                    {(investInfo.putTime)?
+                                        moment(investInfo.putTime).format('YYYY-MM-DD')
+                                        :``
+                                    }
+                                </dd>
+                            </dl>
+                        </li>
+                        <li className="step2"><i className="iconfont icon-2"></i>
+                            <dl>
+                                <dt>项目募集<em>(募集总时间:{investInfo.collectDays}天)</em></dt>
+                                <dd>结束日期：
+                                    {(investInfo.endDate)?
+                                        moment(investInfo.endDate).format('YYYY-MM-DD')
+                                        :``
+                                    }
+                                </dd>
+                            </dl>
+                        </li>
+                        <li className="step3"><i className="iconfont icon-3"></i>
+                            <dl>
+                                <dt>项目放款</dt>
+                                <dd>放款日期：
+                                    {(investInfo.fkDateTemp)?
+                                        moment(investInfo.fkDateTemp).format('YYYY-MM-DD')
+                                        :`— —`
+                                    }
+                                </dd>
+                            </dl>
+                        </li>
+                        <li className="step4"><i className="iconfont icon-4"></i>
+                            <dl>
+                                <dt>项目还款</dt>
+                                <dd>还款日期：
+                                    {(investInfo.repaymentDateString)?
+                                        (investInfo.repaymentDateString!='')?
+                                            `${investInfo.repaymentDateString} `
+                                            :`— —`
+                                        :``
+                                    }
+                                </dd>
+                            </dl>
+                        </li>
+                    </ul>
+                </div>
                 {/*投资弹窗*/}
                 <Modal
                     title="投资"
@@ -339,6 +335,20 @@ class InvestDetailMaster extends React.Component {
     }
 }
 class IndexBox extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            project:{},
+            member:{},
+            investAmount:0,
+            modalInvest: false,
+            modalRecharge: false,
+            modalRiskAssess: false,
+            tips:'',
+            allowedInvest:true,
+            code:100
+        }
+    }
     getStatusName(status,id){
         let investButton=``;
         switch(status){
@@ -366,19 +376,115 @@ class IndexBox extends React.Component {
 
     }
     render(){
+        let {member,auth}=this.props;
         //console.log(this.props.status);
         console.log(this.props);
         let investInfo=this.props.investInfo;
-        console.log('--------------------');
+        console.log('-----------auth---------');
         console.log(this.props);
-        return (
-            <div className="form_area">
-                <ul className="m-amount">
-                    <li><strong>开放金额：</strong>{investInfo.money}元</li>
-                </ul>
-                {this.getStatusName(investInfo.status,investInfo.id)}
-            </div>
-        )
+        let button=``;
+        if(!auth.isAuthenticated){
+            button=<Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} className="btn">我要登录</Link>;
+        }else{
+            if(!member.isOpenAccount){
+                button=<a  className="btn" onClick={()=>{window.location.href="http://www.baidu.com?redirect"}}>立即开户</a>
+            }else{
+                if(!member.isFxpg){
+                    button=<a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,investInfo.id)}>立即风险评估（级别不够）</a>
+                }else{
+                    if((member.accountBalance<investAmount)){
+                        button=<a className="btn" onClick={() => this.toggleModal(`modalRecharge`,true,investInfo.id)}>立即充值(仅限新手)</a>
+                    }else{
+                        console.log('this.state.tips='+this.state.tips);
+                        if(this.state.tips!=''){
+                            button=<a className='btn end'>立即投资</a>
+                        }else{
+                            button=<a className='btn' onClick={() => this.toggleModal(`modalInvest`,true,investInfo.id)}>立即投资</a>
+                        }
+
+                    }
+                }
+            }
+        }
+        if(investInfo==''){
+            return (
+                <div className="form_area">
+
+                </div>
+            )
+        }else if(investInfo.status!=2){
+            return(
+                <div className="form_area">
+                    <ul className="m-amount">
+                        <li><strong>开放金额：</strong>{investInfo.money}元</li>
+                    </ul>
+                    {this.getStatusName(investInfo.status,investInfo.id)}
+                </div>
+            )
+        }
+        else{
+            return(
+                <div className="form_area">
+                    <ul className="m-amount">
+                        <li><strong>开放金额：</strong>{investInfo.money}元</li>
+                        <li><strong>可投金额：</strong>{investInfo.surplusAmount}元</li>
+                    </ul>
+                    <StepperInput config = {
+                        {
+                            defaultValue:investInfo.minInvestAmount, //默认金额
+                            min:investInfo.minInvestAmount,
+                            max:(investInfo.maxInvestAmount<investInfo.surplusAmount)?investInfo.maxInvestAmount:investInfo.surplusAmount,
+                            step:investInfo.increaseAmount,
+                            callback:(obj)=>{
+                                this.setState({
+                                    tips:obj.tips,
+                                    investAmount:parseFloat(obj.value),
+                                    code:obj.code
+                                });
+                            }
+                        }
+                    }
+                    >
+                    </StepperInput>
+                    <div className="tips__area">
+                        {this.state.tips!=''? <span className="tips error">{this.state.tips}</span>
+                            :''}
+                    </div>
+                    <ul className="others">
+                        <li>
+                            <i className="iconfont icon-user"></i>
+                            <strong>我的可用余额：</strong>
+                            {
+                                (auth.isAuthenticated)? <Link  to={`/login?redirect=%2invest-detail%${project.id}`} className="btn">登陆查看</Link>
+                                    : `${member.accountBalance} 元`
+                            }
+                        </li>
+                        <li>
+                            <strong>可用红包总计：</strong>
+                            {
+                                (JSON.stringify(member) == '{}')? <Link  to={`/login?redirect=%2invest-detail%${project.id}`} className="btn">登陆查看</Link>
+                                    : `${member.redAmount} 元`
+                            }
+                        </li>
+                        <li>
+                            <strong>可用加息券：</strong>
+                            {
+                                (JSON.stringify(member) == '{}')? <Link  to={`/login?redirect=%2invest-detail%${project.id}`} className="btn">登陆查看</Link>
+                                    : `${member.rateNum} 张`
+                            }
+                        </li>
+                        <li><strong>预期可赚取：</strong> <i id="money">
+                            {(this.state.investAmount==0)?income(investInfo.minInvestAmount,(investInfo.annualRate),investInfo.loanExpiry,'m')
+                                :income(this.state.investAmount,(investInfo.annualRate),investInfo.loanExpiry,'m')
+                            }
+
+                        </i>元
+                        </li>
+                    </ul>
+                    {button}
+                </div>
+            )
+        }
     }
 }
 function mapStateToProps(state) {
@@ -390,6 +496,7 @@ function mapStateToProps(state) {
     };
 }
 export default connect(mapStateToProps)(InvestDetailMaster);
+
 
 
 

@@ -18,10 +18,9 @@ let investDetailActions = {
     return {
         type: 'investDetail/investInfo/FETCH',
         async payload() {
-            const res = await cFetch(`${url_invest_projects_loan}` , {method: 'GET'}, false);
+            const res = await cFetch(`${url_invest_projects_loan}/${id}?access_token=${token}` , {method: 'GET'}, false);
             const {code, data} = res;
             if (code == 0) {
-
                 return data;
             } else {
                 throw res;
@@ -52,7 +51,7 @@ let investDetailActions = {
     },
 
     /*获取散标详情*/
-    getInvestInfo: (url,id) => (dispatch, investDetail) => {
+    /*getInvestInfo: (url,id) => (dispatch, investDetail) => {
         let newState={};
         let url=`${url_invest_projects_loan}/${id}?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c`;
         fetch(url,{method:"get"})
@@ -74,7 +73,7 @@ let investDetailActions = {
         });
 
 
-    },
+    },*/
 
     /*获取会员详情*/
     getMemberInfo: (id) => (dispatch, investDetail) => {
