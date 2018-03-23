@@ -2,50 +2,33 @@ import { createReducer } from 'redux-immutablejs';
 import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
-    investInfo:{
-        data:{},
-        message:''
-    },
-    memberInfo:{
-        data:{},
-        message:''
-    },
-    loanInfo:{
-        data:{},
-        message:''
-    },
-    investRecords:{
-        data:{
-            list:[]
-        },
-        message:''
-    },
-    investTransferRecords:{
-        data:{
-            list:[]
-        },
-        message:''
-    },
-    repayRecords:{
-        data:{
-            list:[]
-        },
-        message:''
-    },
-    postResult:{
-        code:0,
-        type:'',
-        message:'',
-        description:''
-
-    },
+    investInfo:``,
+    memberInfo:``,
+    loanInfo:``,
+    investRecords:``,
+    investTransferRecords:``,
+    repayRecords:``,
+    postResult:``,
 });
 
 export default createReducer(initialState, {
-
-    ['investDetail/investInfo/MODIFY_STATE']:(state,action) => state.mergeDeep({
-        investInfo:action.payload
+    ['investDetail/investInfo/FETCH_PENDING']: (state, action) => state.mergeDeep({
+        isFetching: true,
     }),
+    ['investDetail/investInfo/FETCH_FULFILLED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        investInfo: action.payload,
+    }),
+    ['investDetail/investInfo/FETCH_REJECTED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
+    /*['investDetail/investInfo/MODIFY_STATE']:(state,action) => state.mergeDeep({
+        investInfo:action.payload
+    }),*/
+
+
+
     ['investDetail/memberInfo/MODIFY_STATE']:(state,action) => state.mergeDeep({
         memberInfo:action.payload
     }),

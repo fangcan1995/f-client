@@ -15,7 +15,7 @@ class SubjectList extends Component {
     }
     componentDidMount () {
         //this.props.dispatch(sbListAc.getList({status:2}));
-        this.props.dispatch(sbListAc.getList());
+        this.props.dispatch(sbListAc.getList({status:2}));
     }
     todoFilter(filter){
         for (var key in filter) {
@@ -206,7 +206,7 @@ class SubjectList extends Component {
                                             </thead>
                                             <tbody>
                                             {
-                                                list.data.list.map((l, i) => (
+                                                list.list.map((l, i) => (
                                                     <tr key={`row-${i}`}>
                                                         <td className="t_table">
                                                             <p><Link to={"/invest-detail/" + l['id']} title="longText">{l.name}</Link></p>

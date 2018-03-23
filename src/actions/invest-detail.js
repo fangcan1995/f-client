@@ -2,9 +2,37 @@ import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import {addCommas,checkMoney} from './../assets/js/cost';
 
+const token=`2ceea2a3-62cf-42bd-866b-d2c4fefe334b`;
+const url_invest_projects_loan=`http://172.16.1.234:9090/invest/projects/loan`; //投资信息
+const url_invest_transfer_loan=`http://172.16.1.234:9090/invest/transfer/loan` //债转投资信息
+const url_projects_info=`http://172.16.1.234:9090/invest/projects/info`  ;//标的详情
+const url_projects_record=`http://172.16.1.234:9090/invest/projects/record`;   //获取散标投资记录
+const url_transfer_record=`http://172.16.1.234:9090/invest/transfer/record`;//获取转让标投资记录
+const url_rpmtplan_page=`http://172.16.1.234:9090/invest/rpmtplan/page`;//获取还款记录
+const url_post_index=`` //提交投资申请
+
 let investDetailActions = {
+
+    //投资信息
+    getInvestInfo: (id) => {
+    return {
+        type: 'investDetail/investInfo/FETCH',
+        async payload() {
+            const res = await cFetch(`${url_invest_projects_loan}` , {method: 'GET'}, false);
+            const {code, data} = res;
+            if (code == 0) {
+
+                return data;
+            } else {
+                throw res;
+            }
+        }
+    }
+},
+
+
     getData: (id) => (dispatch, investDetail) => {
-        let url=`http://172.16.1.234:9090/invest/projects/loan/${id}?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c`;
+        let url=`${url_invest_projects_loan}/${id}?access_token=${token}`;
         dispatch(investDetailActions.getInvestInfo(url,id));
         dispatch(investDetailActions.getMemberInfo(id));
         dispatch(investDetailActions.getLoanInfo(id));
@@ -13,7 +41,7 @@ let investDetailActions = {
     },
 
     getTransferData: (pid,transferId) => (dispatch, investDetail) => {
-        let url=`http://172.16.1.234:9090/invest/transfer/loan/${transferId}?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c`;
+        let url=`${url_invest_transfer_loan}/${transferId}?access_token=${token}`;
         dispatch(investDetailActions.getInvestInfo(url,transferId));
         dispatch(investDetailActions.getMemberInfo(pid));
         dispatch(investDetailActions.getLoanInfo(pid));
@@ -26,8 +54,7 @@ let investDetailActions = {
     /*获取散标详情*/
     getInvestInfo: (url,id) => (dispatch, investDetail) => {
         let newState={};
-
-        //let url=`http://172.16.1.234:9090/invest/projects/loan/${id}?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c`;
+        let url=`${url_invest_projects_loan}/${id}?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -92,7 +119,7 @@ let investDetailActions = {
     /*获取标的详情-信息披露部分*/
     getLoanInfo: (id) => (dispatch, investDetail) => {
         let newState={};
-        let url=`http://172.16.1.234:9090/invest/projects/info/${id}?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c`;
+        let url=`${url_projects_info}/${id}?$access_token=${token}`;
         //let url=`http://172.16.4.5:8084/getloansList.php?pageNum=1&pageSize=10`;
         fetch(url,{method:"get"})
             .then(function (response){
@@ -119,7 +146,7 @@ let investDetailActions = {
     getInvestRecords: (id) => (dispatch, investDetail) => {
         let newState={};
         // 获取数据列表
-        let url=`http://172.16.1.234:9090/invest/projects/record?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c&pageNum=1&pageSize=1000&projectId=${id}`;
+        let url=`${url_projects_record}?access_token=${token}&pageNum=1&pageSize=1000&projectId=${id}`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -147,7 +174,7 @@ let investDetailActions = {
     getTransferInvestRecords: (id) => (dispatch, investDetail) => {
         let newState={};
         // 获取数据列表
-        let url=`http://172.16.1.234:9090/invest/transfer/record?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c&pageNum=1&pageSize=1000&projectId=${id}`;
+        let url=`${url_transfer_record}?access_token=${token}&pageNum=1&pageSize=1000&projectId=${id}`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){
@@ -175,7 +202,7 @@ let investDetailActions = {
     getRepayRecords: (id) => (dispatch, investDetail) => {
         let newState={};
         // 获取数据列表
-        let url=`http://172.16.1.234:9090/invest/rpmtplan/page?access_token=50db1a79-395f-4d88-82f9-12bc1cad9f1c&pageNum=1&pageSize=1000&projectId=${id}`;
+        let url=`${url_rpmtplan_page}?access_token=${token}&pageNum=1&pageSize=1000&projectId=${id}`;
         fetch(url,{method:"get"})
             .then(function (response){
                 if (response.status == 200){

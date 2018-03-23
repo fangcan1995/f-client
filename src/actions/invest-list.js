@@ -2,8 +2,8 @@ import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import parseJson2URL from './../utils/parseJson2URL';
 
-const url_sblist=`http://172.16.1.234:9090/invest/projects/loan/page?access_token=41822fb5-9a4d-4d3f-b22f-3ba5be25920f`;//获取散标列表
-const url_transferlist=`http://172.16.1.234:9090/invest/transfer/loan/page?access_token=41822fb5-9a4d-4d3f-b22f-3ba5be25920f`;//获取债转标列表
+const url_sblist=`http://172.16.1.234:9090/invest/projects/loan/page?access_token=2ceea2a3-62cf-42bd-866b-d2c4fefe334b`;//获取散标列表
+const url_transferlist=`http://172.16.1.234:9090/invest/transfer/loan/page?access_token=2ceea2a3-62cf-42bd-866b-d2c4fefe334b`;//获取债转标列表
 
 export const sbListAc={
     getList: (params) => {
@@ -56,12 +56,12 @@ export const tranferListAc={
         payload: json
     }),
 };
-let investListActions = {
-    /*getData: (status) => (dispatch, investList) => {
+/*let investListActions = {
+    /!*getData: (status) => (dispatch, investList) => {
         dispatch(investListActions.getList(1,10,{status:status}));
-    },*/
+    },*!/
 
-    /*获取投资列表*/
+    /!*获取投资列表*!/
     getList: (pageNum=1,pageSize=10,filter={},sort={}) => (dispatch, investList) => {
         let newState={};
         // 获取数据列表
@@ -191,5 +191,5 @@ let investListActions = {
         payload: json
     }),
 };
-export default investListActions;
+export default investListActions;*/
 

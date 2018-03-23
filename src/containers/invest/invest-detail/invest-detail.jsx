@@ -17,9 +17,17 @@ class InvestDetail extends React.Component{
     componentDidMount () {
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
         let proId=pathSnippets[1];
-        this.props.dispatch(investDetailActions.getData(proId));
+        let {dispatch}=this.props;
+        //this.props.dispatch(investDetailActions.getData(proId));
+        //dispatch(investDetailActions.getInvestInfo(proId));
+        /*dispatch(investDetailActions.getMemberInfo(proId));
+        dispatch(investDetailActions.getLoanInfo(proId));
+        dispatch(investDetailActions.getInvestRecords(proId));
+        dispatch(investDetailActions.getRepayRecords(proId));*/
     }
     render(){
+        const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
+        let proId=pathSnippets[1];
         console.log('---------------this.props----------');
         let {investDetail}=this.props;
         let {investInfo,memberInfo,loanInfo,investRecords,repayRecords}=investDetail;
@@ -29,8 +37,9 @@ class InvestDetail extends React.Component{
             <main className="main sbDetail">
                 <div className="wrapper">
                     <InvestDetailMaster
-                        investInfo={investInfo}
-                        memberInfo={memberInfo}
+                        id={proId}
+                        /*investInfo={investInfo}
+                        memberInfo={memberInfo}*/
                     >
                         <div className="form_area">
                             {
@@ -56,21 +65,21 @@ class InvestDetail extends React.Component{
                         <Tab>
                             <div name="项目信息">
 
-                                <BorrowerInfo
+                                {/*<BorrowerInfo
                                         loanInfo={loanInfo}
-                                />
+                                />*/}
                             </div>
                             <div name="投标记录" >
-                                <InvestRecords
+                                {/*<InvestRecords
                                     investRecords={investRecords}
                                     pageSize={10}
-                                />
+                                />*/}
                             </div>
                             <div name="还款记录">
-                                <RepayRecords
+                                {/*<RepayRecords
                                     repayRecords={repayRecords}
                                     pageSize={10}
-                                />
+                                />*/}
                             </div>
                             <div name="风险信息">
                                 <ul className="m-notice">
@@ -105,10 +114,11 @@ class InvestDetail extends React.Component{
     }
 }
 function mapStateToProps(state) {
-    const { auth,investDetail } = state.toJS();
+    const { auth,investDetail,member } = state.toJS();
     return {
         auth,
-        investDetail
+        investDetail,
+        member
     };
 }
 export default connect(mapStateToProps)(InvestDetail);

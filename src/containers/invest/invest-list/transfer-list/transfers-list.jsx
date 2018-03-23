@@ -14,7 +14,7 @@ class TransferList extends Component {
     }
     componentDidMount () {
         //this.props.dispatch(tranferListAc.getTransferList(1,10,{},{status:2}));
-        this.props.dispatch(tranferListAc.getTransferList());
+        this.props.dispatch(tranferListAc.getList({status:2}));
     }
     sort(type){
         let transferList=this.props.investList.transferList;
@@ -38,7 +38,7 @@ class TransferList extends Component {
         orderBy[type]=newSort[type];
 
         this.props.dispatch(tranferListAc.stateRepaymentPlanModify({sort:newSort}));
-        this.props.dispatch(tranferListAc.getTransferList(orderBy));
+        this.props.dispatch(tranferListAc.getList(orderBy));
     }
     getStatusName(status,id,transferId){
         let investButton=``;
@@ -100,7 +100,7 @@ class TransferList extends Component {
                                         </thead>
                                         <tbody>
                                         {
-                                            list.data.list.map((l, i) => (
+                                            list.list.map((l, i) => (
                                                 <tr key={`row-${i}`}>
                                                     <td className="t_table">
                                                         <p><a href={"/invest-detail/" + l['proId']}  title="longText">{l.transNo}</a></p>
@@ -130,7 +130,7 @@ class TransferList extends Component {
                                             totalPage:list.pages,
                                             paging:(obj)=>{
                                                 let parms=Object.assign({pageNum:obj.currentPage,pageSize:obj.pageSize},sort)
-                                                dispatch(tranferListAc.getTransferList(parms));
+                                                dispatch(tranferListAc.getList(parms));
                                             }
                                         }
                                     } ></Pagination>

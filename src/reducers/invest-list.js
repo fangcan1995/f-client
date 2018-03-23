@@ -31,14 +31,14 @@ const initialState = Immutable.fromJS({
 });
 
 export default createReducer(initialState, {
-    ['investList/sbList/FETCH_PENDING']: (state, action) => state.merge({
+    ['investList/sbList/FETCH_PENDING']: (state, action) => state.mergeDeep({
         isFetching: true,
     }),
-    ['investList/sbList/FETCH_FULFILLED']: (state, action) => state.merge({
+    ['investList/sbList/FETCH_FULFILLED']: (state, action) => state.mergeDeep({
         isFetching: false,
         sbList: action.payload,
     }),
-    ['investList/sbList/FETCH_REJECTED']: (state, action) => state.merge({
+    ['investList/sbList/FETCH_REJECTED']: (state, action) => state.mergeDeep({
         isFetching: false,
         errorMessage: action.message
     }),
@@ -46,14 +46,14 @@ export default createReducer(initialState, {
         sbList:action.payload
     }),
 
-    ['investList/transferList/FETCH_PENDING']: (state, action) => state.merge({
+    ['investList/transferList/FETCH_PENDING']: (state, action) => state.mergeDeep({
         isFetching: true,
     }),
-    ['investList/transferList/FETCH_FULFILLED']: (state, action) => state.merge({
+    ['investList/transferList/FETCH_FULFILLED']: (state, action) => state.mergeDeep({
         isFetching: false,
         transferList: action.payload,
     }),
-    ['investList/transferList/FETCH_REJECTED']: (state, action) => state.merge({
+    ['investList/transferList/FETCH_REJECTED']: (state, action) => state.mergeDeep({
         isFetching: false,
         errorMessage: action.message
     }),
