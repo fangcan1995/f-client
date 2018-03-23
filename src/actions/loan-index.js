@@ -39,7 +39,7 @@ export const getApplyData = (loanType ) => {
     type: 'loan/GET_APPLY_DATA',
     data:{loanType},
     async payload() {
-        const res = await cFetch(`${urls}/loans/apply/qualification?access_token=48f2eb3a-192c-4231-9ff4-af2d8e9023f6` , { method: 'GET' } , false);
+        const res = await cFetch(`${urls}/loans/apply/qualification?access_token=b1b3685c-0b71-491e-a9fb-10d26a6c74d4` , { method: 'GET' } , false);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)
@@ -81,7 +81,7 @@ export const checkForm = (e) => {
       type: 'loan/POST_LOAN_DATA',
       // async/await配合promise处理异步
       async payload() {
-        const res = await cFetch(`${urls}/loans/apply?access_token=48f2eb3a-192c-4231-9ff4-af2d8e9023f6` , { 
+        const res = await cFetch(`${urls}/loans/apply?access_token=b1b3685c-0b71-491e-a9fb-10d26a6c74d4` , { 
           method: 'POST', 
           headers: {
                 'Content-Type': 'application/json'

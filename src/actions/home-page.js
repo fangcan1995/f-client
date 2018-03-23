@@ -30,7 +30,7 @@ export const  getData = () => {
   return {
     type: 'homePage/GET_DATA',
     async payload() {
-      const res = await cFetch(`${urls}/homes/affiches?access_token=48f2eb3a-192c-4231-9ff4-af2d8e9023f6` , { method: 'GET' }, false);
+      const res = await cFetch(`${urls}/homes/affiches?access_token=b1b3685c-0b71-491e-a9fb-10d26a6c74d4` , { method: 'GET' }, false);
       const { code, data } = res;
       if ( code == 0 ) {
           console.log(data)
@@ -48,7 +48,7 @@ export const getNovice  = (list) => {
     return {
       type: 'homePage/GET_NOVICE',
       async payload() {
-        const res = await cFetch(`${urls}/invest/homes/novice?access_token=48f2eb3a-192c-4231-9ff4-af2d8e9023f6&list[${list}].loanExpiry=3&list[${list}].num=1` , { method: 'GET' }, false);
+        const res = await cFetch(`${urls}/invest/homes/novice?access_token=b1b3685c-0b71-491e-a9fb-10d26a6c74d4&list[${list}].loanExpiry=3&list[${list}].num=1` , { method: 'GET' }, false);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)
@@ -65,7 +65,7 @@ export const getNovice  = (list) => {
     return {
       type: 'homePage/GET_STANDARD',
       async payload() {
-        const res = await cFetch(`${urls}/invest/homes/standard?access_token=48f2eb3a-192c-4231-9ff4-af2d8e9023f6&num=4` , { method: 'GET' }, false);
+        const res = await cFetch(`${urls}/invest/homes/standard?access_token=b1b3685c-0b71-491e-a9fb-10d26a6c74d4&num=4` , { method: 'GET' }, false);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)
@@ -82,7 +82,7 @@ export const getNovice  = (list) => {
     return {
       type: 'homePage/GET_BANNER',
       async payload() {
-        const res = await cFetch(`${urls}/homes/banners?access_token=48f2eb3a-192c-4231-9ff4-af2d8e9023f6` , { method: 'GET' }, false);
+        const res = await cFetch(`${urls}/homes/banners?access_token=b1b3685c-0b71-491e-a9fb-10d26a6c74d4` , { method: 'GET' }, false);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)
@@ -99,7 +99,7 @@ export const getNovice  = (list) => {
     return {
       type: 'homePage/GET_NOTICE',
       async payload() {
-        const res = await cFetch(`${urls}/homes/notices?access_token=48f2eb3a-192c-4231-9ff4-af2d8e9023f6` , { method: 'GET' }, false);
+        const res = await cFetch(`${urls}/homes/notices?access_token=b1b3685c-0b71-491e-a9fb-10d26a6c74d4` , { method: 'GET' }, false);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)
@@ -116,7 +116,7 @@ export const getNovice  = (list) => {
     return {
       type: 'homePage/GET_SPEC',
       async payload() {
-        const res = await cFetch(`${urls}/homes/statistics?access_token=48f2eb3a-192c-4231-9ff4-af2d8e9023f6` , { method: 'GET' }, false);
+        const res = await cFetch(`${urls}/homes/statistics?access_token=b1b3685c-0b71-491e-a9fb-10d26a6c74d4` , { method: 'GET' }, false);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)

@@ -124,8 +124,9 @@ class Loan extends Component {
     const { auth ,loginModal,loans} = this.props;
     const { imageCodeImg } = this.props.login;
     console.log(loans)
+    
     // auth.isAuthenticated
-    if(auth.isAuthenticated){
+    if(true){
       return (
         
         <main className="main loan-index" id="loan-index">
@@ -295,8 +296,13 @@ class Loan extends Component {
                 </Button>,
               ]}
             >
-              <p className='ant-modal-header'>{loans.applyMessage}</p>
-              <p className='ant-modal-header'><Link to='/my-loan/my-loan' className='loans'>去看我的借款</Link></p>
+            {
+              loans.applyMessage?<div><p className='ant-modal-header'>{loans.applyMessage}</p>
+              <p className='ant-modal-header'><Link to='/my-loan/my-loan' className='loans'>去看我的借款</Link></p></div>:
+              <div><p className='ant-modal-header'>{loans.errorMessage}</p>
+              <p className='ant-modal-header'><a className='loans' onClick={this.handleOk}>点击重试</a></p></div>
+            }
+              
             </Modal>
             <Floor
               otherClassName="faq"
