@@ -2,8 +2,8 @@ import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import {addCommas,checkMoney} from './../assets/js/cost';
 import parseJson2URL from './../utils/parseJson2URL';
-import urls from './../utils/url';
-const token=`b1b3685c-0b71-491e-a9fb-10d26a6c74d4`;
+import {urls,token} from '../utils/url'
+
 
 const url_loansCharts=`${urls}/members/loans/statistics?access_token=${token}`; //统计图数据
 const url_loansList=`${urls}/members/loans?access_token=${token}`;//获取借款列表

@@ -4,13 +4,13 @@ import cFetch from '../utils/cFetch';
 import readBlobAsDataURL from '../utils/readBlobAsDataURL';
 import { LOGIN, LOGOUT } from './../constants/actions-type';
 import { API_CONFIG } from './../config/api';
-
+import {urls,token} from '../utils/url'
 
 export const getImageCode = () => {
   return {
     type: 'signup/GET_IMAGE_CODE',
     async payload() {
-      const res = await fetch('http://172.16.1.234:8060/' + API_CONFIG.imageCode, { credentials: 'include' })
+      const res = await fetch(`${urls}` + API_CONFIG.imageCode, { credentials: 'include' })
       const blob = await res.blob();
       const dataURL = await readBlobAsDataURL(blob);
       return dataURL;
@@ -22,7 +22,7 @@ export const checkUserExist = params => {
   return {
     type: 'signup/CHECK_USER_EXIST',
     async payload() {
-      const res = await cFetch('http://172.16.1.234:8060/' + API_CONFIG.checkUserExist + params, { method: 'GET' }, false)
+      const res = await cFetch(`${urls}` + API_CONFIG.checkUserExist + params, { method: 'GET' }, false)
       return res;
     }
   }
@@ -32,7 +32,7 @@ export const sendVerifyCode = params => {
   return {
     type: 'signup/SEND_VERIFY_CODE',
     async payload() {
-      const res = await cFetch('http://172.16.1.234:8060/' + API_CONFIG.signupVerifyCode + params, { credentials: 'include' }, false);
+      const res = await cFetch(`${urls}` + API_CONFIG.signupVerifyCode + params, { credentials: 'include' }, false);
       const { code, data } = res;
       if ( code == 0 ) {
         return data || {};
@@ -56,7 +56,7 @@ export const signupUser = params => {
     type: 'signup/SIGNUP',
     // async/await配合promise处理异步
     async payload() {
-      const res = await cFetch('http://172.16.1.234:8060/' + API_CONFIG.signup + params, { method: 'POST', body: params, credentials: 'include' }, false);
+      const res = await cFetch(`${urls}` + API_CONFIG.signup + params, { method: 'POST', body: params, credentials: 'include' }, false);
       console.log(res)
       const { code, data } = res;
       if ( code == 0 ) {

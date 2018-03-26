@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch';
+import {urls,token} from '../utils/url'
 
-
-let urlArticalList = `http://172.16.1.221:9090/information/articles?access_token=5738fa58-9635-45d9-badf-b03ae7f5b14c`;
+let urlArticalList = `${urls}/information/articles?access_token=${token}`;
 
 export const articalListAction = () => {
     return {
