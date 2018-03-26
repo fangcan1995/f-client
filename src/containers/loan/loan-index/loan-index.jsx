@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { getImageCode } from '../../../actions/login'
 import { showModal,hideModal } from '../../../actions/login-modal';
 import LoginModal from '../../../components/login-modal/login-modal'
-import { getApplyData,checkForm ,formData,postLoanData} from '../../../actions/loan-index'
+import { getApplyData,checkForm ,formData,postLoanData, hideModal1 } from '../../../actions/loan-index'
 import {checkMoney} from '../../../assets/js/cost';
 import parseJson2URL from '../../../utils/parseJson2URL';
 
@@ -55,9 +55,15 @@ class Loan extends Component {
     console.log('Clicked cancel button');
     this.setState({
       visible: false,
-      visible2: false,
     })
   }
+
+  handleCancel2 = () => {
+    console.log('Clicked cancel button');
+    const { dispatch } = this.props;
+    dispatch(hideModal1())
+  }
+
   onBlur = ()=>{
     const {loans,dispatch} = this.props;
     console.log(this.refs.money.value)
@@ -113,7 +119,6 @@ class Loan extends Component {
     setTimeout(() => {
         this.setState({
           visible: false,
-          visible2:true
         });
       }, 2000); 
   }
@@ -126,7 +131,7 @@ class Loan extends Component {
     console.log(loans)
     
     // auth.isAuthenticated
-    if(true){
+    if(auth.isAuthenticated){
       return (
         
         <main className="main loan-index" id="loan-index">
@@ -242,7 +247,7 @@ class Loan extends Component {
                                         <dt><label>验证码</label></dt>
                                         <dd>
                                             <input name="validateCode" id="imgcode" type="text" className="textInput w140" placeholder="请输入验证码" maxLength="6" required ref='graphValidateCode' onBlur={this.checkLast}/>
-                                            <img src={imageCodeImg} data-url="/user/captcha" id="img-code" title="看不清？点击图片更换验证码" className="vCode" onClick={ this.handleImageCodeImgClick } />
+                                            <a><img src={imageCodeImg} data-url="/user/captcha" id="img-code" title="看不清？点击图片更换验证码" className="vCode" onClick={ this.handleImageCodeImgClick } /></a>
                                         </dd>
                                     </dl>
                                     <div className="ps">
@@ -287,11 +292,11 @@ class Loan extends Component {
               
               
             </Modal>
-            <Modal title="提示信息" visible={this.state.visible2}
+            <Modal title="提示信息" visible={loans.postinged}
               confirmLoading={this.state.confirmLoading}
-              onOk={this.handleOk} onCancel={this.handleCancel1}
+              onOk={this.handleCancel2} onCancel={this.handleCancel2}
               footer={[
-                <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.handleOk}>
+                <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.handleCancel2}>
                   确定
                 </Button>,
               ]}
@@ -300,7 +305,7 @@ class Loan extends Component {
               loans.applyMessage?<div><p className='ant-modal-header'>{loans.applyMessage}</p>
               <p className='ant-modal-header'><Link to='/my-loan/my-loan' className='loans'>去看我的借款</Link></p></div>:
               <div><p className='ant-modal-header'>{loans.errorMessage}</p>
-              <p className='ant-modal-header'><a className='loans' onClick={this.handleOk}>点击重试</a></p></div>
+              <p className='ant-modal-header'><a className='loans' onClick={this.handleCancel2}>点击重试</a></p></div>
             }
               
             </Modal>

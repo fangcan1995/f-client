@@ -4,7 +4,7 @@ import cFetch from '../utils/cFetch';
 import readBlobAsDataURL from '../utils/readBlobAsDataURL';
 // import { LOGIN, LOGOUT } from './../constants/actions-type';
 import { API_CONFIG } from './../config/api';
-import urls from '../utils/url'
+import {urls,token} from '../utils/url'
 
 export const getImageCode = () => {
   return {
@@ -39,7 +39,7 @@ export const getApplyData = (loanType ) => {
     type: 'loan/GET_APPLY_DATA',
     data:{loanType},
     async payload() {
-        const res = await cFetch(`${urls}/loans/apply/qualification?access_token=b1b3685c-0b71-491e-a9fb-10d26a6c74d4` , { method: 'GET' } , false);
+        const res = await cFetch(`${urls}/loans/apply/qualification?access_token=${token}` , { method: 'GET' } , false);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)
@@ -74,6 +74,14 @@ export const checkForm = (e) => {
     }
   }
 
+  export const hideModal1 = (e) => {
+    console.log(1);
+    return {
+      type: 'loan/HIDE_MODAL', 
+      payload: e,
+    }
+  }
+
   export const postLoanData = params => {
     console.log(params)
     params=JSON.stringify(params)
@@ -81,7 +89,7 @@ export const checkForm = (e) => {
       type: 'loan/POST_LOAN_DATA',
       // async/await配合promise处理异步
       async payload() {
-        const res = await cFetch(`${urls}/loans/apply?access_token=b1b3685c-0b71-491e-a9fb-10d26a6c74d4` , { 
+        const res = await cFetch(`${urls}/loans/apply?access_token=${token}` , { 
           method: 'POST', 
           headers: {
                 'Content-Type': 'application/json'

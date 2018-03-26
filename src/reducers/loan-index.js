@@ -43,6 +43,12 @@ export default createReducer(initialState, {
       formData: action.payload
     }),
 
+    ['loan/HIDE_MODAL']: (state, action) => {
+      console.log('hide')
+      return state.merge({
+      postinged: false
+    })},
+
     ['loan/POST_LOAN_DATA_PENDING']: (state, action) => {
         return state.merge({
         isFetching: true,
@@ -59,6 +65,7 @@ export default createReducer(initialState, {
       console.log(action)
       return state.merge({
       isFetching: false,
-      errorMessage: action.payload.msg
+      errorMessage: action.payload.msg,
+      postinged:true
     })},
 })

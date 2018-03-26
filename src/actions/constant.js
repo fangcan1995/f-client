@@ -1,22 +1,22 @@
 import fetch from 'isomorphic-fetch';
+import {urls,token} from '../utils/url'
 
 
+let urlTotalData = `${urls}/statistics/totalData?access_token=${token}`;
+let urlBorrowInfo = `${urls}/statistics/borrowInfo?access_token=${token}`;
+let urlInvestInfo = `${urls}/statistics/investInfo?access_token=${token}`;
 
-let urlTotalData = `http://172.16.1.221:9090/statistics/totalData?access_token=284f3e8c-815c-4edd-931c-524e2b6153b3`;
-let urlBorrowInfo = `http://172.16.1.221:9090/statistics/borrowInfo?access_token=284f3e8c-815c-4edd-931c-524e2b6153b3`;
-let urlInvestInfo = `http://172.16.1.221:9090/statistics/investInfo?access_token=284f3e8c-815c-4edd-931c-524e2b6153b3`;
-
-const urls = [
-    `http://172.16.1.221:9090/statistics/totalData?access_token=5738fa58-9635-45d9-badf-b03ae7f5b14c`,
-    `http://172.16.1.221:9090/statistics/borrowInfo?access_token=5738fa58-9635-45d9-badf-b03ae7f5b14c`,
-    `http://172.16.1.221:9090/statistics/investInfo?access_token=5738fa58-9635-45d9-badf-b03ae7f5b14c`
+const urlss = [
+    `${urls}/statistics/totalData?access_token=${token}`,
+    `${urls}/statistics/borrowInfo?access_token=${token}`,
+    `${urls}/statistics/investInfo?access_token=${token}`
 ] 
 
 export const actionTest = () => {
     return {
         type: 'GET_TOTALDATA', 
         async payload () {
-            return Promise.all(urls.map(url => 
+            return Promise.all(urlss.map(url => 
                 fetch(url, {method: 'GET'}))
             ).then(responses => Promise.all(responses.map(response => response.json()))
             ).then(result => {
@@ -28,7 +28,7 @@ export const actionTest = () => {
 }
 
 export const actionUpdateLoanMoney = (year) => {
-    const loanMoneyUrl = `http://172.16.1.221:9090/statistics/borrowInfo?access_token=5738fa58-9635-45d9-badf-b03ae7f5b14c&type=1&year=${year}`;
+    const loanMoneyUrl = `${urls}/statistics/borrowInfo?access_token=${token}&type=1&year=${year}`;
     return {
         type: 'UPDATE_LOANMONEY',
         async payload () {
@@ -43,7 +43,7 @@ export const actionUpdateLoanMoney = (year) => {
 }
 
 export const actionUpdateLoanCount = (year) => {
-    const loanCountUrl = `http://172.16.1.221:9090/statistics/borrowInfo?access_token=5738fa58-9635-45d9-badf-b03ae7f5b14c&type=3&year=${year}`;
+    const loanCountUrl = `${urls}/statistics/borrowInfo?access_token=${token}&type=3&year=${year}`;
     return {
         type: 'UPDATE_LOANCOUNT',
         async payload () {
@@ -59,7 +59,7 @@ export const actionUpdateLoanCount = (year) => {
 }
 
 export const actionUpdateLoanMemberCount = (year) => {
-    const loanMemberCountUrl = `http://172.16.1.221:9090/statistics/borrowInfo?access_token=5738fa58-9635-45d9-badf-b03ae7f5b14c&type=2&year=${year}`;
+    const loanMemberCountUrl = `${urls}/statistics/borrowInfo?access_token=${token}&type=2&year=${year}`;
     return {
         type: 'UPDATE_LOANMEMBERCOUNT',
         async payload () {
@@ -76,7 +76,7 @@ export const actionUpdateLoanMemberCount = (year) => {
 
 
 export const actionUpdateInvestInfo = (year) => {
-    const investInfoUrl = `http://172.16.1.221:9090/statistics/investInfo?access_token=5738fa58-9635-45d9-badf-b03ae7f5b14c&year=${year}`;
+    const investInfoUrl = `${urls}/statistics/investInfo?access_token=${token}&year=${year}`;
     return {
         type: 'UPDATE_INVESTINFO',
         async payload () {

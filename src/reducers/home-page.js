@@ -57,6 +57,7 @@ export default createReducer(initialState, {
   ['homePage/GET_DATA_FULFILLED']: (state, action) => {
       const { companyNewsDto, mediaReportsDto, partnerCompanysDto } = action.payload;
         return state.merge({
+          isFetching: false,
           com:companyNewsDto,
           med:mediaReportsDto,
           par:partnerCompanysDto,

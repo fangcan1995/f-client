@@ -43,7 +43,7 @@ class HomePage extends Component {
   }
   handleNoticeClick(e){
     console.log(e);
-    this.props.history.push(`/about/news/notice${e}`)
+    this.props.history.push(`/about/news/notice`)
   }
   handleMoreClick(){
     console.log('22')
@@ -58,13 +58,15 @@ class HomePage extends Component {
   }
   handleAdClick(e){
     console.log(e)
-    window.location.href(e)
+    window.location.href=e
   }
   handleCommediaClick(e){
     console.log(e)
+    this.props.history.push(`/about/news/mediaCompany`)
   }
   handleNewsClick(e){
     console.log(e)
+    this.props.history.push(`/about/news/mediaReport`)
   }
   handleMimageClick(e){
     console.log(e)
@@ -75,9 +77,10 @@ class HomePage extends Component {
   }
   handleMedIcoClick(e){
     console.log(e)
+    this.props.history.push('/about/news/mediaReport')
   }
   handlePartnerClick(e){
-    console.log(e)
+    window.location.href=e
   }
   componentDidMount() {
     const { dispatch ,homePage} = this.props;
@@ -321,7 +324,7 @@ class HomePage extends Component {
                   return (
                     <div key={item.affInfoId} onClick={this.handleCommediaClick.bind(this,item.affInfoId)}>
                       <div className="dynamicImg__outer">
-                        <img src={item.affInfoIcon} alt="" className="news__img dynamicImg__inner" />
+                        <a><img src={item.affInfoIcon} alt="" className="news__img dynamicImg__inner" /></a>
                       </div>                     
                       <p className="news__text">{item.affInfoName}</p>
                     </div>
@@ -346,7 +349,7 @@ class HomePage extends Component {
                   {
                     homePage.med.mediaReportInfosDtoList.map((item)=>{
                       return (
-                        <li key={item.affInfoId} onClick={this.handleNewsClick.bind(this,item.affInfoId)}>{item.affInfoName}</li>
+                        <a><li key={item.affInfoId} onClick={this.handleNewsClick.bind(this,item.affInfoId)}>{item.affInfoName}</li></a>
                       )
                     })
                   }

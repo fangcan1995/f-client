@@ -266,10 +266,10 @@ class constantTable extends Component {
                                             className='react_for_echarts'
                                         />
                                     </div>
-                                    <select name="" id="loanMoney" onChange={this.handleSelect.bind(this)}>
+                                    <select name="" id="loanMoney" onChange={this.handleSelect.bind(this)} defaultValue="2018">
                                         <option value="2016">2016</option>
                                         <option value="2017">2017</option>
-                                        <option selected value="2018">2018</option>
+                                        <option value="2018">2018</option>
                                     </select>
                                 </div>
                                 <div className="borrowLine">
@@ -282,10 +282,10 @@ class constantTable extends Component {
                                             className='react_for_echarts'
                                         />
                                     </div>
-                                    <select name="" id="loanCount" onChange={this.handleSelect.bind(this)}>
+                                    <select name="" id="loanCount" onChange={this.handleSelect.bind(this)} defaultValue="2018">
                                         <option value="2016">2016</option>
                                         <option value="2017">2017</option>
-                                        <option selected value="2018">2018</option>
+                                        <option value="2018">2018</option>
                                     </select>
                                 </div>
                                 <div className="borrowLine">
@@ -298,10 +298,10 @@ class constantTable extends Component {
                                             className='react_for_echarts'
                                         />
                                     </div>
-                                    <select name="" id="loanMemberCount" onChange={this.handleSelect.bind(this)}>
+                                    <select name="" id="loanMemberCount" onChange={this.handleSelect.bind(this)} defaultValue="2018">
                                         <option value="2016">2016</option>
                                         <option value="2017">2017</option>
-                                        <option selected value="2018">2018</option>
+                                        <option value="2018">2018</option>
                                     </select>
                                 </div>
                             </div>
@@ -321,10 +321,10 @@ class constantTable extends Component {
                                             className='react_for_echarts'
                                         />
                                     </div>
-                                    <select name="" id="investValue" onChange={this.handleSelect.bind(this)}>
+                                    <select name="" id="investValue" onChange={this.handleSelect.bind(this)} defaultValue="2018">
                                         <option value="2016">2016</option>
                                         <option value="2017">2017</option>
-                                        <option selected value="2018">2018</option>
+                                        <option value="2018">2018</option>
                                     </select>
                                 </div>
                                 <div className="investLine">
