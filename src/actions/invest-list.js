@@ -1,9 +1,8 @@
 import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import parseJson2URL from './../utils/parseJson2URL';
-import urls from './../utils/url';
+import {urls,token} from './../utils/url';
 
-const token=`b1b3685c-0b71-491e-a9fb-10d26a6c74d4`;
 const url_sblist=`${urls}/invest/projects/loan/page?access_token=${token}`;//获取散标列表
 const url_transferlist=`${urls}/invest/transfer/loan/page?access_token=${token}`;//获取债转标列表
 

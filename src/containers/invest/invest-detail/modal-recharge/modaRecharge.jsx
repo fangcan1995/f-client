@@ -4,6 +4,7 @@ import  {checkMoney,addCommas}  from '../../../../assets/js/cost';
 import { Alert } from 'antd';
 import './modaRecharge.less'
 import { connect } from 'react-redux';
+import  {memberAc}  from '../../../../actions/member';
 import  investDetailActions  from '../../../../actions/invest-detail';
 class ModalRecharge extends React.Component {
     constructor(props) {
@@ -34,7 +35,8 @@ class ModalRecharge extends React.Component {
 
         //3 提交后台
         console.log('提交充值申请');
-        this.props.dispatch(investDetailActions.postRecharge({Amount:1000}));
+        //this.props.dispatch(investDetailActions.postRecharge({Amount:1000}));
+        this.props.dispatch(memberAc.recharge(this.state.value));
 
     }
     //改变金额
@@ -71,7 +73,7 @@ class ModalRecharge extends React.Component {
     render() {
         let {accountBalance,callback}=this.props.config;
         let {postResult}=this.props.investDetail;
-        if(postResult.code==0){
+
             return (
                 <div className="pop__invest">
                     {
@@ -95,8 +97,8 @@ class ModalRecharge extends React.Component {
                                 <dl className="form__bar short">
                                     <dt><label>充值后可用余额：</label></dt>
                                     <dd><i id="money" className="money">
-                                        {(this.state.value=='')?addCommas(parseFloat(2000))
-                                            :addCommas(parseFloat(this.state.value)+parseFloat(2000))
+                                        {(this.state.value=='')?addCommas(parseFloat(accountBalance))
+                                            :addCommas(parseFloat(this.state.value)+parseFloat(accountBalance))
                                         }
 
                                     </i>元
@@ -121,25 +123,7 @@ class ModalRecharge extends React.Component {
                     }
                 </div>
             );
-        }else if(postResult.code==1 || postResult.code==2){
-            return(
-                <div className="pop__invest">
-                    <Alert
-                        message={postResult.message}
-                        description={postResult.description}
-                        type={postResult.type}
-                        showIcon
-                    />
-                    <div className="form__wrapper">
-                        <button className="button able" style={{marginTop:'30px'}} onClick={() => callback()}>确定</button>
-                    </div>
-                </div>
-                )
-        }else{
-            return(
-                <div className="pop__invest">error</div>
-            )
-        }
+
 
     }
 };

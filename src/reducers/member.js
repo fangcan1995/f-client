@@ -10,6 +10,8 @@ const initialState = Immutable.fromJS({
         couponInfo:``,
         openAccountStatus:'',   //是否开户
         riskStatus:'',//是否测评0 未测评 1
+        riskLevel:``, //风险级别
+        noviceStatus:``, //是否新手（0：不是；1：是） ,
         acBank:{
             bankName:'',
             bankNo:'',

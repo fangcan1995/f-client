@@ -39,9 +39,16 @@ export  function toMoney(value){
 export  function toNumber(value){
     const patrn = /^(-)?\d?$/;
     if (patrn.exec(value) == null || value == "" || value == 0) {
-        return '';
+        return '0';
     } else{
         value=parseInt(value);
         return value;
+    }
+}
+
+export function toDefinedString(value) {
+    if(value){return value
+    }else {
+        return ``
     }
 }
