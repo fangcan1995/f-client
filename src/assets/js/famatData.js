@@ -45,3 +45,10 @@ export  function toNumber(value){
         return value;
     }
 }
+
+export function toDefinedString(value) {
+    if(value){return value
+    }else {
+        return ``
+    }
+}

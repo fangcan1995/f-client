@@ -5,12 +5,14 @@ import {  Link} from 'react-router-dom';
 import StepperInput from '../../../../components/stepperInput/stepperInput';
 import { Modal } from 'antd';
 import {income,addCommas} from "../../../../assets/js/cost";
+import {toDefinedString, toMoney, toNumber} from "../../../../assets/js/famatData"
 import ModalInvest from '../modal-invest/modalInvest';
 import ModalRecharge from '../modal-recharge/modaRecharge'
 import ModalRiskAssess from '../modal-riskAssess/modal-riskAssess';
 import { connect } from 'react-redux';
 import  investDetailActions  from '../../../../actions/invest-detail';
 import  {memberAc}  from '../../../../actions/member';
+
 import moment from "moment";
 
 class InvestDetailMaster extends React.Component {
@@ -29,7 +31,6 @@ class InvestDetailMaster extends React.Component {
         }
     }
     componentDidMount () {
-        //console.log(this.props);
         this.props.dispatch(memberAc.getInfo());
         this.props.dispatch(investDetailActions.getInvestInfo(this.props.id));
     }
@@ -51,6 +52,8 @@ class InvestDetailMaster extends React.Component {
         let {dispatch}=this.props;
 
         let {investInfo}=this.props.investDetail;
+        console.log('***********');
+        console.log(investInfo);
         let {member,auth}=this.props;
 
 
@@ -97,7 +100,9 @@ class InvestDetailMaster extends React.Component {
                         </dl>
                         {/*投资区域*/}
                         <div className="m-invest">
-                            <InvestBox investInfo={investInfo} auth={auth} member={member} />
+                            {(investInfo !=``)?
+                            < InvestBox investInfo={investInfo} auth={auth} member={member} />
+                            :``}
                         </div>
 
                     </div>
@@ -159,7 +164,7 @@ class InvestBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            project:{},
+            //project:{},
             member:{},
             investAmount:props.investInfo.minInvestAmount,
             modalInvest: false,
@@ -210,23 +215,24 @@ class InvestBox extends React.Component {
         console.log(this.state);
     };
     render(){
+        console.log('-----------');
+        console.log(investInfo);
         let {member,auth}=this.props;
         let investInfo=this.props.investInfo;
         let {investAmount}=this.state;
-        console.log('-----------auth---------');
-        console.log(investInfo);
+        let {openAccountStatus,riskStatus,amount,redInfo,couponInfo}=member.accountsInfo;
         let button=``;
         //auth.isAuthenticated
         if(1==2){
             button=<Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} className="btn">我要登录</Link>;
         }else{
-            if(member.accountsInfo.openAccountStatus=0){
+            if(openAccountStatus=0){
                 button=<a  className="btn" onClick={()=>{window.location.href="http://www.baidu.com?redirect"}}>立即开户</a>
             }else{
-                if(member.accountsInfo.riskStatus=0){
+                if(riskStatus=0){
                     button=<a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,investInfo.id)}>立即风险评估/*（级别不够）*/</a>
                 }else{
-                    if((member.accountsInfo.amount.availableBalance<this.state.investAmount)){
+                    if((amount.availableBalance<this.state.investAmount)){
                         button=<a className="btn" onClick={() => this.toggleModal(`modalRecharge`,true,investInfo.id)}>立即充值/*(仅限新手)*/</a>
                     }else{
                         //console.log('this.state.tips='+this.state.tips);
@@ -290,21 +296,21 @@ class InvestBox extends React.Component {
                                 <i className="iconfont icon-user"></i>
                                 <strong>我的可用余额：</strong>
                                 {
-                                    (1==1)? `${member.accountsInfo.amount.availableBalance} 元`
+                                    (1==1)? `${toMoney(amount.availableBalance)} 元`
                                         : <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
                                 }
                             </li>
                             <li>
                                 <strong>可用红包总计：</strong>
                                 {
-                                    (1==1)? `${member.accountsInfo.redInfo.amountSum} 元`
+                                    (1==1)? `${toMoney(redInfo.amountSum)} 元`
                                         : <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
                                 }
                             </li>
                             <li>
                                 <strong>可用加息券：</strong>
                                 {
-                                    (1==1)? `${member.accountsInfo.couponInfo.number} 张`
+                                    (1==1)? `${toNumber(couponInfo.number)} 张`
                                         : <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
                                 }
                             </li>
@@ -336,27 +342,10 @@ class InvestBox extends React.Component {
                                     //账户余额
                                     callback:(obj)=>{
                                         this.toggleModal(`modalInvest`,false);
-                                        dispatch(investDetailActions.getData(investInfo.id));  //投资成功重载数据
+                                        this.props.dispatch(investDetailActions.getData(investInfo.id));  //投资成功重载数据
                                     }
                                 }
                             }
-                                /*config = {
-                                    {
-                                        proId:investInfo.id,
-                                        investAmount:(investAmount>0)?investAmount:investInfo.minInvestAmount,  //投资金额
-                                        proMinInvestAmount:investInfo.minInvestAmount,   //起投金额
-                                        proMaxInvestAmount:(investInfo.maxInvestAmount<investInfo.surplusAmount)?investInfo.maxInvestAmount:investInfo.surplusAmount, //投资上限
-                                        proIncreaseAmount:investInfo.increaseAmount,    //递增金额
-                                        restMoney:investInfo.surplusAmount,//标的剩余金额
-                                        rate:investInfo.annualRate, //年化收益
-                                        loanApplyExpiry:investInfo.loanExpiry,  //投资期限
-                                        //账户余额
-                                        callback:(obj)=>{
-                                            this.toggleModal(`modalInvest`,false);
-                                            dispatch(investDetailActions.getData(investInfo.id));  //投资成功重载数据
-                                        }
-                                    }
-                                }*/
                             />:''
                         }
                     </Modal>

@@ -11,22 +11,17 @@ import  investDetailActions  from '../../../../actions/invest-detail';
 class ModalInvest extends React.Component {
     constructor(props) {
         super(props);
-
-        //console.log(props.config);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
         this.state = {
-            //value: investAmount,  //投资金额
             tips: '',  //错误提示
             isRead: false,
         }
     }
     componentDidMount () {
-        //console.log(this.props);
         this.props.dispatch(investDetailActions.getRedEnvelopes(this.props.id));
         this.props.dispatch(investDetailActions.getRateCoupons(this.props.id));
     }
-
 
     onChange(e) {
         this.setState({
@@ -54,15 +49,9 @@ class ModalInvest extends React.Component {
 
     render() {
         let {investAmount} = this.props.config;
-        console.log('-----this.props.project-------');
         let {postResult}=this.props.investDetail;
-        let project = this.props.investDetail.investInfo;
         let {redEnvelopes,rateCoupons}=this.props.investDetail;
-        console.log('红本本');
-        console.log(redEnvelopes);
-        let {minInvestAmount, maxInvestAmount, surplusAmount, increaseAmount, annualRate, loanExpiry} = project;
-        /*let {redEnvelopes,rateCoupons}=this.state.info;
-        let {proMinInvestAmount,proMaxInvestAmount,proIncreaseAmount,rate,loanApplyExpiry,callback}=this.props.config;*/
+        let {annualRate, loanExpiry} = this.props.investDetail.investInfo;
         if(postResult===``) {
             return (
                 <div className="pop__invest">
@@ -78,7 +67,7 @@ class ModalInvest extends React.Component {
                             <dd>
                                 {(redEnvelopes==='')?``
                                 :<Select
-                                        defaultValue={redEnvelopes[0].reAmount}
+                                        defaultValue={redEnvelopes[0].id}
                                         style={{ width: 300 }}
                                         onChange={this.handleChange}
                                         getPopupContainer={() => document.getElementById('area')}
@@ -86,7 +75,7 @@ class ModalInvest extends React.Component {
                                         <Option value="0">不使用红包</Option>
                                         {
                                             redEnvelopes.map((item, index) => (
-                                                <Option value={`${item.reAmount}`} key={`row-${index}`}>{item.reAmount}元 {item.reTypeName}</Option>
+                                                <Option value={`${item.id}`} key={`row-${index}`}>{item.reAmount}元 {item.reTypeName}</Option>
                                             ))
                                         }
                                     </Select>
@@ -97,22 +86,10 @@ class ModalInvest extends React.Component {
                         <dl className="form__bar">
                             <dt><label>使用加息券:</label></dt>
                             <dd>
-                                {/*<Select
-                                            defaultValue={rateCoupons[0].id}
-                                            style={{ width: 300 }}
-                                            onChange={this.handleChange}
-                                            getPopupContainer={() => document.getElementById('area')}
-                                        >
-                                            <Option value="0">不使用加息券</Option>
-                                            {
-                                                rateCoupons.map((item, index) => (
-                                                    <Option value={`${item.id}`} key={`row-${index}`}>{item.title}</Option>
-                                                ))
-                                            }
-                                        </Select>*/}
+
                                 {(rateCoupons==='')?``
                                     :<Select
-                                        defaultValue={rateCoupons[0].rcAmount}
+                                        defaultValue={rateCoupons[0].id}
                                         style={{ width: 300 }}
                                         onChange={this.handleChange}
                                         getPopupContainer={() => document.getElementById('area')}
@@ -120,7 +97,7 @@ class ModalInvest extends React.Component {
                                         <Option value="0">不使用加息券</Option>
                                         {
                                             rateCoupons.map((item, index) => (
-                                                <Option value={`${item.rcAmount}`} key={`row-${index}`}>{item.rcAmount}% 加息券</Option>
+                                                <Option value={`${item.id}`} key={`row-${index}`}>{item.rcAmount}% 加息券</Option>
                                             ))
                                         }
                                     </Select>
