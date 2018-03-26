@@ -4,6 +4,7 @@ import  {checkMoney,addCommas}  from '../../../../assets/js/cost';
 import { Alert } from 'antd';
 import './modaRecharge.less'
 import { connect } from 'react-redux';
+import  {memberAc}  from '../../../../actions/member';
 import  investDetailActions  from '../../../../actions/invest-detail';
 class ModalRecharge extends React.Component {
     constructor(props) {
@@ -34,7 +35,8 @@ class ModalRecharge extends React.Component {
 
         //3 提交后台
         console.log('提交充值申请');
-        this.props.dispatch(investDetailActions.postRecharge({Amount:1000}));
+        //this.props.dispatch(investDetailActions.postRecharge({Amount:1000}));
+        this.props.dispatch(memberAc.recharge(this.state.value));
 
     }
     //改变金额
