@@ -1,9 +1,8 @@
 import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import {addCommas,checkMoney} from './../assets/js/cost';
-import urls from './../utils/url';
+import {urls,token} from './../utils/url';
 
-const token=`b1b3685c-0b71-491e-a9fb-10d26a6c74d4`;
 const url_invest_projects_loan=`${urls}/invest/projects/loan`; //投资信息
 const url_invest_transfer_loan=`${urls}/invest/transfer/loan` //债转投资信息
 const url_projects_info=`${urls}/invest/projects/info`  ;//标的详情

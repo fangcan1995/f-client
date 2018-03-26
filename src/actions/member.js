@@ -2,9 +2,9 @@ import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import {addCommas,checkMoney} from './../assets/js/cost';
 import { message } from 'antd';
-import urls from './../utils/url';
+import {urls,token} from './../utils/url';
 
-const token=`b1b3685c-0b71-491e-a9fb-10d26a6c74d4`;
+
 const url_memberInfo=`${urls}/accounts/my/info?access_token=${token}`; //获取会员信息
 const url_incomeMonth=`${urls}/accounts/income/month?access_token=${token}`; //获取月收益统计
 const url_incomeDay=`${urls}/accounts/income/day?access_token=${token}`; //获取日收益统计

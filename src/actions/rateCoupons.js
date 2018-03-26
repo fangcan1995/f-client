@@ -1,8 +1,7 @@
 import cFetch from '../utils/cFetch';
 import cookie from 'js-cookie';
 import parseJson2URL from './../utils/parseJson2URL';
-import urls from './../utils/url';
-const token=`b1b3685c-0b71-491e-a9fb-10d26a6c74d4`;
+import {urls,token} from './../utils/url';
 
 let url_myRateCoupons=`${urls}/members/memberRateCoupons?access_token=${token}`; //获取加息券
 export const myRateCouponsAc={

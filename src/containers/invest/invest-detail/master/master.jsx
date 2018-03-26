@@ -161,7 +161,7 @@ class InvestBox extends React.Component {
         this.state = {
             project:{},
             member:{},
-            investAmount:0,
+            investAmount:props.investInfo.minInvestAmount,
             modalInvest: false,
             modalRecharge: false,
             modalRiskAssess: false,
