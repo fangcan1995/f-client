@@ -9,8 +9,8 @@ const url_projects_info=`${urls}/invest/projects/info`  ;//标的详情
 const url_projects_record=`${urls}/invest/projects/record`;   //获取散标投资记录
 const url_transfer_record=`${urls}/invest/transfer/record`;//获取转让标投资记录
 const url_rpmtplan_page=`${urls}/invest/rpmtplan/page`;//获取还款记录
-const url_redEnvelopes=`${urls}/members/memberRedEnvelopes/list`;
-const url_RateCoupons=`${urls}/members/memberRateCoupons/list`;
+const url_redEnvelopes=`${urls}/members/memberRedEnvelopes/list`; //获取特定标的可用红包列表
+const url_RateCoupons=`${urls}/members/memberRateCoupons/list`; //获取特定标的可用加息券列表
 
 const url_post_index=``; //提交投资申请
 
