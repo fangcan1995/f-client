@@ -245,7 +245,7 @@ class HomePage extends Component {
                       </ul>
                       <div className="progress">
                         <div className="progress__bar">
-                          <div className="progress__bar--cur" style={{width: `${item.investmentProgress}`}}></div>
+                          <div className="progress__bar--cur" style={{width: `${item.investmentProgress}%`}}></div>
                         </div>
                         <p className="progress__percent">{item.hadPercent}</p>
                         <p className="progress__number">{item.moneyEnd }万/{item.money  }万</p>
@@ -275,10 +275,10 @@ class HomePage extends Component {
                           </ul>
                           <div className="progress">
                             <div className="progress__bar">
-                              <div className="progress__bar--cur" style={{width: `${item.investmentProgress }`}}></div>
+                              <div className="progress__bar--cur" style={{width: `${item.investmentProgress }%`}}></div>
                             </div>
                             <p className="progress__percent">{item.hadPercent}</p>
-                            <p className="progress__number">{item.financed }万/{item.transAmt }万</p>
+                            <p className="progress__number">{item.moneyEnd }万/{item.money }万</p>
                           </div>
                         </div>
                       </div>
