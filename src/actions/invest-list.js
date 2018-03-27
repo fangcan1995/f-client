@@ -3,8 +3,8 @@ import cookie from 'js-cookie';
 import parseJson2URL from './../utils/parseJson2URL';
 import {urls,token} from './../utils/url';
 
-const url_sblist=`${urls}/invest/projects/loan/page?access_token=${token}`;//获取散标列表
-const url_transferlist=`${urls}/invest/transfer/loan/page?access_token=${token}`;//获取债转标列表
+const url_sblist=`${urls}/invest/projects/loan/page`;//获取散标列表
+const url_transferlist=`${urls}/invest/transfer/loan/page`;//获取债转标列表
 
 export const sbListAc={
     getList: (params) => {
@@ -12,7 +12,7 @@ export const sbListAc={
             type: 'investList/sbList/FETCH',
             async payload() {
                 params = parseJson2URL(params);
-                const res = await cFetch(`${url_sblist}&`+params,{method: 'GET'}, false);
+                const res = await cFetch(`${url_sblist}?`+params,{method: 'GET'}, false);
                 const {code, data} = res;
                 console.log('发回的数据');
                 console.log(`${url_sblist}&`+params);
@@ -39,7 +39,7 @@ export const tranferListAc={
             type: 'investList/transferList/FETCH',
             async payload() {
                 params = parseJson2URL(params);
-                const res = await cFetch(`${url_transferlist}&`+params,{method: 'GET'}, false);
+                const res = await cFetch(`${url_transferlist}?`+params,{method: 'GET'}, false);
                 const {code, data} = res;
                 console.log('发回的数据');
                 console.log(data);

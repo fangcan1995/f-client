@@ -4,24 +4,24 @@ import { API_CONFIG } from './../config/api';
 import parseJson2URL from './../utils/parseJson2URL';
 import {urls,token} from './../utils/url';
 
-const url_getMList=`${urls}/message/mail/page?access_token=${token}`;  //获取消息列表
-const url_setRead=`${urls}/message/mail/read?access_token=${token}`; //设为已读
-const url_delete=`${urls}/message/mail?access_token=${token}`; //删除消息
+const url_getMList=`${urls}/message/mail/page`;  //获取消息列表
+const url_setRead=`${urls}/message/mail/read`; //设为已读
+const url_delete=`${urls}/message/mail`; //删除消息
 
-const url_getResult=`${urls}/members/riskEvaluation/result?access_token=${token}`;  //获取风险测评结果
-const url_getRList=`${urls}/members/riskEvaluation?access_token=${token}`;  //获取风险测评题目
-const url_putRList=`${urls}/members/riskEvaluation?access_token=${token}`;  //提交测评结果
+const url_getResult=`${urls}/members/riskEvaluation/result`;  //获取风险测评结果
+const url_getRList=`${urls}/members/riskEvaluation`;  //获取风险测评题目
+const url_putRList=`${urls}/members/riskEvaluation`;  //提交测评结果
 
-const url_getAuthInfo=`${urls}/members/certification?access_token=${token}`; //获取个人信息
+const url_getAuthInfo=`${urls}/members/certification`; //获取个人信息
 const url_password=`${urls}/???`; //修改登录密码
-const url_postPhone=`${urls}/members/photo?access_token=${token}`;  //修改头像
+const url_postPhone=`${urls}/members/photo`;  //修改头像
 export const myMessagesAc= {
     getMessagesList: (params) => {
         return {
             type: 'mySettings/messages/FETCH',
             async payload() {
                 params = parseJson2URL(params);
-                const res = await cFetch(`${url_getMList}&` + params, {method: 'GET'}, false);
+                const res = await cFetch(`${url_getMList}?` + params, {method: 'GET'}, true);
                 const {code, data} = res;
                 if (data.page.total > 0) {
                     for (let index of data.page.list.keys()) {
@@ -47,7 +47,7 @@ export const myMessagesAc= {
                         },
                         body: `[${pram}]`,
                     },
-                    false);
+                    true);
                 if (res.code == 0) {
                     return {readResult: res};
                 } else {
@@ -67,7 +67,7 @@ export const myMessagesAc= {
                         },
                         body: `[${pram}]`,
                     },
-                    false);
+                    true);
                 if (res.code == 0) {
                     return {deleteResult: res};
                 } else {
@@ -90,7 +90,7 @@ export const myRiskAssessAc={
         return {
             type: 'mySettings/riskAssess/FETCH',
             async payload() {
-                const res = await cFetch(`${url_getResult}`, {method: 'GET'}, false);
+                const res = await cFetch(`${url_getResult}`, {method: 'GET'}, true);
                 const {code, data} = res;
                 /*console.log('***************');
                 console.log(url_getResult);
@@ -111,7 +111,7 @@ export const myRiskAssessAc={
         return {
             type: 'mySettings/riskAssess/FETCH',
             async payload() {
-                const res = await cFetch(`${url_getRList}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_getRList}` , {method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
                     for(let index of data.keys()){
@@ -136,7 +136,7 @@ export const myRiskAssessAc={
                         },
                         body: pram,
                     },
-                    2000);
+                    true);
                 if (res.code == 0) {
                     return {postResult: res};
                 } else {
@@ -159,7 +159,7 @@ export const myAuthInfoAc={
         return {
             type: 'mySettings/authInfo/FETCH',
             async payload() {
-                const res = await cFetch(`${url_getAuthInfo}`, {method: 'GET'}, false);
+                const res = await cFetch(`${url_getAuthInfo}`, {method: 'GET'}, true);
                 const {code, data} = res;
                 /*console.log('***************');
                 console.log(url_getResult);
@@ -185,7 +185,7 @@ export const myAuthInfoAc={
                         },
                         body: pram,
                     },
-                    false);
+                    true);
                 if (res.code == 0) {
                     return {postResult: res};
                 } else {
@@ -206,7 +206,7 @@ export const myAuthInfoAc={
                         },
                         body: pram,
                     },
-                    false);
+                    true);
                 if (res.code == 0) {
                     return {postResult: res};
                 } else {

@@ -5,13 +5,13 @@ import { message } from 'antd';
 import {urls,token} from './../utils/url';
 
 
-const url_memberInfo=`${urls}/accounts/my/info?access_token=${token}`; //获取会员信息
-const url_incomeMonth=`${urls}/accounts/income/month?access_token=${token}`; //获取月收益统计
-const url_incomeDay=`${urls}/accounts/income/day?access_token=${token}`; //获取日收益统计
+const url_memberInfo=`${urls}/accounts/my/info`; //获取会员信息
+const url_incomeMonth=`${urls}/accounts/income/month`; //获取月收益统计
+const url_incomeDay=`${urls}/accounts/income/day`; //获取日收益统计
 
-const url_openAccount=`${urls}/accounts?access_token=${token}&custId=123&escrowCode=100100&accountBalance=0&freezingAmount=0&availableBalance=0`; //开户
-const url_recharge=`${urls}/accounts/operation?access_token=${token}&escrowCode=100100&type=1`; //充值
-const url_withdrawals=`${urls}/accounts/operation?access_token=${token}&escrowCode=100100&type=3`; //提现
+const url_openAccount=`${urls}/accounts?custId=123&escrowCode=100100&accountBalance=0&freezingAmount=0&availableBalance=0`; //开户
+const url_recharge=`${urls}/accounts/operation?escrowCode=100100&type=1`; //充值
+const url_withdrawals=`${urls}/accounts/operation?escrowCode=100100&type=3`; //提现
 
 
 export const memberAc= {
@@ -20,9 +20,9 @@ export const memberAc= {
         return {
             type: 'member/FETCH',
             async payload() {
-                const res = await cFetch(`${url_memberInfo}`,{method: 'GET'}, false);
+                const res = await cFetch(`${url_memberInfo}`,{method: 'GET'}, true);
                 const {code, data} = res;
-                console.log('发回的数据');
+                console.log('发回的数据111111111');
                 console.log(data);
                 if (code == 0) {
                     return {
@@ -52,7 +52,7 @@ export const memberAc= {
         return {
             type: 'member/FETCH_CHARTS',
             async payload() {
-                const res = await cFetch(`${url_incomeMonth}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_incomeMonth}` , {method: 'GET'}, true);
                 const {code, data} = res;
                 let xAxis_data=[];
                 let series_data=[];
@@ -80,7 +80,7 @@ export const memberAc= {
         return {
             type: 'member/FETCH_CHARTS',
             async payload() {
-                const res = await cFetch(`${url_incomeDay}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_incomeDay}` , {method: 'GET'}, true);
                 const {code, data} = res;
                 let xAxis_data=[];
                 let series_data=[];
@@ -116,7 +116,7 @@ export const memberAc= {
                         },
                         body: `[${pram}]`,
                     },
-                    false);
+                    true);
                 if (res.code == 0) {
                     message.success('开户成功');
                     return {result: res};
@@ -138,7 +138,7 @@ export const memberAc= {
                         },
                         body: ``,
                     },
-                    false);
+                    true);
                 if (res.code == 0) {
                     message.success('充值成功');
                     return {result: res};
@@ -161,7 +161,7 @@ export const memberAc= {
                         },
                         body: ``,
                     },
-                    false);
+                    true);
                 if (res.code == 0) {
                     message.success('提现成功');
                     return {result: res};

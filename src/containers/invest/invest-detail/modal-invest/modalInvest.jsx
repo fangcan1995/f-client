@@ -19,8 +19,11 @@ class ModalInvest extends React.Component {
         }
     }
     componentDidMount () {
-        this.props.dispatch(investDetailActions.getRedEnvelopes(this.props.id));
-        this.props.dispatch(investDetailActions.getRateCoupons(this.props.id));
+        if(this.props.auth.isAuthenticated){
+            this.props.dispatch(investDetailActions.getRedEnvelopes(this.props.id));
+            this.props.dispatch(investDetailActions.getRateCoupons(this.props.id));
+        }
+
     }
 
     onChange(e) {

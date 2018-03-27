@@ -21,7 +21,7 @@ let investDetailActions = {
     return {
         type: 'investDetail/investInfo/FETCH',
         async payload() {
-            const res = await cFetch(`${url_invest_projects_loan}/${id}?access_token=${token}` , {method: 'GET'}, false);
+            const res = await cFetch(`${url_invest_projects_loan}/${id}` , {method: 'GET'}, false);
             const {code, data} = res;
             if (code == 0) {
                 return data;
@@ -36,7 +36,7 @@ let investDetailActions = {
         return {
             type: 'investDetail/investInfo/FETCH',
             async payload() {
-                const res = await cFetch(`${url_invest_transfer_loan}/${transferId}?access_token=${token}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_invest_transfer_loan}/${transferId}` , {method: 'GET'}, false);
                 const {code, data} = res;
                 if (code == 0) {
                     return data;
@@ -52,7 +52,7 @@ let investDetailActions = {
         return {
             type: 'investDetail/loanInfo/FETCH',
             async payload() {
-                const res = await cFetch(`${url_projects_info}/${id}?access_token=${token}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_projects_info}/${id}` , {method: 'GET'}, false);
                 const {code, data} = res;
                 if (code == 0) {
                     return data;
@@ -67,7 +67,7 @@ let investDetailActions = {
         return {
             type: 'investDetail/investRecords/FETCH',
             async payload() {
-                const res = await cFetch(`${url_projects_record}?access_token=${token}&pageNum=1&pageSize=1000&projectId=${id}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_projects_record}?pageNum=1&pageSize=1000&projectId=${id}` , {method: 'GET'}, false);
 
                 const {code, data} = res;
                 if (code == 0) {
@@ -84,7 +84,7 @@ let investDetailActions = {
         return {
             type: 'investDetail/investTransferRecords/FETCH',
             async payload() {
-                const res = await cFetch(`${url_transfer_record}?access_token=${token}&pageNum=1&pageSize=1000&projectId=${id}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_transfer_record}?pageNum=1&pageSize=1000&projectId=${id}` , {method: 'GET'}, false);
 
                 const {code, data} = res;
                 if (code == 0) {
@@ -101,7 +101,7 @@ let investDetailActions = {
         return {
             type: 'investDetail/repayRecords/FETCH',
             async payload() {
-                const res = await cFetch(`${url_rpmtplan_page}?access_token=${token}&pageNum=1&pageSize=1000&projectId=${id}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_rpmtplan_page}?pageNum=1&pageSize=1000&projectId=${id}` , {method: 'GET'}, false);
                 const {code, data} = res;
                 if (code == 0) {
                     return data;
@@ -117,7 +117,7 @@ let investDetailActions = {
         return {
             type: 'investDetail/redEnvelopes/FETCH',
             async payload() {
-                const res = await cFetch(`${url_redEnvelopes}?access_token=${token}&projectId=${id}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_redEnvelopes}?projectId=${id}` , {method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
                     return data;
@@ -133,7 +133,7 @@ let investDetailActions = {
         return {
             type: 'investDetail/rateCoupons/FETCH',
             async payload() {
-                const res = await cFetch(`${url_RateCoupons}?access_token=${token}&projectId=${id}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_RateCoupons}?projectId=${id}` , {method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
                     return data;

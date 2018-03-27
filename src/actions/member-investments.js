@@ -5,8 +5,8 @@ import parseJson2URL from './../utils/parseJson2URL';
 import {urls,token} from './../utils/url';
 
 
-const url_investCharts=`${urls}/members/invest/statistics?access_token=${token}`; //统计图数据
-const url_investList=`${urls}/members/investments?access_token=${token}`;//获取投资列表
+const url_investCharts=`${urls}/members/invest/statistics`; //统计图数据
+const url_investList=`${urls}/members/investments`;//获取投资列表
 const url_planList=`${urls}/members/investments/receiving/`  //获取回款记录
 const url_postTransferApp=`http://172.16.4.5:8084/test.php`;//转让申请
 const url_getTransfer=`${urls}/members/investments/transfer/`; //获取债转详情
@@ -20,7 +20,7 @@ export const memberInvestAc={
         return {
             type: 'myInvest/investments/FETCH',
             async payload() {
-                const res = await cFetch(`${url_investCharts}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_investCharts}` , {method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
                     let {totalInvestmentDto,accumulatedIncomeDto}=data.data;
@@ -54,7 +54,7 @@ export const memberInvestAc={
             type: 'myInvest/investments/FETCH',
             async payload() {
                 params = parseJson2URL(params);
-                const res = await cFetch(`${url_investList}&`+params,{method: 'GET'}, false);
+                const res = await cFetch(`${url_investList}?`+params,{method: 'GET'}, true);
                 const {code, data} = res;
                 console.log('发回的数据');
                 console.log(data);
@@ -74,7 +74,7 @@ export const memberInvestAc={
             type: 'myInvest/investments/FETCH',
             async payload() {
 
-                const res = await cFetch(`${url_planList}${param}?access_token=${token}`,{method: 'GET'}, false);
+                const res = await cFetch(`${url_planList}${param}`,{method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
                     return {
@@ -91,7 +91,7 @@ export const memberInvestAc={
         return {
             type: 'myInvest/investments/FETCH',
             async payload() {
-                const res = await cFetch(`${url_getTransfer}${pram}?access_token=${token}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_getTransfer}${pram}` , {method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
                     transferInfo:data
@@ -114,7 +114,7 @@ export const memberInvestAc={
                         },
                         body: params,
                     },
-                    false);
+                    true);
                 return {postResult: res};
                 /*if (res.code == 0) {
                     return {postResult: res};
