@@ -39,7 +39,7 @@ export const getApplyData = (loanType ) => {
     type: 'loan/GET_APPLY_DATA',
     data:{loanType},
     async payload() {
-        const res = await cFetch(`${urls}/loans/apply/qualification?access_token=${token}` , { method: 'GET' } , false);
+        const res = await cFetch(`${urls}/loans/apply/qualification` , { method: 'GET' } , true);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)
@@ -89,13 +89,13 @@ export const checkForm = (e) => {
       type: 'loan/POST_LOAN_DATA',
       // async/await配合promise处理异步
       async payload() {
-        const res = await cFetch(`${urls}/loans/apply?access_token=${token}` , { 
+        const res = await cFetch(`${urls}/loans/apply` , { 
           method: 'POST', 
           headers: {
                 'Content-Type': 'application/json'
             },
           body:params 
-          }, false);
+          }, true);
           const { code, data } = res;
           if ( code == 0 ) {
             return data || {};

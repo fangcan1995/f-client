@@ -10,9 +10,9 @@ export const loginUser = params => {
     type: LOGIN,
     // async/await配合promise处理异步
     async payload() {
-      const token = await cFetch(`${urls}` + API_CONFIG.auth + params, { method: 'POST', body: params, credentials: 'include' }, false);
+      const token = await cFetch(API_CONFIG.baseUri + API_CONFIG.auth + params, { method: 'POST', body: params, credentials: 'include' }, false);
       const { token_type, access_token } = token;
-      const res = await cFetch(`${urls}` + API_CONFIG.user, { headers: { 'Authorization': `${token_type} ${access_token}` } });
+      const res = await cFetch(API_CONFIG.baseUri + API_CONFIG.user, { headers: { 'Authorization': `${token_type} ${access_token}` } });
       const { code, data } = res;
       if ( code == 0 ) {
         const { ...user } = data || {};
@@ -39,7 +39,7 @@ export const logoutUser = () => {
       const params = `?${parseJson2URL({ access_token })}`;
 
 
-      const res = await cFetch(`${urls}` + API_CONFIG.logout + params, { method: 'POST', body: params });
+      const res = await cFetch(API_CONFIG.baseUri + API_CONFIG.logout + params, { method: 'POST', body: params });
       console.log(res);
       const { code, message: msg } = res;
       if ( code == 0 ) {

@@ -1,9 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux'
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import './detail.less';
 
-export default class SuperPartnerDetail extends React.Component{
+class SuperPartnerDetail extends React.Component{
     render(){
         return (
             <div className="member__main">
@@ -47,3 +48,11 @@ export default class SuperPartnerDetail extends React.Component{
         );
     };
 }
+
+function select(state) {
+    const { superPartnerDetail } = state.toJS();
+    return {
+      superPartnerDetail
+    };
+  }
+export default connect(select)(SuperPartnerDetail)

@@ -1,40 +1,54 @@
-import fetch from 'isomorphic-fetch';
+import cFetch from './../utils/cFetch';
 import {urls,token} from '../utils/url'
 
 
-let urlTotalData = `${urls}/statistics/totalData?access_token=${token}`;
-let urlBorrowInfo = `${urls}/statistics/borrowInfo?access_token=${token}`;
-let urlInvestInfo = `${urls}/statistics/investInfo?access_token=${token}`;
+let urlTotalData = `${urls}/statistics/totalData`;
+let urlBorrowInfo = `${urls}/statistics/borrowInfo`;
+let urlInvestInfo = `${urls}/statistics/investInfo`;
 
 const urlss = [
-    `${urls}/statistics/totalData?access_token=${token}`,
-    `${urls}/statistics/borrowInfo?access_token=${token}`,
-    `${urls}/statistics/investInfo?access_token=${token}`
+    `${urls}/statistics/totalData`,
+    `${urls}/statistics/borrowInfo`,
+    `${urls}/statistics/investInfo`
 ] 
+
+// export const actionTest = () => {
+//     return {
+//         type: 'GET_TOTALDATA', 
+//         async payload () {
+//             return Promise.all(urlss.map(url => 
+//                 cFetch(url, {method: 'GET'},false))
+//             ).then(responses => Promise.all(responses.map(response => response.json()))
+//             ).then(result => {
+//                 console.log(result);
+//                 return result;
+//             });
+//         },
+//     }
+// }
 
 export const actionTest = () => {
     return {
         type: 'GET_TOTALDATA', 
         async payload () {
             return Promise.all(urlss.map(url => 
-                fetch(url, {method: 'GET'}))
-            ).then(responses => Promise.all(responses.map(response => response.json()))
-            ).then(result => {
-                console.log(result);
-                return result;
+                cFetch(url, {method: 'GET'},false))
+            ).then(responses =>{
+                console.log(responses);
+                return responses;
             });
         },
     }
 }
 
 export const actionUpdateLoanMoney = (year) => {
-    const loanMoneyUrl = `${urls}/statistics/borrowInfo?access_token=${token}&type=1&year=${year}`;
+    const loanMoneyUrl = `${urls}/statistics/borrowInfo?type=1&year=${year}`;
     return {
         type: 'UPDATE_LOANMONEY',
         async payload () {
-            const loanMoney = await fetch(loanMoneyUrl, {
+            const loanMoney = await cFetch(loanMoneyUrl, {
                 method: 'GET'
-            }).then(res => {
+            },false).then(res => {
                 return res.json();
             });
             return loanMoney;
@@ -43,13 +57,13 @@ export const actionUpdateLoanMoney = (year) => {
 }
 
 export const actionUpdateLoanCount = (year) => {
-    const loanCountUrl = `${urls}/statistics/borrowInfo?access_token=${token}&type=3&year=${year}`;
+    const loanCountUrl = `${urls}/statistics/borrowInfo?type=3&year=${year}`;
     return {
         type: 'UPDATE_LOANCOUNT',
         async payload () {
-            const loanCount = await fetch(loanCountUrl, {
+            const loanCount = await cFetch(loanCountUrl, {
                 method: 'GET'
-            }).then(res => {
+            },false).then(res => {
                 return res.json();
             });
             console.log(loanCount);
@@ -59,11 +73,11 @@ export const actionUpdateLoanCount = (year) => {
 }
 
 export const actionUpdateLoanMemberCount = (year) => {
-    const loanMemberCountUrl = `${urls}/statistics/borrowInfo?access_token=${token}&type=2&year=${year}`;
+    const loanMemberCountUrl = `${urls}/statistics/borrowInfo?type=2&year=${year}`;
     return {
         type: 'UPDATE_LOANMEMBERCOUNT',
         async payload () {
-            const loanMemberCount = await fetch(loanMemberCountUrl, {
+            const loanMemberCount = await cFetch(loanMemberCountUrl, {
                 method: 'GET'
             }).then(res => {
                 return res.json();
@@ -76,11 +90,11 @@ export const actionUpdateLoanMemberCount = (year) => {
 
 
 export const actionUpdateInvestInfo = (year) => {
-    const investInfoUrl = `${urls}/statistics/investInfo?access_token=${token}&year=${year}`;
+    const investInfoUrl = `${urls}/statistics/investInfo?year=${year}`;
     return {
         type: 'UPDATE_INVESTINFO',
         async payload () {
-            const InvestInfo = await fetch(investInfoUrl, {
+            const InvestInfo = await cFetch(investInfoUrl, {
                 method: 'GET'
             }).then(res => {
                 return res.json();

@@ -10,7 +10,7 @@ export const getImageCode = () => {
   return {
     type: 'login/GET_IMAGE_CODE',
     async payload() {
-      const res = await fetch(`${urls}` + API_CONFIG.imageCode, { credentials: 'include' });
+      const res = await fetch(API_CONFIG.baseUri + API_CONFIG.imageCode, { credentials: 'include' });
       const blob = await res.blob();
       const dataURL = await readBlobAsDataURL(blob);
       return dataURL;
@@ -22,7 +22,7 @@ export const sendVerifyCode = params => {
   return {
     type: 'login/SEND_VERIFY_CODE',
     async payload() {
-      const res = await cFetch(`${urls}` + API_CONFIG.loginVerifyCode + params, { credentials: 'include' }, false);
+      const res = await cFetch(API_CONFIG.baseUri + API_CONFIG.loginVerifyCode + params, { credentials: 'include' }, false);
       const { code, data } = res;
       if ( code == 0 ) {
         return data || {};

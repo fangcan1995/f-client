@@ -14,6 +14,7 @@ import memberSettings from './member-settings';
 import investList from './invest-list';
 import investDetail from './invest-detail';
 import member from './member';
+import superPartner from './super-partner';
 export {
     auth,
     login,
@@ -31,5 +32,5 @@ export {
     investDetail,
     memberSettings,
     member,
-
+    superPartner,
 }
