@@ -119,8 +119,8 @@ export default (
                         <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/super-partner`} />
 
-                            <Route path={`${match.url}/super-partner`} component={userIsAuthenticated(SuperPartner)} />
-                            <Route path={`${match.url}/super-list`} component={userIsAuthenticated(SuperPartnerDetail)} />
+                            <Route path={`${match.url}/super-partner`} component={SuperPartner} />
+                            <Route path={`${match.url}/super-list`} component={SuperPartnerDetail} />
                             <Route path={`${match.url}/partner-list`} component={userIsAuthenticated(PartnerList)} />
                             <Route path={`${match.url}/partner-detail`} component={userIsAuthenticated(PartnerDetail)} />
                             <Route path={`${match.url}/my-redEnvelopes`} component={MyRedEnvelopes} />
