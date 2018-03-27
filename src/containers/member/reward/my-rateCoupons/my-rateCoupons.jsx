@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import {myRateCouponsAc} from '../../../../actions/rateCoupons';
 class MyRateCoupons extends React.Component{
     componentDidMount () {
+        this.props.dispatch(myRateCouponsAc.toggleClass(0));
         this.props.dispatch(myRateCouponsAc.getData());
     }
     filter(pram){
@@ -18,6 +19,7 @@ class MyRateCoupons extends React.Component{
     render(){
         let {myRateCoupons, dispatch} = this.props;
         let {rcStatus,data}=myRateCoupons;
+
         return(
             <div className="member__main">
                 <Crumbs/>

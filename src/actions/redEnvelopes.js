@@ -12,8 +12,6 @@ export const redEnvelopesAc={
                 params = parseJson2URL(params);
                 const res = await cFetch(`${url_myRedEnvelopes}?`+params,{method: 'GET'}, true);
                 const {code, data} = res;
-                console.log('发回的数据');
-                console.log(data);
                 if (code == 0) {
                     return data;
                 } else {

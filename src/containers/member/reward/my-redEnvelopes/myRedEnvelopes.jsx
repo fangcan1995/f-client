@@ -10,6 +10,7 @@ import {redEnvelopesAc} from '../../../../actions/redEnvelopes';
 
 class MyRedEnvelopes extends React.Component {
     componentDidMount () {
+        this.props.dispatch(redEnvelopesAc.toggleClass(0));
         this.props.dispatch(redEnvelopesAc.getData());
     }
     filter(pram){
@@ -19,7 +20,6 @@ class MyRedEnvelopes extends React.Component {
     render() {
         let {myRedEnvelopes,auth, dispatch} = this.props;
         let {reStatus,data}=myRedEnvelopes;
-        console.log(data);
         return (
             <div className="member__main">
                 <Crumbs/>
