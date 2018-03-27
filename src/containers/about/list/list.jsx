@@ -53,6 +53,7 @@ class articalList extends Component {
     render () {
 
         //数据
+        console.log(this.props.aboutData);
         const { list } = this.props.aboutData.pageInfo;
         const { pageInfo } = this.props.aboutData;
         console.log(pageInfo);
@@ -115,6 +116,7 @@ class articalList extends Component {
 
 function mapStateToProps (state) {
     console.log(state.toJS());
+    console.log(state.toJS().aboutReducer);
     return {
         aboutData: state.toJS().aboutReducer
     }
