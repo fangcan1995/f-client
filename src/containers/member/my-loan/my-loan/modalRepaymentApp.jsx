@@ -4,7 +4,7 @@ import  {addCommas}  from '../../../../assets/js/cost';
 import { Form,Row,Input,Button,Checkbox,Col } from 'antd';
 import { connect } from 'react-redux';
 import {BbhAlert} from '../../../../components/bbhAlert/bbhAlert';
-import  {memberLoansAc}  from '../../../../actions/member-loans';
+import  {memberLoansAc,getImageCode}  from '../../../../actions/member-loans';
 import { hex_md5 } from '../../../../utils/md5';
 import moment from "moment";
 const createForm = Form.create;
@@ -15,10 +15,15 @@ function noop() {
 class ModalRepaymentApp extends React.Component {
     componentDidMount () {
         this.props.dispatch(memberLoansAc.getProject(this.props.info.currentId));
+        this.props.dispatch(getImageCode());
     }
     static propTypes = {
         form: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired
+    }
+    handleImageCodeImgClick = e => {
+        const { dispatch } = this.props;
+        dispatch(getImageCode());
     }
     handleSubmit = (e) => {
         e.preventDefault();
@@ -39,11 +44,10 @@ class ModalRepaymentApp extends React.Component {
         });
     }
     render() {
-        console.log('数据');
-        console.log(this.props);
+
         let {callback}=this.props.info;
         let {postResult,projectInfo}=this.props.memberLoans.myLoans;
-
+        let {imageCodeImg}=this.props.memberLoans;
         const { getFieldDecorator,getFieldValue } = this.props.form;
         const passwordProps = getFieldDecorator('password', {
             rules: [
@@ -149,7 +153,11 @@ class ModalRepaymentApp extends React.Component {
                                                 }
                                             </Col>
                                             <Col span={12}>
-                                                <img className="verifyCode__img" src="http://172.16.1.234:8060/uaa/code/image" />
+                                                <img
+                                                    className="imageCode__img"
+                                                    src={ imageCodeImg }
+                                                    onClick={ this.handleImageCodeImgClick }
+                                                />
                                             </Col>
                                         </Row>
                                     </FormItem>

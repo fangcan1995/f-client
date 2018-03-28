@@ -3,8 +3,8 @@ import cookie from 'js-cookie';
 import {addCommas,checkMoney} from './../assets/js/cost';
 import parseJson2URL from './../utils/parseJson2URL';
 import {urls,token} from '../utils/url'
-
-
+import { API_CONFIG } from './../config/api';
+import readBlobAsDataURL from '../utils/readBlobAsDataURL';
 const url_loansCharts=`${urls}/members/loans/statistics`; //统计图数据
 const url_loansList=`${urls}/members/loans`;//获取借款列表
 const url_repaymentsAll=`${urls}/members/loans/repayments/all/`;//项目提前还款时获取详情
@@ -15,7 +15,19 @@ const url_repaymentsList=`${urls}/members/loans/repayments`;//获取借款列表
 const url_proList=`${urls}/members/loans/proName`;//获取还款中和已完结的项目列表
 const url_repayment=`${urls}/members/loans/repayments/`;//还款时获取详情
 const url_postRepayment=`${urls}/test.php`;//还款申请
-
+export const getImageCode = () => {
+    return {
+        type: 'myLoans/GET_IMAGE_CODE',
+        async payload() {
+            const res = await fetch(API_CONFIG.baseUri + API_CONFIG.imageCode, { credentials: 'include' })
+            const blob = await res.blob();
+            const dataURL = await readBlobAsDataURL(blob);
+            console.log('aaaaaaaaaaaaaaaaaaaaa');
+            console.log(dataURL);
+            return dataURL;
+        }
+    }
+}
 export const memberLoansAc={
     getPie: () => {
         return {

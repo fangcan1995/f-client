@@ -10,7 +10,7 @@ const initialState = Immutable.fromJS({
         modalRepaymentApp: false,
         currentId:'',
         postResult:``,
-        projectInfo:''
+        projectInfo:'',
     },
     repaymentPlans:{
         charts:``,
@@ -24,6 +24,7 @@ const initialState = Immutable.fromJS({
         postResult:``,
         projectInfo:``
     },
+    imageCodeImg:``
 });
 
 export default createReducer(initialState, {
@@ -33,6 +34,17 @@ export default createReducer(initialState, {
     ['myLoans/myLoans/FETCH_FULFILLED']: (state, action) => state.mergeDeep({
         isFetching: false,
         myLoans: action.payload,
+    }),
+    ['myLoans/GET_IMAGE_CODE_PENDING']: (state, action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['myLoans/GET_IMAGE_CODE_FULFILLED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        imageCodeImg: action.payload
+    }),
+    ['myLoans/GET_IMAGE_CODE_REJECTED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
     }),
     ['myLoans/myLoans/FETCH_REJECTED']: (state, action) => state.mergeDeep({
         isFetching: false,
