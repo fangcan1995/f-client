@@ -15,10 +15,9 @@ import {memberInvestAc} from "../../../../actions/member-investments";
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import './investments.less';
 class MyInvestments extends React.Component{
-
     componentDidMount () {
         this.props.dispatch(memberInvestAc.getPie());
-        this.props.dispatch(memberInvestAc.getList());
+        this.props.dispatch(memberInvestAc.getList({status:1}));
     }
     filter(pram){
         this.props.dispatch(memberInvestAc.stateModify({status:pram,myList:``}));

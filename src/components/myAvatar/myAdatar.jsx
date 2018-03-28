@@ -27,22 +27,12 @@ export default class MyAvatar extends React.Component {
         return isImg && isLt1M;
     }
     handleChange = (info) => {
-        console.log('--------------');
-        console.log(info);
-
-        console.log(info.file);
         let newFile=info.file;
-        console.log('文件');
-        console.log(newFile);
         if (newFile.status === 'uploading') {
             this.setState({ loading: true });
             return;
         }
         if (newFile.status === 'done') {
-            //message.success(`${info.file.name} file uploaded successfully`);
-            // Get this url from response in real world.
-            console.log('---------上传的东西------------');
-            console.log(newFile.originFileObj);
             this.getBase64(newFile.originFileObj, imageUrl => {
                 this.setState({
                 imageUrl,
@@ -56,13 +46,13 @@ export default class MyAvatar extends React.Component {
     }
     render() {
         let {photo}=this.props;
+        console.log('---------------photo--------');
+        console.log(photo);
        let disableChange=this.props.disableChange || false; //是否可以替换
         let photo_url=``;
         if(photo!=``){
-            console.log('1');
             photo_url=photo;
         }else{
-            console.log('2');
             photo_url=`http://www.baba88.com/static/quote_518/images/logo.png`;
         }
         const uploadButton = (

@@ -12,12 +12,17 @@ import moment from "moment";
 class Receiving extends React.Component{
     componentDidMount () {
         this.props.dispatch(memberReceivingAc.getPie());
-        this.props.dispatch(memberReceivingAc.getList());
+        this.props.dispatch(memberReceivingAc.getList({
+            pageNum:1,
+            pageSize:10,
+        }));
     }
     render(){
         let {dispatch}=this.props;
         let {myReceiving,isFetching}=this.props.memberInvestments;
         let {myList,charts}=myReceiving;
+        console.log('列表');
+        console.log(myList);
         return(
             <div className="member__main receiving">
                 <Crumbs/>
@@ -37,7 +42,7 @@ class Receiving extends React.Component{
                                     </div>
                                     <div name="未回金额">
                                         <PieChart
-                                            data={charts.data.todoDto.data}
+                                            data={charts.todoDto.data}
                                             style={{height: '300px', width: '930px'}}
                                             totalTitle="未回金额"
                                         >

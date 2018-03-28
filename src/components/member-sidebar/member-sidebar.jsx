@@ -21,9 +21,7 @@ class MemberSidebar extends React.Component {
         }
     }
     render(){
-        console.log('member----------------');
         let {member,auth}=this.props;
-        console.log(auth);
         let {accountsInfo}=member;
         return (
             <main className="main member">

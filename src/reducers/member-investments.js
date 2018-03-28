@@ -11,11 +11,6 @@ const initialState = Immutable.fromJS({
         modalTransfer: false,
         currentId:'',
         postResult:``,
-        /*currentPro:{
-            currentId:'',
-            planData:[],
-            message:''
-        },*/
         planList:``,
         transferInfo:``
     },
