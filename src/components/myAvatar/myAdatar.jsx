@@ -1,7 +1,8 @@
 import React,{ Component } from "react";
 import { Upload, Icon, message,Avatar } from 'antd';
 import './myAdatar.less';
-
+import {urls} from './../../utils/url';
+import cookie from 'js-cookie';
 export default class MyAvatar extends React.Component {
     constructor(props) {
         super(props);
@@ -57,22 +58,27 @@ export default class MyAvatar extends React.Component {
         let {photo}=this.props;
        let disableChange=this.props.disableChange || false; //是否可以替换
         let photo_url=``;
-        if(photo){
+        if(photo!=``){
+            console.log('1');
             photo_url=photo;
         }else{
+            console.log('2');
             photo_url=`http://www.baba88.com/static/quote_518/images/logo.png`;
         }
         const uploadButton = (
             <Avatar size="large" className="memberPhoto" src={photo_url} />
         );
         const imageUrl = this.state.imageUrl;
+        const token = cookie.getJSON('token') || {};
+        const { access_token } = token;
+        const actionUrl=`${urls}/members/photo?access_token=${access_token}`;
         return (
             <Upload
                 name="file"
                 className="memberPhoto"
                 multiple={false}
                 showUploadList={false}
-                action="http://172.16.1.221:9090/members/photo?access_token=d36b2fff-1757-4aed-b576-df30f9f9d173"
+                action={actionUrl}
                 beforeUpload={this.beforeUpload}
                 onChange={this.handleChange}
                 disabled={disableChange}
