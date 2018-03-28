@@ -117,7 +117,7 @@ export default (
                 return (
                     <MemberSidebar {...props}>
                         <Switch>
-                            <Redirect exact from={`${match.url}`} to={`${match.url}/super-partner`} />
+                            <Redirect exact from={`${match.url}`} to={`${match.url}/my-redEnvelopes`} />
 
                             <Route path={`${match.url}/super-partner`} component={userIsAuthenticated(SuperPartner)} />
                             <Route path={`${match.url}/super-list`} component={userIsAuthenticated(SuperPartnerDetail)} />
