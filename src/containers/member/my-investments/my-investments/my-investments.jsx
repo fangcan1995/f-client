@@ -16,6 +16,7 @@ import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import './investments.less';
 class MyInvestments extends React.Component{
     componentDidMount () {
+        this.props.dispatch(memberInvestAc.stateModify({status:1,myList:``}));
         this.props.dispatch(memberInvestAc.getPie());
         this.props.dispatch(memberInvestAc.getList({status:1}));
     }
