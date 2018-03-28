@@ -36,7 +36,6 @@ class InvestDetailMaster extends React.Component {
         if(this.props.auth.isAuthenticated){
             this.props.dispatch(memberAc.getInfo());
         }
-        //
         this.props.dispatch(investDetailActions.getInvestInfo(this.props.id));
     }
 
@@ -51,11 +50,7 @@ class InvestDetailMaster extends React.Component {
         };
         dispatch(investDetailActions.statePostResultModify(newState));
     }*/
-
     render(){
-        //let {investAmount}=this.state;
-        //let {dispatch}=this.props;
-
         let {investInfo}=this.props.investDetail;
         let {member,auth}=this.props;
         return (
@@ -162,7 +157,6 @@ class InvestBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            //project:{},
             member:{},
             investAmount:props.investInfo.minInvestAmount,
             modalInvest: false,
@@ -263,11 +257,8 @@ class InvestBox extends React.Component {
                         <a className='btn' onClick={() => this.toggleModal(`modalInvest`,true,investInfo.id)}>立即投资</a>
                     )
                 }
-
             }
         }
-
-
     }
     render(){
         let {member,auth}=this.props;
