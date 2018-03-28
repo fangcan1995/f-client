@@ -82,7 +82,9 @@ class Header extends Component {
                       <li><Link to="/my-investments">我的投资</Link></li>
                       <li><Link to="/my-loan">我的借款</Link></li>
                       <li><Link to="/my-settings">基本设置</Link></li>
-                      <li><Link to="/my-reward">奖励管理</Link></li>
+                      {/*<li><Link to="/my-reward">奖励管理</Link></li>*/}
+                      <li><Link to="/my-reward/my-redEnvelopes">我的红包</Link></li>
+
                     </ul>
                   </div>
                 </div>

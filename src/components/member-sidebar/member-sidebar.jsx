@@ -16,7 +16,9 @@ const ListItemLink = ({ to, ...rest }) => (
 
 class MemberSidebar extends React.Component {
     componentDidMount() {
-        this.props.dispatch(memberAc.getInfo());
+        if(this.props.auth.isAuthenticated) {
+            this.props.dispatch(memberAc.getInfo());
+        }
     }
     render(){
         console.log('member----------------');
