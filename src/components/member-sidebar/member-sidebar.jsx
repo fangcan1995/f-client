@@ -69,12 +69,11 @@ class MemberSidebar extends React.Component {
                                         <ListItemLink to="/my-reward/partner-list">注册理财师</ListItemLink>
                                         :``
                                 }
-                                {/* {
+                                {
                                     (accountsInfo.memberIdentity===1)?
                                         <ListItemLink to="/my-reward/super-partner">超级合伙人</ListItemLink>
                                         :``
-                                } */}
-                                <ListItemLink to="/my-reward/super-partner">超级合伙人</ListItemLink>
+                                }
                                 <ListItemLink to="/my-reward/my-redEnvelopes">我的红包</ListItemLink>
                                 <ListItemLink to="/my-reward/my-rateCoupons">我的加息券</ListItemLink>
                             </ul>
