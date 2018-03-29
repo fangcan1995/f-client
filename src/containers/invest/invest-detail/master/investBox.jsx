@@ -9,7 +9,6 @@ import { Modal } from 'antd';
 import ModalInvest from '../modal-invest/modalInvest';
 import ModalRecharge from '../modal-recharge/modaRecharge'
 import ModalRiskAssess from '../modal-riskAssess/modal-riskAssess';
-/*import MyRiskAssess from '../../../member/settings/my-riskAssess/my-riskAssess'*/
 import  {memberAc}  from '../../../../actions/member';
 
 
@@ -78,7 +77,6 @@ class MasterInvestBox extends React.Component {
     getButton(){
         let {auth,member,investInfo}=this.props;
         let {openAccountStatus,riskStatus,riskLevel,amount,noviceStatus}=member.accountsInfo;
-        //
         if(!auth.isAuthenticated){
             return(
                 <Link  to={`/login?redirect=%2Finvest-detail%2F${investInfo.id}`} className="btn">我要登录</Link>
@@ -88,7 +86,7 @@ class MasterInvestBox extends React.Component {
                 <a  className="btn" onClick={this.bindCard}>立即开户</a>
             )
         }else if(openAccountStatus===1){
-            if(1===1){//没有风险测评过riskStatus===`0`
+            if(riskStatus===`1`){//1 没有风险测评过
                 return(
                     <a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,investInfo.id)}>立即风险评估</a>
                 )
@@ -117,7 +115,6 @@ class MasterInvestBox extends React.Component {
             }
         }
     }
-
     render(){
         let {member,auth,investInfo,type}=this.props;
         let {amount,redInfo,couponInfo}=member.accountsInfo;
@@ -216,7 +213,6 @@ class MasterInvestBox extends React.Component {
                         {this.state.modalInvest===true?
                             <ModalInvest config = {
                                 {
-
                                     investAmount:this.state.investAmount,  //投资金额
                                     //账户余额
                                     callback:(obj)=>{
@@ -268,14 +264,17 @@ class MasterInvestBox extends React.Component {
                         visible={this.state.modalRiskAssess}
                         width="780px"
                         footer={null}
-                        onCancel={() => this.toggleModal(`modalRiskAssess`,false,'')}
+                        onCancel={() => {
+                            this.toggleModal(`modalRiskAssess`,false);
+                            this.props.dispatch(memberAc.getInfo());  //成功重载数据
+                        }}
                     >
                         {this.state.modalRiskAssess===true?
                             <ModalRiskAssess
                                 config={{
                                     callback:(obj)=>{
                                         this.toggleModal(`modalRiskAssess`,false);
-                                        this.props.dispatch(investDetailActions.getData(investInfo.id));  //重载数据
+                                        this.props.dispatch(memberAc.getInfo());  //成功重载数据
                                     }
                                 }}
                             />:''
