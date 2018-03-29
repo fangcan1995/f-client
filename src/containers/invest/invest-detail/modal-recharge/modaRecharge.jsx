@@ -36,7 +36,9 @@ class ModalRecharge extends React.Component {
         //3 提交后台
         console.log('提交充值申请');
         //this.props.dispatch(investDetailActions.postRecharge({Amount:1000}));
+
         this.props.dispatch(memberAc.recharge(this.state.value));
+        //this.props.dispatch(investDetailActions.statePostResultModify({}));
 
     }
     //改变金额
@@ -114,7 +116,6 @@ class ModalRecharge extends React.Component {
                                 <div className="tips__area">
                                     <p><strong>提示：</strong>您的充值金额将会在10-15分钟内到账，请耐心等候</p>
                                 </div>
-
                                 <div className="form__wrapper">
                                     <button className="button able" style={{marginTop:'30px'}} onClick={this.handleSubmit}>确定</button>
                                 </div>

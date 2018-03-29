@@ -1,214 +1,131 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import  {getData}  from '../../../../assets/js/getData';
 import './modal-riskAssess.less';
-import { Form,Radio,Alert } from 'antd';
-const FormItem = Form.Item;
+
+import { connect } from 'react-redux';
+import {myRiskAssessAc} from '../../../../actions/member-settings';
+import { Radio,Button } from 'antd';
 const RadioGroup = Radio.Group;
-export default class ModalRiskAssess extends React.Component {
-    constructor(props) {
+
+class ModalRiskAssess extends React.Component {
+    constructor(props){
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.state= {
-            dataSetting: {},
-            alertInfo:{
-                show:false,
-                message:'',
-                description:'',
-                type:''
-            },
-            answers:{}
+        this.onChange = this.onChange.bind(this);
+        this.reset = this.reset.bind(this);
+        this.disabled= this.disabled.bind(this);
+        this.state = {
+            loading: false,
+            iconLoading: false,
         }
     }
+    componentDidMount() {
+        this.props.dispatch(myRiskAssessAc.getResult());
+        this.props.dispatch(myRiskAssessAc.getRiskAssessList());
+    }
+    disabled(){
+        let {myList}=this.props.memberSettings.riskAssess;
+        if(myList!=''){
+            let i=myList.findIndex(
+                (x)=>x.isChecked==''
+            );
+            if(i!==-1){
+                return true
+            }else{
+                return false
+            }
+        }
+    }
+    //选择答案
     onChange = (e) => {
-        let newAnswer=this.state.answers;
-        newAnswer[e.target.name]=e.target.value;
-        this.setState({
-            answers:newAnswer
-        },()=>{
-        });
+        let {myList}=this.props.memberSettings.riskAssess;
+        let i=myList.findIndex((x)=>x.examId==e.target.name);
+        myList[i].isChecked=e.target.value;
+        this.props.dispatch(myRiskAssessAc.modifyState({myList:myList}));
     }
-    handleSubmit(e){
-        //1 验证输入是否正确
-
-        /*for (let index = 0; index < this.state.dataSetting.list.length; index++) {
-            if(!this.state[`question-${index+1}`]){
-
-                return false;
-            }
-        }*/
-        for(var key in this.state.answers){
-            /*keys.push(key);
-            values.push(obj[key]);//取得value*/
-            if(this.state.answers[key]==0){
-                return false;
-            }
+    //提交答案
+    handleSubmit = () => {
+        let {myList,result}=this.props.memberSettings.riskAssess;
+        let questionAndAnswerDtoList=[];
+        for (let index of myList.keys()){
+            questionAndAnswerDtoList.push({questionId:myList[index].examId,answerCode:myList[index].isChecked});
         }
-
-        //2 提交后台
-        fetch(`http://172.16.4.5:8084/test.php`, {
-            method: "POST",
-            mode:'cors',
-            cache: 'default',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({projectId: 1,moneyEnd:2})
-        }).then(function (response){
-            if (response.status == 200){
-                return response;
+        let putJson={};
+        if(result.riskResultId){
+            putJson={
+                riskResultId:result.riskResultId,
+                questionAndAnswerDtoList:questionAndAnswerDtoList
             }
-        })
-            .then((data) => data.json())
-            .then((data) => {
-                    if(data.code==='0'){
-                        this.message('成功','您的申请已经提交','success');
-                        //callback();
-                    }else{
-                        this.message('失败','申请不通过','error');
-                    }
-
-             }).catch((err)=>{
-                this.message('失败','连接失败，请重试','error');
-        });
-        //4 关闭弹窗
-
-    }
-    message(message,description,type){
-        this.setState({
-            formHide:true,
-            alertInfo:{
-                show:true,
-                message:message,
-                description:description,
-                type:type
-            }
-        });
-    }
-    loadData(){
-        let data=getData(`http://localhost:9002/members/investments/transfer/id`);
-        if (data){
         }else{
-            let mockDate={
-                code: "0",
-                data:{
-                    list:[
-                        {
-                            id:5,title: '问题1',
-                            answers: [
-                                {id:1,title:'A.答案1'},
-                                {id:2,title:'B.答案2'},
-                                {id:3,title:'C.答案3'},
-                            ],
-                        },
-                        {
-                            id: 6,title: '问题2',
-                            answers: [
-                                {id:1,title:'答案1'},
-                                {id:2,title:'答案2'},
-                                {id:3,title:'答案3'},
-                                {id:4,title:'答案4'},
-                            ],
-                        },
-                        {
-                            id: 9,title: '问题3',
-                            answers: [
-                                {id:1,title:'答案1'},
-                                {id:2,title:'答案2'},
-                                {id:3,title:'答案3'},
-                                {id:4,title:'答案4'},
-                            ],
-                        },
-
-                    ],
-                },
-                message: "SUCCESS",
-                time: "2018-01-17 11:49:39"
+            putJson={
+                questionAndAnswerDtoList:questionAndAnswerDtoList
             }
-
-            this.setState({
-                dataSetting:mockDate.data,
-                answers:{
-                    '5':0,
-                    '6':0,
-                    '9':0
-                }
-            });
         }
+        this.props.dispatch(myRiskAssessAc.putRiskAssess(putJson));
     }
-    componentDidMount () {
-        this.loadData();
+    //重新评估
+    reset(){
+        console.log('-----');
+        this.props.dispatch(myRiskAssessAc.modifyState({status:'1'}));
     }
-    message(message,description,type){
-        this.setState({
-            formHide:true,
-            alertInfo:{
-                show:true,
-                message:message,
-                description:description,
-                type:type
-            }
-        });
-    }
-    render() {
-        const radioStyle = {
-            display: 'block',
-            height: '30px',
-            lineHeight: '30px',
-        };
-        let {callback}=this.props.config;
-        const {list}=this.state.dataSetting;
-        return (
+    render(){
+        let {dispatch}=this.props;
+        let {riskAssess,isFetching}=this.props.memberSettings;
+        let {result,myList,status,postResult}=riskAssess;
+        if(postResult.code==='0'){
+            window.location.reload();  //提交答案后重载页面
+        }
+        return(
             <div className="pop__riskAssess">
-                {
-                    JSON.stringify(this.state.dataSetting) == "{}"? <div>loading...</div>
-                        :
-                        <div>
-                            <div className="form__wrapper" id="area" hidden={this.state.formHide}>
-                                {
-                                    list.map((item, rowIndex) => (
+                <div className="riskAssessApp">
+                    <div className="form__wrapper">
 
-                                <dl className="controls" key={`row-${rowIndex}`}>
-                                    <dt><p>{rowIndex+1} .{item.title}</p>
-                                        {
-                                            (this.state.answers[`${item.id}`]==0)? <span className="errorMessages">*</span>:''}
-                                    </dt>
-                                    <dd>
-                                        <RadioGroup onChange={this.onChange} value={this.state.answers[`${item.id}`]} name={`${item.id}`}>
-                                            {
-                                                item.answers.map((answer, answerIndex) => (
-                                            <Radio value={answer.id} style={radioStyle} key={`row-${answerIndex}`}>{answer.title}</Radio>
-                                                ))
-                                            }
-                                        </RadioGroup>
-                                    </dd>
-                                </dl>
-                                    ))
-                                }
+                        {
+                            (myList.length>0)?
+                                myList.map((l, i) => (
+                                    <dl className="controls" key={`row-${i}`}>
+                                        <dt>
+                                            <p>{i+1}.{l.examName}</p>
+                                                {
+                                            l.isChecked===''?
+                                                <span className="error">必选</span>
+                                                :``
+                                        }
+                                        </dt>
+                                        <dd>
 
-                                <div className="center">
-                                    <button  className="button able"　onClick={this.handleSubmit}>立即测评</button>
-                                </div>
-                            </div>
-                            {
-                                (this.state.alertInfo.show)?
-                                    <div className="form__wrapper" style={{padding:`50px 50px`}}>
-                                        <Alert
-                                            message={this.state.alertInfo.message}
-                                            description={this.state.alertInfo.description}
-                                            type={this.state.alertInfo.type}
-                                            showIcon
-                                        />
-                                        <button className="button able" style={{marginTop:'30px'}} onClick={() => callback() }>确定</button>
-                                    </div>
+                                            <RadioGroup onChange={this.onChange} value={`${l.isChecked}`} name={`${l.examId}`}>
+                                                {l.answersDtoList.map((ll,ii)=>(
+                                                    <Radio value={`${ll.answerCode}`} key={`row-${ii}`}>{ll.answerCode} .{ll.answer}</Radio>
+                                                ))}
+                                            </RadioGroup>
 
-                                    :''
-                            }
+
+                                        </dd>
+                                    </dl>
+                                ))
+                                :``
+                        }
+
+                        <div className="form__bar center">
+
+                            <Button type="primary"  loading={this.state.iconLoading} onClick={this.handleSubmit} style={{width:'20%'}} className='large'
+                                    disabled={this.disabled()}
+                            >
+                                立即评估
+                            </Button>
+
                         </div>
-
-                }
+                    </div>
+                </div>
             </div>
-        );
+        )
     }
-};
+}
+function mapStateToProps(state) {
+    const { auth,memberSettings } = state.toJS();
+    return {
+        auth,
+        memberSettings
+    };
+}
+export default connect(mapStateToProps)(ModalRiskAssess);
