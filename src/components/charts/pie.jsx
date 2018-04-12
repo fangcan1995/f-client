@@ -8,8 +8,8 @@ export default class PieChart extends Component{
         super(props);
     }
     render(){
-        let {data,style,showLegend,totalTitle,color,showUserLegend,unit}=this.props;
-
+        let {data,style,showLegend,totalTitle,color,showUserLegend,unit,labelLine}=this.props;
+        console.log(this.props);
         if(!color){
             color=['#79b9e8', '#f69494','#72c59e','#f6ba7b','#8b9dbc'];
         }
@@ -32,6 +32,15 @@ export default class PieChart extends Component{
         if(!unit){
             unit='元'
         }
+        if(!labelLine){
+            labelLine=true
+        }else{
+            if(labelLine==='false'){
+                labelLine=false;
+            }else{
+                labelLine=true;
+            }
+        }
 
         return(
             <div className="peiChart">
@@ -49,7 +58,7 @@ export default class PieChart extends Component{
                     :''}
 
                 <ReactEcharts
-                    option={getEchartPie(data, color,showLegend,unit)}
+                    option={getEchartPie(data, color,showLegend,unit,labelLine)}
                     style={style}
                     opts={{renderer: 'svg'}}
                     className='react_for_echarts'

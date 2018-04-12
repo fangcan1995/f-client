@@ -16,6 +16,7 @@ import {
 import ReactEcharts from 'echarts-for-react';
 import {getEchartLine,getEchartBar} from '../../../assets/js/getEchart';
 import PieChart from '../../../components/charts/pie';
+import BarChart from '../../../components/charts/bar';
 import {addCommas} from '../../../assets/js/cost';
 
 
@@ -62,7 +63,7 @@ class constantTable extends Component {
         const { constantData } = this.props;
         console.log(constantData);
         //柱状图数据
-        let loanMoneyData = {
+        /*let loanMoneyData = {
             xAxis_data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
             legend:{data:['']},
             series_data:[
@@ -84,7 +85,6 @@ class constantTable extends Component {
                 }
             ]
         }
-
         let loanCountData = {
             xAxis_data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
             legend:{data:['']},
@@ -93,7 +93,7 @@ class constantTable extends Component {
                     name:"",
                     type:'bar',
                     barWidth:30,
-                    itemStyle:{
+                    /!*itemStyle:{
                         normal:{
                             color:'#668bc1',  //柱体颜色
                             label: {
@@ -102,12 +102,11 @@ class constantTable extends Component {
                                 position:'top'
                             }
                         }
-                    },
+                    },*!/
                     data:constantData.borrowInfo.loanCount
                 }
             ]
         }
-
         let loanMemberCountData = {
             xAxis_data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
             legend:{data:['']},
@@ -116,7 +115,7 @@ class constantTable extends Component {
                     name:"",
                     type:'bar',
                     barWidth:40,
-                    itemStyle:{
+                    /!*itemStyle:{
                         normal:{
                             color:'#668bc1',  //柱体颜色
                             label: {
@@ -125,12 +124,11 @@ class constantTable extends Component {
                                 position:'top'
                             }
                         }
-                    },
+                    },*!/
                     data:constantData.borrowInfo.loanMemberCount
                 }
             ]
         }
-
         let investValueData =  {
             xAxis_data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
             legend:{data:['']},
@@ -139,7 +137,7 @@ class constantTable extends Component {
                     name:"",
                     type:'bar',
                     barWidth:40,
-                    itemStyle:{
+                    /!*itemStyle:{
                         normal:{
                             color:'#668bc1',  //柱体颜色
                             label: {
@@ -148,11 +146,11 @@ class constantTable extends Component {
                                 position:'top'
                             }
                         }
-                    },
+                    },*!/
                     data:constantData.investInfo.investValue
                 }
             ]
-        }
+        }*/
 
         /*饼图数据*/
         const { sexDistribute } = constantData.investInfo;
@@ -188,6 +186,7 @@ class constantTable extends Component {
 
         return(
             <div>
+
                 <div className="title__list">
                     <div className="content">
                         <div className="viewBlock platformInfo">
@@ -259,12 +258,22 @@ class constantTable extends Component {
                                 <div className="borrowLine">
                                     <h4>借款金额</h4>
                                     <div className="form">
-                                        <ReactEcharts
+                                        {/*<ReactEcharts
                                             option={getEchartBar(loanMoneyData)}
                                             style={{height: '300px', width: '100%'}}
                                             opts={{renderer: 'svg'}}
                                             className='react_for_echarts'
-                                        />
+                                        />*/}
+
+                                        <BarChart
+                                            data={{
+                                                xAxis_data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                                                series_data:[{data:constantData.borrowInfo.loanMoney}]
+
+                                            }}
+                                            style={{height: '300px', width: '100%'}}
+                                        >
+                                        </BarChart>
                                     </div>
                                     <select name="" id="loanMoney" onChange={this.handleSelect.bind(this)} defaultValue="2018">
                                         <option value="2016">2016</option>
@@ -275,12 +284,21 @@ class constantTable extends Component {
                                 <div className="borrowLine">
                                     <h4>借款笔数</h4>
                                     <div className="form">
-                                        <ReactEcharts
+                                        {/*<ReactEcharts
                                             option={getEchartBar(loanCountData)}
                                             style={{height: '300px', width: '100%'}}
                                             opts={{renderer: 'svg'}}
                                             className='react_for_echarts'
-                                        />
+                                        />*/}
+                                        <BarChart
+                                            data={{
+                                                xAxis_data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                                                series_data:[{data:constantData.borrowInfo.loanCount}]
+
+                                            }}
+                                            style={{height: '300px', width: '100%'}}
+                                        >
+                                        </BarChart>
                                     </div>
                                     <select name="" id="loanCount" onChange={this.handleSelect.bind(this)} defaultValue="2018">
                                         <option value="2016">2016</option>
@@ -291,12 +309,21 @@ class constantTable extends Component {
                                 <div className="borrowLine">
                                     <h4>借款人数</h4>
                                     <div className="form">
-                                        <ReactEcharts
+                                        {/*<ReactEcharts
                                             option={getEchartBar(loanMemberCountData)}
                                             style={{height: '300px', width: '100%'}}
                                             opts={{renderer: 'svg'}}
                                             className='react_for_echarts'
-                                        />
+                                        />*/}
+                                        <BarChart
+                                            data={{
+                                                xAxis_data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                                                series_data:[{data:constantData.borrowInfo.loanMemberCount}]
+
+                                            }}
+                                            style={{height: '300px', width: '100%'}}
+                                        >
+                                        </BarChart>
                                     </div>
                                     <select name="" id="loanMemberCount" onChange={this.handleSelect.bind(this)} defaultValue="2018">
                                         <option value="2016">2016</option>
@@ -314,12 +341,21 @@ class constantTable extends Component {
                                 <div className="investLine">
                                     <h4>出借人数</h4>
                                     <div className="form">
-                                        <ReactEcharts
+                                        {/*<ReactEcharts
                                             option={getEchartBar(investValueData)}
                                             style={{height: '300px', width: '100%'}}
                                             opts={{renderer: 'svg'}}
                                             className='react_for_echarts'
-                                        />
+                                        />*/}
+                                        <BarChart
+                                            data={{
+                                                xAxis_data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                                                series_data:[{data:constantData.investInfo.investValue}]
+
+                                            }}
+                                            style={{height: '300px', width: '100%'}}
+                                        >
+                                        </BarChart>
                                     </div>
                                     <select name="" id="investValue" onChange={this.handleSelect.bind(this)} defaultValue="2018">
                                         <option value="2016">2016</option>
@@ -334,10 +370,11 @@ class constantTable extends Component {
                                             <PieChart
                                                 data={sexData}
                                                 style={{height: '240px', width: '404px'}}
-                                                totalTitle="说明"
+                                                //totalTitle="说明"
                                                 showUserLegend='false'
                                                 showLegend='false'
                                                 unit='人'
+                                                labelLine='false'
                                                 /* color={['#e32323', '#498911']} */
                                             />
                                         </div>
@@ -348,12 +385,12 @@ class constantTable extends Component {
                                             <PieChart
                                                 data={ageData}
                                                 style={{height: '240px', width: '404px'}}
-                                                totalTitle="说明"
                                                 showUserLegend='false'
                                                 showLegend='false'
                                                 unit='人'
-                                                /* color={['#e32323', '#498911']} */
+                                                labelLine='false'
                                             />
+
                                         </div>
                                     </div>
                                 </div>
