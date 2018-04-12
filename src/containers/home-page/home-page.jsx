@@ -82,6 +82,9 @@ class HomePage extends Component {
   handlePartnerClick(e){
     window.location.href=e
   }
+  handlePreClick=()=>{
+    next()
+  }
   componentDidMount() {
     const { dispatch ,homePage} = this.props;
     dispatch(getData());
@@ -94,15 +97,15 @@ class HomePage extends Component {
     
   }
   render() {
-    const { homePage } = this.props;
+    const { homePage,auth } = this.props;
     
    console.log(homePage )
     return (
     <main className="main home-page" id="home-page">
       <div className="banner" >
         <div className="carousel" >
-            
-            <Carousel autoplay touchMove='true' key={homePage.banner.length}>
+          <div className="prevArrow" onClick={this.handlePreClick}> 《</div>
+            <Carousel autoplay touchMove='true' key={homePage.banner.length} prevArrow nextArrow next>
               {homePage.banner.map((item)=>{
                   return (
                     <div key={item.id}>
@@ -121,11 +124,17 @@ class HomePage extends Component {
               <br />
               <em><span>{homePage.sprog.annualRate}</span>%</em>
             </p>
-            <button type="button" className="login__btn" onClick={ this.handleLoginBtnClick }>立即登录</button>
-            <p className="signup">
-              没有账号？
-              <Link to={'/signup'}>立即注册</Link>
-            </p>
+              {
+                auth.isAuthenticated?<button type="button" className="login__btn" onClick={ this.handleComeInClick.bind(this) }>立即加入</button>
+                :<div>
+                <button type="button" className="login__btn" onClick={ this.handleLoginBtnClick }>立即登录</button>
+                <p className="signup">
+                  没有账号？
+                  <Link to={'/signup'}>立即注册</Link>
+                </p>
+              </div>
+              }
+              
           </div>
         </div>
       </div>
@@ -227,64 +236,69 @@ class HomePage extends Component {
           {
             homePage.standard.map((item)=>{
               if(item.type=='project'){
-              return (               
+              return (      
                 <li className="standard__card" key={item.id}>
-                  <div className="card__scroll">
-                    <div className="card__header">
-                      <h4 className="tit">{item.name}</h4>
-                      <p className="tip">起投金额&nbsp;<em>{item.minInvestAmount }</em>元</p>
-                      <ul className="tags">
-                        <li>{item.refundWayString }</li>
-                      </ul>
-                      <p className="desc"><em><span>{item.loanExpiry }</span>个月</em><br />锁定期</p>
-                    </div>
-                    <div className="card__body">
-                      <p className="yield"><em><span>{item.annualRate/1}</span>.{item.annualRate %1}%+{item.BigDecimal }%</em><br />预期年化收益率</p>
-                      <ul className="tags">
-                        <li>最新推出</li>
-                      </ul>
-                      <div className="progress">
-                        <div className="progress__bar">
-                          <div className="progress__bar--cur" style={{width: `${item.investmentProgress}%`}}></div>
+                  <a onClick={this.handleStandardClick.bind(this,item.standardId)}> 
+                    <div className="card__scroll">
+                      <div className="card__header">
+                        <h4 className="tit">{item.name}</h4>
+                        <p className="tip">起投金额&nbsp;<em>{item.minInvestAmount }</em>元</p>
+                        <ul className="tags">
+                          <li>{item.refundWayString }</li>
+                        </ul>
+                        <p className="desc"><em><span>{item.loanExpiry }</span>个月</em><br />锁定期</p>
+                      </div>
+                      <div className="card__body">
+                        <p className="yield"><em><span>{item.annualRate/1}</span>.{item.annualRate %1}%+{item.BigDecimal }%</em><br />预期年化收益率</p>
+                        <ul className="tags">
+                          <li>最新推出</li>
+                        </ul>
+                        <div className="progress">
+                          <div className="progress__bar">
+                            <div className="progress__bar--cur" style={{width: `${item.investmentProgress}%`}}></div>
+                          </div>
+                          <p className="progress__percent">{item.hadPercent}</p>
+                          <p className="progress__number">{item.moneyEnd }万/{item.money  }万</p>
                         </div>
-                        <p className="progress__percent">{item.hadPercent}</p>
-                        <p className="progress__number">{item.moneyEnd }万/{item.money  }万</p>
                       </div>
                     </div>
-                  </div>
-                  <div className="card__footer">
-                    <a onClick={this.handleStandardClick.bind(this,item.standardId)} className="join">立即加入</a>
-                  </div>
+                    <div className="card__footer">
+                      <a onClick={this.handleStandardClick.bind(this,item.standardId)} className="join">立即加入</a>
+                    </div>
+                    </a>
                 </li>
+               
               )}else if(item.type=="transfer"){
                 return (
                     <li className="standard__card" key={item.investId}>
-                      <div className="card__scroll">
-                        <div className="card__header">
-                          <h4 className="tit">{item.name}</h4>
-                          <p className="tip">起投金额&nbsp;<em>{item.minInvestAmount }</em>元</p>
-                          <ul className="tags">
-                            <li>{item.refundWayString }</li>
-                          </ul>
-                          <p className="desc"><em><span>{item.loanExpiry }</span>个月</em><br />锁定期</p>
-                        </div>
-                        <div className="card__body">
-                          <p className="yield"><em><span>{item.annualRate /1}</span>.{item.annualRate %1}%+0%</em><br />预期年化收益率</p>
-                          <ul className="tags">
-                            <li>最新推出</li>
-                          </ul>
-                          <div className="progress">
-                            <div className="progress__bar">
-                              <div className="progress__bar--cur" style={{width: `${item.investmentProgress }%`}}></div>
+                      <a onClick={this.handleStandardClick.bind(this,item.standardId)}> 
+                        <div className="card__scroll">
+                          <div className="card__header">
+                            <h4 className="tit">{item.name}</h4>
+                            <p className="tip">起投金额&nbsp;<em>{item.minInvestAmount }</em>元</p>
+                            <ul className="tags">
+                              <li>{item.refundWayString }</li>
+                            </ul>
+                            <p className="desc"><em><span>{item.loanExpiry }</span>个月</em><br />锁定期</p>
+                          </div>
+                          <div className="card__body">
+                            <p className="yield"><em><span>{item.annualRate /1}</span>.{item.annualRate %1}%+0%</em><br />预期年化收益率</p>
+                            <ul className="tags">
+                              <li>最新推出</li>
+                            </ul>
+                            <div className="progress">
+                              <div className="progress__bar">
+                                <div className="progress__bar--cur" style={{width: `${item.investmentProgress }%`}}></div>
+                              </div>
+                              <p className="progress__percent">{item.hadPercent}</p>
+                              <p className="progress__number">{item.moneyEnd }万/{item.money }万</p>
                             </div>
-                            <p className="progress__percent">{item.hadPercent}</p>
-                            <p className="progress__number">{item.moneyEnd }万/{item.money }万</p>
                           </div>
                         </div>
-                      </div>
-                      <div className="card__footer">
-                        <a onClick={this.handleStandardClick.bind(this,item.standardId)} className="join">立即加入</a>
-                      </div>
+                        <div className="card__footer">
+                          <a onClick={this.handleStandardClick.bind(this,item.standardId)} className="join">立即加入</a>
+                        </div>
+                      </a>
                     </li>
                 )
               }
@@ -394,9 +408,10 @@ class HomePage extends Component {
 }
 
 function select(state) {
-  const { homePage } = state.toJS();
+  const { homePage, auth } = state.toJS();
   return {
-    homePage
+    homePage,
+    auth
   };
 }
 export default connect(select)(HomePage);

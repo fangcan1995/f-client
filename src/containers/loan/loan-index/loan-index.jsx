@@ -194,6 +194,7 @@ class Loan extends Component {
               confirmLoading={this.state.confirmLoading}
               onCancel={this.handleCancel1}
               footer={this.state.footer}
+              className='loan-modal'
             >
              
               <div className='layui-layer'>
