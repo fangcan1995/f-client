@@ -40,6 +40,7 @@ class ModalRepayment extends React.Component {
     render() {
         let {callback}=this.props.info;
         let {postResult,projectInfo}=this.props.memberLoans.repaymentPlans;
+        let {imageCodeImg}=this.props.memberLoans; //
         const { getFieldDecorator,getFieldValue } = this.props.form;
         const passwordProps = getFieldDecorator('password', {
             rules: [
@@ -120,6 +121,7 @@ class ModalRepayment extends React.Component {
                                             )
                                         }
                                     </FormItem>
+
                                     <FormItem
                                         { ...formItemLayout }
                                         label="验证码"
@@ -140,7 +142,11 @@ class ModalRepayment extends React.Component {
                                                 }
                                             </Col>
                                             <Col span={12}>
-                                                <img className="verifyCode__img" src="http://172.16.1.234:8060/uaa/code/image" />
+                                                <img
+                                                    className="imageCode__img"
+                                                    src={ imageCodeImg }
+                                                    onClick={ this.handleImageCodeImgClick }
+                                                />
                                             </Col>
                                         </Row>
                                     </FormItem>
