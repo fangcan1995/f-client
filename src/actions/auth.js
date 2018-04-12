@@ -40,6 +40,7 @@ export const logoutUser = () => {
 
 
       const res = await cFetch(API_CONFIG.baseUri + API_CONFIG.logout + params, { method: 'POST', body: params });
+      console.log('------------');
       console.log(res);
       const { code, message: msg } = res;
       if ( code == 0 ) {
@@ -47,6 +48,8 @@ export const logoutUser = () => {
         cookie.remove('user');
         return msg;
       } else {
+          console.log('111111111------------');
+          console.log(res);
         throw res;
       }
     }

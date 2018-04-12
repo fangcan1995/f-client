@@ -97,7 +97,8 @@ class BorrowerInfo extends React.Component {
                                         {filesList.map((l, i) => (
                                             <li key={`row-${i}`}>
                                                 <a href={`${l.uploadPath}`} target="_blank">
-                                                    <img src={`${l.uploadPath}`} />{l.fileName}
+                                                    <img src={`${l.uploadPath}`} />
+                                                    {/*{l.fileName}*/}
                                                 </a>
                                             </li>
                                         ))}
