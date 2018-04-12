@@ -10,7 +10,7 @@ export  function getEchartPie(json,color,showLegend,unit,labelLine){
             orient : 'vertical',
             x : 'left',
             textStyle:{
-                fontSize : '14'
+                fontSize : '12'
             },
             padding:20,
             itemGap:20,

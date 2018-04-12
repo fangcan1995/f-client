@@ -269,7 +269,6 @@ class constantTable extends Component {
                                             data={{
                                                 xAxis_data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
                                                 series_data:[{data:constantData.borrowInfo.loanMoney}]
-
                                             }}
                                             style={{height: '300px', width: '100%'}}
                                         >

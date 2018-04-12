@@ -46,7 +46,7 @@ export default class PieChart extends Component{
             <div className="peiChart">
                 {showUserLegend?
                     <div className="pei__legend">
-                        <h3 className="pei__title"><strong>{totalTitle}</strong><br/>{addCommas(total)}元</h3>
+                        <h3 className="pei__title"><strong>{totalTitle}</strong><br/>{addCommas(total)}{{unit}}</h3>
                         <ul>
                             {
                                 data.map((item, rowIndex) => (
