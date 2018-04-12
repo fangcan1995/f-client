@@ -10,7 +10,7 @@ const url_delete=`${urls}/message/mail`; //删除消息
 
 const url_getResult=`${urls}/members/riskEvaluation/result`;  //获取风险测评结果
 const url_getRList=`${urls}/members/riskEvaluation`;  //获取风险测评题目
-const url_putRList=`${urls}/members/riskEvaluation`;  //提交测评结果
+export const url_putRList=`${urls}/members/riskEvaluation`;  //提交测评结果
 
 const url_getAuthInfo=`${urls}/members/certification`; //获取个人信息
 const url_password=`${urls}/???`; //修改登录密码
@@ -125,7 +125,10 @@ export const myRiskAssessAc={
         }
     },
     putRiskAssess: (pram,dispatch) => {
-        pram=JSON.stringify(pram)
+
+        pram=JSON.stringify(pram);
+        console.log('传给后台的数据');
+        console.log(pram);
         return {
             type: 'mySettings/riskAssess/FETCH',
             async payload() {

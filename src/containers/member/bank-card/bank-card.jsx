@@ -30,9 +30,9 @@ class BankCard extends React.Component{
 
         let {openAccountStatus,acBank,basicInfo,result}=this.props.member.accountsInfo;
 
-        /*console.log('----------------');
-        console.log(this.props);
-        console.log(basicInfo);*/
+        console.log('----------------');
+        console.log(this.props.member.accountsInfo);
+        console.log(basicInfo);
         if(result.code==='0'){
             this.props.dispatch(memberAc.modifyState({result:''}));
             this.props.dispatch(memberAc.getInfo());

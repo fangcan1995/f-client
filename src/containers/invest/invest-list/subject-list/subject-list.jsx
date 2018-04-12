@@ -14,8 +14,25 @@ class SubjectList extends Component {
         this.multiFilter = this.multiFilter.bind(this);
     }
     componentDidMount () {
-        //this.props.dispatch(sbListAc.getList({status:2}));
-        this.props.dispatch(sbListAc.getList({status:``}));
+
+        const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
+
+        if(pathSnippets[1]=='newNoviceLoan'){
+            let filter={
+                noviceLoan:1
+            };
+            this.props.dispatch(sbListAc.stateSbModify(
+                {
+                    filter:filter
+                }
+            ));
+            //this.props.dispatch(sbListAc.getList({filter:filter}));
+            this.multiFilter('noviceLoan',1);
+        }else{
+            this.props.dispatch(sbListAc.getList({status:``}));
+        }
+
+
     }
     todoFilter(filter){
         for (var key in filter) {
