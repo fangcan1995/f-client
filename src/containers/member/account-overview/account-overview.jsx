@@ -11,7 +11,7 @@ import  memberActions  from '../../../actions/member';
 import  {memberAc}  from '../../../actions/member';
 import { Link, NavLink } from 'react-router-dom';
 import {toMoney,toNumber} from  '../../../assets/js/famatData';
-
+import Crumbs from '../../../components/crumbs/crumbs';
 class AccountOverview extends React.Component{
     componentDidMount() {
         //this.props.dispatch(memberAc.getInfo());
@@ -22,17 +22,12 @@ class AccountOverview extends React.Component{
         console.log('-------this.props-------');
         console.log(this.props);
         let {charts,accountsInfo}=this.props.member;
+        console.log('统计图表数据');
+        console.log(charts);
         let {amount,redInfo,couponInfo}=accountsInfo;
         return (
             <div className="member__main">
-                <div className="crumb">
-                    <div>
-                        <b>您所在的位置：</b>
-                        <a href="/">首页</a>&nbsp;&gt;
-                        <a href="" className="actice">我的账户</a>
-                    </div>
-                </div>
-                <a className="adver" href=""></a>
+                <Crumbs />
                 <div className="member__cbox">
                     <div className="master">
                         <div className="accountInfo">

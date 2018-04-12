@@ -70,12 +70,30 @@ class MasterInvestBox extends React.Component {
         console.log(this.state);
     };
     //是否登录，根据是否开户，是否需要风险测评，是否新手，投资金额，获取操作按钮
-    //noviceStatus 是否新手（0：不是；1：是） ,
-    //openAccountStatus (integer, optional): 开户状态（0：未开户；1：已开户） ,
-    //riskStatus (integer, optional): 是否风险测评（0：未测评；1：已测评） ,
     //auth.isAuthenticated true登录 false未登录
     getButton(){
         let {auth,member,investInfo}=this.props;
+        console.log('按钮')
+        console.log(this.props);
+        //假数据：member
+        member={
+            accountsInfo:{
+                acBank: {bankName: "", bankNo: ""},
+                amount: "",
+                basicInfo: "",
+                couponInfo: "",
+                noviceStatus: 0,//是否新手（0：不是；1：是） ,
+                openAccountStatus: 0, //0未开户，1已开户
+                redInfo: "",
+                result: "",
+                riskLevel: "",
+                riskStatus: "1", //是否风险测评（0：不需要测评；1：需要测评） ,
+
+            }
+
+        };
+        console.log('获取到的用户信息');
+        console.log(member);
         let {openAccountStatus,riskStatus,riskLevel,amount,noviceStatus}=member.accountsInfo;
         if(!auth.isAuthenticated){
             return(
@@ -86,11 +104,11 @@ class MasterInvestBox extends React.Component {
                 <a  className="btn" onClick={this.bindCard}>立即开户</a>
             )
         }else if(openAccountStatus===1){
-            if(riskStatus===`1`){//1 没有风险测评过
+            if(riskStatus===`1`){//1 需要测评
                 return(
                     <a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,investInfo.id)}>立即风险评估</a>
                 )
-            }else if(riskLevel==='riskLevel'){
+            }else if(1===1){ //根据riskLevel判断测评结果暂时不需要
                 return(
                     <a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,investInfo.id)}>重新风险评估</a>
                 )

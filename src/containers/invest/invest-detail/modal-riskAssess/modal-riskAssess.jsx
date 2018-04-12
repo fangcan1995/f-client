@@ -60,6 +60,8 @@ class ModalRiskAssess extends React.Component {
                 questionAndAnswerDtoList:questionAndAnswerDtoList
             }
         }
+        console.log('提交的答案');
+        console.log(putJson);
         this.props.dispatch(myRiskAssessAc.putRiskAssess(putJson));
     }
     //重新评估
@@ -72,6 +74,7 @@ class ModalRiskAssess extends React.Component {
         let {riskAssess,isFetching}=this.props.memberSettings;
         let {result,myList,status,postResult}=riskAssess;
         if(postResult.code==='0'){
+            //console.log('提交了答案');
             window.location.reload();  //提交答案后重载页面
         }
         return(

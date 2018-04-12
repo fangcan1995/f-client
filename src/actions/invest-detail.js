@@ -2,7 +2,7 @@ import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import {addCommas,checkMoney} from './../assets/js/cost';
 import {urls,token} from './../utils/url';
-
+import {url_putRList} from './member-settings'
 const url_invest_projects_loan=`${urls}/invest/projects/loan`; //投资信息
 const url_invest_transfer_loan=`${urls}/invest/transfer/loan` //债转投资信息
 const url_projects_info=`${urls}/invest/projects/info`  ;//标的详情
