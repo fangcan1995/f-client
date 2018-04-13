@@ -21,9 +21,9 @@ const Crumbs = ({ location, match, history, ...props}) => {
         '/my-account/transaction-record': ' 交易记录',
         '/my-loan': ' 我的借款',
         '/my-loan/my-loan': ' 我的借款',
-
         '/about': ' 关于我们',
         '/about/team': ' 管理团队',
+        '/about/introduce': ' 公司简介'
 
     };
     
@@ -32,7 +32,6 @@ const Crumbs = ({ location, match, history, ...props}) => {
         const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
         return (
             <span key={url}>&nbsp;>&nbsp;<CrumbLink to={url}>{breadcrumbNameMap[url]}</CrumbLink></span>
-            
         );
     });
     const breadcrumbItems = [<CrumbLink to="/" key="home">首页</CrumbLink>].concat(extraBreadcrumbItems);
