@@ -5,14 +5,17 @@ import { message } from 'antd';
 import { logoutUser } from '../../actions/auth';
 import './header.less';
 import logo from '../../assets/images/public/logo.png';
+import silan from '../../assets/images/head/weibo.jpg'
+import weixin from '../../assets/images/head/weixin.jpg'
+
 class Header extends Component {
   handleLogoutBtnClick = e => {
-    e.preventDefault();
+    // e.preventDefault();
     const { dispatch } = this.props;
     dispatch(logoutUser())
-    .then(res => {
-      message.success(res.value || '登出成功！')
-    });
+    // .then(res => {
+    //   message.success(res.value || '登出成功！')
+    // });
   }
   render() {
     const { auth } = this.props;
@@ -25,7 +28,8 @@ class Header extends Component {
                 auth.isAuthenticated ?
                 <div className="user">
                   <Link className="welcome" to="/my-account">你好！&nbsp;<span className="username">{ auth.user.userName }</span></Link>
-                  <a className="logout" onClick={ this.handleLogoutBtnClick }>退出</a>
+                  {/* <a className="logout" onClick={ this.handleLogoutBtnClick }>退出</a> */}
+                  <Link className="logout" to={'/home'} onClick={ this.handleLogoutBtnClick }>退出</Link>
                 </div>
                 :
                 <div className="unlogin">
@@ -43,9 +47,11 @@ class Header extends Component {
               </nav>
               <nav className="thirdparty">
                 <ul>
-                  <li><a href="http://www.weibo.com"><i className="iconfont icon-xinlang"></i></a></li>
-                  <li><a href="http://www.wechat.com"><i className="iconfont icon-weixin"></i></a></li>
-                  <li><a href="http://www.qq.com"><i className="iconfont icon-tengxun_fuzhi"></i></a></li>
+                  <li><a href="http://www.weibo.com"><i className="iconfont icon-xinlang"></i>
+                    <img src={silan}/>
+                  </a></li>
+                  <li><a href="http://www.wechat.com"><i className="iconfont icon-weixin"></i><img src={weixin}/></a></li>
+                  <li><a href="http://www.qq.com"><i className="iconfont icon-tengxun_fuzhi"></i><img src={silan}/></a></li>
                 </ul>
               </nav>
             </div>

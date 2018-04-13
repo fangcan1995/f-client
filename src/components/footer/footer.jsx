@@ -10,24 +10,27 @@ import hy_83x30 from '../../assets/images/public/hy_83x30.png';
 import pingji2 from '../../assets/images/public/pingji2.png';
 import cnnic from '../../assets/images/public/cnnic.png';
 import getgeotrustsslseal from '../../assets/images/public/getgeotrustsslseal.gif';
-export default () => {
+import { Link } from 'react-router-dom';
+
+
+export default () => { 
   return (
     <footer>
       <div className="footerLink">
         <div className="linkArea">
           <dl>
             <dt>关于我们</dt>
-            <dd><a href="">公司介绍</a></dd>
-            <dd><a href="">管理团队</a></dd>
-            <dd><a href="">合作伙伴</a></dd>
-            <dd><a href="">联系我们</a></dd>
+            <dd><Link to='/about/introduce'>公司介绍</Link></dd>
+            <dd><Link to='/about/team'>管理团队</Link></dd>
+            <dd><Link to='/about/partners'>合作伙伴</Link></dd>
+            <dd><Link to='/about/introduce'>联系我们</Link></dd>
           </dl>
           <dl>
-            <dt>关于我们</dt>
-            <dd><a href="">公司介绍</a></dd>
-            <dd><a href="/about/aboutus/team">管理团队</a></dd>
-            <dd><a href="">合作伙伴</a></dd>
-            <dd><a href="">联系我们</a></dd>
+            <dt>安全保障</dt>
+            <dd><Link to='/about/introduce'>法律法规</Link></dd>
+            <dd><Link to='/about/introduce'>资金安全</Link></dd>
+            <dd><Link to='/about/introduce'>技术保障</Link></dd>
+            <dd><Link to='/about/introduce'>风控措施</Link></dd>
           </dl>
         </div>
         <div className="QRCodeArea">

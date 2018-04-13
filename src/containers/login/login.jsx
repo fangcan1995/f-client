@@ -50,20 +50,22 @@ class Login extends Component {
     if(login.signup){
        return (
       <main className="main login">
-        <div className="wrapper">
-          <Card
-            tit="登录"
-            tip={ <span>没有账号？<a onClick={this.handleSignupClick.bind(this)}>立即注册</a></span> }
-            >
-            <Tabs defaultActiveKey="1">
-              <TabPane tab="密码登录" key="1">
-                <PasswordForm />
-              </TabPane>
-              <TabPane tab="短信登录" key="2">
-                <VCodeForm />
-              </TabPane>
-            </Tabs>
-          </Card>
+        <div className='w1180'>
+          <div className="wrapper">
+            <Card
+              tit="登录"
+              tip={ <span>没有账号？<a onClick={this.handleSignupClick.bind(this)}>立即注册</a></span> }
+              >
+              <Tabs defaultActiveKey="1">
+                <TabPane tab="密码登录" key="1">
+                  <PasswordForm />
+                </TabPane>
+                <TabPane tab="短信登录" key="2">
+                  <VCodeForm />
+                </TabPane>
+              </Tabs>
+            </Card>
+          </div>
         </div>
       </main>
       // <span>没有账号？<Link to="/signup">立即注册</Link></span>
