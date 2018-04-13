@@ -107,6 +107,7 @@ export const memberAc= {
         return {
             type: 'member/FETCH',
             async payload() {
+
                 const res = await cFetch(`${url_openAccount}`, {
                         method: 'POST',
                         headers: {
@@ -119,6 +120,7 @@ export const memberAc= {
                     message.success('开户成功');
                     return {result: res};
                 } else {
+                    message.error(res.message);
                     throw res;
                 }
             }

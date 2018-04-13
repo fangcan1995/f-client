@@ -3,6 +3,7 @@ import cookie from 'js-cookie';
 import { API_CONFIG } from './../config/api';
 import parseJson2URL from './../utils/parseJson2URL';
 import {urls,token} from './../utils/url';
+import {message} from "antd/lib/index";
 
 const url_getMList=`${urls}/message/mail/page`;  //获取消息列表
 const url_setRead=`${urls}/message/mail/read`; //设为已读
@@ -125,10 +126,7 @@ export const myRiskAssessAc={
         }
     },
     putRiskAssess: (pram,dispatch) => {
-
         pram=JSON.stringify(pram);
-        console.log('传给后台的数据');
-        console.log(pram);
         return {
             type: 'mySettings/riskAssess/FETCH',
             async payload() {
@@ -141,6 +139,7 @@ export const myRiskAssessAc={
                     },
                     true);
                 if (res.code == 0) {
+                    //message.success('测评成功');
                     return {postResult: res};
                 } else {
                     throw res;

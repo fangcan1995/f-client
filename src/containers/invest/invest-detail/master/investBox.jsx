@@ -76,7 +76,7 @@ class MasterInvestBox extends React.Component {
         console.log('按钮')
         console.log(this.props);
         //假数据：member
-        member={
+        /*member={
             accountsInfo:{
                 acBank: {bankName: "", bankNo: ""},
                 amount: "",
@@ -91,7 +91,7 @@ class MasterInvestBox extends React.Component {
 
             }
 
-        };
+        };*/
         console.log('获取到的用户信息');
         console.log(member);
         let {openAccountStatus,riskStatus,riskLevel,amount,noviceStatus}=member.accountsInfo;
@@ -108,11 +108,11 @@ class MasterInvestBox extends React.Component {
                 return(
                     <a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,investInfo.id)}>立即风险评估</a>
                 )
-            }else if(1===1){ //根据riskLevel判断测评结果暂时不需要
+            }else if(1!=1){ //根据riskLevel判断测评结果暂时不需要
                 return(
                     <a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,investInfo.id)}>重新风险评估</a>
                 )
-            }else if(noviceStatus===1 && investInfo.noviceLoan=='1'){ //
+            }else if(noviceStatus===0 && investInfo.noviceLoan=='1'){ //当前新手标，用户非新手
                 return(
                     <a className='btn end'>仅限新手</a>
                 )
@@ -264,7 +264,7 @@ class MasterInvestBox extends React.Component {
                                 config = {
                                     {
                                         proId:investInfo.id,
-                                        accountBalance:amount.accountBalance,  //账户余额
+                                        accountBalance:amount.availableBalance,  //账户余额
                                         callback:(obj)=>{
                                             this.toggleModal(`modalRecharge`,false);
                                             this.props.dispatch(memberAc.modifyState({accountsInfo:``}));
