@@ -24,6 +24,22 @@ import {urls,token} from '../utils/url'
 //       }
 //   }
 // }
+export const  getAdverts = () => {
+  console.log('aaa888')
+  return {
+    type: 'homePage/GET_ADVERTS',
+    async payload() {
+      const res = await cFetch(`${urls}/homes/adverts?adType=3` , { method: 'GET' }, false);
+      const { code, data } = res;
+      if ( code == 0 ) {
+          console.log(data)
+        return data || {};
+      } else {
+        throw res;
+      }
+    }
+  }
+}
 
 export const  getData = () => {
   console.log('aaa777')
@@ -31,6 +47,23 @@ export const  getData = () => {
     type: 'homePage/GET_DATA',
     async payload() {
       const res = await cFetch(`${urls}/homes/affiches` , { method: 'GET' }, false);
+      const { code, data } = res;
+      if ( code == 0 ) {
+          console.log(data)
+        return data || {};
+      } else {
+        throw res;
+      }
+    }
+  }
+}
+
+export const  getAdvertTital = () => {
+  console.log('aaa999')
+  return {
+    type: 'homePage/GET_ADVERT_TITAL',
+    async payload() {
+      const res = await cFetch(`${urls}/homes/adverts?adType=4` , { method: 'GET' }, false);
       const { code, data } = res;
       if ( code == 0 ) {
           console.log(data)
@@ -82,7 +115,7 @@ export const getNovice  = (list) => {
     return {
       type: 'homePage/GET_BANNER',
       async payload() {
-        const res = await cFetch(`${urls}/homes/banners` , { method: 'GET' }, false);
+        const res = await cFetch(`${urls}/homes/adverts?adType=1` , { method: 'GET' }, false);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)

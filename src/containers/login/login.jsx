@@ -120,10 +120,10 @@ class PasswordForm extends Component {
     const message = reason.msg;
     const { setFields, getFieldValue } = this.props.form;
     const newValue = {
-      username: {
-        name: 'username',
+      image_code: {
+        name: 'image_code',
         validating: false,
-        value: getFieldValue('username'),
+        value: getFieldValue('image_code'),
         errors: [message]
       }
     };
