@@ -3,6 +3,7 @@ import cookie from 'js-cookie';
 import { API_CONFIG } from './../config/api';
 import parseJson2URL from './../utils/parseJson2URL';
 import {urls,token} from './../utils/url';
+import {message} from "antd/lib/index";
 
 const url_getMList=`${urls}/message/mail/page`;  //获取消息列表
 const url_setRead=`${urls}/message/mail/read`; //设为已读
@@ -10,7 +11,7 @@ const url_delete=`${urls}/message/mail`; //删除消息
 
 const url_getResult=`${urls}/members/riskEvaluation/result`;  //获取风险测评结果
 const url_getRList=`${urls}/members/riskEvaluation`;  //获取风险测评题目
-const url_putRList=`${urls}/members/riskEvaluation`;  //提交测评结果
+export const url_putRList=`${urls}/members/riskEvaluation`;  //提交测评结果
 
 const url_getAuthInfo=`${urls}/members/certification`; //获取个人信息
 const url_password=`${urls}/???`; //修改登录密码
@@ -125,7 +126,7 @@ export const myRiskAssessAc={
         }
     },
     putRiskAssess: (pram,dispatch) => {
-        pram=JSON.stringify(pram)
+        pram=JSON.stringify(pram);
         return {
             type: 'mySettings/riskAssess/FETCH',
             async payload() {
@@ -138,6 +139,7 @@ export const myRiskAssessAc={
                     },
                     true);
                 if (res.code == 0) {
+                    //message.success('测评成功');
                     return {postResult: res};
                 } else {
                     throw res;

@@ -35,18 +35,30 @@ function check404(res) {
 }
 
 function checkStatus(res) {
-  if (res.status >= 200 && res.status < 300) {
+  if (res.status >= 200 && res.status < 300 || res.status == 406) {
+    console.log('-----------res----------');
+    console.log(res);
     return res;
   } else {
     if (  res instanceof Response ) {
       // 这里补充更多错误参数
+        //406 操作失败
+        //500
       return res.json().then(error => {
-        return new StandardError({
-          statusCode: res.status,
-          msg: error.message ? error.msg ? error.msg : error.message : JSON.stringify(error),
-        });
+          if(res.status == 406){
+              return res;
+          }else if(res.status == 500) {
+              return res;
+          }else{
+              return new StandardError({
+                  statusCode: res.status,
+                  msg: error.message ? error.msg ? error.msg : error.message : JSON.stringify(error),
+              });
+          }
+
       }).then(err => { throw err; });
     } else {
+
       return new StandardError({
         statusCode: -1,
         msg: res,

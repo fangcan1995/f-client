@@ -75,9 +75,25 @@
 					display: block;
 					font-size: 18px;
 					line-height: 18px;
+					position: relative;
 					i {
 						font-size: 18px;
 						line-height: 18px;
+					}
+					img{
+						display: none;
+						left: -40px;
+						top: 26px;
+						width: 126px;
+						height: 125px;
+						position: absolute;
+						z-index: 20000;
+						background: #ccc;
+					}
+				}
+				a:hover{
+					img{
+						display: block
 					}
 				}
 			}

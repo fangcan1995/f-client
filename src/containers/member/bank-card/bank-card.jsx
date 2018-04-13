@@ -8,6 +8,7 @@ import  memberActions  from '../../../actions/member';
 import {memberAc} from '../../../actions/member';
 class BankCard extends React.Component{
     componentDidMount() {
+        window.scrollTo(0,0);
         //this.props.dispatch(memberAc.getInfo());
     }
     bindCard(){
@@ -23,16 +24,16 @@ class BankCard extends React.Component{
         this.props.dispatch(memberAc.postOpenAccount());
     }
     changeCard(){
-        //alert('更换银行卡');
-        this.props.dispatch(memberAc.postOpenAccount());
+        alert('更换银行卡');
+        //this.props.dispatch(memberAc.postOpenAccount());
     }
     render(){
 
         let {openAccountStatus,acBank,basicInfo,result}=this.props.member.accountsInfo;
 
-        /*console.log('----------------');
-        console.log(this.props);
-        console.log(basicInfo);*/
+        console.log('----------------');
+        console.log(this.props.member.accountsInfo);
+        console.log(basicInfo);
         if(result.code==='0'){
             this.props.dispatch(memberAc.modifyState({result:''}));
             this.props.dispatch(memberAc.getInfo());
@@ -65,7 +66,7 @@ class BankCard extends React.Component{
                                                     <p><strong>开户行</strong>{acBank.bankName}</p>
                                                 </div>
                                                 <div className="form__bar">
-                                                    <button className="button able" style={{ width: '200px',marginTop:'20px'}} onClick={() => {
+                                                    <button className="button able" style={{ width: '200px',marginTop:'20px',cursor:'pointer'}} onClick={() => {
                                                         this.changeCard()
                                                     }}>更换银行卡</button>
                                                 </div>

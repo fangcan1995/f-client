@@ -16,6 +16,7 @@ import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import './investments.less';
 class MyInvestments extends React.Component{
     componentDidMount () {
+        window.scrollTo(0,0);
         this.props.dispatch(memberInvestAc.stateModify({status:1,myList:``}));
         this.props.dispatch(memberInvestAc.getPie());
         this.props.dispatch(memberInvestAc.getList({status:1}));
@@ -76,7 +77,7 @@ class MyInvestments extends React.Component{
         let {dispatch}=this.props;
         let {myInvestments,isFetching}=this.props.memberInvestments;
         let {myList,charts,status,modalPlan,modalTransfer,currentPro,currentId}=myInvestments;
-
+        //console.log(myList);
         let thead=[];
         thead[0]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>还款方式</th><th>投资金额(元)</th><th>投资时间</th><th>投资进度</th></tr>;
         thead[1]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>投资金额(元)</th><th>投资时间</th><th>下期回款日期</th><th>下期回款金额(元)</th><th>操作</th></tr>;

@@ -1,16 +1,16 @@
-export  function getEchartPie(json,color,showLegend){
+export  function getEchartPie(json,color,showLegend,unit,labelLine){
     return{
         color:color,
         tooltip: {
             trigger: 'item',
-            formatter: "{b}: {c}元 ({d}%)"
+            formatter: "{b}: {c} ({d}%)"
         },
         legend: {
             show:showLegend,
             orient : 'vertical',
             x : 'left',
             textStyle:{
-                fontSize : '14'
+                fontSize : '12'
             },
             padding:20,
             itemGap:20,
@@ -24,7 +24,7 @@ export  function getEchartPie(json,color,showLegend){
                 name:'数据统计',
                 type:'pie',
                 radius: ['50%', '68%'],
-                itemStyle : {
+                /*itemStyle : {
                     normal : {
                         label : {
                             show : true,
@@ -49,12 +49,12 @@ export  function getEchartPie(json,color,showLegend){
                             }
                         }
                     }
-                },
+                },*/
                 avoidLabelOverlap: false,
                 itemStyle : {
                     normal : {
                         label : {
-                            show : true,
+                            show : labelLine,
                             formatter: "{b}",
                             textStyle : {
                                 fontSize : '14',
@@ -62,7 +62,7 @@ export  function getEchartPie(json,color,showLegend){
                             }
                         },
                         labelLine : {
-                            show : true
+                            show : labelLine   //指示线
                         }
                     },
                     emphasis : {

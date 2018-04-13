@@ -17,6 +17,7 @@ class MyAuthInfo extends React.Component {
         this.bindCard = this.bindCard.bind(this);
     }
     componentDidMount() {
+        window.scrollTo(0,0);
         this.props.dispatch(myAuthInfoAc.getResult());
     }
     changeCard(){
@@ -145,7 +146,7 @@ class MyAuthInfo extends React.Component {
                     title="修改登录密码"
                     wrapClassName="vertical-center-modal"
                     visible={modalResetPassword}
-                    width="420px"
+                    width="520px"
                     footer={null}
                     onCancel={() => this.callback()}
                 >

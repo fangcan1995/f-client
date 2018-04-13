@@ -256,6 +256,7 @@ class Signup extends Component {
     return (
       <main className="main signup">
         <div className="wrapper">
+        <div className='w1180'>
           <Card
             tit="注册"
             tip={ <span>已有账号？<a onClick={this.handleLoginClick.bind(this)}>立即登录</a></span> }
@@ -392,6 +393,7 @@ class Signup extends Component {
               </FormItem>
             </Form>
           </Card>
+          </div>
         </div>
       </main>
       

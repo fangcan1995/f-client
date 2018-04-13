@@ -14,6 +14,7 @@ import moment from "moment";
 import './my-loan.less';
 class MyLoans extends React.Component {
     componentDidMount () {
+        window.scrollTo(0,0);
         this.props.dispatch(memberLoansAc.stateModify({status:1,myList:``}));
         this.props.dispatch(memberLoansAc.getPie());
         this.props.dispatch(memberLoansAc.getList({status:1}));
@@ -42,6 +43,8 @@ class MyLoans extends React.Component {
         let {dispatch}=this.props;
         let {myLoans,isFetching}=this.props.memberLoans;
         let {myList,charts,status,modalRepaymentApp,currentId}=myLoans;
+        console.log('myList');
+        console.log(myList);
         let tHead=[];
         tHead[0]=<tr><th>项目名称</th><th>项目类型</th><th>借款金额(元)</th><th>借款年利率(%)</th><th>借款期限</th><th>还款方式</th><th>申请日期</th><th>状态</th></tr>;
         tHead[1]=<tr><th>项目名称</th><th>借款总额(元)</th><th>借款期限</th><th>发布日期</th><th>当前投资金额(元)</th><th>投资进度(%)</th><th>募集结束日期</th><th>状态</th></tr>;

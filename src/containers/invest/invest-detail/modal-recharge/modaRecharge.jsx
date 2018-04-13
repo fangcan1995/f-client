@@ -73,6 +73,8 @@ class ModalRecharge extends React.Component {
         }
     }
     render() {
+        console.log('---------');
+        console.log(this.props.config);
         let {accountBalance,callback}=this.props.config;
         let {postResult}=this.props.investDetail;
 

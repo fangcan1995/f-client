@@ -72,7 +72,12 @@ class ModalRiskAssess extends React.Component {
         let {riskAssess,isFetching}=this.props.memberSettings;
         let {result,myList,status,postResult}=riskAssess;
         if(postResult.code==='0'){
-            window.location.reload();  //提交答案后重载页面
+            console.log('提交了答案');
+            console.log(isFetching);
+            if(!isFetching){
+                window.location.reload();  //提交答案后重载页面
+            }
+
         }
         return(
             <div className="pop__riskAssess">

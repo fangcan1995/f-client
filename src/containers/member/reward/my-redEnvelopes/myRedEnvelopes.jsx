@@ -10,6 +10,7 @@ import {redEnvelopesAc} from '../../../../actions/redEnvelopes';
 
 class MyRedEnvelopes extends React.Component {
     componentDidMount () {
+        window.scrollTo(0,0);
         this.props.dispatch(redEnvelopesAc.toggleClass(0));
         this.props.dispatch(redEnvelopesAc.getData());
     }
