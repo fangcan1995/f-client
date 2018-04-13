@@ -102,33 +102,33 @@ class About extends Component {
     }
 
     sideBarTop = (list, match, location, defaultParent) => {
+        let relation;
         const container = list.map((item, i) => {
             if (item.disclosureDtos.length > 0) {
                 if (i === 0) {
                     this.defaultName = item.disclosureDtos[0].affTypeName;
                 }
-                let relation = {
+                relation = {
                     parentId: item.id,
                     childId: item.disclosureDtos[0].id,
                     childName: item.disclosureDtos[0].affTypeName
                 }
                 this.relation.push(relation);
             }
-            console.log(this.relation);
             const children = this.sideBarContent(item, match);
             return (
-                <dl key={item.id} onClick={this.collapse.bind(this, item.id)}
+                <dl key={item.id} onClick={this.collapse.bind(this, relation.parentId)}
                     className={
                         this.state.current === item.id
-                            && (location.pathname.toLowerCase().indexOf(`${match.url}/${item.id}`.toLowerCase()) === 0)
+                            && (location.pathname.toLowerCase().indexOf(`${match.url}/${relation.parentId}`.toLowerCase()) === 0)
                             ? "showChildren"
-                            : defaultParent && defaultParent.toLowerCase().indexOf(`${item.id}`.toLowerCase()) === 0
+                            : defaultParent && defaultParent.toLowerCase().indexOf(`${relation.parentId}`.toLowerCase()) === 0
                                 ? "showChildren"
                                 : ""
                     }
                 >
                     <dt>
-                        <TitleParent title={item.affTypeName} to={`${match.url}/${item.id}`} id={item.id} onClick={this.handleSelectParentPage.bind(this)} />
+                        <TitleParent title={item.affTypeName} to={`${match.url}/${relation.parentId}/${relation.childId}`} id={item.id} onClick={this.handleSelectParentPage.bind(this)} />
                     </dt>
                     <dd>
                         <ul>
@@ -146,7 +146,7 @@ class About extends Component {
     componentWillMount() {
         const { dispatch, match } = this.props;
         dispatch(aboutContentAction());
-        dispatch(articalListAction(this.defaultId));
+        /* dispatch(articalListAction(this.defaultId)); */
     }
 
     componentDidMount() {
@@ -158,14 +158,26 @@ class About extends Component {
 
     render() {
         const { match, aboutContent, dispatch, location } = this.props;
+
+        //重置父级菜单和子集菜单的关联
         this.relation = [];
-        let defaultParent;
+
+        //获取当前的路径，当前路径的父级菜单id 和 自己菜单的id
+        const currentLocation = location.pathname.split('/');
+        let currentParentId, currentChildId;
+        if(currentLocation.length >= 3) {
+            //当为3时代表此时路由只有父id，4时代表路由到子id
+            currentParentId = currentLocation[currentLocation.length === 3 ? currentLocation.length - 1 : currentLocation.length - 2];
+            currentChildId = currentLocation[currentLocation.length === 4 && currentLocation.length - 1];
+        }
+
+        /* let defaultParent;
         const currents = this.props.location.pathname.split('/');
         if (currents.length >= 3) {
             defaultParent = currents[currents.length === 3 ? currents.length - 1 : currents.length - 2];
             this.defaultId = currents[currents.length === 4 && currents.length - 1];
-        }
-        const sideBar = this.sideBarTop(aboutContent.menuList, match, location, defaultParent);
+        } */
+        const sideBar = this.sideBarTop(aboutContent.menuList, match, location, currentParentId);
 
         return (
             <main className="main">
@@ -181,6 +193,29 @@ class About extends Component {
                             <div className="about__box">
                                 <div className="tablist">
                                     <Switch>
+                                        <Route excact
+                                            path="/about/:parentId/:childId"
+                                            render={
+                                                ({ match, location }) => {
+                                                    return <ArticalContent {...props} />
+                                                }
+                                            }
+                                        />
+                                        {
+                                            /* 此时路由/about, 重定向至/about/第一父栏目/第一子栏目 */
+                                            this.relation[0] ? 
+                                            <Redirect exact
+                                                from={`${match.url}/`}
+                                                to={`${match.url}/${this.relation[0].parentId}/${this.relation[0].childId}`}
+                                            />
+                                            :
+                                            null
+                                        }
+                                        {
+                                            /* 此时路由/about/:pid, 重定向至 /about/:pid/当前pid第一子栏目 */
+                                        }
+                                    </Switch>
+                                    {/* <Switch>
                                         {
                                             this.relation[0] ?
                                                     <Redirect exact
@@ -206,7 +241,7 @@ class About extends Component {
                                                                 <li className="tab tab--active">{childId.childName}</li>
                                                             </div>
                                                             <div className="tabs__content">
-                                                                <List data={aboutContent.pageInfo} match={match} /* {...this.props} */ />
+                                                                <List data={aboutContent.pageInfo} match={match}  {...this.props}  />
                                                             </div>
                                                             <Pagination config={
                                                                 {
@@ -270,7 +305,7 @@ class About extends Component {
                                                                     hidden: false,
                                                                     paging: (obj) => {
                                                                         console.log(obj);
-                                                                        /* this.loadData(obj.currentPage,obj.pageCount); */
+                                                                        //this.loadData(obj.currentPage,obj.pageCount);
                                                                     }
                                                                 }
                                                             } ></Pagination>
@@ -303,7 +338,7 @@ class About extends Component {
                                                 }
                                             }
                                         } />
-                                    </Switch>
+                                    </Switch> */}
                                 </div>
                             </div>
                         </div>
