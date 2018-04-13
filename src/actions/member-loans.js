@@ -2,12 +2,12 @@ import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import {addCommas,checkMoney} from './../assets/js/cost';
 import parseJson2URL from './../utils/parseJson2URL';
-//import {urls,token} from '../utils/url'
-import {token} from '../utils/url'
+import {urls,token} from '../utils/url'
+//import {token} from '../utils/url'
 import { API_CONFIG } from './../config/api';
 import readBlobAsDataURL from '../utils/readBlobAsDataURL';
 
-let urls=`http://172.16.1.221:9090`;
+//let urls=`http://172.16.1.221:9090`;
 const url_loansCharts=`${urls}/members/loans/statistics`; //统计图数据
 const url_loansList=`${urls}/members/loans`;//获取借款列表
 const url_repaymentsAll=`${urls}/members/loans/repayments/all/`;//项目提前还款时获取详情
