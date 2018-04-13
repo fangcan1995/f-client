@@ -61,7 +61,7 @@ class Signup extends Component {
       const { send_terminal } = params
 
       creds.password = hex_md5(creds.password);
-      const queryParams = `?${parseJson2URL({...creds, sendTerminal: send_terminal, registerToken: signup.verifyCode.token })}`;
+      const queryParams = `?${parseJson2URL({...creds, send_terminal: send_terminal, register_token: signup.verifyCode.token })}`;
       dispatch(signupUser(queryParams))
       .then(res => {
         const { value: imageCodeValueObj = {} } = res;
@@ -91,12 +91,12 @@ class Signup extends Component {
 
   handleSendVerifyCodeBtnClick = e => {
     const { dispatch, form, signup } = this.props;
-    const entries = ['username', 'imageCode'];
+    const entries = ['username', 'image_code'];
     form.validateFields(entries, errors => {
       if (errors) return false;
       let creds = form.getFieldsValue(entries);
       const { send_terminal } = params
-      creds = `?${parseJson2URL({...creds, sendTerminal: send_terminal})}`;
+      creds = `?${parseJson2URL({...creds, send_terminal: send_terminal})}`;
 
       dispatch(sendVerifyCode(creds))
       .then(res => {
@@ -218,7 +218,7 @@ class Signup extends Component {
         trigger: ['onBlur', 'onChange']
       }]
     });
-    const imageCodeProps = getFieldDecorator('imageCode', {
+    const imageCodeProps = getFieldDecorator('image_code', {
       validate: [{
         rules: [
           { required: true, min: 4, message: '验证码至少为4个字符' }
@@ -226,7 +226,7 @@ class Signup extends Component {
         trigger: ['onBlur', 'onChange']
       }]
     });
-    const registerCodeProps = getFieldDecorator('registerCode', {
+    const registerCodeProps = getFieldDecorator('register_code', {
       validate: [{
         rules: [
           { required: true, min: 6, message: '验证码至少为6个字符' }
@@ -234,10 +234,10 @@ class Signup extends Component {
         trigger: ['onBlur', 'onChange']
       }]
     });
-    const inviteCodeProps = getFieldDecorator('inviteCode', {
+    const inviteCodeProps = getFieldDecorator('invite_code', {
     });
 
-    const agreementProps = getFieldDecorator('isRead', {
+    const agreementProps = getFieldDecorator('is_read', {
       valuePropName: 'checked',
       initialValue: false,
     })
@@ -388,7 +388,7 @@ class Signup extends Component {
                   className="ant-col-24"
                   type="primary"
                   htmlType="submit"
-                  disabled={ hasErrors(getFieldsError()) || !getFieldValue('isRead') }
+                  disabled={ hasErrors(getFieldsError()) || !getFieldValue('is_read') }
                   >注册</Button>
               </FormItem>
             </Form>

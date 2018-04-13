@@ -21,7 +21,7 @@ import partnerBrand8 from '../../assets/images/homePage/partner_brand_8.png';
 
 import Floor from '../../components/home-page-floor/home-page-floor';
 
-import { getData, getNovice, getStandard, getNotice, getBanner,getSpecs } from '../../actions/home-page';
+import { getData, getNovice, getStandard, getNotice, getBanner,getSpecs ,getAdverts,getAdvertTital} from '../../actions/home-page';
 
 class HomePage extends Component {
   
@@ -50,7 +50,7 @@ class HomePage extends Component {
     this.props.history.push('/about/news/notice')
   }
   handleComeInClick(){
-    this.props.history.push('/invest-list')
+    this.props.history.push('/invest-list//newNoviceLoan')
   }
   handleStandardClick(e){
     console.log(e)
@@ -77,7 +77,8 @@ class HomePage extends Component {
   }
   handleMedIcoClick(e){
     console.log(e)
-    this.props.history.push('/about/news/mediaReport')
+    // this.props.history.push('/about/news/mediaReport')
+    window.location.href=e
   }
   handlePartnerClick(e){
     window.location.href=e
@@ -93,7 +94,8 @@ class HomePage extends Component {
     dispatch(getBanner());
     dispatch(getNotice());
     dispatch(getSpecs());
-    
+    dispatch(getAdverts());
+    dispatch(getAdvertTital());
     
   }
   render() {
@@ -249,7 +251,7 @@ class HomePage extends Component {
                         <p className="desc"><em><span>{item.loanExpiry }</span>个月</em><br />锁定期</p>
                       </div>
                       <div className="card__body">
-                        <p className="yield"><em><span>{item.annualRate/1}</span>.{item.annualRate %1}%+{item.BigDecimal }%</em><br />预期年化收益率</p>
+                        <p className="yield"><em><span>{Math.floor(item.annualRate/1)}</span>.{(item.annualRate + '').split('.')[1]||0}%</em><br />预期年化收益率</p>
                         <ul className="tags">
                           <li>最新推出</li>
                         </ul>
@@ -282,7 +284,7 @@ class HomePage extends Component {
                             <p className="desc"><em><span>{item.loanExpiry }</span>个月</em><br />锁定期</p>
                           </div>
                           <div className="card__body">
-                            <p className="yield"><em><span>{item.annualRate /1}</span>.{item.annualRate %1}%+0%</em><br />预期年化收益率</p>
+                            <p className="yield"><em><span>{Math.floor(item.annualRate/1)}</span>.{(item.annualRate + '').split('.')[1]||0}%</em><br />预期年化收益率</p>
                             <ul className="tags">
                               <li>最新推出</li>
                             </ul>
@@ -330,10 +332,10 @@ class HomePage extends Component {
         <div className="floor__group">
           <Floor
             otherClassName="news"
-            tit={homePage.com.affTypeName}
+            tit='公司动态'
             >
             <div className="news__content">
-              <Carousel autoplay nextArrow prevArrow dots='false'>
+              {/* <Carousel autoplay nextArrow prevArrow dots='false'>
                 {homePage.com.companyList.map((item)=>{
                   return (
                     <div key={item.affInfoId} onClick={this.handleCommediaClick.bind(this,item.affInfoId)}>
@@ -345,17 +347,17 @@ class HomePage extends Component {
                   )
                 })}
                 
-              </Carousel>  
-              {/* <div className="dynamicImg__outer">
-                <img src={require('../../assets/images/homePage/small_tile.jpg')} alt="" className="news__img dynamicImg__inner" />
+              </Carousel>   */}
+              <div className="dynamicImg__outer">
+                <img src={homePage.com.imgsrc} alt="" className="news__img dynamicImg__inner" />
               </div>
               
-              <p className="news__text">巴巴汇金服资金存管上线</p> */}
+              <p className="news__text">{homePage.com.title}</p>
             </div>
           </Floor>
           <Floor
             otherClassName="media"
-            tit={homePage.med.affTypeName}
+            tit='媒体报道'
             >
             <div className="media__content">
               <div className="media__group">
@@ -378,7 +380,7 @@ class HomePage extends Component {
                         )
                       })
                     } */}
-                  <li><a><img src={homePage.med.affTypeIcon} alt="" key={homePage.med.affTypeId} onClick={this.handleMedIcoClick.bind(this,homePage.med.affTypeId)}/></a></li>
+                  <li><a><img src={homePage.medicon.imgsrc} alt={homePage.medicon.title} key={homePage.medicon.id} onClick={this.handleMedIcoClick.bind(this,homePage.medicon.imgurl)}/></a></li>
                 </ul>
               </div>
               <a className="media__more" onClick={this.handleMoreMediaClick.bind(this)}>查看更多 ></a>
