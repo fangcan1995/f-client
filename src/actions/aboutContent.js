@@ -5,8 +5,8 @@ import {
 } from '../utils/url'
 
 
-let aboutUrl = `http://172.16.1.221:9090/information/type`;
-let urlArticalList = `http://172.16.1.221:9090/information/articles`;
+let aboutUrl = `${urls}/information/type`;
+let urlArticalList = `${urls}/information/articles`;
 
 export const aboutContentAction = () => {
     return {
