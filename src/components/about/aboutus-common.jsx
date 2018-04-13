@@ -192,30 +192,8 @@ class About extends Component {
                             <Crumbs />
                             <div className="about__box">
                                 <div className="tablist">
-                                    <Switch>
-                                        <Route excact
-                                            path="/about/:parentId/:childId"
-                                            render={
-                                                ({ match, location }) => {
-                                                    return <ArticalContent {...props} />
-                                                }
-                                            }
-                                        />
-                                        {
-                                            /* 此时路由/about, 重定向至/about/第一父栏目/第一子栏目 */
-                                            this.relation[0] ? 
-                                            <Redirect exact
-                                                from={`${match.url}/`}
-                                                to={`${match.url}/${this.relation[0].parentId}/${this.relation[0].childId}`}
-                                            />
-                                            :
-                                            null
-                                        }
-                                        {
-                                            /* 此时路由/about/:pid, 重定向至 /about/:pid/当前pid第一子栏目 */
-                                        }
-                                    </Switch>
-                                    {/* <Switch>
+                                    
+                                    {<Switch>
                                         {
                                             this.relation[0] ?
                                                     <Redirect exact
@@ -338,7 +316,7 @@ class About extends Component {
                                                 }
                                             }
                                         } />
-                                    </Switch> */}
+                                    </Switch>}
                                 </div>
                             </div>
                         </div>
