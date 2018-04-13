@@ -1,24 +1,37 @@
-import React,{Component}from 'react';
-import { Route, Link} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Route, Link, Switch, Redirect } from 'react-router-dom';
 import './aboutus-common.less';
+import { connect } from 'react-redux';
+
+import { aboutContentAction, articalListAction } from '../../actions/aboutContent';
+
+import Pagination from '../../components/pagination/pagination';
+import Crumbs from '../../components/crumbs/crumbs';
+import Tab from '../../components/tab/tab';
+
+import Team from '../../containers/about/team/team';
+import List from '../../containers/about/list/list';
+import ArticalContent from '../../containers/about/content/content';
+
+
 
 const ListItemLink = ({ to, ...rest }) => (
-  <Route path={to} children={({ match }) => (
-    <li className={match ? 'active' : ''}>
-      <Link to={to} {...rest}/>
-    </li>
-  )}/>
+    <Route path={to} children={({ match }) => (
+        <li className={match ? 'active' : ''}>
+            <Link to={to} {...rest} />
+        </li>
+    )} />
 )
 
 //给当前菜单的父级菜单加active
-const TitleParent=({ title, to, ...rest }) => (
+const TitleParent = ({ title, to, ...rest }) => (
     <Route render={
         (props) => {
             const { location } = props;
             const url = location.pathname;
-            return(
+            return (
                 <h3 className={(url.toLowerCase().indexOf(to.toLowerCase()) === 0) ? 'active' : ''}>
-                    {title}
+                    <Link to={to} {...rest}>{title}</Link>
                 </h3>
             )
         }
@@ -26,121 +39,288 @@ const TitleParent=({ title, to, ...rest }) => (
 )
 
 
-export default class About extends Component {
+
+class About extends Component {
     constructor(props) {
-        super(props)
-
-            this.key=1,
-            this.state = {
-                current:1
-            }
+        super(props);
+        this.key = 1;
+        this.relation = [];
+        this.defaultName = '';
+        this.parents = null;
+        this.defaultId;
+        const currents = this.props.location.pathname.split('/');
+        this.state = {
+            current: parseInt(currents[currents.length >= 3 && currents.length === 3 ? currents.length - 1 : currents.length - 2]),
+            menuList: [],
+            targetName: '',
+            targetParentId: null
+        }
     }
-    componentDidMount() {
-        //const { location } = this.props;
 
-       /* this.setState({
-            current: 2,
-        });*/
 
-    }
-    collapse(key){
-        const {current} = this.state;
-
-        if(current != key){
+    collapse(key) {
+        const { current } = this.state;
+        if (current != key) {
             this.setState({
-                current:key
+                current: key
             })
         }
     }
 
-    render(){
-        return(
+    handleSelectChildPage(e) {
+        const { dispatch } = this.props;
+        dispatch(articalListAction(e.target.id));
+        this.setState({
+            targetName: e.target.innerHTML
+        })
+    }
+
+    handleSelectParentPage(e) {
+        const { dispatch, match } = this.props;
+        const parentId = e.target.id;
+        const relation = this.relation.find(r => {
+            return r.parentId == parentId
+        });
+        dispatch(articalListAction(relation.childId));
+        this.setState({
+            targetParentId: e.target.id
+        })
+    }
+
+    sideBarContent = (item, match, location) => {
+        let children;
+        if (item.disclosureDtos.length > 0) {
+            children = item.disclosureDtos.map((child, i) => {
+                return (
+                    <ListItemLink to={`${match.url}/${item.id}/${child.id}`} key={child.id} onClick={this.handleSelectChildPage.bind(this)} id={child.id}>
+                        {child.affTypeName}
+                    </ListItemLink>
+                );
+            });
+            return children;
+        }
+    }
+
+    sideBarTop = (list, match, location, defaultParent) => {
+        const container = list.map((item, i) => {
+            if (item.disclosureDtos.length > 0) {
+                if (i === 0) {
+                    this.defaultName = item.disclosureDtos[0].affTypeName;
+                }
+                let relation = {
+                    parentId: item.id,
+                    childId: item.disclosureDtos[0].id,
+                    childName: item.disclosureDtos[0].affTypeName
+                }
+                this.relation.push(relation);
+            }
+            console.log(this.relation);
+            const children = this.sideBarContent(item, match);
+            return (
+                <dl key={item.id} onClick={this.collapse.bind(this, item.id)}
+                    className={
+                        this.state.current === item.id
+                            && (location.pathname.toLowerCase().indexOf(`${match.url}/${item.id}`.toLowerCase()) === 0)
+                            ? "showChildren"
+                            : defaultParent && defaultParent.toLowerCase().indexOf(`${item.id}`.toLowerCase()) === 0
+                                ? "showChildren"
+                                : ""
+                    }
+                >
+                    <dt>
+                        <TitleParent title={item.affTypeName} to={`${match.url}/${item.id}`} id={item.id} onClick={this.handleSelectParentPage.bind(this)} />
+                    </dt>
+                    <dd>
+                        <ul>
+                            {
+                                children
+                            }
+                        </ul>
+                    </dd>
+                </dl>
+            )
+        });
+        return container;
+    }
+
+    componentWillMount() {
+        const { dispatch, match } = this.props;
+        dispatch(aboutContentAction());
+        dispatch(articalListAction(this.defaultId));
+    }
+
+    componentDidMount() {
+        /* const { dispatch, match } = this.props;
+        if(this.defaultId) {
+            dispatch(articalListAction(this.defaultId));
+        } */
+    }
+
+    render() {
+        const { match, aboutContent, dispatch, location } = this.props;
+        this.relation = [];
+        let defaultParent;
+        const currents = this.props.location.pathname.split('/');
+        if (currents.length >= 3) {
+            defaultParent = currents[currents.length === 3 ? currents.length - 1 : currents.length - 2];
+            this.defaultId = currents[currents.length === 4 && currents.length - 1];
+        }
+        const sideBar = this.sideBarTop(aboutContent.menuList, match, location, defaultParent);
+
+        return (
             <main className="main">
                 <div className="wrapper">
                     <div className="about__sidebar">
-
-                        <h2><Link to="/about/constant">信息披露</Link></h2>
-                        <dl key="1" onClick = { this.collapse.bind(this,1)} className = { this.state.current === 1? "showChildren":""}>
-                            <dt>
-                                <TitleParent title="关于我们" to="/about" />
-                            </dt>
-                            <dd>
-                                <ul>
-                                    <ListItemLink to="/about/introduce" >公司简介</ListItemLink>
-                                    <ListItemLink to="/about/team" >管理团队</ListItemLink>
-                                    <ListItemLink to="/about/honor" >荣誉资质</ListItemLink>
-                                    <ListItemLink to="/about/partners" >合作伙伴</ListItemLink>
-                                    <ListItemLink to="/about/history" >发展历程</ListItemLink>
-                                </ul>
-                            </dd>
-                        </dl>
-                        <dl key="2" onClick = { this.collapse.bind(this,2)} className = { this.state.current === 2? "showChildren":""}>
-                            <dt><TitleParent title="新闻动态" to="/about" /></dt>
-                            <dd>
-                                <ul>
-                                    <ListItemLink to="/about/news/mediaCompany">公司动态</ListItemLink>
-                                    <ListItemLink to="/about/news/mediaReport">媒体报道</ListItemLink>
-                                    <ListItemLink to="/about/news/mediaIndustry">行业新闻</ListItemLink>
-                                </ul>
-                            </dd>
-                        </dl>
-                        <dl key="3" onClick = { this.collapse.bind(this,3)} className = { this.state.current === 3? "showChildren":""}>
-                            <dt><TitleParent title="官方公告" to="/about" /></dt>
-                            <dd>
-                                <ul>
-                                    <ListItemLink to="/about/news/notice">网站公告</ListItemLink>
-                                </ul>
-                            </dd>
-                        </dl>
-                        <dl key="4" onClick = { this.collapse.bind(this,4)} className = { this.state.current === 4? "showChildren":""}>
-                            <dt><TitleParent title="运营报告" to="/about" /></dt>
-                            <dd>
-                                <ul>
-                                    <ListItemLink to="/about/news/report">运营报告</ListItemLink>
-                                </ul>
-                            </dd>
-                        </dl>
-                        <dl key="5" onClick = { this.collapse.bind(this,5)} className = { this.state.current === 5? "showChildren":""}>
-                            <dt><TitleParent title="安全保障" to="/about" /></dt>
-                            <dd>
-                                <ul>
-                                    <ListItemLink to="/about/dangerControl/56">风控流程</ListItemLink>
-                                    <ListItemLink to="/about/dangerControl/57">风险提示</ListItemLink>
-                                    <ListItemLink to="/about/dangerControl/58">风险教育</ListItemLink>
-                                </ul>
-                            </dd>
-                        </dl>
-                        <dl key="6" onClick = { this.collapse.bind(this,6)} className = { this.state.current === 6? "showChildren":""}>
-                            <dt><TitleParent title="法律法规" to="/about" /></dt>
-                            <dd>
-                                <ul>
-                                    <ListItemLink to="/about/laws">相关规则</ListItemLink>
-                                </ul>
-                            </dd>
-                        </dl>
-                        <dl key="7" onClick = { this.collapse.bind(this,7)} className = { this.state.current === 7? "showChildren":""}>
-                            <dt><TitleParent title="活动公告" to="/about" /></dt>
-                            <dd>
-                                <ul>
-                                    <ListItemLink to="/about/activeNotice">活动公告</ListItemLink>
-                                </ul>
-                            </dd>
-                        </dl>
-                        <dl key="8" onClick = { this.collapse.bind(this,8)} className = { this.state.current === 8? "showChildren":""}>
-                            <dt><TitleParent title="帮助中心" to="/about" /></dt>
-                            <dd>
-                                <ul>
-                                    <ListItemLink to="/about/questions">常见问题</ListItemLink>
-                                    <ListItemLink to="/about/contact">联系我们</ListItemLink>
-                                </ul>
-                            </dd>
-                        </dl>
+                        {
+                            sideBar
+                        }
                     </div>
                     <div className="about__main">
-                        {this.props.children}
+                        <div>
+                            <Crumbs />
+                            <div className="about__box">
+                                <div className="tablist">
+                                    <Switch>
+                                        {
+                                            this.relation[0] ?
+                                                    <Redirect exact
+                                                        from={`${match.url}`}
+                                                        to={`${match.url}/${this.relation[0].parentId}/${this.relation[0].childId}`}
+                                                    />
+                                                :
+                                                null
+                                        }
+                                        <Route exact path="/about/:parentId" render={
+                                            ({ match }) => {
+                                                const list = aboutContent.pageInfo.list;
+                                                const { parentId } = match.params;
+                                                console.log(parentId, this.relation);
+                                                const childId = this.relation.find(r => {
+                                                    return r.parentId == parentId
+                                                });
+
+                                                if (list[0] && list.length > 1) {
+                                                    return (
+                                                        <div>
+                                                            <div className="tabs__nav">
+                                                                <li className="tab tab--active">{childId.childName}</li>
+                                                            </div>
+                                                            <div className="tabs__content">
+                                                                <List data={aboutContent.pageInfo} match={match} /* {...this.props} */ />
+                                                            </div>
+                                                            <Pagination config={
+                                                                {
+                                                                    currentPage: 1,
+                                                                    pageSize: 2,
+                                                                    totalPage: 1,
+                                                                    hidden: false,
+                                                                    paging: (obj) => {
+                                                                        console.log(obj);
+                                                                        //dispatch(articalListAction(obj.currentPage,obj.pageCount))
+                                                                    }
+                                                                }
+                                                            } ></Pagination>
+                                                        </div>
+
+                                                    );
+                                                }
+                                                else if (list[0]) {
+                                                    return (
+                                                        <div>
+                                                            <div className="tabs__nav">
+                                                                <li className="tab tab--active">{childId.childName}</li>
+                                                            </div>
+                                                            <div className="tabs__content">
+                                                                <ArticalContent data={aboutContent.pageInfo} match={match} />
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                }
+                                                else {
+                                                    return (
+                                                        <div>
+                                                            <div className="tabs__nav">
+                                                                <li className="tab tab--active">{childId.childName}</li>
+                                                            </div>
+                                                            <div className="tabs__content">
+                                                                <h3 style={{ fontSize: '16px', margin: '10px' }}>暂无内容</h3>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                }
+                                            }
+                                        } />
+                                        <Route exact path="/about/:parentId/:childId" render={
+                                            ({ match }) => {
+                                                const list = aboutContent.pageInfo.list;
+                                                if (list[0] && list.length > 1) {
+                                                    return (
+                                                        <div>
+                                                            <div className="tabs__nav">
+                                                                <li className="tab tab--active">{this.state.targetName ? this.state.targetName : this.defaultName}</li>
+                                                            </div>
+                                                            <div className="tabs__content">
+                                                                <List data={aboutContent.pageInfo} match={match} />
+                                                            </div>
+                                                            <Pagination config={
+                                                                {
+                                                                    currentPage: aboutContent.pageInfo.pageNum,
+                                                                    pageSize: aboutContent.pageInfo.pageSize,
+                                                                    totalPage: aboutContent.pageInfo.pages,
+                                                                    hidden: false,
+                                                                    paging: (obj) => {
+                                                                        console.log(obj);
+                                                                        /* this.loadData(obj.currentPage,obj.pageCount); */
+                                                                    }
+                                                                }
+                                                            } ></Pagination>
+                                                        </div>
+                                                    );
+                                                }
+                                                else if (list[0]) {
+                                                    return (
+                                                        <div>
+                                                            <div className="tabs__nav">
+                                                                <li className="tab tab--active">{this.state.targetName ? this.state.targetName : this.defaultName}</li>
+                                                            </div>
+                                                            <div className="tabs__content">
+                                                                <ArticalContent data={aboutContent.pageInfo} match={match} />
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                }
+                                                else {
+                                                    return (
+                                                        <div>
+                                                            <div className="tabs__nav">
+                                                                <li className="tab tab--active">{this.state.targetName ? this.state.targetName : this.defaultName}</li>
+                                                            </div>
+                                                            <div className="tabs__content">
+                                                                <h3 style={{ fontSize: '16px', margin: '10px' }}>暂无内容</h3>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                }
+                                            }
+                                        } />
+                                    </Switch>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </main>
         )
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        aboutContent: state.toJS().aboutContentReducer
+    }
+}
+
+About = connect(mapStateToProps)(About);
+
+export default About;

@@ -7,7 +7,7 @@ import { Route, Link } from 'react-router-dom';
 import { articalListAction } from '../../../actions/about';
 
 
-const setTitle = (typeText) => {
+/* const setTitle = (typeText) => {
     switch (typeText) {
         case 'mediaCompany':
             return '公司动态';
@@ -32,60 +32,73 @@ const setTitle = (typeText) => {
         case '58':
             return '风险教育';
     }
-}
+} */
+
+
+/* const articalList = (props) => {
+    console.log(props);
+    const { dispatch, aboutContent } = props;
+    return (
+        <div>
+            123123123213423
+            {<Pagination config={
+                {
+                    currentPage: aboutContent.pageInfo.pageNum,
+                    pageSize: aboutContent.pageInfo.pageSize,
+                    totalPage: aboutContent.pageInfo.pages,
+                    paging: (obj) => {
+                        console.log(obj);
+                        dispatch(articalListAction(obj.currentPage,obj.pageCount))
+                        //this.loadData(obj.currentPage,obj.pageCount);
+                    }
+                }
+            } ></Pagination>}
+        </div>
+    );
+
+} */
+
+
+
 
 
 class articalList extends Component {
 
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.state = {
             typeTitle: ''
         }
     }
 
-    componentDidMount () {
-        const { dispatch, match } = this.props;
-        dispatch(articalListAction());
-
-    }
-
-    render () {
+    render() {
 
         //数据
-        console.log(this.props.aboutData);
-        const { list } = this.props.aboutData.pageInfo;
-        const { pageInfo } = this.props.aboutData;
-        console.log(pageInfo);
+        console.log(this.props);
+        const { list } = this.props.data;
 
         const listData = list ? list : [];
-        console.log(list);
 
         //路由
         const { match } = this.props;
         const urlToArray = match.url.split('/');
-        const typeText = urlToArray[urlToArray.length -1];
-        const typeTitle = setTitle(typeText);
-        
+        const typeText = urlToArray[urlToArray.length - 1];
+        //const typeTitle = setTitle(typeText);
 
-        return(
-            <div>
-                <Crumbs />
-                <div className="about__box">
-                    <Tab>
-                        <div name={typeTitle}>
-                            <ul className="list">
-                                {
-                                    listData.map((item, i) => {
-                                        return (
-                                            <li key={i}>
-                                                <Link to="/">{item.affContent}</Link>
-                                                <span>{item.updateTime.split(' ')[0]}</span>
-                                            </li>
-                                        );
-                                    })
-                                }
-                                {/* <li><a href="#" target="_blank">聚焦智能金融巴巴汇金服获中国金融服务行业十大领先品牌聚焦智能金融巴巴汇金服获中国金融服务行业十大领先品牌聚焦智能金融巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-12-8</span></li>
+
+        return (
+            <ul className="list">
+                {
+                    listData.map((item, i) => {
+                        return (
+                            <li key={i}>
+                                <Link to="/">{item.title}</Link>
+                                <span>{item.updateTime.split(' ')[0]}</span>
+                            </li>
+                        );
+                    })
+                }
+                {/* <li><a href="#" target="_blank">聚焦智能金融巴巴汇金服获中国金融服务行业十大领先品牌聚焦智能金融巴巴汇金服获中国金融服务行业十大领先品牌聚焦智能金融巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-12-8</span></li>
                                 <li><a href="#" target="_blank">聚焦智能金融 巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-5-8</span></li>
                                 <li><a href="#" target="_blank">聚焦智能金融 巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-5-8</span></li>
                                 <li><a href="#" target="_blank">聚焦智能金融 巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-5-8</span></li>
@@ -94,35 +107,12 @@ class articalList extends Component {
                                 <li><a href="#" target="_blank">聚焦智能金融 巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-5-8</span></li>
                                 <li><a href="#" target="_blank">聚焦智能金融 巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-5-8</span></li>
                                 <li><a href="#" target="_blank">聚焦智能金融 巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-5-8</span></li>
-                                <li><a href="#" target="_blank">聚焦智能金融 巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-5-8</span></li> */}
-                            </ul>
-                            <Pagination config = {
-                                {
-                                    currentPage: pageInfo.pageNum,
-                                    pageSize: pageInfo.pageSize,
-                                    totalPage: pageInfo.pages,
-                                    paging:(obj)=>{
-                                        this.loadData(obj.currentPage,obj.pageCount);
-                                    }
-                                }
-                            } ></Pagination>
-                        </div>
-                    </Tab>
-                </div>
-            </div>
+            <li><a href="#" target="_blank">聚焦智能金融 巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-5-8</span></li> */}
+            </ul>
+
         )
     }
 }
 
-function mapStateToProps (state) {
-    console.log(state.toJS());
-    console.log(state.toJS().aboutReducer);
-    return {
-        aboutData: state.toJS().aboutReducer
-    }
-}
-
-articalList = connect(mapStateToProps)(articalList);
 
 export default articalList;
-

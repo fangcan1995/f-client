@@ -46,8 +46,6 @@ export default class MyAvatar extends React.Component {
     }
     render() {
         let {photo}=this.props;
-        console.log('---------------photo--------');
-        console.log(photo);
        let disableChange=this.props.disableChange || false; //是否可以替换
         let photo_url=``;
         if(photo!=``){

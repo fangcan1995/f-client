@@ -19,11 +19,23 @@ const Crumbs = ({ location, match, history, ...props}) => {
         '/my-account/recharge': '充值',
         '/my-account/withdrawals': ' 提现',
         '/my-account/transaction-record': ' 交易记录',
+        '/my-investments':'我的投资',
+        '/my-investments/my-investments':'我的投资',
+        '/my-investments/receiving':'回款统计',
         '/my-loan': ' 我的借款',
         '/my-loan/my-loan': ' 我的借款',
+        '/my-loan/RepaymentPlans': ' 还款计划',
+        '/my-reward':'我的奖励',
+        '/my-reward/my-redEnvelopes':'我的红包',
+        '/my-reward/my-rateCoupons':'我的加息券',
+        '/my-settings':'基本设置',
+        '/my-settings/my-authInfo':'个人资料',
+        '/my-settings/my-riskAssess':'风险评估',
+        '/my-settings/my-messages':'系统消息',
 
         '/about': ' 关于我们',
         '/about/team': ' 管理团队',
+        '/about/introduce': ' 公司简介'
 
     };
     
@@ -32,7 +44,6 @@ const Crumbs = ({ location, match, history, ...props}) => {
         const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
         return (
             <span key={url}>&nbsp;>&nbsp;<CrumbLink to={url}>{breadcrumbNameMap[url]}</CrumbLink></span>
-            
         );
     });
     const breadcrumbItems = [<CrumbLink to="/" key="home">首页</CrumbLink>].concat(extraBreadcrumbItems);

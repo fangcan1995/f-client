@@ -147,44 +147,10 @@ export default (
             <Route path="/about" render={(props) => {
                 const { match } = props;
                 return(
-                    <About>
-                        <Switch>
+                    <About {...props}>
+                        {/* <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/constant`} />
-
-                            {/* 关于我们 */}
-                            <Route path={`${match.url}/constant`} component={Constant} />
-                            <Route path={`${match.url}/introduce`} component={ArticleList} />
-                            <Route path={`${match.url}/team`} component={Team} />
-                            <Route path={`${match.url}/honor`} component={Honor} />
-                            <Route path={`${match.url}/partners`} component={Partners} />
-                            <Route path={`${match.url}/history`} component={ArticleList} />
-
-                            {/* 新闻动态 */}
-                            <Route path={`${match.url}/news/mediaCompany`} component={ArticleList} />
-                            <Route path={`${match.url}/news/mediaReport`} component={ArticleList} />
-                            <Route path={`${match.url}/news/mediaIndustry`} component={ArticleList} />
-
-                            {/* 官方公告 */}
-                            <Route path={`${match.url}/news/notice`} component={ArticleList} />
-
-                            {/* 运营报告 */}
-                            <Route path={`${match.url}/news/report`} component={ArticleList} />
-
-                            {/* 安全保障 */}
-                            <Route path={`${match.url}/dangerControl/:id`} component={ArticleList} />
-
-                            {/* 法律法规 */}
-                            <Route path={`${match.url}/laws`} component={ArticleList} />
-
-                            {/* 活动公告 */}
-                            <Route path={`${match.url}/activeNotice`} component={ArticleList} />
-
-                            {/* 帮助中心 */}
-                            <Route path={`${match.url}/questions`} component={ArticleList}/>
-                            <Route path={`${match.url}/contact`} component={Contact} />
-                            
-                            <Redirect to="/" />
-                        </Switch>
+                        </Switch> */}
                     </About>
                 )
             }} />

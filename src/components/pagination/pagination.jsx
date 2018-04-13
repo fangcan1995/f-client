@@ -7,6 +7,7 @@ export default class Pagination extends Component{
         this.state = {
             pageCount:props.config.pageSize,
             currentPage:props.config.currentPage,
+            hidden: props.config.hidden  === false ? props.config.hidden : true,
             groupCount:5,
             startPage:1,
         }
@@ -193,7 +194,7 @@ export default class Pagination extends Component{
             );
         }else{
             return(
-                <div className="pagination" hidden={true}>
+                <div className="pagination" hidden={this.state.hidden}>
                     <div className = "bar">
                         <span>每页显示</span>
                         <div className = "select">

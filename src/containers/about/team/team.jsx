@@ -3,6 +3,8 @@ import Crumbs from '../../../components/crumbs/crumbs';
 import Tab from '../../../components/tab/tab';
 import './team.less';
 
+
+
 export default ({ location, match, history }) => {
     console.log(match);
     return(

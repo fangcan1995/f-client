@@ -15,6 +15,7 @@ import investList from './invest-list';
 import investDetail from './invest-detail';
 import member from './member';
 import superPartner from './super-partner';
+import aboutContentReducer from './aboutContentReducer';
 export {
     auth,
     login,
@@ -33,4 +34,5 @@ export {
     memberSettings,
     member,
     superPartner,
+    aboutContentReducer
 }

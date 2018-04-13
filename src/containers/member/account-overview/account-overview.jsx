@@ -15,6 +15,7 @@ import Crumbs from '../../../components/crumbs/crumbs';
 class AccountOverview extends React.Component{
     componentDidMount() {
         //this.props.dispatch(memberAc.getInfo());
+        window.scrollTo(0,0);
         this.props.dispatch(memberAc.getMonth());
         this.props.dispatch(memberAc.getDay());
     }
