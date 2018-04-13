@@ -21,6 +21,7 @@ class MyRiskAssess extends React.Component {
         }
     }
     componentDidMount() {
+        window.scrollTo(0,0);
         this.props.dispatch(myRiskAssessAc.getResult());
         this.props.dispatch(myRiskAssessAc.getRiskAssessList());
     }

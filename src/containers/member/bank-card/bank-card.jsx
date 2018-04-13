@@ -8,6 +8,7 @@ import  memberActions  from '../../../actions/member';
 import {memberAc} from '../../../actions/member';
 class BankCard extends React.Component{
     componentDidMount() {
+        window.scrollTo(0,0);
         //this.props.dispatch(memberAc.getInfo());
     }
     bindCard(){

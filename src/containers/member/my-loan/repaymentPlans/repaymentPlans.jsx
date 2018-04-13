@@ -27,6 +27,7 @@ class RepaymentPlans extends React.Component{
         this.handleDateEndChange = this.handleDateEndChange.bind(this);
     }
     componentDidMount () {
+        window.scrollTo(0,0);
         this.props.dispatch(repaymentsAc.getPie());
         this.props.dispatch(repaymentsAc.getList());
         this.props.dispatch(repaymentsAc.getProList());

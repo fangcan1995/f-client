@@ -19,8 +19,11 @@ class MyMessages extends React.Component {
         this.setReaded= this.setReaded.bind(this);
         this.filter=this.filter.bind(this);
     }
+
     componentDidMount() {
+        window.scrollTo(0,0);
         this.props.dispatch(myMessagesAc.getMessagesList());
+
     }
     filter(parm){
         this.props.dispatch(myMessagesAc.modifyState({readTag:parm,myList:''}));  //修改状态

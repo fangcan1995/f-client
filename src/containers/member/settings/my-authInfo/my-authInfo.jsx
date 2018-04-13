@@ -17,6 +17,7 @@ class MyAuthInfo extends React.Component {
         this.bindCard = this.bindCard.bind(this);
     }
     componentDidMount() {
+        window.scrollTo(0,0);
         this.props.dispatch(myAuthInfoAc.getResult());
     }
     changeCard(){

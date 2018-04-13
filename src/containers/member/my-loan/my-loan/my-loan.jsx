@@ -14,6 +14,7 @@ import moment from "moment";
 import './my-loan.less';
 class MyLoans extends React.Component {
     componentDidMount () {
+        window.scrollTo(0,0);
         this.props.dispatch(memberLoansAc.stateModify({status:1,myList:``}));
         this.props.dispatch(memberLoansAc.getPie());
         this.props.dispatch(memberLoansAc.getList({status:1}));

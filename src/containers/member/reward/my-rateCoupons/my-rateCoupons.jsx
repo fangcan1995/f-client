@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import {myRateCouponsAc} from '../../../../actions/rateCoupons';
 class MyRateCoupons extends React.Component{
     componentDidMount () {
+        window.scrollTo(0,0);
         this.props.dispatch(myRateCouponsAc.toggleClass(0));
         this.props.dispatch(myRateCouponsAc.getData());
     }

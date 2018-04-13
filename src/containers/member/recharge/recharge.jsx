@@ -22,6 +22,7 @@ class Recharge extends React.Component{
         this.handleChange= this.handleChange.bind(this);
     }
     componentDidMount() {
+        window.scrollTo(0,0);
         //this.props.dispatch(memberAc.getInfo());
     }
 

@@ -11,6 +11,7 @@ import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import moment from "moment";
 class Receiving extends React.Component{
     componentDidMount () {
+        window.scrollTo(0,0);
         this.props.dispatch(memberReceivingAc.getPie());
         this.props.dispatch(memberReceivingAc.getList({
             pageNum:1,
