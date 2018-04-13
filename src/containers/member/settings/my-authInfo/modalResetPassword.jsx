@@ -135,10 +135,7 @@ class ModalResetPassword extends React.Component {
                         </FormItem>
 
                         <FormItem>
-                            <Button type="primary" htmlType="submit" className="pop__large">
-                                确认
-                            </Button>
-
+                            <Button type="primary" htmlType="submit" className="pop__large">确认</Button>
                         </FormItem>
                     </Form>
                 </div>

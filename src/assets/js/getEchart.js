@@ -3,7 +3,7 @@ export  function getEchartPie(json,color,showLegend,unit,labelLine){
         color:color,
         tooltip: {
             trigger: 'item',
-            formatter: "{b}: {c}"+unit+" ({d}%)"
+            formatter: "{b}: {c} ({d}%)"
         },
         legend: {
             show:showLegend,

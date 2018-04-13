@@ -23,8 +23,8 @@ class BankCard extends React.Component{
         this.props.dispatch(memberAc.postOpenAccount());
     }
     changeCard(){
-        //alert('更换银行卡');
-        this.props.dispatch(memberAc.postOpenAccount());
+        alert('更换银行卡');
+        //this.props.dispatch(memberAc.postOpenAccount());
     }
     render(){
 
@@ -65,7 +65,7 @@ class BankCard extends React.Component{
                                                     <p><strong>开户行</strong>{acBank.bankName}</p>
                                                 </div>
                                                 <div className="form__bar">
-                                                    <button className="button able" style={{ width: '200px',marginTop:'20px'}} onClick={() => {
+                                                    <button className="button able" style={{ width: '200px',marginTop:'20px',cursor:'pointer'}} onClick={() => {
                                                         this.changeCard()
                                                     }}>更换银行卡</button>
                                                 </div>
