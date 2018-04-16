@@ -81,9 +81,10 @@ class TransferDetailMaster extends React.Component {
     }
     render(){
         //console.log(this.state);
-        let {investInfo}=this.props.investDetail;
-        let {member,auth}=this.props;
-        let {project,member,investAmount}=this.state;
+        let {member,auth,investInfo,type}=this.props;
+        //let {investInfo}=this.props.investDetail;
+        //let {member,auth}=this.props;
+        //let {project,member,investAmount}=this.state;
         return (
             <div>
                 <div>
