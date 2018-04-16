@@ -14,8 +14,9 @@ export const sbListAc={
                 params = parseJson2URL(params);
                 const res = await cFetch(`${url_sblist}?`+params,{method: 'GET'}, false);
                 const {code, data} = res;
-                console.log('发回的数据');
-                console.log(`${url_sblist}&`+params);
+                console.log('发出的请求');
+                console.log(`${url_sblist}?`+params);
+                console.log('返回的数据');
                 console.log(data);
                 if (code == 0) {
                     return {
@@ -41,7 +42,9 @@ export const tranferListAc={
                 params = parseJson2URL(params);
                 const res = await cFetch(`${url_transferlist}?`+params,{method: 'GET'}, false);
                 const {code, data} = res;
-                console.log('发回的数据');
+                console.log('发出的请求');
+                console.log(`${url_transferlist}?`+params);
+                console.log('反回的数据');
                 console.log(data);
                 if (code == 0) {
                     return {
