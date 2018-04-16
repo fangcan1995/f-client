@@ -11,6 +11,7 @@ import LoginModal from '../../../components/login-modal/login-modal'
 import { getApplyData,checkForm ,formData,postLoanData, hideModal1 } from '../../../actions/loan-index'
 import {checkMoney} from '../../../assets/js/cost';
 import parseJson2URL from '../../../utils/parseJson2URL';
+import  memberActions  from '../../../actions/member';
 
 class Loan extends Component {
   state = {
@@ -125,6 +126,10 @@ class Loan extends Component {
   componentWillUnmount(){
     // clearTimeout(this.ctiemout)
   }
+  handelConfigClick =()=>{
+    const { dispatch } = this.props;
+    this.props.dispatch(memberActions.postOpenAccount(postData));
+  }
   render(){
     const { auth ,loginModal,loans} = this.props;
     const { imageCodeImg } = this.props.login;
@@ -188,7 +193,9 @@ class Loan extends Component {
                 </li>
               </ul>
             </Floor>
-            <Modal title="借款申请"
+            {
+              loans.trueName?
+              <Modal title="借款申请"
               visible={this.state.visible}
               onOk={this.handleOk}
               confirmLoading={this.state.confirmLoading}
@@ -293,6 +300,21 @@ class Loan extends Component {
               
               
             </Modal>
+            :
+            <Modal title="提示信息"
+            visible={this.state.visible}
+            onOk={this.handleOk}
+            confirmLoading={this.state.confirmLoading}
+            onCancel={this.handleCancel1}
+            footer={this.state.footer}
+            className='config'
+          >
+           
+            <div className='content'>请先完成实名认证</div>
+            <Button className='config-btn' onClick={this.handelConfigClick}>立即认证</Button>
+          </Modal>
+            }
+            
             <Modal title="提示信息" visible={loans.postinged}
               confirmLoading={this.state.confirmLoading}
               onOk={this.handleCancel2} onCancel={this.handleCancel2}
