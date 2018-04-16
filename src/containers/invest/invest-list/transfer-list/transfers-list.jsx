@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 import { Progress } from 'antd';
 import { connect } from 'react-redux';
 import moment from "moment";
-import {tranferListAc} from "../../../../actions/invest-list"
+import {sbListAc, tranferListAc} from "../../../../actions/invest-list"
 import Pagination from '../../../../components/pagination/pagination';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import '../invest-list.less';
+let orderBy={};
 class TransferList extends Component {
     constructor(props) {
         super(props);
@@ -23,7 +24,7 @@ class TransferList extends Component {
         for(var i in sort){
             newSort[i]=0;
         };
-        let orderBy={};
+        //let orderBy={};
         switch (sort[type]){
             case 0:
                 newSort[type]=1;
@@ -39,9 +40,10 @@ class TransferList extends Component {
         }
 
 
-
-        this.props.dispatch(tranferListAc.stateRepaymentPlanModify({sort:newSort}));
-        this.props.dispatch(tranferListAc.getList(orderBy));
+        //
+        this.props.dispatch(tranferListAc.stateRepaymentPlanModify({list:``,sort:newSort}));
+        let prams=Object.assign({pageNum:1,pageSize:10},orderBy);
+        this.props.dispatch(tranferListAc.getList(prams));
     }
     getStatusName(status,id,transferId){
         let investButton=``;
@@ -132,7 +134,8 @@ class TransferList extends Component {
                                             pageSize:list.pageSize,
                                             totalPage:list.pages,
                                             paging:(obj)=>{
-                                                let parms=Object.assign({pageNum:obj.currentPage,pageSize:obj.pageCount},sort)
+                                                dispatch(sbListAc.stateSbModify({list:``,sort:sort}));
+                                                let parms=Object.assign({pageNum:obj.currentPage,pageSize:obj.pageCount},orderBy)
                                                 dispatch(tranferListAc.getList(parms));
                                             }
                                         }

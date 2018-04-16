@@ -23,6 +23,7 @@ export const memberAc= {
                 const res = await cFetch(`${url_memberInfo}`,{method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
+
                     return {
                         basicInfo:{
                             trueName:data.baseInfo.trueName,
@@ -118,7 +119,7 @@ export const memberAc= {
                     true);
                 if (res.code == 0) {
                     message.success('开户成功');
-                    window.location.reload();
+                    //window.location.reload();
                     return {result: res};
                 } else {
                     message.error(res.message);
