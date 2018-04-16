@@ -8,6 +8,8 @@ import {sbListAc} from "../../../../actions/invest-list";
 import Pagination from '../../../../components/pagination/pagination';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import '../invest-list.less';
+import {memberLoansAc} from "../../../../actions/member-loans";
+let orderBy={};
 class SubjectList extends Component {
     constructor(props) {
         super(props);
@@ -32,7 +34,7 @@ class SubjectList extends Component {
             //let prams=Object.assign({pageNum:1,pageSize:5,status:``})
             this.props.dispatch(sbListAc.getList({status:``}));
             //console.log('--prams--');
-           // console.log(prams);
+            //console.log(prams);
             //this.props.dispatch(sbListAc.getList(prams));
         }
 
@@ -62,16 +64,20 @@ class SubjectList extends Component {
 
             }
         }
+        //console.log(Object.assign({},filter));
         return Object.assign({},filter);
     }
     multiFilter(type,value){
         let filter=this.props.investList.sbList.filter;
+        let sort=this.props.investList.sbList.sort;
         //修改
         filter[type]=value;
-        //this.props.dispatch(sbListAc.stateSbModify({filter:filter}));
 
-        this.props.dispatch(sbListAc.stateSbModify({filter:filter,list:``}));
-        this.props.dispatch(sbListAc.getList(this.todoFilter(filter)));
+        //this.props.dispatch(sbListAc.stateSbModify({filter:filter,list:``}));
+        this.props.dispatch(sbListAc.stateSbModify({list:``,filter:filter,sort:sort}));
+        let prams=Object.assign({pageNum:1,pageSize:10},this.todoFilter(filter),orderBy);
+        this.props.dispatch(sbListAc.getList(prams));
+        //this.props.dispatch(sbListAc.getList(this.todoFilter(filter)));
     }
     sort(type){
         let sbList=this.props.investList.sbList;
@@ -81,18 +87,6 @@ class SubjectList extends Component {
         for(var i in sort){
             newSort[i]=0;
         };
-        /*switch (sort[type]){
-            case 0:
-                newSort[type]=1;
-                break;
-            case 1:
-                newSort[type]=2;
-                break;
-            case 2:
-                newSort[type]=0;
-                break;
-        }*/
-        let orderBy={};
         switch(sort[type]){
             case 0:
                 newSort[type]=1;
@@ -107,10 +101,8 @@ class SubjectList extends Component {
                 break;
         }
 
-        //orderBy[type]=newSort[type];
-
-        this.props.dispatch(sbListAc.stateSbModify({sort:newSort}));
-        let prams=Object.assign(this.todoFilter(filter),orderBy);
+        this.props.dispatch(sbListAc.stateSbModify({list:``,filter:filter,sort:newSort}));
+        let prams=Object.assign({pageNum:1,pageSize:10},this.todoFilter(filter),orderBy);
         this.props.dispatch(sbListAc.getList(prams));
     }
     getStatusName(status,id){
@@ -143,6 +135,7 @@ class SubjectList extends Component {
         let {sbList,isFetching}=this.props.investList;
         let {list,filter,sort}=sbList;
         let {noviceLoan,loanExpiry,rateGroup}=filter;
+
         console.log('--------------this.props--------------');
         console.log(list);
         return (
@@ -270,12 +263,8 @@ class SubjectList extends Component {
                                                 pageSize:list.pageSize,
                                                 totalPage:list.pages,
                                                 paging:(obj)=>{
-                                                    //alert();
-
-                                                    //this.props.dispatch(sbListAc.stateSbModify({filter:filter,list:``}));
-                                                    let prams=Object.assign({pageNum:obj.currentPage,pageSize:obj.pageCount,status:``},this.todoFilter(filter),sort);
-                                                    console.log('分页');
-                                                    console.log(prams);
+                                                    dispatch(sbListAc.stateSbModify({list:``,filter:filter,sort:sort}));
+                                                    let prams=Object.assign({pageNum:obj.currentPage,pageSize:obj.pageCount},this.todoFilter(Object.assign({},filter)),orderBy);
                                                     dispatch(sbListAc.getList(prams));
                                                 }
                                             }
