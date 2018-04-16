@@ -1,68 +1,60 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import Crumbs from '../../../components/crumbs/crumbs';
+import Tab from '../../../components/tab/tab';
 import { Route, Link } from 'react-router-dom';
+import { aboutContentAction, articalListAction } from '../../../actions/aboutContent';
 
 
-
-const articalContent = (props) => {
-    console.log(props);
-    return (
-        <div>123</div>
-    );
-}
-
-export default articalContent;
-
-/* class articalContent extends Component {
-
-    constructor (props) {
+class articalContent extends Component {
+    constructor(props) {
         super(props);
-        this.state = {
-            typeTitle: ''
+    }
+
+    componentDidMount() {
+        const { tabName, match, content, childId, dispatch } = this.props;
+        dispatch(articalListAction(childId));
+    }
+
+    render() {
+        const { tabName, match, content, childId, dispatch } = this.props;
+        const list = content.list;
+        console.log(list);
+        if(list[0]) {
+            return (
+                <div>
+                    <div className="tabs__nav">
+                        <li className="tab tab--active">{tabName}</li>
+                    </div>
+                    <div className="tabs__content">
+                    </div>
+                </div>
+            );
+        }
+        else {
+            return (
+                <div>
+                    <div className="tabs__nav">
+                        <li className="tab tab--active">{tabName}</li>
+                    </div>
+                    <div className="tabs__content">
+                        <h3 style={{ fontSize: '16px', margin: '10px' }}>暂无内容</h3>
+                    </div>
+                </div>
+            );
         }
     }
+}
 
-    render () {
-
-        //数据
-        console.log(this.props);
-        const { list } = this.props.data;
-
-        const listData = list ? list : [];
-
-        //路由
-        const { match } = this.props;
-        const urlToArray = match.url.split('/');
-        const typeText = urlToArray[urlToArray.length -1];
-        const typeTitle = setTitle(typeText);
-        
-
-        return(
-                            <ul className="list">
-                                {
-                                    listData.map((item, i) => {
-                                        return (
-                                            <li key={i}>
-                                                <Link to="/">{item.title}</Link>
-                                                <span>{item.updateTime.split(' ')[0]}</span>
-                                            </li>
-                                        );
-                                    })
-                                }
-                                <li><a href="#" target="_blank">聚焦智能金融巴巴汇金服获中国金融服务行业十大领先品牌聚焦智能金融巴巴汇金服获中国金融服务行业十大领先品牌聚焦智能金融巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-12-8</span></li>
-                                <li><a href="#" target="_blank">聚焦智能金融 巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-5-8</span></li>
-                                <li><a href="#" target="_blank">聚焦智能金融 巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-5-8</span></li>
-                                <li><a href="#" target="_blank">聚焦智能金融 巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-5-8</span></li>
-                                <li><a href="#" target="_blank">聚焦智能金融 巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-5-8</span></li>
-                                <li><a href="#" target="_blank">聚焦智能金融 巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-5-8</span></li>
-                                <li><a href="#" target="_blank">聚焦智能金融 巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-5-8</span></li>
-                                <li><a href="#" target="_blank">聚焦智能金融 巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-5-8</span></li>
-                                <li><a href="#" target="_blank">聚焦智能金融 巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-5-8</span></li>
-                                <li><a href="#" target="_blank">聚焦智能金融 巴巴汇金服获中国金融服务行业十大领先品牌</a><span>2017-5-8</span></li>
-                            </ul>
-                            
-        )
+const mapStateToProps = (state) => {
+    return {
+        aboutContent: state.toJS().aboutContentReducer
     }
 }
- */
 
+articalContent = connect(
+    mapStateToProps
+)(articalContent)
+
+export default articalContent;
 

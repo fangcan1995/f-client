@@ -190,11 +190,12 @@ class Signup extends Component {
               const params = `?${parseJson2URL({username: value || ''})}`;
               this.props.dispatch(checkUserExist(params))
               .then(res => {
-                const { code, msg } = res;
+                const { code, message } = res.value;
+                console.log(res)
                 if ( code == 0 ) {
                   callback()
                 } else {
-                  callback(msg)
+                  callback(message)
                 }
                 
               })
