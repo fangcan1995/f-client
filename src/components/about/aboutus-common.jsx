@@ -24,13 +24,13 @@ const ListItemLink = ({ to, ...rest }) => (
 )
 
 //给当前菜单的父级菜单加active
-const TitleParent = ({ title, to, ...rest }) => (
+const TitleParent = ({ title, to, match, ...rest }) => (
     <Route render={
         (props) => {
             const { location } = props;
             const url = location.pathname;
             return (
-                <h3 className={(url.toLowerCase().indexOf(to.toLowerCase()) === 0) ? 'active' : ''}>
+                <h3 className={(url.toLowerCase().indexOf(match.toLowerCase()) === 0) ? 'active' : ''}>
                     <Link to={to} {...rest}>{title}</Link>
                 </h3>
             )
@@ -43,17 +43,14 @@ const TitleParent = ({ title, to, ...rest }) => (
 class About extends Component {
     constructor(props) {
         super(props);
-        this.key = 1;
-        this.relation = [];
+        this.relations = [];
         this.defaultName = '';
         this.parents = null;
         this.defaultId;
         const currents = this.props.location.pathname.split('/');
         this.state = {
             current: parseInt(currents[currents.length >= 3 && currents.length === 3 ? currents.length - 1 : currents.length - 2]),
-            menuList: [],
             targetName: '',
-            targetParentId: null
         }
     }
 
@@ -69,22 +66,39 @@ class About extends Component {
 
     handleSelectChildPage(e) {
         const { dispatch } = this.props;
+        console.log(e.target.id);
         dispatch(articalListAction(e.target.id));
-        this.setState({
-            targetName: e.target.innerHTML
-        })
     }
 
     handleSelectParentPage(e) {
-        const { dispatch, match } = this.props;
-        const parentId = e.target.id;
-        const relation = this.relation.find(r => {
-            return r.parentId == parentId
+        const { dispatch } = this.props;
+        const currentParentId = e.target.id;
+        const parent = this.relations.find(r => {
+            return r.parentId == currentParentId
         });
-        dispatch(articalListAction(relation.childId));
-        this.setState({
-            targetParentId: e.target.id
-        })
+        console.log(parent.children[0].childId);
+        dispatch(articalListAction(parent.children[0].childId));
+    }
+
+    createRelation = (list) => {
+        let relations = [];
+        list.map((item, i) => {
+            if (item.disclosureDtos.length > 0) {
+                const children = [];
+                item.disclosureDtos.map(child => {
+                    children.push({
+                        childId: child.id,
+                        childName: child.affTypeName
+                    });
+                });
+                relations.push({
+                    parentId: item.id,
+                    children
+                });
+
+            }
+        });
+        return relations;
     }
 
     sideBarContent = (item, match, location) => {
@@ -101,34 +115,27 @@ class About extends Component {
         }
     }
 
-    sideBarTop = (list, match, location, defaultParent) => {
-        let relation;
+    sideBarTop = (list, match, location, defaultParent, relation) => {
         const container = list.map((item, i) => {
             if (item.disclosureDtos.length > 0) {
                 if (i === 0) {
                     this.defaultName = item.disclosureDtos[0].affTypeName;
                 }
-                relation = {
-                    parentId: item.id,
-                    childId: item.disclosureDtos[0].id,
-                    childName: item.disclosureDtos[0].affTypeName
-                }
-                this.relation.push(relation);
             }
             const children = this.sideBarContent(item, match);
             return (
-                <dl key={item.id} onClick={this.collapse.bind(this, relation.parentId)}
+                <dl key={item.id} onClick={this.collapse.bind(this, relation && relation[i].parentId)}
                     className={
                         this.state.current === item.id
-                            && (location.pathname.toLowerCase().indexOf(`${match.url}/${relation.parentId}`.toLowerCase()) === 0)
+                            && (location.pathname.toLowerCase().indexOf(`${match.url}/${relation[i].parentId}`.toLowerCase()) === 0)
                             ? "showChildren"
-                            : defaultParent && defaultParent.toLowerCase().indexOf(`${relation.parentId}`.toLowerCase()) === 0
-                                ? "showChildren"
-                                : ""
+                            : (`${match.url}/${relation[i].parentId}`.toLowerCase().indexOf(defaultParent.toString().toLowerCase()) > 0)
+                            ? "showChildren"
+                            : ""
                     }
                 >
                     <dt>
-                        <TitleParent title={item.affTypeName} to={`${match.url}/${relation.parentId}/${relation.childId}`} id={item.id} onClick={this.handleSelectParentPage.bind(this)} />
+                        <TitleParent title={item.affTypeName} to={`${match.url}/${relation[i].parentId}/${relation[i].children[0].childId}`} id={item.id} match={`${match.url}/${relation[i].parentId}`} onClick={this.handleSelectParentPage.bind(this)}/>
                     </dt>
                     <dd>
                         <ul>
@@ -143,41 +150,52 @@ class About extends Component {
         return container;
     }
 
-    componentWillMount() {
-        const { dispatch, match } = this.props;
+    componentDidMount() {
+        const { dispatch, match, location } = this.props;
         dispatch(aboutContentAction());
-        /* dispatch(articalListAction(this.defaultId)); */
     }
 
-    componentDidMount() {
-        /* const { dispatch, match } = this.props;
-        if(this.defaultId) {
-            dispatch(articalListAction(this.defaultId));
-        } */
-    }
 
     render() {
         const { match, aboutContent, dispatch, location } = this.props;
 
+        //alert(location.pathname);
         //重置父级菜单和子集菜单的关联
-        this.relation = [];
-
+        const relations = this.relations = this.createRelation(aboutContent.menuList);
         //获取当前的路径，当前路径的父级菜单id 和 自己菜单的id
         const currentLocation = location.pathname.split('/');
-        let currentParentId, currentChildId;
-        if(currentLocation.length >= 3) {
-            //当为3时代表此时路由只有父id，4时代表路由到子id
+        let currentParentId, currentChildId, currentTabName;
+        if (currentLocation.length >= 3) {
             currentParentId = currentLocation[currentLocation.length === 3 ? currentLocation.length - 1 : currentLocation.length - 2];
-            currentChildId = currentLocation[currentLocation.length === 4 && currentLocation.length - 1];
+            if (currentLocation.length === 4) {
+                currentChildId = currentLocation[currentLocation.length === 4 && currentLocation.length - 1];
+                const parent = relations.find(parent => {
+                    return parent.parentId == currentParentId;
+                });
+                if(parent) {
+                    const child = parent.children.find(child => {
+                        return child.childId == currentChildId;
+                    });
+                    currentTabName = child && child.childName;
+                }
+                
+            }
+            else {
+                let firstChild = relations.find(parent => {
+                    return parent.parentId = currentParentId;
+                });
+                currentChildId = firstChild && firstChild.children[0].childId;
+                currentTabName = firstChild && firstChild.children[0].childName;
+            }
         }
-
-        /* let defaultParent;
-        const currents = this.props.location.pathname.split('/');
-        if (currents.length >= 3) {
-            defaultParent = currents[currents.length === 3 ? currents.length - 1 : currents.length - 2];
-            this.defaultId = currents[currents.length === 4 && currents.length - 1];
-        } */
-        const sideBar = this.sideBarTop(aboutContent.menuList, match, location, currentParentId);
+        else {
+            if (relations && relations.length > 0) {
+                currentParentId = relations[0].parentId;
+                currentChildId = relations[0].children[0].childId;
+                currentTabName = relations[0].children[0].childName;
+            }
+        }
+        const sideBar = this.sideBarTop(aboutContent.menuList, match, location, currentParentId, relations);
 
         return (
             <main className="main">
@@ -192,131 +210,54 @@ class About extends Component {
                             <Crumbs />
                             <div className="about__box">
                                 <div className="tablist">
-                                    
-                                    {<Switch>
+                                    <Switch>
+                                        {<Route excact
+                                            path="/about/:parentId/:childId"
+                                            render={
+                                                ({ match, location }) => {
+                                                    const list = aboutContent.pageInfo.list;
+                                                    if (list[0] && list.length > 1) {
+                                                        return (
+                                                            <List tabName={currentTabName} 
+                                                                content={aboutContent.pageInfo} 
+                                                                match={match} 
+                                                                childId={match.params.childId} 
+                                                                dispatch={dispatch}
+                                                            />
+                                                            
+                                                        );
+                                                    }
+                                                    else {
+                                                        return (
+                                                            <ArticalContent
+                                                                tabName={currentTabName} 
+                                                                content={aboutContent.pageInfo} 
+                                                                match={match} 
+                                                                childId={match.params.childId} 
+                                                                dispatch={dispatch} 
+                                                            />
+                                                        );
+                                                    }
+                                                }
+                                            }
+                                        />}
                                         {
-                                            this.relation[0] ?
-                                                    <Redirect exact
-                                                        from={`${match.url}`}
-                                                        to={`${match.url}/${this.relation[0].parentId}/${this.relation[0].childId}`}
-                                                    />
-                                                :
-                                                null
+                                            !!(relations.length > 0)
+                                                ? (
+                                                    <div>
+                                                        <Redirect exact
+                                                            from={`${match.url}`}
+                                                            to={`${match.url}/${currentParentId}/${currentChildId}`}
+                                                        />
+                                                        <Redirect exact
+                                                            from={`${match.url}/${currentParentId}`}
+                                                            to={`${match.url}/${currentParentId}/${currentChildId}`}
+                                                        />
+                                                    </div>
+                                                )
+                                                : <div></div>
                                         }
-                                        <Route exact path="/about/:parentId" render={
-                                            ({ match }) => {
-                                                const list = aboutContent.pageInfo.list;
-                                                const { parentId } = match.params;
-                                                console.log(parentId, this.relation);
-                                                const childId = this.relation.find(r => {
-                                                    return r.parentId == parentId
-                                                });
-
-                                                if (list[0] && list.length > 1) {
-                                                    return (
-                                                        <div>
-                                                            <div className="tabs__nav">
-                                                                <li className="tab tab--active">{childId.childName}</li>
-                                                            </div>
-                                                            <div className="tabs__content">
-                                                                <List data={aboutContent.pageInfo} match={match}  {...this.props}  />
-                                                            </div>
-                                                            <Pagination config={
-                                                                {
-                                                                    currentPage: 1,
-                                                                    pageSize: 2,
-                                                                    totalPage: 1,
-                                                                    hidden: false,
-                                                                    paging: (obj) => {
-                                                                        console.log(obj);
-                                                                        //dispatch(articalListAction(obj.currentPage,obj.pageCount))
-                                                                    }
-                                                                }
-                                                            } ></Pagination>
-                                                        </div>
-
-                                                    );
-                                                }
-                                                else if (list[0]) {
-                                                    return (
-                                                        <div>
-                                                            <div className="tabs__nav">
-                                                                <li className="tab tab--active">{childId.childName}</li>
-                                                            </div>
-                                                            <div className="tabs__content">
-                                                                <ArticalContent data={aboutContent.pageInfo} match={match} />
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                }
-                                                else {
-                                                    return (
-                                                        <div>
-                                                            <div className="tabs__nav">
-                                                                <li className="tab tab--active">{childId.childName}</li>
-                                                            </div>
-                                                            <div className="tabs__content">
-                                                                <h3 style={{ fontSize: '16px', margin: '10px' }}>暂无内容</h3>
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                }
-                                            }
-                                        } />
-                                        <Route exact path="/about/:parentId/:childId" render={
-                                            ({ match }) => {
-                                                const list = aboutContent.pageInfo.list;
-                                                if (list[0] && list.length > 1) {
-                                                    return (
-                                                        <div>
-                                                            <div className="tabs__nav">
-                                                                <li className="tab tab--active">{this.state.targetName ? this.state.targetName : this.defaultName}</li>
-                                                            </div>
-                                                            <div className="tabs__content">
-                                                                <List data={aboutContent.pageInfo} match={match} />
-                                                            </div>
-                                                            <Pagination config={
-                                                                {
-                                                                    currentPage: aboutContent.pageInfo.pageNum,
-                                                                    pageSize: aboutContent.pageInfo.pageSize,
-                                                                    totalPage: aboutContent.pageInfo.pages,
-                                                                    hidden: false,
-                                                                    paging: (obj) => {
-                                                                        console.log(obj);
-                                                                        //this.loadData(obj.currentPage,obj.pageCount);
-                                                                    }
-                                                                }
-                                                            } ></Pagination>
-                                                        </div>
-                                                    );
-                                                }
-                                                else if (list[0]) {
-                                                    return (
-                                                        <div>
-                                                            <div className="tabs__nav">
-                                                                <li className="tab tab--active">{this.state.targetName ? this.state.targetName : this.defaultName}</li>
-                                                            </div>
-                                                            <div className="tabs__content">
-                                                                <ArticalContent data={aboutContent.pageInfo} match={match} />
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                }
-                                                else {
-                                                    return (
-                                                        <div>
-                                                            <div className="tabs__nav">
-                                                                <li className="tab tab--active">{this.state.targetName ? this.state.targetName : this.defaultName}</li>
-                                                            </div>
-                                                            <div className="tabs__content">
-                                                                <h3 style={{ fontSize: '16px', margin: '10px' }}>暂无内容</h3>
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                }
-                                            }
-                                        } />
-                                    </Switch>}
+                                    </Switch>
                                 </div>
                             </div>
                         </div>

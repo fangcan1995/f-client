@@ -118,8 +118,10 @@ export const memberAc= {
                     },
                     true);
                 if (res.code == 0) {
-                    message.success('开户成功');
-                    //window.location.reload();
+                    message.success('开户成功',2,function () {
+                        window.location.reload(); //重载页面，
+                    });
+                    //
                     return {result: res};
                 } else {
                     message.error(res.message);

@@ -36,7 +36,6 @@ class ModalRecharge extends React.Component {
         //3 提交后台
         console.log('提交充值申请');
         this.props.dispatch(memberAc.recharge(this.state.value));
-        alert();
         let {info,callback}=this.props.config;
         console.log('aaaaaaaaaaaaa');
         console.log(callback);
