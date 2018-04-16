@@ -55,6 +55,7 @@
     "json-loader": "^0.5.7",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
+    "nuka-carousel": "^4.0.3",
     "postcss-loader": "^2.0.8",
     "redux-logger": "^3.0.6",
     "style-loader": "^0.13.2",
