@@ -29,7 +29,11 @@ class SubjectList extends Component {
             //this.props.dispatch(sbListAc.getList({filter:filter}));
             this.multiFilter('noviceLoan',1);
         }else{
+            //let prams=Object.assign({pageNum:1,pageSize:5,status:``})
             this.props.dispatch(sbListAc.getList({status:``}));
+            //console.log('--prams--');
+           // console.log(prams);
+            //this.props.dispatch(sbListAc.getList(prams));
         }
 
 
@@ -140,7 +144,7 @@ class SubjectList extends Component {
         let {list,filter,sort}=sbList;
         let {noviceLoan,loanExpiry,rateGroup}=filter;
         console.log('--------------this.props--------------');
-        console.log(this.props);
+        console.log(list);
         return (
             <main className="main invest-list">
                 <div className="wrapper">
@@ -266,8 +270,12 @@ class SubjectList extends Component {
                                                 pageSize:list.pageSize,
                                                 totalPage:list.pages,
                                                 paging:(obj)=>{
-                                                    this.props.dispatch(sbListAc.stateSbModify({filter:filter,list:``}));
-                                                    let prams=Object.assign({pageNum:obj.currentPage,pageSize:obj.pageSize},this.todoFilter(filter),sort)
+                                                    //alert();
+
+                                                    //this.props.dispatch(sbListAc.stateSbModify({filter:filter,list:``}));
+                                                    let prams=Object.assign({pageNum:obj.currentPage,pageSize:obj.pageCount,status:``},this.todoFilter(filter),sort);
+                                                    console.log('分页');
+                                                    console.log(prams);
                                                     dispatch(sbListAc.getList(prams));
                                                 }
                                             }

@@ -10,6 +10,7 @@ import ModalInvest from '../modal-invest/modalInvest';
 import ModalRecharge from '../modal-recharge/modaRecharge'
 import ModalRiskAssess from '../modal-riskAssess/modal-riskAssess';
 import  {memberAc}  from '../../../../actions/member';
+import {message} from "antd/lib/index";
 
 
 class MasterInvestBox extends React.Component {
@@ -55,6 +56,11 @@ class MasterInvestBox extends React.Component {
     };
     bindCard(){
         this.props.dispatch(memberAc.postOpenAccount());  //绑卡
+
+        /*if(this.props.member.accountsInfo.openAccountStatus==1){
+            //message.success('开户成功');
+            window.location.reload();  //
+        }*/
     }
     //模态框开启关闭
     toggleModal=(modal,visile,id)=>{

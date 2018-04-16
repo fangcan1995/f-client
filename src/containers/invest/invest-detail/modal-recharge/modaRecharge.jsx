@@ -35,9 +35,12 @@ class ModalRecharge extends React.Component {
 
         //3 提交后台
         console.log('提交充值申请');
-        //this.props.dispatch(investDetailActions.postRecharge({Amount:1000}));
-
         this.props.dispatch(memberAc.recharge(this.state.value));
+        alert();
+        let {info,callback}=this.props.config;
+        console.log('aaaaaaaaaaaaa');
+        console.log(callback);
+        info.callback();
         //this.props.dispatch(investDetailActions.statePostResultModify({}));
 
     }
@@ -73,11 +76,10 @@ class ModalRecharge extends React.Component {
         }
     }
     render() {
-        console.log('---------');
-        console.log(this.props.config);
+
+
         let {accountBalance,callback}=this.props.config;
         let {postResult}=this.props.investDetail;
-
             return (
                 <div className="pop__invest">
                     {

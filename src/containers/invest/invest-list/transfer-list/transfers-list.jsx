@@ -132,7 +132,7 @@ class TransferList extends Component {
                                             pageSize:list.pageSize,
                                             totalPage:list.pages,
                                             paging:(obj)=>{
-                                                let parms=Object.assign({pageNum:obj.currentPage,pageSize:obj.pageSize},sort)
+                                                let parms=Object.assign({pageNum:obj.currentPage,pageSize:obj.pageCount},sort)
                                                 dispatch(tranferListAc.getList(parms));
                                             }
                                         }
