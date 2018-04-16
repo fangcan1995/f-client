@@ -5,13 +5,15 @@ import './modal-riskAssess.less';
 import { connect } from 'react-redux';
 import {myRiskAssessAc} from '../../../../actions/member-settings';
 import { Radio,Button } from 'antd';
+import {memberAc} from "../../../../actions/member";
+import {BbhAlert} from '../../../../components/bbhAlert/bbhAlert';
 const RadioGroup = Radio.Group;
 
 class ModalRiskAssess extends React.Component {
     constructor(props){
         super(props);
         this.onChange = this.onChange.bind(this);
-        this.reset = this.reset.bind(this);
+       /* this.reset = this.reset.bind(this);*/
         this.disabled= this.disabled.bind(this);
         this.state = {
             loading: false,
@@ -62,68 +64,82 @@ class ModalRiskAssess extends React.Component {
         }
         this.props.dispatch(myRiskAssessAc.putRiskAssess(putJson));
     }
-    //重新评估
-    reset(){
-        console.log('-----');
-        this.props.dispatch(myRiskAssessAc.modifyState({status:'1'}));
-    }
+
     render(){
         let {dispatch}=this.props;
         let {riskAssess,isFetching}=this.props.memberSettings;
         let {result,myList,status,postResult}=riskAssess;
+        console.log('postResult');
+        console.log(postResult);
+        let {callback}=this.props.config;
         if(postResult.code==='0'){
-            console.log('提交了答案');
-            console.log(isFetching);
-            if(!isFetching){
-                window.location.reload();  //提交答案后重载页面
-            }
 
-        }
-        return(
-            <div className="pop__riskAssess">
-                <div className="riskAssessApp">
-                    <div className="form__wrapper">
+            //this.props.dispatch(myRiskAssessAc.modifyState({postResult:''}));
+            //this.props.dispatch(memberAc.getInfo()); //提交答案后重新获取用户信息
+            return(
+                <div className="pop__riskAssess">
+                    <div className="riskAssessApp" style={{padding:'30px'}}>
+                    <BbhAlert
+                        info={{
+                            message:'成功',
+                            description:postResult.message,
+                            type:'success',
+                            callback:(obj)=>{
+                                callback();
+                            }
+                        }}
+                    />
+                    </div>
+                </div>
+            )
+        }else{
+            return(
+                <div className="pop__riskAssess">
+                    <div className="riskAssessApp">
+                        <div className="form__wrapper">
 
-                        {
-                            (myList.length>0)?
-                                myList.map((l, i) => (
-                                    <dl className="controls" key={`row-${i}`}>
-                                        <dt>
-                                            <p>{i+1}.{l.examName}</p>
+                            {
+                                (myList.length>0)?
+                                    myList.map((l, i) => (
+                                        <dl className="controls" key={`row-${i}`}>
+                                            <dt>
+                                                <p>{i+1}.{l.examName}</p>
                                                 {
-                                            l.isChecked===''?
-                                                <span className="error">必选</span>
-                                                :``
-                                        }
-                                        </dt>
-                                        <dd>
+                                                    l.isChecked===''?
+                                                        <span className="error">必选</span>
+                                                        :``
+                                                }
+                                            </dt>
+                                            <dd>
 
-                                            <RadioGroup onChange={this.onChange} value={`${l.isChecked}`} name={`${l.examId}`}>
-                                                {l.answersDtoList.map((ll,ii)=>(
-                                                    <Radio value={`${ll.answerCode}`} key={`row-${ii}`}>{ll.answerCode} .{ll.answer}</Radio>
-                                                ))}
-                                            </RadioGroup>
+                                                <RadioGroup onChange={this.onChange} value={`${l.isChecked}`} name={`${l.examId}`}>
+                                                    {l.answersDtoList.map((ll,ii)=>(
+                                                        <Radio value={`${ll.answerCode}`} key={`row-${ii}`}>{ll.answerCode} .{ll.answer}</Radio>
+                                                    ))}
+                                                </RadioGroup>
 
 
-                                        </dd>
-                                    </dl>
-                                ))
-                                :``
-                        }
+                                            </dd>
+                                        </dl>
+                                    ))
+                                    :``
+                            }
 
-                        <div className="form__bar center">
+                            <div className="form__bar center">
 
-                            <Button type="primary"  loading={this.state.iconLoading} onClick={this.handleSubmit} style={{width:'20%'}} className='large'
-                                    disabled={this.disabled()}
-                            >
-                                立即评估
-                            </Button>
+                                <Button type="primary"  loading={this.state.iconLoading} onClick={this.handleSubmit} style={{width:'20%'}} className='large'
+                                        disabled={this.disabled()}
+                                >
+                                    立即评估
+                                </Button>
 
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        )
+            )
+        }
+
     }
 }
 function mapStateToProps(state) {

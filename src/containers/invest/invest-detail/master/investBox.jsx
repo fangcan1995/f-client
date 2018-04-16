@@ -140,7 +140,13 @@ class MasterInvestBox extends React.Component {
     }
     render(){
         let {member,auth,investInfo,type}=this.props;
-        let {amount,redInfo,couponInfo}=member.accountsInfo;
+        let {amount,redInfo,couponInfo,result}=member.accountsInfo;
+
+        if(result.code==='0'){
+            console.log('重新获取用户信息');
+            this.props.dispatch(memberAc.modifyState({result:''}));
+            this.props.dispatch(memberAc.getInfo());
+        }
         if(investInfo==''){
             return (
                 <div className="form_area"></div>

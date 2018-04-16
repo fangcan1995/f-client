@@ -139,7 +139,31 @@ export const myRiskAssessAc={
                     },
                     true);
                 if (res.code == 0) {
-                    message.success('测评成功');
+                    //message.success(res.message);
+                    console.log({postResult: res});
+                    return {postResult: res};
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    //投资页用
+    putRiskAssess_invest: (pram,dispatch) => {
+        pram=JSON.stringify(pram);
+        return {
+            type: 'mySettings/riskAssess/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_putRList}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: pram,
+                    },
+                    true);
+                if (res.code == 0) {
+                    //message.success('测评成功');
                     return {postResult: res};
                 } else {
                     throw res;

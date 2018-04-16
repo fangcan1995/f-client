@@ -46,7 +46,7 @@ class MyAuthInfo extends React.Component {
         dispatch(myAuthInfoAc.modifyState({modalResetPassword:false}))
     }
     render(){
-
+        console.log('获取的数据');
         console.log(this.props);
         let {dispatch}=this.props;
         let {authInfo}=this.props.memberSettings;

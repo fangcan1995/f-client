@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import {myRiskAssessAc} from '../../../../actions/member-settings';
 import './riskAssess.less';
 import { Radio,Button } from 'antd';
+import {memberAc} from "../../../../actions/member";
 
 const RadioGroup = Radio.Group;
 
@@ -77,7 +78,11 @@ class MyRiskAssess extends React.Component {
         console.log('***');
         console.log(status);
         if(postResult.code==='0'){
-            window.location.reload();  //提交答案后重载页面
+            //window.location.reload();  //提交答案后重载页面
+            window.scrollTo(0,0);
+            this.props.dispatch(myRiskAssessAc.modifyState({postResult:``}));
+            this.props.dispatch(memberAc.getInfo());
+            this.props.dispatch(myRiskAssessAc.getResult());
         }
         return(
             <div className="member__main riskAssess">
