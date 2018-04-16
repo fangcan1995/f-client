@@ -79,8 +79,7 @@ class MasterInvestBox extends React.Component {
     //auth.isAuthenticated true登录 false未登录
     getButton(){
         let {auth,member,investInfo}=this.props;
-        console.log('按钮')
-        console.log(this.props);
+
         //假数据：member
         /*member={
             accountsInfo:{

@@ -139,7 +139,7 @@ export const myRiskAssessAc={
                     },
                     true);
                 if (res.code == 0) {
-                    //message.success('测评成功');
+                    message.success('测评成功');
                     return {postResult: res};
                 } else {
                     throw res;
