@@ -14,6 +14,8 @@ export default class Pagination extends Component{
 
     }
     componentDidMount() {
+        console.log('当前页');
+        console.log(this.state.currentPage);
         this.setState({
             pageCountEle:document.querySelector("#pageCount"),
         });

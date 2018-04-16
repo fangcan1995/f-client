@@ -266,6 +266,7 @@ class SubjectList extends Component {
                                                 pageSize:list.pageSize,
                                                 totalPage:list.pages,
                                                 paging:(obj)=>{
+                                                    alert();
                                                     this.props.dispatch(sbListAc.stateSbModify({filter:filter,list:``}));
                                                     let prams=Object.assign({pageNum:obj.currentPage,pageSize:obj.pageSize},this.todoFilter(filter),sort)
                                                     dispatch(sbListAc.getList(prams));
