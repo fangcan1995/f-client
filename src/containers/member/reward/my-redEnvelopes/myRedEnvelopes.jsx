@@ -7,20 +7,21 @@ import './redEnvelopes.less';
 import moment from "moment";
 import { connect } from 'react-redux';
 import {redEnvelopesAc} from '../../../../actions/redEnvelopes';
+import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 
 class MyRedEnvelopes extends React.Component {
     componentDidMount () {
-        window.scrollTo(0,0);
+        window.scrollTo(0,0);  //转到页面顶部
         this.props.dispatch(redEnvelopesAc.toggleClass(0));
         this.props.dispatch(redEnvelopesAc.getData());
     }
-    filter(pram){
-        this.props.dispatch(redEnvelopesAc.toggleClass(pram));
-        this.props.dispatch(redEnvelopesAc.getData({reStatus:pram}));
+    filter(params){
+        this.props.dispatch(redEnvelopesAc.toggleClass(params));
+        this.props.dispatch(redEnvelopesAc.getData({reStatus:params}));
     }
     render() {
-        let {myRedEnvelopes,auth, dispatch} = this.props;
-        let {reStatus,data}=myRedEnvelopes;
+        let {myRedEnvelopes,dispatch} = this.props;
+        let {reStatus,data,isFetching}=myRedEnvelopes;
         return (
             <div className="member__main">
                 <Crumbs/>
@@ -58,59 +59,64 @@ class MyRedEnvelopes extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            <div>
-                                {data.total>0?(<div>
-                                        <ul className="redBagList">
-                                            {
-                                                data.list.map((l, i) => (
-                                                    <li className={`reStatus-${l.reStatus}`} key={`row-${i}`}>
-                                                        <div className=
-                                                                 {
-                                                                     l.reTypeName == '返现红包' ?
-                                                                         'img fxhb'
-                                                                         : 'img xjhb'
-                                                                 }
-                                                        >
-                                                            <p className="denomination">{l.reAmount}</p>
-                                                            <p className="remark"></p>
-                                                        </div>
-                                                        <div className="txt">
-                                                            <p>
-                                                                <strong>使用规则：</strong>{l.productCategoryName}满{l.useMinAmount}元可用
-                                                            </p>
-                                                            <p><strong>有效期：</strong>
-                                                                {
-                                                                    !l.beginTime ? '' : moment(l.beginTime).format('YYYY-MM-DD')
-                                                                }
-                                                                --
-                                                                {
-                                                                    !l.endTime ? '' : moment(l.endTime).format('YYYY-MM-DD')
-                                                                }
-                                                            </p>
-                                                        </div>
-                                                    </li>
-                                                ))
-                                            }
-                                        </ul>
-                                        <Pagination config={
-                                            {
-                                                currentPage: data.pageNum,
-                                                pageSize: data.pageSize,
-                                                totalPage: data.pages,
-                                                paging: (obj) => {
-                                                    dispatch(redEnvelopesAc.toggleClass({reStatus: reStatus}));
-                                                    dispatch(redEnvelopesAc.getData({
-                                                        pageNum:obj.currentPage,
-                                                        pageSize:obj.pageCount,
-                                                        reStatus: reStatus
-                                                    }))
-                                                }
-                                            }
-                                        }>
-                                        </Pagination>
-                                    </div>)
-                                    :(<div></div>)}
-                            </div>
+                            {
+                                (data === '') ? <Loading isShow={isFetching}/>
+                                    :
+                                    <div>
+                                        {data.total > 0 ? (<div>
+                                                <ul className="redBagList">
+                                                    {
+                                                        data.list.map((l, i) => (
+                                                            <li className={`reStatus-${l.reStatus}`} key={`row-${i}`}>
+                                                                <div className=
+                                                                         {
+                                                                             l.reTypeName == '返现红包' ?
+                                                                                 'img fxhb'
+                                                                                 : 'img xjhb'
+                                                                         }
+                                                                >
+                                                                    <p className="denomination">{l.reAmount}</p>
+                                                                    <p className="remark"></p>
+                                                                </div>
+                                                                <div className="txt">
+                                                                    <p>
+                                                                        <strong>使用规则：</strong>{l.productCategoryName}满{l.useMinAmount}元可用
+                                                                    </p>
+                                                                    <p><strong>有效期：</strong>
+                                                                        {
+                                                                            !l.beginTime ? '' : moment(l.beginTime).format('YYYY-MM-DD')
+                                                                        }
+                                                                        --
+                                                                        {
+                                                                            !l.endTime ? '' : moment(l.endTime).format('YYYY-MM-DD')
+                                                                        }
+                                                                    </p>
+                                                                </div>
+                                                            </li>
+                                                        ))
+                                                    }
+                                                </ul>
+                                                <Pagination config={
+                                                    {
+                                                        currentPage: data.pageNum,
+                                                        pageSize: data.pageSize,
+                                                        totalPage: data.pages,
+                                                        paging: (obj) => {
+                                                            dispatch(redEnvelopesAc.toggleClass({reStatus: reStatus}));
+                                                            dispatch(redEnvelopesAc.getData({
+                                                                pageNum: obj.currentPage,
+                                                                pageSize: obj.pageCount,
+                                                                reStatus: reStatus
+                                                            }))
+                                                        }
+                                                    }
+                                                }>
+                                                </Pagination>
+                                            </div>)
+                                            : <NoRecord isShow={true} title={`暂无红包`}/>
+                                        }
+                                    </div>
+                            }
                         </div>
                     </Tab>
                 </div>
@@ -131,8 +137,6 @@ class MyRedEnvelopes extends React.Component {
             </div>
         )
     }
-
-
 }
 
 function mapStateToProps(state) {
@@ -142,6 +146,5 @@ function mapStateToProps(state) {
         myRedEnvelopes,
     };
 }
-
 export default connect(mapStateToProps)(MyRedEnvelopes);
 

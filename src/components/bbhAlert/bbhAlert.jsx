@@ -26,7 +26,7 @@ export  class Loading extends React.Component{
         return(
             <div className="tips_loading">
                 {(isShow===true)?
-                    `页面加载中...`
+                    `数据加载中...`
                     :``
                 }
             </div>
@@ -39,8 +39,11 @@ export  class NoRecord extends React.Component{
         return(
             <div className="tips_noRecord">
                 {(isShow===true)?
-                    (!title)?`暂无记录`:`${title}`
+                <div>
+                    <div className="iconfont icon-noRecord"></div>
+                    {(!title)?<p>暂无记录</p>:<p>{title}</p>}
 
+                </div>
                     :``
                 }
             </div>

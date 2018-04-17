@@ -7,6 +7,8 @@ import './rateCoupons.less';
 import moment from "moment";
 import { connect } from 'react-redux';
 import {myRateCouponsAc} from '../../../../actions/rateCoupons';
+import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
+
 class MyRateCoupons extends React.Component{
     componentDidMount () {
         window.scrollTo(0,0);
@@ -19,8 +21,7 @@ class MyRateCoupons extends React.Component{
     }
     render(){
         let {myRateCoupons, dispatch} = this.props;
-        let {rcStatus,data}=myRateCoupons;
-
+        let {rcStatus,data,isFetching}=myRateCoupons;
         return(
             <div className="member__main">
                 <Crumbs/>
@@ -58,53 +59,60 @@ class MyRateCoupons extends React.Component{
                                     </div>
                                 </div>
                             </div>
-                            {data.total>0?(<div>
-
-                                    <ul className="couponList">
-                                        {
-                                            data.list.map((l, i) => (
-
-                                                <li className={`reStatus-${l.rcStatus}`} key={`row-${i}`}>
-                                                    <div className='img'>
-                                                        <p className="denomination">{l.rcAmount}</p>
-                                                        <p className="remark"></p>
-                                                    </div>
-                                                    <div className="txt">
-                                                        <p>
-                                                            <strong>使用规则：</strong>{l.productCategoryName}满{l.useMinAmount}元可用
-                                                        </p>
-                                                        <p><strong>有效期：</strong>
-                                                            {
-                                                                !l.beginTime?'' :moment(l.beginTime).format('YYYY-MM-DD')
-                                                            }
-                                                            --
-                                                            {
-                                                                !l.endTime?'' :moment(l.endTime).format('YYYY-MM-DD')
-                                                            }
-                                                        </p>
-                                                    </div>
-                                                </li>
-                                            ))
-                                        }
-                                    </ul>
-                                    <Pagination config = {
-                                        {
-                                            currentPage:data.pageNum,
-                                            pageSize:data.pageSize,
-                                            totalPage: Math.ceil(data.total/data.pageSize),
-                                            paging:(obj)=>{
-                                                dispatch(myRateCouponsAc.getData(
+                            {
+                                (data === '') ? <Loading isShow={isFetching}/>
+                                    :
+                                    <div>
+                                        {data.total > 0 ?
+                                            <div>
+                                                <ul className="couponList">
                                                     {
-                                                        pageNum:obj.currentPage,
-                                                        pageSize:obj.pageCount,
-                                                        rcStatus: rcStatus
-                                                    }))
-                                            }
+                                                        data.list.map((l, i) => (
+
+                                                            <li className={`reStatus-${l.rcStatus}`} key={`row-${i}`}>
+                                                                <div className='img'>
+                                                                    <p className="denomination">{l.rcAmount}</p>
+                                                                    <p className="remark"></p>
+                                                                </div>
+                                                                <div className="txt">
+                                                                    <p>
+                                                                        <strong>使用规则：</strong>{l.productCategoryName}满{l.useMinAmount}元可用
+                                                                    </p>
+                                                                    <p><strong>有效期：</strong>
+                                                                        {
+                                                                            !l.beginTime ? '' : moment(l.beginTime).format('YYYY-MM-DD')
+                                                                        }
+                                                                        --
+                                                                        {
+                                                                            !l.endTime ? '' : moment(l.endTime).format('YYYY-MM-DD')
+                                                                        }
+                                                                    </p>
+                                                                </div>
+                                                            </li>
+                                                        ))
+                                                    }
+                                                </ul>
+                                                <Pagination config={
+                                                    {
+                                                        currentPage: data.pageNum,
+                                                        pageSize: data.pageSize,
+                                                        totalPage: Math.ceil(data.total / data.pageSize),
+                                                        paging: (obj) => {
+                                                            dispatch(myRateCouponsAc.getData(
+                                                                {
+                                                                    pageNum: obj.currentPage,
+                                                                    pageSize: obj.pageCount,
+                                                                    rcStatus: rcStatus
+                                                                }))
+                                                        }
+                                                    }
+                                                }>
+                                                </Pagination>
+                                            </div>
+                                            : <NoRecord isShow={true} title={`暂无加息券`}/>
                                         }
-                                    } >
-                                    </Pagination>
-                                </div>
-                            ):``}
+                                    </div>
+                            }
                         </div>
                     </Tab>
                 </div>
