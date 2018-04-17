@@ -68,11 +68,11 @@ class articalList extends Component {
     }
 }
 
-    const mapStateToProps = (state) => {
-        return {
-            aboutContent: state.toJS().aboutContentReducer
-        }
+const mapStateToProps = (state) => {
+    return {
+        aboutContent: state.toJS().aboutContentReducer
     }
+}
 
 articalList = connect(
     mapStateToProps

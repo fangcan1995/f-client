@@ -4,9 +4,9 @@ import Pagination from '../../../../components/pagination/pagination';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import {myMessagesAc} from '../../../../actions/member-settings';
-import { Checkbox,message  } from 'antd';
-import parseJson2URL from '../../../../utils/parseJson2URL';
+import { Checkbox  } from 'antd';
 import { connect } from 'react-redux';
+import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import './message.less';
 
 let selectIds = [];  //用于保存全中的消息id
@@ -25,9 +25,9 @@ class MyMessages extends React.Component {
         this.props.dispatch(myMessagesAc.getMessagesList());
 
     }
-    filter(parm){
-        this.props.dispatch(myMessagesAc.modifyState({readTag:parm,myList:''}));  //修改状态
-        this.props.dispatch(myMessagesAc.getMessagesList({readTag:parm}));  //获取数据
+    filter(params){
+        this.props.dispatch(myMessagesAc.modifyState({readTag:params,myList:''}));  //修改状态
+        this.props.dispatch(myMessagesAc.getMessagesList({readTag:params}));  //获取数据
     }
     //读消息，并设为已读
     setReaded(index,id){
@@ -113,7 +113,8 @@ class MyMessages extends React.Component {
         this.props.dispatch(myMessagesAc.modifyState(newState));   //
     }
     render() {
-        let {myList,readTag} = this.props.memberSettings.messages;
+        let {myList,readTag,isFetching} = this.props.memberSettings.messages;
+
         return (
             <div className="member__main myMessage">
                 <Crumbs/>
@@ -145,7 +146,7 @@ class MyMessages extends React.Component {
                             </div>
                             <div className="tab_content" style={{marginTop:'15px'}}>
                                 {
-                                    myList === '' ? <div><p>loading</p></div>
+                                    myList === '' ? <Loading isShow={isFetching}/>
                                         :
                                         myList.page.total > 0 ?
                                             <div>
@@ -209,7 +210,7 @@ class MyMessages extends React.Component {
                                                 }>
                                                 </Pagination>
                                             </div>
-                                            :<div><p>暂无消息</p></div>
+                                            :<NoRecord isShow={true} title={`暂无消息`}/>
                                 }
                             </div>
                         </div>

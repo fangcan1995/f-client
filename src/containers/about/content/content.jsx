@@ -23,10 +23,10 @@ class articalContent extends Component {
         if(list[0]) {
             return (
                 <div>
-                    <div className="tabs__nav">
-                        <li className="tab tab--active">{tabName}</li>
-                    </div>
-                    <div className="tabs__content">
+                    <div className="content">
+                        <h2>{list[0].title}</h2>
+                        <h5>时间：<span>{list[0].updateTime}</span>&nbsp;&nbsp;&nbsp;&nbsp;编辑：<span>{list[0].createUser}</span></h5>
+                        <div className="contentBlock" dangerouslySetInnerHTML={{__html: list[0].affContent}}></div>
                     </div>
                 </div>
             );
