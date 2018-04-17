@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import '../../assets/stylesheets/global.less'
 
-import { Carousel } from 'antd';
-
+import Carousel from 'nuka-carousel';
 import './home-page.less';
 import featureIcon1 from '../../assets/images/homePage/feature_icon_1.png';
 import featureIcon2 from '../../assets/images/homePage/feature_icon_2.png';
@@ -106,8 +106,7 @@ class HomePage extends Component {
     <main className="main home-page" id="home-page">
       <div className="banner" >
         <div className="carousel" >
-          <div className="prevArrow" onClick={this.handlePreClick}> 《</div>
-            <Carousel autoplay touchMove='true' key={homePage.banner.length} prevArrow nextArrow next>
+            {/* <Carousel autoplay touchMove='true' key={homePage.banner.length} prevArrow nextArrow next>
               {homePage.banner.map((item)=>{
                   return (
                     <div key={item.id}>
@@ -115,6 +114,23 @@ class HomePage extends Component {
                     </div>
                   )
                 })}
+            </Carousel> */}
+            <Carousel autoplay='true' wrapAround='true'
+            renderCenterLeftControls={({ previousSlide }) => (
+              <button onClick={previousSlide} className='icon-btn'><i className='iconfont'>&#xe61f;
+              </i></button>
+            )}
+            renderCenterRightControls={({ nextSlide }) => (
+              <button onClick={nextSlide} className='icon-btn'><i className='iconfont'>&#xe61d;
+              </i></button>
+            )}>
+              {homePage.banner.map((item)=>{
+                    return (
+                      <div key={item.id}>
+                        <img className="carousel" src={item.imgsrc}  onClick={this.handleBannerClick.bind(this,item.imgurl)} />
+                      </div>
+                    )
+                  })}
             </Carousel>
           {/* <div className="carousel__img" style={{ backgroundImage: `url(${require('../../assets/images/homePage/banner.png')})` }}></div> */}
         </div>
@@ -177,7 +193,16 @@ class HomePage extends Component {
         <div className="notice">
           <i className="notice__icon iconfont icon-gonggao"></i>
           <div className="notice__text">
-            <Carousel vertical="true" autoplay key={homePage.notice.length} dots='false'>
+            <Carousel vertical="true" autoplay key={homePage.notice.length} dots='false' wrapAround='true' 
+            renderTopCenterControls={({ currentSlide }) => (
+                <button></button>
+              )}
+              renderCenterLeftControls={({ previousSlide }) => (
+                <button onClick={previousSlide}></button>
+              )}
+              renderCenterRightControls={({ nextSlide }) => (
+                <button onClick={nextSlide}></button>
+              )}>
               {homePage.notice.map((item)=>{
                         return (                         
                             <div key={item.noticeId} className="notice__text" onClick={this.handleNoticeClick.bind(this,item.noticeId)}>
