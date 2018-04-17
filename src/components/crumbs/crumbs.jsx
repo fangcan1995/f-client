@@ -11,6 +11,7 @@ const CrumbLink = ({ to, ...rest }) => (
 )
 
 const Crumbs = ({ location, match, history, ...props}) => {
+    console.log(...props);
     
     const breadcrumbNameMap = {
         '/my-account': '我的账户',
