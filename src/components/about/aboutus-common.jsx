@@ -9,7 +9,7 @@ import Pagination from '../../components/pagination/pagination';
 import Crumbs from '../../components/crumbs/crumbs';
 import Tab from '../../components/tab/tab';
 
-import Team from '../../containers/about/team/team';
+import TeamContent from '../../containers/about/team/team';
 import List from '../../containers/about/list/list';
 import ArticalContent from '../../containers/about/content/content';
 
@@ -207,7 +207,7 @@ class About extends Component {
                     </div>
                     <div className="about__main">
                         <div>
-                            <Crumbs />
+                            <Crumbs address="123" />
                             <div className="about__box">
                                 <div className="tablist">
                                     <Switch>
@@ -217,6 +217,16 @@ class About extends Component {
                                                 ({ match, location }) => {
                                                     const list = aboutContent.pageInfo.list;
                                                     if (list[0] && list.length > 1) {
+                                                        if(list[0].affIcon) {
+                                                            return (
+                                                                <TeamContent tabName={currentTabName} 
+                                                                content={aboutContent.pageInfo} 
+                                                                match={match} 
+                                                                childId={match.params.childId} 
+                                                                dispatch={dispatch}
+                                                            />
+                                                            );
+                                                        }
                                                         return (
                                                             <List tabName={currentTabName} 
                                                                 content={aboutContent.pageInfo} 
