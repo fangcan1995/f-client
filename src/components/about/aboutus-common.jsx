@@ -12,6 +12,7 @@ import Tab from '../../components/tab/tab';
 import TeamContent from '../../containers/about/team/team';
 import List from '../../containers/about/list/list';
 import ArticalContent from '../../containers/about/content/content';
+import Contact from '../../containers/about/contact/contact';
 
 
 
@@ -182,7 +183,7 @@ class About extends Component {
             }
             else {
                 let firstChild = relations.find(parent => {
-                    return parent.parentId = currentParentId;
+                    return parent.parentId == currentParentId;
                 });
                 currentChildId = firstChild && firstChild.children[0].childId;
                 currentTabName = firstChild && firstChild.children[0].childName;
@@ -211,10 +212,11 @@ class About extends Component {
                             <div className="about__box">
                                 <div className="tablist">
                                     <Switch>
-                                        {<Route excact
+                                        <Route exact
                                             path="/about/:parentId/:childId"
                                             render={
                                                 ({ match, location }) => {
+                                                    console.log(2222);
                                                     const list = aboutContent.pageInfo.list;
                                                     if (list[0] && list.length > 1) {
                                                         if(list[0].affIcon) {
@@ -250,7 +252,23 @@ class About extends Component {
                                                     }
                                                 }
                                             }
-                                        />}
+                                        />
+                                        <Route exact
+                                            path="/about/:parentId/:childId/:contentId"
+                                            render={
+                                                ({match}) => {
+                                                    const list = aboutContent.pageInfo.list;
+                                                    console.log(match.params.childId);
+                                                    if(list[0] && list.length > 1 && list[0].affIcon) {
+                                                        console.log(1);
+                                                    }
+                                                    else {
+                                                        console.log(0);
+                                                    }
+                                                    return <div />
+                                                }
+                                            }
+                                        />
                                         {
                                             !!(relations.length > 0)
                                                 ? (

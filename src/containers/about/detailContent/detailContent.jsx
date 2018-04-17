@@ -6,7 +6,7 @@ import { Route, Link } from 'react-router-dom';
 import { aboutContentAction, articalListAction } from '../../../actions/aboutContent';
 
 
-class articalContent extends Component {
+class DetailsContent extends Component {
     constructor(props) {
         super(props);
     }
@@ -55,9 +55,9 @@ const mapStateToProps = (state) => {
     }
 }
 
-articalContent = connect(
+DetailsContent = connect(
     mapStateToProps
-)(articalContent)
+)(DetailsContent)
 
-export default articalContent;
+export default DetailsContent;
 

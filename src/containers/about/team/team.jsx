@@ -18,6 +18,7 @@ class TeamContent extends Component {
     render() {
         const { tabName, match, content, childId, dispatch } = this.props;
         console.log(content);
+        console.log(match);
         return (
             <div>
                 <div className="tabs__nav">
@@ -29,23 +30,26 @@ class TeamContent extends Component {
                             content.list.map((item, i) => {
                                 return (
                                     <li key={i}>
-                                        <dl>
-                                            <dt>
-                                                <h3>{item.title}</h3>
-                                                <p>国汇财富投资管理（大连）股份有限公司</p>
-                                            </dt>
-                                            <dd className="photo">
-                                                <img src={item.affIcon} />
-                                            </dd>
-                                            <dd className="intro overunset"
-                                                dangerouslySetInnerHTML={{__html: item.affContent}} 
-                                            />
-                                        </dl>
+                                        <Link to={`${match.url}/${item.id}`}>
+                                            <dl>
+                                                <dt>
+                                                    <h3>{item.title}</h3>
+                                                    <p>国汇财富投资管理（大连）股份有限公司</p>
+                                                </dt>
+                                                <dd className="photo">
+                                                    <img src={item.affIcon} />
+                                                </dd>
+                                                <dd className="intro overunset"
+                                                    dangerouslySetInnerHTML={{ __html: item.affContent }}
+                                                />
+                                            </dl>
+                                        </Link>
                                     </li>
                                 );
                             })
                         }
                     </ul>
+                    <Route />
                 </div>
             </div>
         )
