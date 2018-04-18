@@ -41,7 +41,7 @@ class Signup extends Component {
   }
   componentDidMount() {
     const { dispatch } = this.props;
-
+    this.startCd(-1)
     dispatch(getImageCode());
   }
   handleImageCodeImgClick = e => {
@@ -235,6 +235,8 @@ class Signup extends Component {
         trigger: ['onBlur', 'onChange']
       }]
     });
+
+    
     const inviteCodeProps = getFieldDecorator('invite_code', {
     });
 
@@ -404,6 +406,7 @@ class Signup extends Component {
 
 function select(state) {
   const { auth, signup } = state.toJS();
+  console.log(auth, signup)
   return {
     auth,
     signup,
