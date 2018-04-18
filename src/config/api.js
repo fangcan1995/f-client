@@ -6,7 +6,8 @@ let host;
   host = location.origin;
 }*/
 
-host = 'http://172.16.7.4:8020';
+//host = 'http://172.16.7.4:8020';
+host = 'http://172.16.1.234:8020';
 
 
 const baseUri = host + '/';
