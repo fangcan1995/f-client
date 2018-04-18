@@ -35,7 +35,7 @@ function check404(res) {
 }
 
 function checkStatus(res) {
-  if (res.status >= 200 && res.status < 300 || res.status == 406) {
+  if (res.status >= 200 && res.status < 300 || res.status==406) {
     console.log('-----------res----------');
     console.log(res);
     return res;
@@ -44,10 +44,14 @@ function checkStatus(res) {
       // 这里补充更多错误参数
         //406 操作失败
         //500
+        console.log('-----------res 500 406----------');
+        console.log(res)
       return res.json().then(error => {
-          if(res.status == 406){
+        console.log('-----------res 500 406 error----------');
+          if(res.code == 406){
+            console.log(res)
               return res;
-          }else if(res.status == 500) {
+          }else if(res.code == 500) {
               return res;
           }else{
               return new StandardError({
