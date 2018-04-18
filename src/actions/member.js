@@ -24,7 +24,6 @@ export const memberAc= {
                 const res = await cFetch(`${url_memberInfo}`,{method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
-
                     return {
                         basicInfo:{
                             trueName:data.baseInfo.trueName,
@@ -107,7 +106,7 @@ export const memberAc= {
     //开户
     postOpenAccount: (pram) => {
         return {
-            type: 'member/FETCH',
+            type: 'member/FETCH_OPENACCOUNT',
             async payload() {
                 pram=parseJson2URL(pram);
                 const res = await cFetch(`${url_openAccount}?custId=123&escrowCode=100100&accountBalance=0&freezingAmount=0&availableBalance=0&${pram}`, {
@@ -167,28 +166,15 @@ export const memberAc= {
             }
         }
     },
-    /*//提交充值或提现申请  type 1 充值 3提现
-    postOperation: (pram) => {
+
+    modifyState: (prams) => {
         return {
-            type: 'member/FETCH',
-            async payload() {
-                const res = await cFetch(`${url_operation}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: `[${pram}]`,
-                    },
-                    false);
-                if (res.code == 0) {
-                    return {readResult: res};
-                } else {
-                    throw res;
-                }
+            type: 'member/MODIFY_STATE',
+            payload() {
+                return prams
             }
         }
-    },*/
-
+    },
     modifyState: (prams) => {
         return {
             type: 'member/MODIFY_STATE',

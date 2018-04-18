@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-
 import { connect } from 'react-redux';
 import {myAuthInfoAc} from '../../../../actions/member-settings';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
-import memberActions, {memberAc} from '../../../../actions/member';
 import { Modal } from 'antd';
 import ModalResetPassword from './modalResetPassword';
 import ModalAuth from '../../../../components/modal/modal-auth/modal-auth';
@@ -110,9 +107,6 @@ class MyAuthInfo extends React.Component {
                                         <td className="detail">{info.bankNo}</td>
                                         <td className="operate">
                                             <a href="javascript:void(0);" onClick={this.changeCard}>更换</a>
-                                            <a href="javascript:void(0);" onClick={
-                                                () => this.toggleModal(`modalAuth`,true)
-                                            }>开户</a>
                                         </td>
                                     </tr>
                                     :info.bankNoStatus==='1'?

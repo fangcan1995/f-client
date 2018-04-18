@@ -11,18 +11,20 @@ import ModalRecharge from '../modal-recharge/modaRecharge'
 import ModalRiskAssess from '../modal-riskAssess/modal-riskAssess';
 import  {memberAc}  from '../../../../actions/member';
 import {message} from "antd/lib/index";
-
+import ModalAuth from '../../../../components/modal/modal-auth/modal-auth';
 
 class MasterInvestBox extends React.Component {
     constructor(props) {
         super(props);
-        this.bindCard = this.bindCard.bind(this);
+        //this.modalClose= this.modalClose.bind(this);
         this.state = {
             member:{},
             investAmount:props.investInfo.min,
             modalInvest: false,
             modalRecharge: false,
             modalRiskAssess: false,
+            modalAuth:false,
+            key:Math.random(),
             tips:'',
             allowedInvest:true,
             code:100
@@ -31,7 +33,6 @@ class MasterInvestBox extends React.Component {
     getStatusName(status,id){
         let investButton=``;
         switch(status){
-
             case 1:
                 investButton=<Link to={`/invest-detail/${id}`} className="btn end">待发布</Link>;
                 break;
@@ -54,14 +55,7 @@ class MasterInvestBox extends React.Component {
         return investButton;
 
     };
-    bindCard(){
-        this.props.dispatch(memberAc.postOpenAccount());  //绑卡
 
-        /*if(this.props.member.accountsInfo.openAccountStatus==1){
-            //message.success('开户成功');
-            window.location.reload();  //
-        }*/
-    }
     //模态框开启关闭
     toggleModal=(modal,visile,id)=>{
         if(visile){
@@ -71,15 +65,16 @@ class MasterInvestBox extends React.Component {
         }else{
             this.setState({
                 [modal]: false,
+                key:Math.random()
             });
         }
-        console.log(this.state);
     };
     //是否登录，根据是否开户，是否需要风险测评，是否新手，投资金额，获取操作按钮
     //auth.isAuthenticated true登录 false未登录
     getButton(){
         let {auth,member,investInfo}=this.props;
-
+        let {isFetching}=member;
+        let {openAccountStatus,riskStatus,riskLevel,amount,noviceStatus}=member.accountsInfo;
         //假数据：member
         /*member={
             accountsInfo:{
@@ -99,49 +94,52 @@ class MasterInvestBox extends React.Component {
         };*/
         console.log('获取到的用户信息');
         console.log(member);
-        let {openAccountStatus,riskStatus,riskLevel,amount,noviceStatus}=member.accountsInfo;
-        if(!auth.isAuthenticated){
-            return(
-                <Link  to={`/login?redirect=%2Finvest-detail%2F${investInfo.id}`} className="btn">我要登录</Link>
-            )
-        }else if(openAccountStatus===0){
-            return(
-                <a  className="btn" onClick={this.bindCard}>立即开户</a>
-            )
-        }else if(openAccountStatus===1){
-            if(riskStatus===`1`){//1 需要测评
+        if(isFetching){
+            <a href="javascript:void(0);"  className="btn btn_unable" onClick={() => this.toggleModal(`modalAuth`,true)}>载入中...</a>
+        }else{
+            if(!auth.isAuthenticated){
                 return(
-                    <a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,investInfo.id)}>立即风险评估</a>
+                    <Link  to={`/login?redirect=%2Finvest-detail%2F${investInfo.id}`} className="btn">我要登录</Link>
                 )
-            }else if(1!=1){ //根据riskLevel判断测评结果暂时不需要
+            }else if(openAccountStatus===0){
                 return(
-                    <a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,investInfo.id)}>重新风险评估</a>
+                    <a  className="btn" onClick={() => this.toggleModal(`modalAuth`,true)}>立即开户</a>
                 )
-            }else if(noviceStatus===0 && investInfo.noviceLoan=='1'){ //当前新手标，用户非新手
-                return(
-                    <a className='btn end'>仅限新手</a>
-                )
-            }else　if(amount.availableBalance<this.state.investAmount){
-                return(
-                    <a className="btn" onClick={() => this.toggleModal(`modalRecharge`,true,investInfo.id)}>立即充值</a>
-                )
-            }else{
-                if(this.state.tips!=''){
+            }else if(openAccountStatus===1){
+                if(riskStatus===`1`){//1 需要测评
                     return(
-                        <a className='btn end'>立即投资</a>
+                        <a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,investInfo.id)}>立即风险评估</a>
+                    )
+                }else if(1!=1){ //根据riskLevel判断测评结果暂时不需要
+                    return(
+                        <a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,investInfo.id)}>重新风险评估</a>
+                    )
+                }else if(noviceStatus===0 && investInfo.noviceLoan=='1'){ //当前新手标，用户非新手
+                    return(
+                        <a className='btn end'>仅限新手</a>
+                    )
+                }else　if(amount.availableBalance<this.state.investAmount){
+                    return(
+                        <a className="btn" onClick={() => this.toggleModal(`modalRecharge`,true,investInfo.id)}>立即充值</a>
                     )
                 }else{
-                    return(
-                        <a className='btn' onClick={() => this.toggleModal(`modalInvest`,true,investInfo.id)}>立即投资</a>
-                    )
+                    if(this.state.tips!=''){
+                        return(
+                            <a className='btn end'>立即投资</a>
+                        )
+                    }else{
+                        return(
+                            <a className='btn' onClick={() => this.toggleModal(`modalInvest`,true,investInfo.id)}>立即投资</a>
+                        )
+                    }
                 }
             }
         }
+
     }
     render(){
         let {member,auth,investInfo,type}=this.props;
         let {amount,redInfo,couponInfo,result}=member.accountsInfo;
-
         if(result.code==='0'){
             console.log('重新获取用户信息');
             this.props.dispatch(memberAc.modifyState({result:''}));
@@ -307,6 +305,30 @@ class MasterInvestBox extends React.Component {
                                     }
                                 }}
                             />:''
+                        }
+                    </Modal>
+                    {/*开户*/}
+                    <Modal
+                        title="开户"
+                        wrapClassName="vertical-center-modal"
+                        visible={this.state.modalAuth}
+                        width="520px"
+                        footer={null}
+                        destroyOnClose={true}
+                        onCancel={() => {
+                            this.toggleModal(`modalAuth`,false);
+
+                        }}
+                    >
+
+                        <ModalAuth key={this.state.key} info={
+                            {
+                                callback:(obj)=>{
+                                    this.toggleModal(`modalAuth`,false);
+                                }
+                            }
+                        }
+                        />
                         }
                     </Modal>
                 </div>

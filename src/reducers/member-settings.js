@@ -3,6 +3,7 @@ import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
     isFetching:false,
+    isPosting:false,
     messages:{
         isFetching:false,
         myList:'',
@@ -49,6 +50,21 @@ export default createReducer(initialState, {
     }),
     ['mySettings/riskAssess/FETCH_REJECTED']:(state,action) => state.mergeDeep({
         isFetching: false,
+        errorMessage: action.message
+    }),
+    //提交
+    ['mySettings/riskAssess/FETCH_POST_PENDING']:(state,action) => state.mergeDeep({
+        isFetching: true,
+        isPosting: true,
+    }),
+    ['mySettings/riskAssess/FETCH_POST_FULFILLED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        isPosting: false,
+        riskAssess:action.payload
+    }),
+    ['mySettings/riskAssess/FETCH_POST_REJECTED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        isPosting: false,
         errorMessage: action.message
     }),
     ['mySettings/riskAssess/MODIFY_STATE']:(state,action) => state.mergeDeep({

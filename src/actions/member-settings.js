@@ -128,7 +128,7 @@ export const myRiskAssessAc={
     putRiskAssess: (pram,dispatch) => {
         pram=JSON.stringify(pram);
         return {
-            type: 'mySettings/riskAssess/FETCH',
+            type: 'mySettings/riskAssess/FETCH_POST',
             async payload() {
                 const res = await cFetch(`${url_putRList}`, {
                         method: 'PUT',

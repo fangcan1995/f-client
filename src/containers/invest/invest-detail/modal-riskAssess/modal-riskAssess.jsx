@@ -64,35 +64,24 @@ class ModalRiskAssess extends React.Component {
         }
         this.props.dispatch(myRiskAssessAc.putRiskAssess(putJson));
     }
-
+    //关闭
+    modalClose(){
+        //清空postResult
+        console.log(this.props.member);
+        console.log(this.props.member.accountsInfo.postResult);
+        this.props.dispatch(memberAc.modifyState({postResult:``}));
+        console.log(this.props.member.accountsInfo.postResult);
+        let {callback}=this.props.info;
+        //callback();
+    }
     render(){
         let {dispatch}=this.props;
-        let {riskAssess,isFetching}=this.props.memberSettings;
+        let {riskAssess,isFetching,isPosting}=this.props.memberSettings;
         let {result,myList,status,postResult}=riskAssess;
         console.log('postResult');
         console.log(postResult);
         let {callback}=this.props.config;
-        if(postResult.code==='0'){
-
-            //this.props.dispatch(myRiskAssessAc.modifyState({postResult:''}));
-            //this.props.dispatch(memberAc.getInfo()); //提交答案后重新获取用户信息
-            return(
-                <div className="pop__riskAssess">
-                    <div className="riskAssessApp" style={{padding:'30px'}}>
-                    <BbhAlert
-                        info={{
-                            message:'成功',
-                            description:postResult.message,
-                            type:'success',
-                            callback:(obj)=>{
-                                callback();
-                            }
-                        }}
-                    />
-                    </div>
-                </div>
-            )
-        }else{
+        if(postResult===''){
             return(
                 <div className="pop__riskAssess">
                     <div className="riskAssessApp">
@@ -127,14 +116,45 @@ class ModalRiskAssess extends React.Component {
 
                             <div className="form__bar center">
 
-                                <Button type="primary"  loading={this.state.iconLoading} onClick={this.handleSubmit} style={{width:'20%'}} className='large'
-                                        disabled={this.disabled()}
-                                >
-                                    立即评估
-                                </Button>
+
+                                {
+                                    isPosting?<Button style={{width:'20%'}} className='large' disabled={true}>
+                                            提交中,请稍后
+                                        </Button>
+                                        :<Button type="primary"  loading={this.state.iconLoading} onClick={this.handleSubmit} style={{width:'20%'}} className='large'
+                                                 disabled={this.disabled()}
+                                        >
+                                            立即评估
+                                        </Button>
+
+                                }
+
 
                             </div>
                         </div>
+                    </div>
+                </div>
+            )
+        }else{
+            let message=``;
+            let type=``;
+            if(postResult.code===`0`){
+                message='开户成功';
+                type='success'
+            }else{
+                message='开户失败';
+                type='error'
+            }
+            return(
+                <div className="pop__riskAssess">
+                    <Alert
+                        message={message}
+                        description={postResult.message}
+                        type={type}
+                        showIcon
+                    />
+                    <div className="form__wrapper">
+                        <button className="button able" style={{marginTop:'30px'}} onClick={this.modalClose}>确定</button>
                     </div>
                 </div>
             )

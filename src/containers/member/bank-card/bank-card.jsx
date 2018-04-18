@@ -4,36 +4,39 @@ import './bank-card.less';
 import Tab from '../../../components/tab/tab';
 import Crumbs from '../../../components/crumbs/crumbs';
 import { connect } from 'react-redux';
-import  memberActions  from '../../../actions/member';
 import {memberAc} from '../../../actions/member';
+import ModalAuth from '../../../components/modal/modal-auth/modal-auth';
+import { Modal } from 'antd';
 class BankCard extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            modalAuth:false,
+            key:Math.random()
+        }
+    }
     componentDidMount() {
         window.scrollTo(0,0);
-        //this.props.dispatch(memberAc.getInfo());
     }
-    bindCard(){
-       /* let postData={
-            escrowCode:100100,
-            custId:123,
-            accountBalance:0,
-            freezingAmount:0,
-            availableBalance:0
 
-        };
-        this.props.dispatch(memberActions.postOpenAccount(postData));*/
-        this.props.dispatch(memberAc.postOpenAccount());
-    }
     changeCard(){
-        alert('更换银行卡');
-        //this.props.dispatch(memberAc.postOpenAccount());
+        alert('更换银行卡,第三方暂不开发');
     }
+    //模态框开启关闭
+    toggleModal=(modal,visile)=>{
+        if(visile){
+            this.setState({
+                [modal]: true,
+            });
+        }else{
+            this.setState({
+                [modal]: false,
+                key:Math.random()
+            });
+        }
+    };
     render(){
-
         let {openAccountStatus,acBank,basicInfo,result}=this.props.member.accountsInfo;
-
-        console.log('----------------');
-        console.log(this.props.member.accountsInfo);
-        console.log(basicInfo);
         if(result.code==='0'){
             this.props.dispatch(memberAc.modifyState({result:''}));
             this.props.dispatch(memberAc.getInfo());
@@ -49,9 +52,8 @@ class BankCard extends React.Component{
                                     (openAccountStatus === 0) ?<div className="addCard">
                                             <p>为保证账户资金安全，请绑定本人的银行卡</p>
                                             <div className="grayCard">
-                                                <a href="javascript:void(0);" style={{color: '#31aaf5'}} onClick={() => {
-                                                    this.bindCard()
-                                                }}>
+                                                <a href="javascript:void(0);" style={{color: '#31aaf5'}}
+                                                   onClick={() => this.toggleModal(`modalAuth`,true)}>
                                                     <i className="iconfont add"></i>
                                                     <p>绑定银行卡！</p>
                                                 </a>
@@ -90,6 +92,29 @@ class BankCard extends React.Component{
                     </Tab>
 
                 </div>
+                <Modal
+                    title="开户"
+                    wrapClassName="vertical-center-modal"
+                    visible={this.state.modalAuth}
+                    width="520px"
+                    footer={null}
+                    destroyOnClose={true}
+                    onCancel={() => {
+                        this.toggleModal(`modalAuth`,false);
+
+                    }}
+                >
+
+                    <ModalAuth key={this.state.key} info={
+                        {
+                            callback:(obj)=>{
+                                this.toggleModal(`modalAuth`,false);
+                            }
+                        }
+                    }
+                    />
+                    }
+                </Modal>
             </div>
         );
     }
