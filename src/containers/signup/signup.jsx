@@ -77,7 +77,7 @@ class Signup extends Component {
         dispatch(getImageCode());
       })
       .catch(err => {
-
+        console.log(err)
         // 根据错误类型做更多判断，这里先把超时处理成弹message
         if ( err.statusCode == -1 ) {
           message.error(err.msg, 2.5);
@@ -103,7 +103,7 @@ class Signup extends Component {
         this.verifyCodeInputRef.focus();
         return res;
       })
-      .then(res => this.startCd(60))
+      .then(res => this.startCd(180))
       .catch(err => {
         // 根据错误类型做更多判断，这里先把超时处理成弹message
         if ( err.statusCode == -1 ) {
@@ -134,13 +134,13 @@ class Signup extends Component {
     cd();
   })
   sendVerifyFaileCallback = (reason) => {
-    const message = reason.msg;
+    const message = reason.message;
     const { setFields, getFieldValue } = this.props.form;
     const newValue = {
-      username: {
-        name: 'username',
+      image_code: {
+        name: 'image_code',
         validating: false,
-        value: getFieldValue('username'),
+        value: getFieldValue('image_code'),
         errors: [message]
       }
     };
@@ -148,13 +148,13 @@ class Signup extends Component {
   }
 
   loginFaileCallback = (reason) => {
-    const message = reason.msg;
+    const message = reason.message;
     const { setFields, getFieldValue } = this.props.form;
     const newValue = {
-      username: {
-        name: 'username',
+      register_code: {
+        name: 'register_code',
         validating: false,
-        value: getFieldValue('username'),
+        value: getFieldValue('register_code'),
         errors: [message]
       }
     };
@@ -213,7 +213,7 @@ class Signup extends Component {
     const passwordProps = getFieldDecorator('password', {
       validate: [{
         rules: [
-          { required: true, pattern: passwordRegExp, message: '密码长度为6-16位，必须包含数字、字母、符号' }
+          { required: true, pattern: passwordRegExp, message: '密码长度6-16位，包含数字、字母、符号。' }
           
         ],
         trigger: ['onBlur', 'onChange']
@@ -278,7 +278,7 @@ class Signup extends Component {
               </FormItem>
               <FormItem
                 { ...formItemLayout }
-                label="验证码"
+                label="图形验证码"
                 required
                 >
                 <Row gutter={8}>
@@ -310,7 +310,7 @@ class Signup extends Component {
               </FormItem>
               <FormItem
                 { ...formItemLayout }
-                label="验证码"
+                label="短信验证码"
                 required
                 >
                 <Row gutter={8}>

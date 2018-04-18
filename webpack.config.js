@@ -94,7 +94,7 @@ const config = {
             name: 'vendor',
         }),
         new HtmlWebpackPlugin({
-            title: 'BBH-CLIENT',
+            title: '巴巴汇-专业的互联网金融P2P网络借贷信息服务平台【官网】',
             filename: path.join(BUILD_PATH, '/index.html'),
             template: path.join(SRC_PATH, '/index.html'),
             inject: true,
