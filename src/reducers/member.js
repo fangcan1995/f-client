@@ -16,7 +16,8 @@ const initialState = Immutable.fromJS({
             bankName:'',
             bankNo:'',
         },
-        result:``
+        result:``,
+        postResult:``,
 
     },
 

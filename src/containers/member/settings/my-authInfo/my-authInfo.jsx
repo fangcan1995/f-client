@@ -1,56 +1,58 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Crumbs from '../../../../components/crumbs/crumbs';
-import Tab from '../../../../components/tab/tab';
-import MyAvatar from '../../../../components/myAvatar/myAdatar';
-import './authInfo.less';
+
+
 import { connect } from 'react-redux';
 import {myAuthInfoAc} from '../../../../actions/member-settings';
-import  memberActions  from '../../../../actions/member';
-
+import Crumbs from '../../../../components/crumbs/crumbs';
+import Tab from '../../../../components/tab/tab';
+import memberActions, {memberAc} from '../../../../actions/member';
 import { Modal } from 'antd';
 import ModalResetPassword from './modalResetPassword';
+import ModalAuth from '../../../../components/modal/modal-auth/modal-auth';
 
+import './authInfo.less';
 class MyAuthInfo extends React.Component {
     constructor(props) {
         super(props);
-        this.bindCard = this.bindCard.bind(this);
+        this.state = {
+            modalResetPassword:false,
+            modalAuth:false,
+            key:Math.random()
+        }
+        //this.bindCard = this.bindCard.bind(this);
     }
+    //模态框开启关闭
+    toggleModal=(modal,visile)=>{
+        if(visile){
+            this.setState({
+                [modal]: true,
+
+            });
+        }else{
+            this.setState({
+                [modal]: false,
+                key:Math.random()
+            });
+        }
+    };
     componentDidMount() {
         window.scrollTo(0,0);
         this.props.dispatch(myAuthInfoAc.getResult());
     }
     changeCard(){
-        alert('去第三方');
+        alert('去第三方,暂不开发');
     }
     changePhone(){
-        alert('更改手机号');
+        alert('去第三方,暂不开发');
     }
-    changePassword(){
-        alert('更改密码');
-    }
-    bindCard(){
-        console.log('***********');
-        let postData={
-            escrowCode:100100,
-            custId:123,
-            accountBalance:0,
-            freezingAmount:0,
-            availableBalance:0
 
-        };
-        this.props.dispatch(memberActions.postOpenAccount(postData));
-    }
-    callback(){
-        let {dispatch}=this.props;
-        dispatch(myAuthInfoAc.modifyState({modalResetPassword:false}))
-    }
     render(){
         console.log('获取的数据');
         console.log(this.props);
         let {dispatch}=this.props;
         let {authInfo}=this.props.memberSettings;
-        let {modalResetPassword,info}=authInfo;
+        let {info}=authInfo;
         return(
             <div className="member__main">
                 <Crumbs/>
@@ -116,7 +118,9 @@ class MyAuthInfo extends React.Component {
                                         <td className="Result">未开户</td>
                                         <td className="detail"></td>
                                         <td className="operate">
-                                            <a href="javascript:void(0);" onClick={this.bindCard}>开户</a>
+                                            <a href="javascript:void(0);" onClick={
+                                                () => this.toggleModal(`modalAuth`,true)
+                                            }>开户</a>
                                         </td>
                                     </tr>
                                         :``
@@ -129,8 +133,10 @@ class MyAuthInfo extends React.Component {
                                         <td className="operate">
                                             <a href="javascript:void(0);"
                                                onClick={
-                                                   () => dispatch(myAuthInfoAc.modifyState({modalResetPassword:true}))
-                                               }>修改登录密码</a>
+                                                   () => this.toggleModal(`modalResetPassword`,true)
+                                               }>
+                                                修改登录密码
+                                            </a>
                                         </td>
                                     </tr>
                                     :``
@@ -141,25 +147,46 @@ class MyAuthInfo extends React.Component {
                     </Tab>
 
                 </div>
-
                 <Modal
                     title="修改登录密码"
                     wrapClassName="vertical-center-modal"
-                    visible={modalResetPassword}
+                    visible={this.state.modalResetPassword}
                     width="520px"
                     footer={null}
-                    onCancel={() => this.callback()}
+                    destroyOnClose={true}
+                    onCancel={() =>
+                        this.toggleModal(`modalResetPassword`,false)
+                    }
                 >
-                    {modalResetPassword===true?
-                        <ModalResetPassword info={
+                    <ModalResetPassword key={this.state.key} info={
+                        {
+                            callback:(obj)=>{
+                                this.toggleModal(`modalResetPassword`,false);
+                            }
+                        }
+                    }/>
+                </Modal>
+                <Modal
+                    title="开户"
+                    wrapClassName="vertical-center-modal"
+                    visible={this.state.modalAuth}
+                    width="520px"
+                    footer={null}
+                    destroyOnClose={true}
+                    onCancel={() => {
+                        this.toggleModal(`modalAuth`,false);
+
+                    }}
+                >
+
+                        <ModalAuth key={this.state.key} info={
                             {
-                                //currentId:currentId,
                                 callback:(obj)=>{
-                                    this.callback();
+                                    this.toggleModal(`modalAuth`,false);
                                 }
                             }
                         }
-                        />:''
+                        />
                     }
                 </Modal>
             </div>

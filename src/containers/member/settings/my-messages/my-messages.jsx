@@ -60,8 +60,8 @@ class MyMessages extends React.Component {
         if(pram.length>0){
             pram=pram.toString();
             this.props.dispatch(myMessagesAc.deleteMessage(pram));
-            this.props.dispatch(myMessagesAc.modifyState({myList:''}));  //修改状态
-            this.props.dispatch(myMessagesAc.getMessagesList());
+            //this.props.dispatch(myMessagesAc.modifyState({myList:''}));  //修改状态
+            //this.props.dispatch(myMessagesAc.getMessagesList());
         }
     }
     //选取一个
@@ -113,8 +113,11 @@ class MyMessages extends React.Component {
         this.props.dispatch(myMessagesAc.modifyState(newState));   //
     }
     render() {
-        let {myList,readTag,isFetching} = this.props.memberSettings.messages;
-
+        let {myList,readTag,isFetching,deleteResult} = this.props.memberSettings.messages;
+        if(deleteResult!=``){
+            this.props.dispatch(myMessagesAc.modifyState({deleteResult:''}));  //修改状态
+            this.props.dispatch(myMessagesAc.getMessagesList());
+        }
         return (
             <div className="member__main myMessage">
                 <Crumbs/>

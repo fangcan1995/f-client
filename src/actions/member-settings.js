@@ -2,7 +2,7 @@ import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import { API_CONFIG } from './../config/api';
 import parseJson2URL from './../utils/parseJson2URL';
-import {urls,token} from './../utils/url';
+import {urls,urls_auth,token} from './../utils/url';
 import {message} from "antd/lib/index";
 
 const url_getMList=`${urls}/message/mail/page`;  //获取消息列表
@@ -14,7 +14,7 @@ const url_getRList=`${urls}/members/riskEvaluation`;  //获取风险测评题目
 export const url_putRList=`${urls}/members/riskEvaluation`;  //提交测评结果
 
 const url_getAuthInfo=`${urls}/members/certification`; //获取个人信息
-const url_password=`${urls}/???`; //修改登录密码
+const url_password=`${urls_auth}/uaa/oauth/password`; //修改登录密码
 const url_postPhone=`${urls}/members/photo`;  //修改头像
 export const myMessagesAc= {
     getMessagesList: (params) => {
@@ -200,21 +200,27 @@ export const myAuthInfoAc={
         }
     },
     postPassword: (pram,dispatch) => {
-        pram=JSON.stringify(pram)
+
+        console.log('提交给后台的参数是：');
+
+        pram=parseJson2URL(pram);
+        console.log(pram);
         return {
             type: 'mySettings/authInfo/FETCH',
             async payload() {
-                const res = await cFetch(`${url_password}`, {
-                        method: 'PUT',
+                const res = await cFetch(`${url_password}?${pram}`, {
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: pram,
+                        body: ``,
                     },
                     true);
                 if (res.code == 0) {
+                    message.success(res.message);
                     return {postResult: res};
                 } else {
+                    message.error(res.message);
                     throw res;
                 }
             }
