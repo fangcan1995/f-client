@@ -17,7 +17,6 @@ const initialState = Immutable.fromJS({
         postResult:'',
     },
     authInfo:{
-        modalResetPassword:false,
         info:'',
         postResult:'',
     }

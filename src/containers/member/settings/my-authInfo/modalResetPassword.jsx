@@ -4,6 +4,7 @@ import { Form,Row,Input,Button,Checkbox,Col,Alert } from 'antd';
 import { connect } from 'react-redux';
 import {myAuthInfoAc} from '../../../../actions/member-settings';
 import { hex_md5 } from '../../../../utils/md5';
+import {memberAc} from "../../../../actions/member";
 
 const passwordRegExp = /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*?_., ]).*$/;
 const createForm = Form.create;
@@ -12,11 +13,11 @@ function noop() {
     return false;
 }
 class ModalResetPassword extends React.Component {
-
     static propTypes = {
         form: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired
     }
+
     handleSubmit = (e) => {
         e.preventDefault();
         const { dispatch, form } = this.props;
@@ -25,11 +26,13 @@ class ModalResetPassword extends React.Component {
                 return false;
             }
             let appInfo={
-                oldPassword:hex_md5(form.getFieldsValue().oldPassword),
-                newPassword:hex_md5(form.getFieldsValue().newPassword),
+                type:`member`,
+                username:this.props.auth.user.userName,
+                old_password:hex_md5(form.getFieldsValue().oldPassword),
+                new_password:hex_md5(form.getFieldsValue().newPassword),
             }
-            console.log('提交后台的数据是');
-            console.log(appInfo);
+            //console.log('提交后台的数据是');
+            //console.log(appInfo);
             dispatch(myAuthInfoAc.postPassword(appInfo));
 
         });
@@ -43,17 +46,14 @@ class ModalResetPassword extends React.Component {
         }
     }
     render() {
-        console.log('数据');
-        console.log(this.props);
-        let {callback}=this.props.info;
 
+        let {callback}=this.props.info;
         const { getFieldDecorator,getFieldValue } = this.props.form;
         const oldPasswordProps = getFieldDecorator('oldPassword', {
             rules: [
                 { required: true, min: 6, message: '密码至少为 6 个字符' }
             ]
         });
-
         const newPasswordProps = getFieldDecorator('newPassword', {
             validate: [{
                 rules: [
@@ -74,11 +74,12 @@ class ModalResetPassword extends React.Component {
                 sm: { span: 18 },
             },
         };
+
         return (
             <div className="pop__password">
 
                 <div className="form__wrapper">
-                    <Form layout="horizontal" onSubmit={this.handleSubmit}>
+                    <Form layout="horizontal" onSubmit={this.handleSubmit} id='frm'>
 
                         <FormItem
                             { ...formItemLayout }
