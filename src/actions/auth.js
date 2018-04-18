@@ -15,6 +15,7 @@ export const loginUser = params => {
       console.log(token)
       const res = await cFetch(API_CONFIG.baseUri + API_CONFIG.user, { headers: { 'Authorization': `${token_type} ${access_token}` } });
       const { code, data } = res;
+      console.log(res)
       if ( code == 0 ) {
         const { ...user } = data || {};
         cookie.set('token', token);

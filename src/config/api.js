@@ -1,4 +1,3 @@
-import { urls, token,urls_auth } from '../utils/url'
 let host;
 
 /*if(process.env.NODE_ENV == "test"){
@@ -7,7 +6,8 @@ let host;
   host = location.origin;
 }*/
 
-host = urls_auth;
+//host = 'http://172.16.7.4:8020';
+host = 'http://172.16.1.234:8020';
 
 
 const baseUri = host + '/';

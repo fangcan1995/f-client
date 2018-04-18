@@ -107,6 +107,7 @@ class PasswordForm extends Component {
       })
       .catch(err => {
         // 根据错误类型做更多判断，这里先把超时处理成弹message
+        console.log(err)
         if ( err.statusCode == -1 ) {
           message.error(err.msg, 2.5);
         } else {
