@@ -118,13 +118,7 @@ export const memberAc= {
                         body: ``,
                     },
                     true);
-                if (res.code == 0) {
-                    message.success(res.message);
-                    return {result: res};
-                } else {
-                    message.error(res.message);
-                    throw res;
-                }
+                return {postResult: res};
             }
         }
     },

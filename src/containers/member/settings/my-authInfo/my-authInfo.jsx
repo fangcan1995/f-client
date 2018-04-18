@@ -110,6 +110,9 @@ class MyAuthInfo extends React.Component {
                                         <td className="detail">{info.bankNo}</td>
                                         <td className="operate">
                                             <a href="javascript:void(0);" onClick={this.changeCard}>更换</a>
+                                            <a href="javascript:void(0);" onClick={
+                                                () => this.toggleModal(`modalAuth`,true)
+                                            }>开户</a>
                                         </td>
                                     </tr>
                                     :info.bankNoStatus==='1'?
