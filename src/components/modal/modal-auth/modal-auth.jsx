@@ -53,19 +53,19 @@ class ModalAuth extends React.Component {
                         <dl className="form__bar">
                             <dt><label>真实姓名:</label></dt>
                             <dd>
-                                <input type="text" name="trueName"  maxLength="16" className="textInput" value={this.state.trueName} ref="trueName"/>
+                                <input type="text" name="trueName"  maxLength="16" className="textInput" value='张三' ref="trueName" />
                             </dd>
                         </dl>
                         <dl className="form__bar">
                             <dt><label>身份证号:</label></dt>
                             <dd>
-                                <input type="tel" name="idNumber" ref="idNumber"  maxLength="30" className="textInput" />
+                                <input type="tel" name="idNumber" ref="idNumber"  maxLength="30" value='210503198507083621' className="textInput" />
                             </dd>
                         </dl>
                         <dl className="form__bar">
                             <dt><label>银行卡号:</label></dt>
                             <dd>
-                                <input type="tel" name="bankNo" ref="bankNo" maxLength="30" className="textInput" />
+                                <input type="tel" name="bankNo" ref="bankNo" maxLength="30" value='412311112222333' className="textInput" />
                             </dd>
                         </dl>
 

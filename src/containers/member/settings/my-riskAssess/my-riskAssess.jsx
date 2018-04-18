@@ -68,17 +68,14 @@ class MyRiskAssess extends React.Component {
     }
     //重新评估
     reset(){
-        console.log('-----');
-        this.props.dispatch(myRiskAssessAc.modifyState({status:'1'}));
+        this.props.dispatch(myRiskAssessAc.modifyState({status:'1',myList:``}));
+        this.props.dispatch(myRiskAssessAc.getRiskAssessList());
     }
     render(){
         let {dispatch}=this.props;
         let {riskAssess,isFetching}=this.props.memberSettings;
         let {result,myList,status,postResult}=riskAssess;
-        console.log('***');
-        console.log(status);
         if(postResult.code==='0'){
-            //window.location.reload();  //提交答案后重载页面
             window.scrollTo(0,0);
             this.props.dispatch(myRiskAssessAc.modifyState({postResult:``}));
             this.props.dispatch(memberAc.getInfo());
