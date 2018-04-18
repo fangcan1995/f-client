@@ -16,26 +16,22 @@ class SubjectList extends Component {
         this.multiFilter = this.multiFilter.bind(this);
     }
     componentDidMount () {
-
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
-
         if(pathSnippets[1]=='newNoviceLoan'){
             let filter={
                 noviceLoan:1
             };
-            this.props.dispatch(sbListAc.stateSbModify(
-                {
-                    filter:filter
-                }
-            ));
-            //this.props.dispatch(sbListAc.getList({filter:filter}));
+            this.props.dispatch(sbListAc.stateSbModify({filter:filter}));
             this.multiFilter('noviceLoan',1);
         }else{
-            //let prams=Object.assign({pageNum:1,pageSize:5,status:``})
+            let filter={
+                noviceLoan:'',
+                loanExpiry:'',
+                rateGroup:'',
+            };
+            this.props.dispatch(sbListAc.stateSbModify({filter:filter}));
             this.props.dispatch(sbListAc.getList({status:``}));
-            //console.log('--prams--');
-            //console.log(prams);
-            //this.props.dispatch(sbListAc.getList(prams));
+
         }
 
 
@@ -135,7 +131,6 @@ class SubjectList extends Component {
         let {sbList,isFetching}=this.props.investList;
         let {list,filter,sort}=sbList;
         let {noviceLoan,loanExpiry,rateGroup}=filter;
-
         console.log('--------------this.props--------------');
         console.log(list);
         return (

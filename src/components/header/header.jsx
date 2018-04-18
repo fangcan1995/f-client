@@ -42,7 +42,7 @@ class Header extends Component {
                 <ul>
                   <li><a href="">新手指南</a></li>
                   <li><a href="">帮助中心</a></li>
-                  <li><a href=""><i className="iconfont icon-222"></i>手机APP</a></li>
+                  <li><a href="/mobile-app"><i className="iconfont icon-222"></i>手机APP</a></li>
                 </ul>
               </nav>
               <nav className="thirdparty">
