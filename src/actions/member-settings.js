@@ -138,15 +138,27 @@ export const myRiskAssessAc={
                         body: pram,
                     },
                     true);
-                if (res.code == 0) {
+                /*if (res.code == 0) {
                     return {postResult: res};
                 } else {
                     throw res;
-                }
+                }*/
+                let type=``;
+                (res.code == 0)?type='success':type='error';
+                console.log('提交测评返回的结果');
+                console.log(res);
+                return {
+                    postResult: {
+                        code:res.code,
+                        type:type,
+                        message:res.message,
+                        description:res.data||``,
+                    }
+                };
             }
         }
     },
-    //投资页用
+    /*//投资页用
     putRiskAssess_invest: (pram,dispatch) => {
         pram=JSON.stringify(pram);
         return {
@@ -168,7 +180,7 @@ export const myRiskAssessAc={
                 }
             }
         }
-    },
+    },*/
     modifyState: (prams) => {
         return {
             type: 'mySettings/riskAssess/MODIFY_STATE',

@@ -20,8 +20,8 @@ class ModalInvest extends React.Component {
     }
     componentDidMount () {
         if(this.props.auth.isAuthenticated){
-            this.props.dispatch(investDetailActions.getRedEnvelopes(this.props.id));
-            this.props.dispatch(investDetailActions.getRateCoupons(this.props.id));
+            this.props.dispatch(investDetailActions.getRedEnvelopes(this.props.config.id));
+            this.props.dispatch(investDetailActions.getRateCoupons(this.props.config.id));
         }
 
     }
@@ -72,19 +72,21 @@ class ModalInvest extends React.Component {
                             <dt><label>使用红包:</label></dt>
                             <dd>
                                 {(redEnvelopes==='')?``
-                                :<Select
-                                        defaultValue={redEnvelopes[0].id}
-                                        style={{ width: 300 }}
-                                        onChange={this.handleChange}
-                                        getPopupContainer={() => document.getElementById('area')}
-                                    >
-                                        <Option value="0">不使用红包</Option>
-                                        {
-                                            redEnvelopes.map((item, index) => (
-                                                <Option value={`${item.id}`} key={`row-${index}`}>{item.reAmount}元 {item.reTypeName}</Option>
-                                            ))
-                                        }
-                                    </Select>
+                                    :(redEnvelopes.length>0?
+                                        <Select
+                                            defaultValue={redEnvelopes[0].id}
+                                            style={{ width: 300 }}
+                                            onChange={this.handleChange}
+                                            getPopupContainer={() => document.getElementById('area')}
+                                        >
+                                            <Option value="0">不使用红包</Option>
+                                            {
+                                                redEnvelopes.map((item, index) => (
+                                                    <Option value={`${item.id}`} key={`row-${index}`}>{item.reAmount}元 {item.reTypeName}</Option>
+                                                ))
+                                            }
+                                        </Select>:`无可用红包`
+                                    )
                                 }
 
                             </dd>
@@ -92,9 +94,9 @@ class ModalInvest extends React.Component {
                         <dl className="form__bar">
                             <dt><label>使用加息券:</label></dt>
                             <dd>
-
                                 {(rateCoupons==='')?``
-                                    :<Select
+                                    :(rateCoupons.length>0?
+                                        <Select
                                         defaultValue={rateCoupons[0].id}
                                         style={{ width: 300 }}
                                         onChange={this.handleChange}
@@ -106,7 +108,7 @@ class ModalInvest extends React.Component {
                                                 <Option value={`${item.id}`} key={`row-${index}`}>{item.rcAmount}% 加息券</Option>
                                             ))
                                         }
-                                    </Select>
+                                    </Select>:`无可用加息券`)
                                 }
                             </dd>
                         </dl>
@@ -123,10 +125,12 @@ class ModalInvest extends React.Component {
                                     <a href="agreement_tzsb.html" target="_blank">《投资协议》</a></Checkbox>
                             </p>
                         </div>
+
                         <div className="form__bar">
-                            {this.state.tips != '' ?
-                                <span className="errorMessages">{this.state.tips}</span>
-                                : ''
+                            {(this.state.tips!='')?
+                                <div className="errorMessages">
+                                    {this.state.tips}
+                                </div>:``
                             }
                         </div>
                         <div className="form__bar">

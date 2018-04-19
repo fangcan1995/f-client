@@ -4,10 +4,12 @@ import { Button,Alert } from 'antd';
 export  class BbhAlert extends React.Component{
     render(){
         let {info}=this.props;
+        console.log('话术是');
+        console.log(info);
         return(
             <div className="form__wrapper">
                 <Alert
-                    message={info.messsage}
+                    message={info.message}
                     description={info.description}
                     type={info.type}
                     showIcon

@@ -4,7 +4,8 @@ import { Alert } from 'antd';
 import './modal-auth.less'
 import { connect } from 'react-redux';
 import {memberAc} from "../../../actions/member";
-
+import {BbhAlert} from '../../../components/bbhAlert/bbhAlert';
+import {Loading,NoRecord,Posting} from '../../../components/bbhAlert/bbhAlert';
 class ModalAuth extends React.Component {
     constructor(props) {
         super(props);
@@ -35,7 +36,7 @@ class ModalAuth extends React.Component {
     }
     modalClose(){
         //清空postResult
-        this.props.dispatch(memberAc.modifyState({}));
+        //this.props.dispatch(memberAc.modifyState({'dummyResult':``}));
         let {callback}=this.props.info;
         callback();
     }
@@ -44,11 +45,8 @@ class ModalAuth extends React.Component {
         let {member,auth}=this.props;
 
         let {accountsInfo,isPosting}=member;
-        let {postResult}=accountsInfo;
-        console.log('postResult');
-        console.log(postResult);
-
-        if(postResult===``) {
+        let {dummyResult}=accountsInfo;
+        if(dummyResult===``) {
             return (
                 <div className="pop__invest">
                     <div className="form__wrapper" id="area" >
@@ -81,7 +79,9 @@ class ModalAuth extends React.Component {
                             }
                         </div>
                         <div className="form__bar">
-                            {(isPosting)?<button className="button unable" style={{marginTop:'30px'}} >提交中，请稍后</button>
+                            {(isPosting)?<button className="button unable" style={{marginTop:'30px'}} >
+                                    <Posting isShow={isPosting}/>
+                                </button>
                                 :<button className="button able" style={{marginTop:'30px'}} onClick={this.handleSubmit}>确定</button>
                             }
                         </div>
@@ -90,26 +90,15 @@ class ModalAuth extends React.Component {
                 </div>
             );
         }else{
-            let message=``;
-            let type=``;
-            if(postResult.code===`0`){
-                message='开户成功';
-                type='success'
-            }else{
-                message='开户失败';
-                type='error'
-            }
             return(
                 <div className="pop__invest">
-                    <Alert
-                        message={message}
-                        description={postResult.message}
-                        type={type}
-                        showIcon
+                    <BbhAlert
+                        info={{message:dummyResult.message,description:dummyResult.description,type:dummyResult.type,
+                            callback:()=>{
+                                this.modalClose()
+                            }
+                        }}
                     />
-                    <div className="form__wrapper">
-                        <button className="button able" style={{marginTop:'30px'}} onClick={this.modalClose}>确定</button>
-                    </div>
                 </div>
             )
         }

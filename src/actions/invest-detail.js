@@ -120,6 +120,8 @@ let investDetailActions = {
                 const res = await cFetch(`${url_redEnvelopes}?projectId=${id}` , {method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
+                    console.log('可用红包');
+                    console.log(data);
                     return data;
                 } else {
                     throw res;
@@ -136,6 +138,8 @@ let investDetailActions = {
                 const res = await cFetch(`${url_RateCoupons}?projectId=${id}` , {method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
+                    console.log('可用加息券');
+                    console.log(data);
                     return data;
                 } else {
                     throw res;

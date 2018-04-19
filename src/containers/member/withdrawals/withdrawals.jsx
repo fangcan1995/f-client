@@ -68,10 +68,10 @@ class Withdrawals extends React.Component{
     }
     render(){
         let {isPosting}=this.props.member;
-        let {openAccountStatus,amount,postResult}=this.props.member.accountsInfo;
+        let {openAccountStatus,amount,dummyResult}=this.props.member.accountsInfo;
 
-        if(postResult.code==='0'){
-            this.props.dispatch(memberAc.modifyState({postResult:''}));
+        if(dummyResult.code==='0'){
+            this.props.dispatch(memberAc.modifyState({dummyResult:''}));
             this.refs.amount.value='';
             this.props.dispatch(memberAc.getInfo());
         }

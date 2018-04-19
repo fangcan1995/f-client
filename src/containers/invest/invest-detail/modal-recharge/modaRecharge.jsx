@@ -6,6 +6,8 @@ import './modaRecharge.less'
 import { connect } from 'react-redux';
 import  {memberAc}  from '../../../../actions/member';
 import  investDetailActions  from '../../../../actions/invest-detail';
+import {Loading,NoRecord,Posting} from '../../../../components/bbhAlert/bbhAlert';
+import {BbhAlert} from '../../../../components/bbhAlert/bbhAlert';
 class ModalRecharge extends React.Component {
     constructor(props) {
         super(props);
@@ -34,13 +36,14 @@ class ModalRecharge extends React.Component {
         }
 
         //3 提交后台
-        console.log('提交充值申请');
         this.props.dispatch(memberAc.recharge(this.state.value));
-        let {info,callback}=this.props.config;
+        let {postResult}=this.props.member.accountsInfo;
+        console.log(postResult);
+        /*let {info,callback}=this.props.config;
         console.log('aaaaaaaaaaaaa');
         console.log(callback);
         info.callback();
-        //this.props.dispatch(investDetailActions.statePostResultModify({}));
+        //this.props.dispatch(investDetailActions.statePostResultModify({}));*/
 
     }
     //改变金额
@@ -48,7 +51,7 @@ class ModalRecharge extends React.Component {
         let result=checkMoney({
             'value':event.target.value,
             'type':0,
-            'min_v':1,
+            'min_v':10,
             'max_v':100000000,
             'label':'充值金额',
             'interval':1
@@ -74,18 +77,31 @@ class ModalRecharge extends React.Component {
                 });
         }
     }
+    modalClose(){
+        //清空
+        /*let {dummyResult}=this.props.member.accountsInfo;
+        if(dummyResult.code==0){
+            this.props.dispatch(memberAc.getInfo());  //成功重新获取新户信息
+        }*/
+        this.props.dispatch(memberAc.modifyState({'dummyResult':``}));
+        let {callback}=this.props.config;
+        callback();
+    }
     render() {
-
-
+        let {isPosting}=this.props.member;
         let {accountBalance,callback}=this.props.config;
-        let {postResult}=this.props.investDetail;
+        let {dummyResult}=this.props.member.accountsInfo;
+
+        if(dummyResult==='') {
             return (
                 <div className="pop__invest">
                     {
                         JSON.stringify(this.state.info) != "{}" ?
                             <div className="form__wrapper" id="area">
                                 <dl className="form__bar">
-                                    <p><label style={{textAlign:'center',color:'#f00',fontSize:'14px'}}>(虚拟充值)</label></p>
+                                    <p><label
+                                        style={{textAlign: 'center', color: '#f00', fontSize: '14px'}}>(虚拟充值)</label>
+                                    </p>
                                 </dl>
                                 <dl className="form__bar">
                                     <dt><label>我的可用余额:</label></dt>
@@ -105,41 +121,60 @@ class ModalRecharge extends React.Component {
                                 <dl className="form__bar short">
                                     <dt><label>充值后可用余额：</label></dt>
                                     <dd><i id="money" className="money">
-                                        {(this.state.value=='')?addCommas(parseFloat(accountBalance))
-                                            :addCommas(parseFloat(this.state.value)+parseFloat(accountBalance))
+                                        {(this.state.value == '') ? addCommas(parseFloat(accountBalance))
+                                            : addCommas(parseFloat(this.state.value) + parseFloat(accountBalance))
                                         }
 
                                     </i>元
                                     </dd>
                                 </dl>
 
-                                <div className="tips__area">
-                                    {this.state.tips!=''?
-                                        <span className="tips error">{this.state.tips}</span>
-                                        :''
+                                <div className="form__bar">
+                                    {(this.state.tips != '') ?
+                                        <div className="errorMessages">
+                                            {this.state.tips}
+                                        </div> : ``
                                     }
                                 </div>
                                 <div className="tips__area">
                                     <p><strong>提示：</strong>您的充值金额将会在10-15分钟内到账，请耐心等候</p>
                                 </div>
                                 <div className="form__wrapper">
-                                    <button className="button able" style={{marginTop:'30px'}} onClick={this.handleSubmit}>确定</button>
+                                    {isPosting ?
+                                        <button className="button unable" style={{marginTop: '30px'}}><Posting
+                                            isShow={isPosting}/></button>
+                                        :
+                                        <button className="button able" style={{marginTop: '30px'}}
+                                                onClick={this.handleSubmit}>确定</button>
+                                    }
                                 </div>
                             </div>
-                            :''
+                            : ''
                     }
                 </div>
             );
-
-
+        }else{
+            return(
+                <div className="pop__invest">
+                    <BbhAlert
+                        info={{message:dummyResult.message,description:dummyResult.description,type:dummyResult.type,
+                            callback:()=>{
+                                this.modalClose()
+                            }
+                        }}
+                    />
+                </div>
+            )
+        }
     }
 };
 
 function mapStateToProps(state) {
-    const { auth,investDetail } = state.toJS();
+    const { auth,investDetail,member } = state.toJS();
     return {
         auth,
-        investDetail
+        investDetail,
+        member
     };
 }
 export default connect(mapStateToProps)(ModalRecharge);

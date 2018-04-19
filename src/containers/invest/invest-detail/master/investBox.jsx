@@ -71,12 +71,12 @@ class MasterInvestBox extends React.Component {
     };
     //是否登录，根据是否开户，是否需要风险测评，是否新手，投资金额，获取操作按钮
     //auth.isAuthenticated true登录 false未登录
-    getButton(){
+    /*getButton(){
         let {auth,member,investInfo}=this.props;
         let {isFetching}=member;
         let {openAccountStatus,riskStatus,riskLevel,amount,noviceStatus}=member.accountsInfo;
         //假数据：member
-        /*member={
+        /!*member={
             accountsInfo:{
                 acBank: {bankName: "", bankNo: ""},
                 amount: "",
@@ -91,7 +91,7 @@ class MasterInvestBox extends React.Component {
 
             }
 
-        };*/
+        };*!/
         console.log('获取到的用户信息');
         console.log(member);
         if(isFetching){
@@ -136,15 +136,16 @@ class MasterInvestBox extends React.Component {
             }
         }
 
+    }*/
+    callback(modal,status){
+        this.toggleModal(modal,false);
+        this.props.dispatch(memberAc.modifyState({accountsInfo:``}));
+        this.props.dispatch(memberAc.getInfo());  //成功重载数据
     }
     render(){
         let {member,auth,investInfo,type}=this.props;
-        let {amount,redInfo,couponInfo,result}=member.accountsInfo;
-        if(result.code==='0'){
-            console.log('重新获取用户信息');
-            this.props.dispatch(memberAc.modifyState({result:''}));
-            this.props.dispatch(memberAc.getInfo());
-        }
+        let {amount,redInfo,couponInfo,postResult,openAccountStatus,riskStatus,riskLevel,noviceStatus}=member.accountsInfo;
+        let {isFetching}=member;
         if(investInfo==''){
             return (
                 <div className="form_area"></div>
@@ -220,7 +221,26 @@ class MasterInvestBox extends React.Component {
                                     </i>元
                                 </li>
                             </ul>
-                            {this.getButton()}
+                            {
+                                isFetching?<a href="javascript:void(0);" className="btn end" onClick={() => this.toggleModal(`modalAuth`,true)}>载入中...</a>
+                                    :(
+                                        !auth.isAuthenticated?<Link  to={`/login?redirect=%2Finvest-detail%2F${investInfo.id}`} className="btn">我要登录</Link>
+                                            :(openAccountStatus===0?<a  className="btn" onClick={() => this.toggleModal(`modalAuth`,true)}>立即开户</a>
+                                                :(riskStatus===`1`?<a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,investInfo.id)}>立即风险评估</a>
+                                                :(1!=1?<a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,investInfo.id)}>重新风险评估</a>
+                                                        :(noviceStatus===0 && investInfo.noviceLoan=='1'?<a className='btn end'>仅限新手</a>
+                                                            :(amount.availableBalance<this.state.investAmount?<a className="btn" onClick={() => this.toggleModal(`modalRecharge`,true,investInfo.id)}>立即充值</a>
+                                                                        :(this.state.tips!=''?<a className='btn end'>立即投资</a>
+                                                                               : <a className='btn' onClick={() => this.toggleModal(`modalInvest`,true,investInfo.id)}>立即投资</a>
+                                                                          )
+                                                              )
+                                                        )
+                                                  )
+                                                )
+
+                                            )
+                                    )
+                            }
                         </div>
                     </div>
                     {/*投资弹窗*/}
@@ -232,20 +252,18 @@ class MasterInvestBox extends React.Component {
                         height="400px"
                         footer={null}
                         onCancel={() => {
-                            this.toggleModal(`modalInvest`,false);
-                            this.props.dispatch(memberAc.modifyState({accountsInfo:``}));
-                            this.props.dispatch(memberAc.getInfo());  //充值成功重载数据
+                            this.callback(`modalInvest`);
                         }}
                     >
                         {this.state.modalInvest===true?
-                            <ModalInvest config = {
+                            <ModalInvest
+                                key={this.state.key}
+                                config = {
                                 {
+                                    id:investInfo.id,
                                     investAmount:this.state.investAmount,  //投资金额
-                                    //账户余额
                                     callback:(obj)=>{
-                                        this.toggleModal(`modalInvest`,false);
-                                        this.props.dispatch(memberAc.modifyState({accountsInfo:``}));
-                                        this.props.dispatch(memberAc.getInfo());  //充值成功重载数据
+                                        this.callback(`modalInvest`);
                                     }
                                 }
                             }
@@ -261,11 +279,8 @@ class MasterInvestBox extends React.Component {
                         height="400px"
                         footer={null}
                         onCancel={() => {
-                            this.toggleModal(`modalRecharge`,false);
-                            //this.props.dispatch(memberAc.modifyState({accountsInfo:``}));
-                            //this.props.dispatch(memberAc.getInfo());  //充值成功重载数据
-                        }
-
+                            this.callback(`modalRecharge`);
+                            }
                         }
                     >
                         {this.state.modalRecharge===true?
@@ -276,9 +291,7 @@ class MasterInvestBox extends React.Component {
                                         proId:investInfo.id,
                                         accountBalance:amount.availableBalance,  //账户余额
                                         callback:(obj)=>{
-                                            this.toggleModal(`modalRecharge`,false);
-                                            //this.props.dispatch(memberAc.modifyState({accountsInfo:``}));
-                                            //this.props.dispatch(memberAc.getInfo());  //充值成功重载数据
+                                            this.callback(`modalRecharge`);
                                         },
                                     }
                                 }
@@ -293,8 +306,7 @@ class MasterInvestBox extends React.Component {
                         width="780px"
                         footer={null}
                         onCancel={() => {
-                            this.toggleModal(`modalRiskAssess`,false);
-                            //this.props.dispatch(memberAc.getInfo());  //成功重载数据
+                            this.callback(`modalRiskAssess`);
                         }}
                     >
                         {this.state.modalRiskAssess===true?
@@ -302,8 +314,7 @@ class MasterInvestBox extends React.Component {
                                 key={this.state.key}
                                 config={{
                                     callback:(obj)=>{
-                                        this.toggleModal(`modalRiskAssess`,false);
-                                        //this.props.dispatch(memberAc.getInfo());  //成功重载数据
+                                        this.callback(`modalRiskAssess`);
                                     }
                                 }}
                             />:''
@@ -318,14 +329,14 @@ class MasterInvestBox extends React.Component {
                         footer={null}
                         destroyOnClose={true}
                         onCancel={() => {
-                            this.toggleModal(`modalAuth`,false);
+                            this.callback(`modalAuth`);
                         }}
                     >
 
                         <ModalAuth key={this.state.key} info={
                             {
                                 callback:(obj)=>{
-                                    this.toggleModal(`modalAuth`,false);
+                                    this.callback(`modalAuth`);
                                 }
                             }
                         }
