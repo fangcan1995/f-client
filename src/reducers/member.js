@@ -17,7 +17,7 @@ const initialState = Immutable.fromJS({
             bankName:'',
             bankNo:'',
         },
-        result:``,
+        //result:``,
         postResult:``,
 
     },
@@ -41,22 +41,23 @@ export default createReducer(initialState, {
         isFetching: false,
         errorMessage: action.message
     }),
-    //开户临时用
-    ['member/FETCH_OPENACCOUNT_PENDING']:(state,action) => state.mergeDeep({
+    //开户，充值，提现临时用
+    ['member/FETCH_POSTING_PENDING']:(state,action) => state.mergeDeep({
         isFetching: true,
         isPosting: true,
     }),
-    ['member/FETCH_OPENACCOUNT_FULFILLED']:(state,action) => state.mergeDeep({
+    ['member/FETCH_POSTING_FULFILLED']:(state,action) => state.mergeDeep({
         isFetching: false,
         isPosting: false,
         accountsInfo:action.payload
     }),
-    ['member/FETCH_OPENACCOUNT_REJECTED']:(state,action) => state.mergeDeep({
+    ['member/FETCH_POSTING_REJECTED']:(state,action) => state.mergeDeep({
         isFetching: false,
         isPosting: false,
         errorMessage: action.message
     }),
-    //
+
+
     ['member/FETCH_CHARTS_PENDING']:(state,action) => state.mergeDeep({
         isFetching: true,
     }),

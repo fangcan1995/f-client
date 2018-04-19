@@ -106,7 +106,7 @@ export const memberAc= {
     //开户
     postOpenAccount: (pram) => {
         return {
-            type: 'member/FETCH_OPENACCOUNT',
+            type: 'member/FETCH_POSTING',
             async payload() {
                 pram=parseJson2URL(pram);
                 const res = await cFetch(`${url_openAccount}?custId=123&escrowCode=100100&accountBalance=0&freezingAmount=0&availableBalance=0&${pram}`, {
@@ -124,7 +124,7 @@ export const memberAc= {
     //充值
     recharge: (pram) => {
         return {
-            type: 'member/FETCH',
+            type: 'member/FETCH_POSTING',
             async payload() {
                 const res = await cFetch(`${url_recharge}&amount=`+pram, {
                         method: 'PUT',
@@ -135,8 +135,8 @@ export const memberAc= {
                     },
                     true);
                 if (res.code == 0) {
-                    message.success('充值成功');
-                    return {result: res};
+                    message.success('提现成功');
+                    return {postResult: res};
                 } else {
                     throw res;
                 }
@@ -159,7 +159,7 @@ export const memberAc= {
                     true);
                 if (res.code == 0) {
                     message.success('提现成功');
-                    return {result: res};
+                    return {postResult: res};
                 } else {
                     throw res;
                 }

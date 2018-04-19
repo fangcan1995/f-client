@@ -139,8 +139,6 @@ export const myRiskAssessAc={
                     },
                     true);
                 if (res.code == 0) {
-                    //message.success(res.message);
-                    console.log({postResult: res});
                     return {postResult: res};
                 } else {
                     throw res;

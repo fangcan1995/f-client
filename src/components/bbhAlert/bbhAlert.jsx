@@ -33,6 +33,19 @@ export  class Loading extends React.Component{
         )
     }
 }
+export  class Posting extends React.Component{
+    render(){
+        let {isShow}=this.props;
+        return(
+            <p className="tips_posting">
+                {(isShow===true)?
+                    `提交中，请稍候...`
+                    :``
+                }
+            </p>
+        )
+    }
+}
 export  class NoRecord extends React.Component{
     render(){
         let {isShow,title}=this.props;

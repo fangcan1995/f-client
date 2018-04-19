@@ -7,6 +7,7 @@ import {myRiskAssessAc} from '../../../../actions/member-settings';
 import './riskAssess.less';
 import { Radio,Button } from 'antd';
 import {memberAc} from "../../../../actions/member";
+import {Loading,NoRecord,Posting} from '../../../../components/bbhAlert/bbhAlert';
 
 const RadioGroup = Radio.Group;
 
@@ -74,11 +75,8 @@ class MyRiskAssess extends React.Component {
     }
     render(){
         let {dispatch}=this.props;
-        let {riskAssess,isFetching}=this.props.memberSettings;
+        let {riskAssess,isFetching,isPosting}=this.props.memberSettings;
         let {result,myList,status,postResult}=riskAssess;
-        console.log('结果')
-        console.log(result);
-        console.log(status);
         if(postResult.code==='0'){
             window.scrollTo(0,0);
             this.props.dispatch(myRiskAssessAc.modifyState({postResult:``}));
@@ -127,9 +125,9 @@ class MyRiskAssess extends React.Component {
                                                 :
                                                 <div>
                                                     {
-                                                        (myList.total>0)?
+                                                        (myList.length>0)?
                                                             <div>
-                                                                myList.map((l, i) => (
+                                                                {myList.map((l, i) => (
                                                                 <dl className="controls" key={`row-${i}`}>
                                                                     <dt>{i+1}.{l.examName}</dt>
                                                                     <dd>
@@ -146,12 +144,12 @@ class MyRiskAssess extends React.Component {
                                                                         }
                                                                     </dd>
                                                                 </dl>
-                                                                ))
+                                                                ))}
                                                                 <div className="form__bar center">
-                                                                    {isFetching ?
+                                                                    {isPosting ?
                                                                         <Button type="primary"  style={{width:'20%'}} className='large'
-                                                                                disabled={true}
-                                                                        >提交中，请稍后
+                                                                                disabled={isPosting}
+                                                                        ><Posting isShow={isPosting}/>
                                                                         </Button>
                                                                         :
                                                                         <Button type="primary"  loading={this.state.iconLoading} onClick={this.handleSubmit} style={{width:'20%'}} className='large'

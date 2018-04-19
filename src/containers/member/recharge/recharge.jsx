@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import {memberAc} from '../../../actions/member';
 import {toMoney,toNumber} from  '../../../assets/js/famatData';
 import  {checkMoney,addCommas}  from '../../../assets/js/cost';
+import {Loading,NoRecord,Posting} from '../../../components/bbhAlert/bbhAlert';
+import { Link, withRouter } from 'react-router-dom';
 import {Button} from 'antd';
 import './recharge.less';
 
@@ -26,9 +28,6 @@ class Recharge extends React.Component{
         //this.props.dispatch(memberAc.getInfo());
     }
 
-    bindCard(){
-        alert('去开户');
-    }
     handleChange(event){
         let result=checkMoney({
             'value':event.target.value,
@@ -64,15 +63,16 @@ class Recharge extends React.Component{
     }
     recharge(value){
         value=this.refs.amount.value;
+        this.setState({
+            disabled:true
+        });
         this.props.dispatch(memberAc.recharge(value));
     }
     render(){
-
-        console.log(this.props);
-        let {openAccountStatus,amount,result}=this.props.member.accountsInfo;
-
-        if(result.code==='0'){
-            this.props.dispatch(memberAc.modifyState({result:''}));
+        let {isPosting}=this.props.member;
+        let {openAccountStatus,amount,postResult}=this.props.member.accountsInfo;
+        if(postResult.code==='0'){
+            this.props.dispatch(memberAc.modifyState({postResult:''}));
             this.refs.amount.value='';
             this.props.dispatch(memberAc.getInfo());
         }
@@ -86,9 +86,7 @@ class Recharge extends React.Component{
                                 {
                                     (openAccountStatus === 0) ?
                                         <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先
-                                            <a href="javascript:void(0);" style={{color: '#31aaf5'}} onClick={() => {
-                                                this.bindCard()
-                                            }}> 绑定银行卡！</a>
+                                            <Link to="/my-account/bank-card" style={{color: '#31aaf5'}}> 绑定银行卡！</Link>
                                         </p>
                                         : <div className="form__wrapper">
                                             <dl className="form__bar">
@@ -115,10 +113,18 @@ class Recharge extends React.Component{
                                                 }
                                             </div>
                                             <div className="form__bar">
-                                                <Button type="primary" htmlType="submit" className="pop__large" onClick={this.recharge}
-                                                        disabled={this.state.disabled}>
-                                                    确认
-                                                </Button>
+                                                {isPosting ?
+                                                    <Button type="primary" htmlType="submit" className='pop__large'
+                                                            disabled={true}
+                                                    ><Posting isShow={isPosting}/>
+                                                    </Button>
+                                                    :
+                                                    <Button type="primary" htmlType="submit" className="pop__large"
+                                                            onClick={this.recharge}
+                                                            disabled={this.state.disabled}>
+                                                        确认
+                                                    </Button>
+                                                }
                                             </div>
                                         </div>
                                 }
