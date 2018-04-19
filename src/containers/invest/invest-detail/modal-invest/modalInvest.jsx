@@ -60,6 +60,9 @@ class ModalInvest extends React.Component {
                 <div className="pop__invest">
                     <div className="form__wrapper" id="area" >
                         <dl className="form__bar">
+                            <p><label style={{textAlign:'center',color:'#f00',fontSize:'14px'}}>(虚拟投资)</label></p>
+                        </dl>
+                        <dl className="form__bar">
                             <dt><label>投资金额:</label></dt>
                             <dd>
                                 <span id="money" className="money">{investAmount}</span>元

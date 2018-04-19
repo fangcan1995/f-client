@@ -7,6 +7,7 @@ import {myRiskAssessAc} from '../../../../actions/member-settings';
 import { Radio,Button } from 'antd';
 import {memberAc} from "../../../../actions/member";
 import {BbhAlert} from '../../../../components/bbhAlert/bbhAlert';
+import { Alert } from 'antd';
 const RadioGroup = Radio.Group;
 
 class ModalRiskAssess extends React.Component {
@@ -71,16 +72,26 @@ class ModalRiskAssess extends React.Component {
         console.log(this.props.member.accountsInfo.postResult);
         this.props.dispatch(memberAc.modifyState({postResult:``}));
         console.log(this.props.member.accountsInfo.postResult);
+        this.props.dispatch(memberAc.getInfo());
         let {callback}=this.props.info;
-        //callback();
+        callback();
     }
     render(){
         let {dispatch}=this.props;
         let {riskAssess,isFetching,isPosting}=this.props.memberSettings;
         let {result,myList,status,postResult}=riskAssess;
-        console.log('postResult');
-        console.log(postResult);
+
         let {callback}=this.props.config;
+
+        let message=``;
+        let type=``;
+        if(postResult.code===`0`){
+            message='开户成功';
+            type='success'
+        }else{
+            message='开户失败';
+            type='error'
+        }
         if(postResult===''){
             return(
                 <div className="pop__riskAssess">
@@ -136,17 +147,14 @@ class ModalRiskAssess extends React.Component {
                 </div>
             )
         }else{
-            let message=``;
-            let type=``;
-            if(postResult.code===`0`){
-                message='开户成功';
-                type='success'
-            }else{
-                message='开户失败';
-                type='error'
-            }
+
             return(
                 <div className="pop__riskAssess">
+                    <BbhAlert
+                        info={{message:message,description:postResult.message,type:type}}
+                        callback={this.modalClose()}
+                    />
+
                     <Alert
                         message={message}
                         description={postResult.message}

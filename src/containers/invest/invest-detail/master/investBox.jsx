@@ -262,22 +262,23 @@ class MasterInvestBox extends React.Component {
                         footer={null}
                         onCancel={() => {
                             this.toggleModal(`modalRecharge`,false);
-                            this.props.dispatch(memberAc.modifyState({accountsInfo:``}));
-                            this.props.dispatch(memberAc.getInfo());  //充值成功重载数据
+                            //this.props.dispatch(memberAc.modifyState({accountsInfo:``}));
+                            //this.props.dispatch(memberAc.getInfo());  //充值成功重载数据
                         }
 
                         }
                     >
                         {this.state.modalRecharge===true?
                             <ModalRecharge
+                                key={this.state.key}
                                 config = {
                                     {
                                         proId:investInfo.id,
                                         accountBalance:amount.availableBalance,  //账户余额
                                         callback:(obj)=>{
                                             this.toggleModal(`modalRecharge`,false);
-                                            this.props.dispatch(memberAc.modifyState({accountsInfo:``}));
-                                            this.props.dispatch(memberAc.getInfo());  //充值成功重载数据
+                                            //this.props.dispatch(memberAc.modifyState({accountsInfo:``}));
+                                            //this.props.dispatch(memberAc.getInfo());  //充值成功重载数据
                                         },
                                     }
                                 }
@@ -293,15 +294,16 @@ class MasterInvestBox extends React.Component {
                         footer={null}
                         onCancel={() => {
                             this.toggleModal(`modalRiskAssess`,false);
-                            this.props.dispatch(memberAc.getInfo());  //成功重载数据
+                            //this.props.dispatch(memberAc.getInfo());  //成功重载数据
                         }}
                     >
                         {this.state.modalRiskAssess===true?
                             <ModalRiskAssess
+                                key={this.state.key}
                                 config={{
                                     callback:(obj)=>{
                                         this.toggleModal(`modalRiskAssess`,false);
-                                        this.props.dispatch(memberAc.getInfo());  //成功重载数据
+                                        //this.props.dispatch(memberAc.getInfo());  //成功重载数据
                                     }
                                 }}
                             />:''
@@ -317,7 +319,6 @@ class MasterInvestBox extends React.Component {
                         destroyOnClose={true}
                         onCancel={() => {
                             this.toggleModal(`modalAuth`,false);
-
                         }}
                     >
 

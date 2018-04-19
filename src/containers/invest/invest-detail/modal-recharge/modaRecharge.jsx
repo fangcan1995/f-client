@@ -85,6 +85,9 @@ class ModalRecharge extends React.Component {
                         JSON.stringify(this.state.info) != "{}" ?
                             <div className="form__wrapper" id="area">
                                 <dl className="form__bar">
+                                    <p><label style={{textAlign:'center',color:'#f00',fontSize:'14px'}}>(虚拟充值)</label></p>
+                                </dl>
+                                <dl className="form__bar">
                                     <dt><label>我的可用余额:</label></dt>
                                     <dd>
                                         {addCommas(parseFloat(accountBalance))}元

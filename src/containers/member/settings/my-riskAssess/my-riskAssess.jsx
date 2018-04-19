@@ -24,6 +24,7 @@ class MyRiskAssess extends React.Component {
     componentDidMount() {
         window.scrollTo(0,0);
         this.props.dispatch(myRiskAssessAc.getResult());
+
         this.props.dispatch(myRiskAssessAc.getRiskAssessList());
     }
     disabled(){
@@ -75,6 +76,9 @@ class MyRiskAssess extends React.Component {
         let {dispatch}=this.props;
         let {riskAssess,isFetching}=this.props.memberSettings;
         let {result,myList,status,postResult}=riskAssess;
+        console.log('结果')
+        console.log(result);
+        console.log(status);
         if(postResult.code==='0'){
             window.scrollTo(0,0);
             this.props.dispatch(myRiskAssessAc.modifyState({postResult:``}));
@@ -119,40 +123,49 @@ class MyRiskAssess extends React.Component {
                                     :(status==='1')?
                                     <div className="riskAssessApp">
                                         <div className="form__wrapper">
+                                            {(myList==='') ? <Loading isShow={isFetching} />
+                                                :
+                                                <div>
+                                                    {
+                                                        (myList.total>0)?
+                                                            <div>
+                                                                myList.map((l, i) => (
+                                                                <dl className="controls" key={`row-${i}`}>
+                                                                    <dt>{i+1}.{l.examName}</dt>
+                                                                    <dd>
 
-                                            {
-                                                (myList.length>0)?
-                                                    myList.map((l, i) => (
-                                                        <dl className="controls" key={`row-${i}`}>
-                                                            <dt>{i+1}.{l.examName}</dt>
-                                                            <dd>
-
-                                                                <RadioGroup onChange={this.onChange} value={`${l.isChecked}`} name={`${l.examId}`}>
-                                                                    {l.answersDtoList.map((ll,ii)=>(
-                                                                        <Radio value={`${ll.answerCode}`} key={`row-${ii}`}>{ll.answerCode} .{ll.answer}</Radio>
-                                                                    ))}
-                                                                </RadioGroup>
-                                                                {
-                                                                    l.isChecked===''?
-                                                                        <span className="error">必选</span>
-                                                                        :``
-                                                                }
-
-                                                            </dd>
-                                                        </dl>
-                                                    ))
-                                                    :``
+                                                                        <RadioGroup onChange={this.onChange} value={`${l.isChecked}`} name={`${l.examId}`}>
+                                                                            {l.answersDtoList.map((ll,ii)=>(
+                                                                                <Radio value={`${ll.answerCode}`} key={`row-${ii}`}>{ll.answerCode} .{ll.answer}</Radio>
+                                                                            ))}
+                                                                        </RadioGroup>
+                                                                        {
+                                                                            l.isChecked===''?
+                                                                                <span className="error">必选</span>
+                                                                                :``
+                                                                        }
+                                                                    </dd>
+                                                                </dl>
+                                                                ))
+                                                                <div className="form__bar center">
+                                                                    {isFetching ?
+                                                                        <Button type="primary"  style={{width:'20%'}} className='large'
+                                                                                disabled={true}
+                                                                        >提交中，请稍后
+                                                                        </Button>
+                                                                        :
+                                                                        <Button type="primary"  loading={this.state.iconLoading} onClick={this.handleSubmit} style={{width:'20%'}} className='large'
+                                                                                disabled={this.disabled()}
+                                                                        >
+                                                                            立即评估
+                                                                        </Button>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        : <NoRecord isShow={true} />
+                                                    }
+                                                </div>
                                             }
-
-                                            <div className="form__bar center">
-
-                                                <Button type="primary"  loading={this.state.iconLoading} onClick={this.handleSubmit} style={{width:'20%'}} className='large'
-                                                        disabled={this.disabled()}
-                                                >
-                                                    立即评估
-                                                </Button>
-
-                                            </div>
                                         </div>
                                     </div>
                                     :``
