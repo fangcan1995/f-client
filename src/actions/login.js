@@ -24,6 +24,7 @@ export const sendVerifyCode = params => {
     async payload() {
       const res = await cFetch(API_CONFIG.baseUri + API_CONFIG.loginVerifyCode + params, { credentials: 'include' }, false);
       const { code, data } = res;
+      console.log(res)
       if ( code == 0 ) {
         return data || {};
       } else {

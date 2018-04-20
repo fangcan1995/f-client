@@ -7,7 +7,9 @@ let host;
 }*/
 
 //host = 'http://172.16.7.4:8020';
-host = 'http://172.16.1.234:8020';
+import {urls,urls_auth,token} from './../utils/url';
+host = urls_auth;
+
 
 
 const baseUri = host + '/';
@@ -25,4 +27,5 @@ export const API_CONFIG = {
   checkUserExist: 'uaa/register/check/mobile',
   signup: 'uaa/register',
   signupVerifyCode: 'uaa/code/sms/register',
+  forgetVerifyCode: '/uaa/code/sms/forget/password',
 };

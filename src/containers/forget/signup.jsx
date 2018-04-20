@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import { Form, Input, Button, Checkbox, Row, Col, message } from 'antd';
-import { signupUser, sendVerifyCode, getImageCode, checkUserExist, setVerifyCodeCd } from '../../actions/signup';
+import { signupUser, sendVerifyCode, getImageCode, checkUserExist, sendForgetVerifyCode } from '../../actions/signup';
 import { setSignup } from '../../actions/login';
 import { loginUser } from '../../actions/auth';
 import { hex_md5 } from '../../utils/md5';
@@ -16,6 +16,10 @@ const createForm = Form.create;
 const FormItem = Form.Item;
 const phoneNumberRegExp = /^1[3|4|5|7|8]\d{9}$/;
 const passwordRegExp = /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*?_., ]).*$/;
+const configPasswordRegExp = ()=>{
+  // console.log(this.passwordProps)
+  return false
+};
 const params = {
   client_id: 'member',
   client_secret: 'secret',
@@ -30,7 +34,7 @@ function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
 
-class Signup extends Component {
+class Forget extends Component {
   constructor() {
     super();
     this.verifyCodeInputRef;
@@ -96,8 +100,8 @@ class Signup extends Component {
       let creds = form.getFieldsValue(entries);
       const { send_terminal } = params
       creds = `?${parseJson2URL({...creds, send_terminal: send_terminal})}`;
-
-      dispatch(sendVerifyCode(creds))
+      
+      dispatch(sendForgetVerifyCode(creds))
       .then(res => {
         this.verifyCodeInputRef.focus();
         return res;
@@ -186,22 +190,25 @@ class Signup extends Component {
               if ( !phoneNumberRegExp.test(value) ) {
                 return callback()
               }
-              const params = `?${parseJson2URL({username: value || ''})}`;
-              this.props.dispatch(checkUserExist(params))
-              .then(res => {
-                const { code, message } = res.value;
-                console.log(res)
-                if ( code == 0 ) {
-                  callback()
-                } else {
-                  callback(message)
-                }
+              // const params = `?${parseJson2URL({username: value || ''})}`;
+              // this.props.dispatch(checkUserExist(params))
+              // .then(res => {
+              //   const { code, message } = res.value;
+              //   console.log(res)
+              //   if ( code == 0 ) {
+              //     callback()
+              //   } else {
+              //     callback(message)
+              //   }
                 
-              })
-              .catch(err => {
-                // 当请求失败的时候做更多判断
-                callback(err.msg)
-              })
+              // })
+              // .catch(err => {
+              //   // 当请求失败的时候做更多判断
+              //   callback(err.msg)
+              // })
+              else{
+                return callback()
+              }
             }
           }
           
@@ -218,6 +225,17 @@ class Signup extends Component {
         trigger: ['onBlur', 'onChange']
       }]
     });
+
+    const configPasswordProps = getFieldDecorator('config_password', {
+      validate: [{
+        rules: [
+          { required: true, pattern: configPasswordRegExp(), message: '密码长度6-16位，包含数字、字母、符号。' }
+          
+        ],
+        trigger: ['onBlur', 'onChange']
+      }]
+    });
+
     const imageCodeProps = getFieldDecorator('image_code', {
       validate: [{
         rules: [
@@ -260,8 +278,7 @@ class Signup extends Component {
         <div className="wrapper">
         <div className='w1180'>
           <Card
-            tit="注册"
-            tip={ <span>已有账号？<a onClick={this.handleLoginClick.bind(this)}>立即登录</a></span> }
+            tit="找回登录密码"
             >
             <Form layout="horizontal" onSubmit={this.handleSubmit}>
               <FormItem
@@ -349,7 +366,7 @@ class Signup extends Component {
               </FormItem>
               <FormItem
                 { ...formItemLayout }
-                label="密码"
+                label="设置新密码"
                 hasFeedback
                 >
                 {
@@ -364,6 +381,22 @@ class Signup extends Component {
                 }
               </FormItem>
               <FormItem
+                { ...formItemLayout }
+                label="确认新密码"
+                hasFeedback
+                >
+                {
+                  configPasswordProps(
+                    <Input
+                      type="password"
+                      autoComplete="off"
+                      placeholder="请再次输入新的登入密码"
+                      onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
+                    />
+                  )
+                }
+              </FormItem>
+              {/* <FormItem
                 { ...formItemLayout }
                 label="邀请码"
                 hasFeedback
@@ -385,14 +418,14 @@ class Signup extends Component {
                     <Checkbox> 我已阅读并同意<NavLink to="/login">《用户注册及服务协议》</NavLink></Checkbox>
                   )
                 }
-              </FormItem>
+              </FormItem> */}
               <FormItem>
                 <Button
                   className="ant-col-24"
                   type="primary"
                   htmlType="submit"
-                  disabled={ hasErrors(getFieldsError()) || !getFieldValue('is_read') }
-                  >注册</Button>
+                  disabled={ hasErrors(getFieldsError()) }
+                  >确定</Button>
               </FormItem>
             </Form>
           </Card>
@@ -412,4 +445,4 @@ function select(state) {
   };
 }
 
-export default connect(select)(createForm()(Signup));
+export default connect(select)(createForm()(Forget));

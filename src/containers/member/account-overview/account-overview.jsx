@@ -12,6 +12,7 @@ import  {memberAc}  from '../../../actions/member';
 import { Link, NavLink } from 'react-router-dom';
 import {toMoney,toNumber} from  '../../../assets/js/famatData';
 import Crumbs from '../../../components/crumbs/crumbs';
+import {BbhAlert} from '../../../components/bbhAlert/bbhAlert';
 class AccountOverview extends React.Component{
     componentDidMount() {
         //this.props.dispatch(memberAc.getInfo());
@@ -30,6 +31,15 @@ class AccountOverview extends React.Component{
             <div className="member__main">
                 <Crumbs />
                 <div className="member__cbox">
+                    {/*<div className="pop__invest">
+                        <BbhAlert
+                            info={{message:'成功',description:'开户成功',type:'success',
+                                callback:()=>{
+                                    this.modalClose()
+                                }
+                            }}
+                        />
+                    </div>*/}
                     <div className="master">
                         <div className="accountInfo">
                             <div className="infoLine">

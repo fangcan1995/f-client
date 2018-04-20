@@ -44,6 +44,22 @@ export const sendVerifyCode = params => {
   }
 }
 
+export const sendForgetVerifyCode = params => { 
+  return {
+    type: 'signup/SEND_VERIFY_CODE',
+    async payload() {
+      const res = await cFetch(API_CONFIG.baseUri + API_CONFIG.forgetVerifyCode + params, { credentials: 'include' }, false);
+      const { code, data } = res;
+      console.log(res)
+      if ( code == 0 ) {
+        return data || {};
+      } else {
+        throw res;
+      }
+    }
+  }
+}
+
 export const setVerifyCodeCd = cd => {
   return {
     type: 'signup/SET_VERIFY_CODE_CD',

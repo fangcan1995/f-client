@@ -52,7 +52,7 @@ export default createReducer(initialState, {
   }),
  
   ['homePage/GET_DATA_FULFILLED']: (state, action) => {
-      const { companyNewsDto, mediaReportsDto, partnerCompanysDto } = action.payload;
+      const { mediaReportsDto, partnerCompanysDto } = action.payload;
         return state.merge({
           isFetching: false,
           med:mediaReportsDto,
@@ -109,7 +109,7 @@ export default createReducer(initialState, {
   }),
   ['homePage/GET_NOVICE_FULFILLED']: (state, action) => state.merge({
     isFetching: false,
-    sprog: action.payload[0],
+    sprog: action.payload,
   }),
   ['homePage/GET_NOVICE_REJECTED']: (state, action) => state.merge({
     isFetching: false,

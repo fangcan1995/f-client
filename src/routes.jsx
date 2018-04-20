@@ -8,6 +8,7 @@ import MemberSidebar from './components/member-sidebar/member-sidebar';
 import HomePage from './containers/home-page/home-page';
 import Login from './containers/login/login';
 import Signup from './containers/signup/signup';
+import Forget from './containers/forget/signup';
 import MobileApp from './containers/about/mobile-app/mobileApp'
 import InvestList from './containers/invest/invest-list/subject-list/subject-list';
 import TransferList from './containers/invest/invest-list/transfer-list/transfers-list';
@@ -65,6 +66,7 @@ export default (
             <Route exact path="/" component={HomePage} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
+            <Route path="/forget" component={Forget} />
             <Route path="/invest-list" component={InvestList} />
             <Route path="/transfer-list" component={TransferList} />
             <Route path="/invest-detail" component={InvestDetail} />

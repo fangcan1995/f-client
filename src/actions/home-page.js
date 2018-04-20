@@ -46,7 +46,7 @@ export const  getData = () => {
   return {
     type: 'homePage/GET_DATA',
     async payload() {
-      const res = await cFetch(`${urls}/homes/affiches` , { method: 'GET' }, false);
+      const res = await cFetch(`${urls}/homes/affiches?mediaShowNum=5&partnerShowNum=8` , { method: 'GET' }, false);
       const { code, data } = res;
       if ( code == 0 ) {
           console.log(data)
@@ -81,7 +81,7 @@ export const getNovice  = (list) => {
     return {
       type: 'homePage/GET_NOVICE',
       async payload() {
-        const res = await cFetch(`${urls}/invest/homes/novice?list[${list}].loanExpiry=3&list[${list}].num=1` , { method: 'GET' }, false);
+        const res = await cFetch(`${urls}/invest/homes/novice?` , { method: 'GET' }, false);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)

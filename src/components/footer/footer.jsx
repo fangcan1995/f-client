@@ -20,17 +20,17 @@ export default () => {
         <div className="linkArea">
           <dl>
             <dt>关于我们</dt>
-            <dd><Link to='/about/introduce'>公司介绍</Link></dd>
-            <dd><Link to='/about/team'>管理团队</Link></dd>
-            <dd><Link to='/about/partners'>合作伙伴</Link></dd>
-            <dd><Link to='/about/introduce'>联系我们</Link></dd>
+            <dd><Link to='/about/67/68'>公司介绍</Link></dd>
+            <dd><Link to='/about/67/70'>管理团队</Link></dd>
+            <dd><Link to='/about/67/72'>合作伙伴</Link></dd>
+            <dd><Link to='/about/67/68'>联系我们</Link></dd>
           </dl>
           <dl>
             <dt>安全保障</dt>
-            <dd><Link to='/about/introduce'>法律法规</Link></dd>
-            <dd><Link to='/about/introduce'>资金安全</Link></dd>
-            <dd><Link to='/about/introduce'>技术保障</Link></dd>
-            <dd><Link to='/about/introduce'>风控措施</Link></dd>
+            <dd><Link to='/about/88/89'>法律法规</Link></dd>
+            <dd><Link to='/about/84/85'>资金安全</Link></dd>
+            <dd><Link to='/about/84/87'>技术保障</Link></dd>
+            <dd><Link to='/about/84/86'>风控措施</Link></dd>
           </dl>
         </div>
         <div className="QRCodeArea">
