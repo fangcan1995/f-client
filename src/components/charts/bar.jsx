@@ -23,7 +23,7 @@ export default class BarChart extends Component{
                         label: {
                             show:false,
                             position:'top',
-                            formatter: "{c}元"
+                            formatter: "{c}"+unit
                         }
                     }
                 },
@@ -40,7 +40,7 @@ export default class BarChart extends Component{
             tooltip : {
                 show:true,
                 trigger: 'axis',
-                formatter: "{b} : {c}元"
+                formatter: "{b} : {c}" + unit
             },
             legend: {
                 show:false,

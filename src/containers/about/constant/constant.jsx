@@ -294,6 +294,7 @@ class ConstantTable extends Component {
 
                                             }}
                                             style={{height: '300px', width: '100%'}}
+                                            unit="笔"
                                         >
                                         </BarChart>
                                     </div>
@@ -319,6 +320,7 @@ class ConstantTable extends Component {
 
                                             }}
                                             style={{height: '300px', width: '100%'}}
+                                            unit="人"
                                         >
                                         </BarChart>
                                     </div>
@@ -351,6 +353,7 @@ class ConstantTable extends Component {
 
                                             }}
                                             style={{height: '300px', width: '100%'}}
+                                            unit="人"
                                         >
                                         </BarChart>
                                     </div>
