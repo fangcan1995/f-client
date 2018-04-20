@@ -48,12 +48,20 @@ function checkStatus(res) {
         console.log(res)
       return res.json().then(error => {
         console.log('-----------res 500 406 error----------');
+        console.log(error)
           if(res.code == 406){
             console.log(res)
               return res;
           }else if(res.code == 500) {
+            console.log(res)
               return res;
-          }else{
+          }else if(res.status == 406){
+            console.log(error)
+            return error;
+          }else if(res.status == 500){
+            console.log(error)
+            return error;
+          }else {
               return new StandardError({
                   statusCode: res.status,
                   msg: error.message ? error.msg ? error.msg : error.message : JSON.stringify(error),

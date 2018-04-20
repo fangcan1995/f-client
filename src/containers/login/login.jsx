@@ -31,6 +31,8 @@ const params = {
 function noop() {
   return false;
 }
+
+const SignupWithRouter = withRouter(Signup)
 class Login extends Component {
   state={
     signup:true
@@ -68,11 +70,11 @@ class Login extends Component {
           </div>
         </div>
       </main>
-      // <span>没有账号？<Link to="/signup">立即注册</Link></span>
+      //<span>没有账号？<Link to="/signup">立即注册</Link></span>
     );
     }else{
       return (
-        <Signup/>
+        <SignupWithRouter/>
       )
     }
    
@@ -118,7 +120,7 @@ class PasswordForm extends Component {
     });
   }
   loginFaileCallback = (reason) => {
-    const message = reason.msg;
+    const message = reason.message;
     const { setFields, getFieldValue } = this.props.form;
     const newValue = {
       image_code: {
@@ -242,7 +244,8 @@ class PasswordForm extends Component {
               <Checkbox>记住用户名</Checkbox>
             )
           }
-          <a className="login-form-forgot" href="">忘记密码</a>
+          {/* <a className="login-form-forgot" href="">忘记密码</a> */}
+          <Link className="login-form-forgot"  to="/forget">忘记密码</Link>
           <Button type="primary" htmlType="submit" className="login-form-button">
             登录
           </Button>
@@ -298,19 +301,19 @@ class VCodeForm extends Component {
   handleSendVerifyCodeBtnClick = e => {
 
     const { dispatch, form } = this.props;
-    const entries = ['username', 'imageCode'];
+    const entries = ['username', 'image_code'];
     form.validateFields(entries, (errors) => {
       if (errors) return false;
 
       let creds = form.getFieldsValue(entries);
       const { send_terminal } = params
-      creds = `?${parseJson2URL({...creds, sendTerminal: send_terminal})}`;
+      creds = `?${parseJson2URL({...creds, send_terminal: send_terminal})}`;
       dispatch(sendVerifyCode(creds))
       .then(res => {
         this.verifyCodeInputRef.focus();
         return res;
       })
-      .then(() => this.startCd(60))
+      .then(() => this.startCd(180))
       .catch(err => {
         // 根据错误类型做更多判断，这里先把超时处理成弹message
         if ( err.statusCode == -1 ) {
@@ -343,26 +346,26 @@ class VCodeForm extends Component {
   })
 
   sendVerifyFaileCallback = (reason) => {
-    const message = reason.msg;
+    const message = reason.message;
     const { setFields, getFieldValue } = this.props.form;
     const newValue = {
-      username: {
-        name: 'username',
+      image_code: {
+        name: 'image_code',
         validating: false,
-        value: getFieldValue('username'),
+        value: getFieldValue('image_code'),
         errors: [message]
       }
     };
     setFields(newValue);
   }
   loginFaileCallback = (reason) => {
-    const message = reason.msg;
+    const message = reason.message;
     const { setFields, getFieldValue } = this.props.form;
     const newValue = {
-      username: {
-        name: 'username',
+      verify_code: {
+        name: 'verify_code',
         validating: false,
-        value: getFieldValue('username'),
+        value: getFieldValue('verify_code'),
         errors: [message]
       }
     };
@@ -384,7 +387,7 @@ class VCodeForm extends Component {
         trigger: ['onBlur', 'onChange']
       }]
     });
-    const imageCodeProps = getFieldDecorator('imageCode', {
+    const imageCodeProps = getFieldDecorator('image_code', {
       rules: [
         { required: true, min: 4, message: '验证码至少为4个字符' }
       ]
@@ -426,7 +429,7 @@ class VCodeForm extends Component {
         </FormItem>
         <FormItem
           { ...formItemLayout }
-          label="验证码"
+          label="图形验证码"
           required
           >
           <Row gutter={8}>
@@ -460,7 +463,7 @@ class VCodeForm extends Component {
         </FormItem>
         <FormItem
           { ...formItemLayout }
-          label="验证码"
+          label="短信验证码"
           required
           >
           <Row gutter={8}>
@@ -500,7 +503,8 @@ class VCodeForm extends Component {
               <Checkbox>记住用户名</Checkbox>
             )
           }
-          <a className="login-form-forgot" href="">忘记密码</a>
+          {/* <a className="login-form-forgot" href="/forget">忘记密码</a> */}
+          <Link className="login-form-forgot"  to="/forget">忘记密码</Link>
           <Button type="primary" htmlType="submit" className="login-form-button">
             登录
           </Button>
@@ -519,4 +523,5 @@ function select(state) {
 }
 PasswordForm = connect(select)(withRouter(createForm()(PasswordForm)))
 VCodeForm = connect(select)(withRouter(createForm()(VCodeForm)))
+
 export default connect(select)(Login);

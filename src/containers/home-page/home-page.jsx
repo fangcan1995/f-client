@@ -38,27 +38,27 @@ class HomePage extends Component {
   handleSpecClick = (e) => {
     e.preventDefault();
     // console.log('aaaa')
-    this.props.history.push('/about/constant');
+    this.props.history.push('/about/81/82');
 
   }
   handleNoticeClick(e){
     console.log(e);
-    this.props.history.push(`/about/news/notice`)
+    this.props.history.push(`/about/90/91`)
   }
   handleMoreClick(){
     console.log('22')
-    this.props.history.push('/about/news/notice')
+    this.props.history.push('/about/90/91')
   }
-  handleComeInClick(){
-    this.props.history.push('/invest-list//newNoviceLoan')
+  handleComeInClick(e){
+    this.props.history.push(`/invest-detail/${e}`)
   }
   handleStandardClick(e){
     console.log(e)
-    this.props.history.push(`/invest-list/${e}`)
+    this.props.history.push(`/invest-detail/${e}`)
   }
   handleAdClick(e){
     console.log(e)
-    window.location.href=e
+    this.props.history.push(`/about/90/94/${e}`)
   }
   handleCommediaClick(e){
     console.log(e)
@@ -66,26 +66,25 @@ class HomePage extends Component {
   }
   handleNewsClick(e){
     console.log(e)
-    this.props.history.push(`/about/news/mediaReport`)
+    this.props.history.push(`/about/90/95${e}`)
   }
   handleMimageClick(e){
     console.log(e)
   }
   handleMoreMediaClick(){
     console.log('1111')
-    this.props.history.push('/about/news/mediaReport')
+    this.props.history.push('/about/90/95')
   }
   handleMedIcoClick(e){
     console.log(e)
-    // this.props.history.push('/about/news/mediaReport')
-    window.location.href=e
+    this.props.history.push(`/about/90/95/${e}`)
+    // window.location.href=e
   }
   handlePartnerClick(e){
-    window.location.href=e
+    console.log(e)
+    this.props.history.push(`/about/67/72/${e}`)
   }
-  handlePreClick=()=>{
-    next()
-  }
+
   componentDidMount() {
     const { dispatch ,homePage} = this.props;
     dispatch(getData());
@@ -115,7 +114,7 @@ class HomePage extends Component {
                   )
                 })}
             </Carousel> */}
-            <Carousel autoplay='true' wrapAround='true'
+            <Carousel autoplay={true} wrapAround={true} dragging={false}
             renderCenterLeftControls={({ previousSlide }) => (
               <button onClick={previousSlide} className='icon-btn'><i className='iconfont'>&#xe61f;
               </i></button>
@@ -136,24 +135,28 @@ class HomePage extends Component {
         </div>
        
         <div className="wrapper">
-          <div className="login">
-            <p className="yield">
-             新手专享年化收益率
-              <br />
-              <em><span>{homePage.sprog.annualRate}</span>%</em>
-            </p>
-              {
-                auth.isAuthenticated?<button type="button" className="login__btn" onClick={ this.handleComeInClick.bind(this) }>立即加入</button>
-                :<div>
-                <button type="button" className="login__btn" onClick={ this.handleLoginBtnClick }>立即登录</button>
-                <p className="signup">
-                  没有账号？
-                  <Link to={'/signup'}>立即注册</Link>
-                </p>
-              </div>
-              }
-              
-          </div>
+          {
+            homePage.sprog.length?
+            <div className="login" key={homePage.sprog.length}>
+              <p className="yield">
+              新手专享年化收益率
+                <br />
+                <em><span>{homePage.sprog[0].annualRate}</span>%</em>
+              </p>
+                {
+                  auth.isAuthenticated?<button type="button" className="login__btn" onClick={ this.handleComeInClick.bind(this) }>立即加入</button>
+                  :<div>
+                  <button type="button" className="login__btn" onClick={ this.handleLoginBtnClick }>立即登录</button>
+                  <p className="signup">
+                    没有账号？
+                    <Link to={'/signup'}>立即注册</Link>
+                  </p>
+                </div>
+                }
+                
+            </div>:''
+          }
+          
         </div>
       </div>
 
@@ -193,7 +196,7 @@ class HomePage extends Component {
         <div className="notice">
           <i className="notice__icon iconfont icon-gonggao"></i>
           <div className="notice__text">
-            <Carousel vertical="true" autoplay key={homePage.notice.length} dots='false' wrapAround='true' 
+            <Carousel vertical={true} autoplay key={homePage.notice.length}  wrapAround={true} 
             renderTopCenterControls={({ currentSlide }) => (
                 <button></button>
               )}
@@ -216,43 +219,54 @@ class HomePage extends Component {
           {/* <p className="notice__text">关于巴巴汇金服反洗钱知识普及公告<time className="notice__date">[ 2017-1-6 ]</time></p> */}
           <a onClick={this.handleMoreClick.bind(this)} className="notice__more">更多 ></a>
         </div>
-        <Floor
-          otherClassName="sprog"
-          tit="新手专区"
-          tip="新手专享&nbsp;&nbsp;限量发布"
-          >
-          <div className="sproy__outer">
-            <div className="sprog__inner">
-              <div className="sprog__tile">
-                <div className="dynamicImg__outer">
-                  <img src={require('../../assets/images/homePage/sprog_tile.jpg')} alt="" className="dynamicImg__inner" />
+        {
+          homePage.sprog.length?
+          <Floor
+            otherClassName="sprog"
+            tit="新手专区"
+            tip="新手专享&nbsp;&nbsp;限量发布"
+            >
+            {
+              homePage.sprog.map(item=>{
+                return (
+                <div className="sproy__outer" key={item.id}>
+                  <div className="sprog__inner">
+                    <div className="sprog__tile">
+                      <div className="dynamicImg__outer">
+                        <img src={require('../../assets/images/homePage/sprog_tile.jpg')} alt="" className="dynamicImg__inner" />
+                      </div>
+                    </div>
+                    <div className="sprog__content">
+                      <div className="sprog__item sprog__desc">
+                        <h4>{item.name}<i style={{ backgroundImage: `url(${sprogIcon})` }}></i></h4>
+                        <p>
+                          <em><span>{item.annualRate}</span>.0%</em>
+                          <br />
+                          预期年化收益率
+                        </p>
+                      </div>
+                      <div className="sprog__item sprog__info">
+                        <p>已购人数：{item.investNumber}人</p>
+                        <p>
+                          <em><span>{item.loanExpiry}</span>个月</em>
+                          <br />
+                          锁定期
+                        </p>
+                      </div>
+                      <div className="sprog__item sprog__join">
+                        <button className="join__btn" onClick={this.handleComeInClick.bind(this,item.id)}>立即加入</button>
+                        {/* <p>剩余名额：{homePage.sprog.remain}人</p> */}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="sprog__content">
-                <div className="sprog__item sprog__desc">
-                  <h4>{homePage.sprog.name}<i style={{ backgroundImage: `url(${sprogIcon})` }}></i></h4>
-                  <p>
-                    <em><span>{homePage.sprog.annualRate}</span>.0%</em>
-                    <br />
-                    预期年化收益率
-                  </p>
-                </div>
-                <div className="sprog__item sprog__info">
-                  <p>已购人数：{homePage.sprog.investNumber}人</p>
-                  <p>
-                    <em><span>{homePage.sprog.loanExpiry}</span>个月</em>
-                    <br />
-                    锁定期
-                  </p>
-                </div>
-                <div className="sprog__item sprog__join">
-                  <button className="join__btn" onClick={this.handleComeInClick.bind(this)}>立即加入</button>
-                  {/* <p>剩余名额：{homePage.sprog.remain}人</p> */}
-                </div>
-              </div>
-            </div>
-          </div>
-        </Floor>
+                )
+              })
+            }
+            
+          </Floor>
+          :''
+        }
         {
           homePage.standard.length?<Floor
           otherClassName="standard"
@@ -265,7 +279,7 @@ class HomePage extends Component {
               if(item.type=='project'){
               return (      
                 <li className="standard__card" key={item.id}>
-                  <a onClick={this.handleStandardClick.bind(this,item.standardId)}> 
+                  <a onClick={this.handleStandardClick.bind(this,item.id)}> 
                     <div className="card__scroll">
                       <div className="card__header">
                         <h4 className="tit">{item.name}</h4>
@@ -374,7 +388,7 @@ class HomePage extends Component {
                 
               </Carousel>   */}
               <div className="dynamicImg__outer">
-                <img src={homePage.com.imgsrc} alt="" className="news__img dynamicImg__inner" />
+                <img src={homePage.com.imgsrc} alt="" className="news__img dynamicImg__inner" onClick={this.handleAdClick.bind(this,homePage.com.id)} />
               </div>
               
               <p className="news__text">{homePage.com.title}</p>
@@ -405,7 +419,7 @@ class HomePage extends Component {
                         )
                       })
                     } */}
-                  <li><a><img src={homePage.medicon.imgsrc} alt={homePage.medicon.title} key={homePage.medicon.id} onClick={this.handleMedIcoClick.bind(this,homePage.medicon.imgurl)}/></a></li>
+                  <li><a><img src={homePage.medicon.imgsrc} alt={homePage.medicon.title} key={homePage.medicon.id} onClick={this.handleMedIcoClick.bind(this,homePage.medicon.id)}/></a></li>
                 </ul>
               </div>
               <a className="media__more" onClick={this.handleMoreMediaClick.bind(this)}>查看更多 ></a>
@@ -420,7 +434,7 @@ class HomePage extends Component {
             {
               homePage.par.partnerCompanyInfosDtoList.map((item)=>{
                 return (
-                  <li key={item.affInfoId}><a onClick={this.handlePartnerClick.bind(this,item.affInfoUrl)}><img src={item.affInfoIcon} alt="" /></a></li>
+                  <li key={item.affInfoId}><a onClick={this.handlePartnerClick.bind(this,item.affInfoId)}><img src={item.affInfoIcon} alt="" /></a></li>
                 )
               })
             }

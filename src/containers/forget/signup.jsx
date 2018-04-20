@@ -30,7 +30,7 @@ function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
 
-class Signup extends Component {
+class Forget extends Component {
   constructor() {
     super();
     this.verifyCodeInputRef;
@@ -260,8 +260,7 @@ class Signup extends Component {
         <div className="wrapper">
         <div className='w1180'>
           <Card
-            tit="注册"
-            tip={ <span>已有账号？<a onClick={this.handleLoginClick.bind(this)}>立即登录</a></span> }
+            tit="找回登录密码"
             >
             <Form layout="horizontal" onSubmit={this.handleSubmit}>
               <FormItem
@@ -363,7 +362,7 @@ class Signup extends Component {
                   )
                 }
               </FormItem>
-              <FormItem
+              {/* <FormItem
                 { ...formItemLayout }
                 label="邀请码"
                 hasFeedback
@@ -385,14 +384,14 @@ class Signup extends Component {
                     <Checkbox> 我已阅读并同意<NavLink to="/login">《用户注册及服务协议》</NavLink></Checkbox>
                   )
                 }
-              </FormItem>
+              </FormItem> */}
               <FormItem>
                 <Button
                   className="ant-col-24"
                   type="primary"
                   htmlType="submit"
                   disabled={ hasErrors(getFieldsError()) || !getFieldValue('is_read') }
-                  >注册</Button>
+                  >确定</Button>
               </FormItem>
             </Form>
           </Card>
@@ -412,4 +411,4 @@ function select(state) {
   };
 }
 
-export default connect(select)(createForm()(Signup));
+export default connect(select)(createForm()(Forget));
