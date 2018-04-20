@@ -10,7 +10,7 @@ const url_memberInfo=`${urls}/accounts/my/info`; //获取会员信息
 const url_incomeMonth=`${urls}/accounts/income/month`; //获取月收益统计
 const url_incomeDay=`${urls}/accounts/income/day`; //获取日收益统计
 
-const url_openAccount=`http://172.16.1.234:9090/accounts`; //开户
+const url_openAccount=`${urls}/accounts`; //开户
 const url_recharge=`${urls}/accounts/operation?escrowCode=100100&type=1`; //充值
 const url_withdrawals=`${urls}/accounts/operation?escrowCode=100100&type=3`; //提现
 
@@ -112,11 +112,10 @@ export const memberAc= {
             type: 'member/FETCH_POSTING',
             async payload() {
                 pram=parseJson2URL(pram);
-                const res = await cFetch(`${url_openAccount}?custId=123&escrowCode=100100&accountBalance=0&freezingAmount=0&availableBalance=0&${pram}`, {
+                const res = await cFetch(`${url_openAccount}?custId=123&escrowCode=100100&accountBalance=0&freezingAmount=0&availableBalance=0&${pram}`,
+                    {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
+                        headers: {'Content-Type': 'application/json'},
                         body: ``,
                     },
                     true);

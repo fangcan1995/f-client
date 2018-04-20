@@ -36,7 +36,7 @@ class ModalAuth extends React.Component {
     }
     modalClose(){
         //清空postResult
-        //this.props.dispatch(memberAc.modifyState({'dummyResult':``}));
+        this.props.dispatch(memberAc.modifyState({'dummyResult':``}));
         let {callback}=this.props.info;
         callback();
     }
