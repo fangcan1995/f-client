@@ -8,7 +8,7 @@ let host;
 
 //host = 'http://172.16.7.4:8020';
 import {urls,urls_auth,token} from './../utils/url';
-host = urls_auth
+host = urls_auth;
 
 
 
