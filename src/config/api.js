@@ -26,6 +26,7 @@ export const API_CONFIG = {
 
   checkUserExist: 'uaa/register/check/mobile',
   signup: 'uaa/register',
+  forgetSignup:'uaa/oauth/forget/password',
   signupVerifyCode: 'uaa/code/sms/register',
-  forgetVerifyCode: '/uaa/code/sms/forget/password',
+  forgetVerifyCode: 'uaa/code/sms/forget/password',
 };

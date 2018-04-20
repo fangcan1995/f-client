@@ -85,3 +85,21 @@ export const signupUser = params => {
     }
   };
 }
+
+export const forgetSignupUser = params => {
+  return {
+    type: 'signup/SIGNUP',
+    // async/await配合promise处理异步
+    async payload() {
+      const res = await cFetch(API_CONFIG.baseUri + API_CONFIG.forgetSignup + params, { method: 'POST', body: params, credentials: 'include' }, false);
+      console.log(res)
+      const { code, data } = res;
+      if ( code == 0 ) {
+        const { ...user } = data || {};
+        return user;
+      } else {
+        throw res;
+      }
+    }
+  };
+}
