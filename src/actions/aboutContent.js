@@ -11,6 +11,12 @@ let urlArticalList = `${urls}/information/articles`; */
 let aboutUrl = `http://172.16.1.234:8020/web/information/type`;
 let urlArticalList = `http://172.16.1.234:8020/web/information/articles`;
 
+let constantUrls = [
+    `${urls}/statistics/totalData`,
+    `${urls}/statistics/borrowInfo`,
+    `${urls}/statistics/investInfo`
+];
+
 export const aboutContentAction = () => {
     return {
         type: 'GET_ABOUT_CONTENT',
@@ -46,7 +52,7 @@ const paramsToUrl = (params, url) => {
 }
 
 
-export const articalListAction = (typeId = '', pageNum = 1, pageSize = 10) => {
+export const articalListAction = (typeId = '', status = 0, pageNum = 1, pageSize = 10) => {
     const params = {
         pageNum: pageNum,
         pageSize: pageSize,
@@ -66,7 +72,10 @@ export const articalListAction = (typeId = '', pageNum = 1, pageSize = 10) => {
                 data
             } = res;
             if (code == 0) {
-                const articalList = data;
+                const articalList = {
+                    data,
+                    status
+                };
                 return articalList || {};
             } else {
                 throw res;

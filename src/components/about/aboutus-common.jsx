@@ -7,13 +7,8 @@ import { aboutContentAction, articalListAction } from '../../actions/aboutConten
 
 import Pagination from '../../components/pagination/pagination';
 import Crumbs from '../../components/crumbs/crumbs';
-import Tab from '../../components/tab/tab';
 
-import TeamContent from '../../containers/about/team/team';
-import List from '../../containers/about/list/list';
-import ArticalContent from '../../containers/about/content/content';
-import Contact from '../../containers/about/contact/contact';
-
+import TransformPage from '../../containers/about/transform/transform';
 
 
 const ListItemLink = ({ to, ...rest }) => (
@@ -68,7 +63,7 @@ class About extends Component {
     handleSelectChildPage(e) {
         const { dispatch } = this.props;
         console.log(e.target.id);
-        dispatch(articalListAction(e.target.id));
+        dispatch(articalListAction(e.target.id, 1));
     }
 
     handleSelectParentPage(e) {
@@ -78,7 +73,7 @@ class About extends Component {
             return r.parentId == currentParentId
         });
         console.log(parent.children[0].childId);
-        dispatch(articalListAction(parent.children[0].childId));
+        dispatch(articalListAction(parent.children[0].childId, 1));
     }
 
     createRelation = (list) => {
@@ -131,12 +126,12 @@ class About extends Component {
                             && (location.pathname.toLowerCase().indexOf(`${match.url}/${relation[i].parentId}`.toLowerCase()) === 0)
                             ? "showChildren"
                             : (`${match.url}/${relation[i].parentId}`.toLowerCase().indexOf(defaultParent.toString().toLowerCase()) > 0)
-                            ? "showChildren"
-                            : ""
+                                ? "showChildren"
+                                : ""
                     }
                 >
                     <dt>
-                        <TitleParent title={item.affTypeName} to={`${match.url}/${relation[i].parentId}/${relation[i].children[0].childId}`} id={item.id} match={`${match.url}/${relation[i].parentId}`} onClick={this.handleSelectParentPage.bind(this)}/>
+                        <TitleParent title={item.affTypeName} to={`${match.url}/${relation[i].parentId}/${relation[i].children[0].childId}`} id={item.id} match={`${match.url}/${relation[i].parentId}`} onClick={this.handleSelectParentPage.bind(this)} />
                     </dt>
                     <dd>
                         <ul>
@@ -152,6 +147,7 @@ class About extends Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0, 0);
         const { dispatch, match, location } = this.props;
         dispatch(aboutContentAction());
     }
@@ -173,13 +169,13 @@ class About extends Component {
                 const parent = relations.find(parent => {
                     return parent.parentId == currentParentId;
                 });
-                if(parent) {
+                if (parent) {
                     const child = parent.children.find(child => {
                         return child.childId == currentChildId;
                     });
                     currentTabName = child && child.childName;
                 }
-                
+
             }
             else {
                 let firstChild = relations.find(parent => {
@@ -216,56 +212,48 @@ class About extends Component {
                                             path="/about/:parentId/:childId"
                                             render={
                                                 ({ match, location }) => {
-                                                    console.log(2222);
                                                     const list = aboutContent.pageInfo.list;
+                                                    return (
+                                                        <TransformPage tabName={currentTabName}
+                                                            content={aboutContent.pageInfo}
+                                                            match={match}
+                                                            childId={match.params.childId}
+                                                            dispatch={dispatch}
+                                                        />
+                                                    );
+
+                                                    //dispatch(articalListAction(match.params.childId))
                                                     if (list[0] && list.length > 1) {
-                                                        if(list[0].affIcon) {
+                                                        if (list[0].affIcon) {
                                                             return (
-                                                                <TeamContent tabName={currentTabName} 
-                                                                content={aboutContent.pageInfo} 
-                                                                match={match} 
-                                                                childId={match.params.childId} 
-                                                                dispatch={dispatch}
-                                                            />
+                                                                <TeamContent tabName={currentTabName}
+                                                                    content={aboutContent.pageInfo}
+                                                                    match={match}
+                                                                    childId={match.params.childId}
+                                                                    dispatch={dispatch}
+                                                                />
                                                             );
                                                         }
                                                         return (
-                                                            <List tabName={currentTabName} 
-                                                                content={aboutContent.pageInfo} 
-                                                                match={match} 
-                                                                childId={match.params.childId} 
+                                                            <List tabName={currentTabName}
+                                                                content={aboutContent.pageInfo}
+                                                                match={match}
+                                                                childId={match.params.childId}
                                                                 dispatch={dispatch}
                                                             />
-                                                            
                                                         );
                                                     }
                                                     else {
                                                         return (
                                                             <ArticalContent
-                                                                tabName={currentTabName} 
-                                                                content={aboutContent.pageInfo} 
-                                                                match={match} 
-                                                                childId={match.params.childId} 
-                                                                dispatch={dispatch} 
+                                                                tabName={currentTabName}
+                                                                content={aboutContent.pageInfo}
+                                                                match={match}
+                                                                childId={match.params.childId}
+                                                                dispatch={dispatch}
                                                             />
                                                         );
                                                     }
-                                                }
-                                            }
-                                        />
-                                        <Route exact
-                                            path="/about/:parentId/:childId/:contentId"
-                                            render={
-                                                ({match}) => {
-                                                    const list = aboutContent.pageInfo.list;
-                                                    console.log(match.params.childId);
-                                                    if(list[0] && list.length > 1 && list[0].affIcon) {
-                                                        console.log(1);
-                                                    }
-                                                    else {
-                                                        console.log(0);
-                                                    }
-                                                    return <div />
                                                 }
                                             }
                                         />
