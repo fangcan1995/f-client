@@ -83,3 +83,25 @@ export const articalListAction = (typeId = '', status = 0, pageNum = 1, pageSize
         }
     }
 }
+
+export const articalAction = (articalId, status = 2) => {
+    return {
+        type: 'GET_ARTICAL',
+        async payload() {
+            const res = await cFetch(`${urlArticalList}/${articalId}`, {
+                method: 'GET',
+            }, false);
+            const { code, data } = res;
+            if(code == 0) {
+                const artical = {
+                    data, 
+                    status
+                }
+                return artical || {};
+            }
+            else {
+                throw res;
+            }
+        }
+    }
+}

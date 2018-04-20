@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { aboutContentAction, articalListAction } from '../../../actions/aboutContent';
+import { aboutContentAction, articalListAction, articalAction } from '../../../actions/aboutContent';
 
 import List from '../list/list';
 import ArticalContent from '../content/content';
 import TeamContent from '../team/team';
-import constantTable from '../constant/constant';
+import ConstantTable from '../constant/constant';
 
 class TransformPage extends Component {
 
@@ -14,16 +14,33 @@ class TransformPage extends Component {
     }
 
     componentDidMount() {
-        const { childId, dispatch, aboutContent } = this.props;
-        dispatch(articalListAction(childId, 1));
+        const { childId, dispatch, aboutContent, match } = this.props;
+        const status = aboutContent.status;
+        console.log(status);
+        if(!match.params.articalId) {
+            dispatch(articalListAction(childId, 1));
+        }
+        else {
+            console.log('test');
+            dispatch(articalAction(match.params.articalId));
+        }
     }
 
     render() {
         const { childId, dispatch, aboutContent, content, tabName, match } = this.props;
-        console.log(111);
-        console.log(aboutContent);
-        const { pageInfo, status } = aboutContent;
-        if (aboutContent.status !== 0) {
+        const { pageInfo, status, artical } = aboutContent;
+        if(status === 2) {
+            return (
+                <ArticalContent
+                    tabName={tabName}
+                    content={artical}
+                    match={match}
+                    childId={childId}
+                    dispatch={dispatch}
+                />
+            );
+        }
+        else if (aboutContent.status === 1) {
             if (pageInfo.list.length > 1) {
                 if (pageInfo.list[0].affIcon) {
                     return (
@@ -49,6 +66,11 @@ class TransformPage extends Component {
 
             }
             else {
+                if(childId === '82') {
+                    return (
+                        <ConstantTable />
+                    )
+                }
                 return (
                     <ArticalContent
                         tabName={tabName}

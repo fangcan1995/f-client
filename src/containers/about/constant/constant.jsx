@@ -23,7 +23,7 @@ import {addCommas} from '../../../assets/js/cost';
 
 
 
-class constantTable extends Component {
+class ConstantTable extends Component {
     constructor (props) {
         super(props);
         this.state = {
@@ -56,12 +56,10 @@ class constantTable extends Component {
 
     componentDidMount () {
         this.props.dispatch(actionTest());
-        console.log(this.props);
     }
 
     render () {
         const { constantData } = this.props;
-        console.log(constantData);
         //柱状图数据
         /*let loanMoneyData = {
             xAxis_data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
@@ -406,15 +404,14 @@ class constantTable extends Component {
 
 
 function mapStateToProps (state) {
-    console.log(state.toJS());
     return {
         constantData: state.toJS().constantReducer
     }
 }
 
-constantTable = connect(mapStateToProps)(constantTable);
+ConstantTable = connect(mapStateToProps)(ConstantTable);
 
-export default constantTable;
+export default ConstantTable;
 
 
 

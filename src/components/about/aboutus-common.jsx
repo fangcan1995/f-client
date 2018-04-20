@@ -7,6 +7,7 @@ import { aboutContentAction, articalListAction } from '../../actions/aboutConten
 
 import Pagination from '../../components/pagination/pagination';
 import Crumbs from '../../components/crumbs/crumbs';
+import InfoCrumbs from '../../components/infoCrumbs/infoCrumbs';
 
 import TransformPage from '../../containers/about/transform/transform';
 
@@ -62,7 +63,6 @@ class About extends Component {
 
     handleSelectChildPage(e) {
         const { dispatch } = this.props;
-        console.log(e.target.id);
         dispatch(articalListAction(e.target.id, 1));
     }
 
@@ -72,7 +72,6 @@ class About extends Component {
         const parent = this.relations.find(r => {
             return r.parentId == currentParentId
         });
-        console.log(parent.children[0].childId);
         dispatch(articalListAction(parent.children[0].childId, 1));
     }
 
@@ -204,15 +203,14 @@ class About extends Component {
                     </div>
                     <div className="about__main">
                         <div>
-                            <Crumbs address="123" />
+                            <InfoCrumbs dispatch={dispatch} />
                             <div className="about__box">
                                 <div className="tablist">
                                     <Switch>
                                         <Route exact
-                                            path="/about/:parentId/:childId"
+                                            path="/about/:parentId/:childId/:articalId"
                                             render={
-                                                ({ match, location }) => {
-                                                    const list = aboutContent.pageInfo.list;
+                                                ({ match }) => {
                                                     return (
                                                         <TransformPage tabName={currentTabName}
                                                             content={aboutContent.pageInfo}
@@ -221,39 +219,21 @@ class About extends Component {
                                                             dispatch={dispatch}
                                                         />
                                                     );
-
-                                                    //dispatch(articalListAction(match.params.childId))
-                                                    if (list[0] && list.length > 1) {
-                                                        if (list[0].affIcon) {
-                                                            return (
-                                                                <TeamContent tabName={currentTabName}
-                                                                    content={aboutContent.pageInfo}
-                                                                    match={match}
-                                                                    childId={match.params.childId}
-                                                                    dispatch={dispatch}
-                                                                />
-                                                            );
-                                                        }
-                                                        return (
-                                                            <List tabName={currentTabName}
-                                                                content={aboutContent.pageInfo}
-                                                                match={match}
-                                                                childId={match.params.childId}
-                                                                dispatch={dispatch}
-                                                            />
-                                                        );
-                                                    }
-                                                    else {
-                                                        return (
-                                                            <ArticalContent
-                                                                tabName={currentTabName}
-                                                                content={aboutContent.pageInfo}
-                                                                match={match}
-                                                                childId={match.params.childId}
-                                                                dispatch={dispatch}
-                                                            />
-                                                        );
-                                                    }
+                                                }
+                                            }
+                                        />
+                                        <Route exact
+                                            path="/about/:parentId/:childId"
+                                            render={
+                                                ({ match, location }) => {
+                                                    return (
+                                                        <TransformPage tabName={currentTabName}
+                                                            content={aboutContent.pageInfo}
+                                                            match={match}
+                                                            childId={match.params.childId}
+                                                            dispatch={dispatch}
+                                                        />
+                                                    );
                                                 }
                                             }
                                         />

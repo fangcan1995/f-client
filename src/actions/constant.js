@@ -49,8 +49,9 @@ export const actionUpdateLoanMoney = (year) => {
             const loanMoney = await cFetch(loanMoneyUrl, {
                 method: 'GET'
             },false).then(res => {
-                return res.json();
+                return res;
             });
+            console.log(loanMoney);
             return loanMoney;
         }
     }
@@ -64,7 +65,7 @@ export const actionUpdateLoanCount = (year) => {
             const loanCount = await cFetch(loanCountUrl, {
                 method: 'GET'
             },false).then(res => {
-                return res.json();
+                return res;
             });
             console.log(loanCount);
             return loanCount;
@@ -80,7 +81,7 @@ export const actionUpdateLoanMemberCount = (year) => {
             const loanMemberCount = await cFetch(loanMemberCountUrl, {
                 method: 'GET'
             }).then(res => {
-                return res.json();
+                return res;
             });
             console.log(loanMemberCount);
             return loanMemberCount;
@@ -97,7 +98,7 @@ export const actionUpdateInvestInfo = (year) => {
             const InvestInfo = await cFetch(investInfoUrl, {
                 method: 'GET'
             }).then(res => {
-                return res.json();
+                return res;
             });
             console.log(InvestInfo);
             return InvestInfo;
