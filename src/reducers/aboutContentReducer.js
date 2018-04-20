@@ -25,6 +25,7 @@ const initialState = Immutable.fromJS({
         firstPage: 1,
         lastPage: 1
     },
+    artical: {},
     status: 0
 });
 
@@ -35,10 +36,15 @@ export default createReducer(initialState, {
         });
     },
     ['GET_ARTICALLIST_FULFILLED']: (state, action) => {
-        console.log(action.payload);
         return state.merge({
             pageInfo: action.payload.data,
             status: action.payload.status
         });
+    },
+    ['GET_ARTICAL_FULFILLED']: (state, action) => {
+        return state.merge({
+            artical: action.payload.data,
+            status: action.payload.status
+        })
     }
-})
+});
