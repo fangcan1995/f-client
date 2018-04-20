@@ -101,7 +101,7 @@ class MyRiskAssess extends React.Component {
                                             </li>
                                             <li><strong>获得称号：</strong>
                                                 <p>
-                                                    <em>稳健型投资者{result.name}</em>
+                                                    <em>{result.name}</em>
                                                     {result.remarks}
                                                 </p>
                                             </li>
