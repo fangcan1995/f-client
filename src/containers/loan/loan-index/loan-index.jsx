@@ -12,12 +12,13 @@ import { getApplyData,checkForm ,formData,postLoanData, hideModal1 } from '../..
 import {checkMoney} from '../../../assets/js/cost';
 import parseJson2URL from '../../../utils/parseJson2URL';
 import  memberActions  from '../../../actions/member';
-
+import ModalAuth from '../../../components/modal/modal-auth/modal-auth'
 class Loan extends Component {
   state = {
     ModalText: 'Content of the modal dialog',
     visible: false,
     visible2: false,
+    modalAuth:false,
     footer:null,
   }
   showModal = () => {
@@ -126,9 +127,24 @@ class Loan extends Component {
   componentWillUnmount(){
     // clearTimeout(this.ctiemout)
   }
+  //模态框开启关闭
+  toggleModal=(modal,visile)=>{
+    if(visile){
+        this.setState({
+            [modal]: true,
+        });
+    }else{
+        this.setState({
+            [modal]: false,
+            key:Math.random()
+        });
+    }
+};
   handelConfigClick =()=>{
     const { dispatch } = this.props;
-    this.props.dispatch(memberActions.postOpenAccount(postData));
+    this.setState({
+      modalAuth:true
+    })
   }
   render(){
     const { auth ,loginModal,loans} = this.props;
@@ -332,6 +348,29 @@ class Loan extends Component {
             }
               
             </Modal>
+            <Modal
+                    title="开户"
+                    wrapClassName="vertical-center-modal"
+                    visible={this.state.modalAuth}
+                    width="520px"
+                    footer={null}
+                    destroyOnClose={true}
+                    onCancel={() => {
+                        this.toggleModal(`modalAuth`,false);
+
+                    }}
+                >
+
+                    <ModalAuth key={this.state.key} info={
+                        {
+                            callback:(obj)=>{
+                                this.toggleModal(`modalAuth`,false);
+                            }
+                        }
+                    }
+                    />
+                    }
+                </Modal>
             <Floor
               otherClassName="faq"
               tit="常见问题"
