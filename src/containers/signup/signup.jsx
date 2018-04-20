@@ -63,6 +63,7 @@ class Signup extends Component {
       const queryParams = `?${parseJson2URL({...creds, send_terminal: send_terminal, register_token: signup.verifyCode.token })}`;
       dispatch(signupUser(queryParams))
       .then(res => {
+        console.log(res)
         const { value: imageCodeValueObj = {} } = res;
         const image_code = Object.keys(imageCodeValueObj).map(key=> imageCodeValueObj[key]).join('');
         const { username, password } = creds;

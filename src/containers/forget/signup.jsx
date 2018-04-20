@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import { Form, Input, Button, Checkbox, Row, Col, message } from 'antd';
-import { signupUser, sendVerifyCode, getImageCode, checkUserExist, sendForgetVerifyCode } from '../../actions/signup';
+import { signupUser, sendVerifyCode, getImageCode, checkUserExist, sendForgetVerifyCode,setVerifyCodeCd, forgetSignupUser } from '../../actions/signup';
 import { setSignup } from '../../actions/login';
 import { loginUser } from '../../actions/auth';
 import { hex_md5 } from '../../utils/md5';
@@ -64,20 +64,24 @@ class Forget extends Component {
       const { send_terminal } = params
 
       creds.password = hex_md5(creds.password);
-      const queryParams = `?${parseJson2URL({...creds, send_terminal: send_terminal, register_token: signup.verifyCode.token })}`;
-      dispatch(signupUser(queryParams))
+      const queryParams = `?${parseJson2URL({...creds, send_terminal: send_terminal, forget_password_token: signup.verifyCode.token })}`;
+      dispatch(forgetSignupUser(queryParams))
       .then(res => {
-        const { value: imageCodeValueObj = {} } = res;
-        const image_code = Object.keys(imageCodeValueObj).map(key=> imageCodeValueObj[key]).join('');
-        const { username, password } = creds;
-        const queryParams = `?${parseJson2URL({username, password, image_code, ...params })}`;
-        return dispatch(loginUser(queryParams))
-      })
-      .then(res => {
-        const { history, location } = this.props;
-        const { redirect } = parseQueryString(location.search);
-        history.push(redirect ? decodeURIComponent(redirect) : '/')
-        dispatch(getImageCode());
+        console.log(res)
+      //   const { value: imageCodeValueObj = {} } = res;
+      //   const image_code = Object.keys(imageCodeValueObj).map(key=> imageCodeValueObj[key]).join('');
+      //   const { username, password } = creds;
+      //   const queryParams = `?${parseJson2URL({username, password, image_code, ...params })}`;
+      //   return dispatch(loginUser(queryParams))
+      // })
+      // .then(res => {
+      //   const { history, location } = this.props;
+      //   const { redirect } = parseQueryString(location.search);
+      //   history.push(redirect ? decodeURIComponent(redirect) : '/')
+      //   dispatch(getImageCode());
+      
+        this.props.history.push('/login')
+        message.success('修改密码成功') 
       })
       .catch(err => {
         console.log(err)
@@ -154,10 +158,10 @@ class Forget extends Component {
     const message = reason.message;
     const { setFields, getFieldValue } = this.props.form;
     const newValue = {
-      register_code: {
-        name: 'register_code',
+      forget_password_code: {
+        name: 'forget_password_code',
         validating: false,
-        value: getFieldValue('register_code'),
+        value: getFieldValue('forget_password_code'),
         errors: [message]
       }
     };
@@ -244,7 +248,7 @@ class Forget extends Component {
         trigger: ['onBlur', 'onChange']
       }]
     });
-    const registerCodeProps = getFieldDecorator('register_code', {
+    const registerCodeProps = getFieldDecorator('forget_password_code', {
       validate: [{
         rules: [
           { required: true, min: 6, message: '验证码至少为6个字符' }
@@ -257,10 +261,10 @@ class Forget extends Component {
     const inviteCodeProps = getFieldDecorator('invite_code', {
     });
 
-    const agreementProps = getFieldDecorator('is_read', {
-      valuePropName: 'checked',
-      initialValue: false,
-    })
+    // const agreementProps = getFieldDecorator('is_read', {
+    //   valuePropName: 'checked',
+    //   initialValue: false,
+    // })
 
 
     const formItemLayout = {
