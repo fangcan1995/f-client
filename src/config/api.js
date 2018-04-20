@@ -7,7 +7,9 @@ let host;
 }*/
 
 //host = 'http://172.16.7.4:8020';
-host = 'http://172.16.1.234:8020';
+import {urls,urls_auth,token} from './../utils/url';
+host = urls_auth
+
 
 
 const baseUri = host + '/';
