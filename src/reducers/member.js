@@ -3,6 +3,7 @@ import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
     isFetching:false,
+    isPosting:false,
     accountsInfo:{
         basicInfo:``,
         amount:'',
@@ -16,22 +17,14 @@ const initialState = Immutable.fromJS({
             bankName:'',
             bankNo:'',
         },
-        result:``,
+        dummyResult:``,
         postResult:``,
-
     },
 
     charts:{
         chartsMonth:'',
         chartsDay:'',
     },
-
-
-
-
-
-
-
 
 });
 
@@ -47,6 +40,23 @@ export default createReducer(initialState, {
         isFetching: false,
         errorMessage: action.message
     }),
+    //开户，充值，提现临时用
+    ['member/FETCH_POSTING_PENDING']:(state,action) => state.mergeDeep({
+        isFetching: true,
+        isPosting: true,
+    }),
+    ['member/FETCH_POSTING_FULFILLED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        isPosting: false,
+        accountsInfo:action.payload
+    }),
+    ['member/FETCH_POSTING_REJECTED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        isPosting: false,
+        errorMessage: action.message
+    }),
+
+
     ['member/FETCH_CHARTS_PENDING']:(state,action) => state.mergeDeep({
         isFetching: true,
     }),
@@ -61,6 +71,7 @@ export default createReducer(initialState, {
     ['member/MODIFY_STATE']:(state,action) => state.mergeDeep({
         accountsInfo:action.payload
     }),
+
 })
 
 

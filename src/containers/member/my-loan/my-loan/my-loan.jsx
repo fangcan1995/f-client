@@ -38,8 +38,6 @@ class MyLoans extends React.Component {
         }
     }
     render(){
-        console.log('-------myLoans--------');
-        console.log(this.props);
         let {dispatch}=this.props;
         let {myLoans,isFetching}=this.props.memberLoans;
         let {myList,charts,status,modalRepaymentApp,currentId}=myLoans;

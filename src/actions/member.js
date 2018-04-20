@@ -18,13 +18,14 @@ const url_withdrawals=`${urls}/accounts/operation?escrowCode=100100&type=3`; //�
 export const memberAc= {
 
     getInfo: (params) => {
+        //console.log('token');
+        //console.log(cookie.getJSON('token').access_token);
         return {
             type: 'member/FETCH',
             async payload() {
                 const res = await cFetch(`${url_memberInfo}`,{method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
-
                     return {
                         basicInfo:{
                             trueName:data.baseInfo.trueName,
@@ -35,7 +36,7 @@ export const memberAc= {
                         couponInfo:data.memberCoupon,
                         openAccountStatus:data.openAccountStatus,
                         noviceStatus:data.noviceStatus,
-                        acBack:data.acBank,
+                        acBank:data.acBank,
                         riskStatus:data.riskStatus,
                         riskLevel:data.riskLevel,
                         userName:data.member.userName,
@@ -107,7 +108,7 @@ export const memberAc= {
     //开户
     postOpenAccount: (pram) => {
         return {
-            type: 'member/FETCH',
+            type: 'member/FETCH_POSTING',
             async payload() {
                 pram=parseJson2URL(pram);
                 const res = await cFetch(`${url_openAccount}?custId=123&escrowCode=100100&accountBalance=0&freezingAmount=0&availableBalance=0&${pram}`, {
@@ -118,20 +119,31 @@ export const memberAc= {
                         body: ``,
                     },
                     true);
-                if (res.code == 0) {
-                    message.success(res.message);
-                    return {result: res};
+
+                /*if (res.code == 0) {
+                    return {dummyResult: res};
                 } else {
-                    message.error(res.message);
                     throw res;
-                }
+                }*/
+                let type=``;
+                (res.code == 0)?type='success':type='error';
+                console.log('提交开户返回的结果');
+                console.log(res);
+                return {
+                    dummyResult: {
+                        code:res.code,
+                        type:type,
+                        message:res.message,
+                        description:res.data||``,
+                    }
+                };
             }
         }
     },
     //充值
     recharge: (pram) => {
         return {
-            type: 'member/FETCH',
+            type: 'member/FETCH_POSTING',
             async payload() {
                 const res = await cFetch(`${url_recharge}&amount=`+pram, {
                         method: 'PUT',
@@ -141,12 +153,24 @@ export const memberAc= {
                         body: ``,
                     },
                     true);
-                if (res.code == 0) {
+               /* if (res.code == 0) {
                     message.success('充值成功');
-                    return {result: res};
+                    return {postResult: res};
                 } else {
                     throw res;
-                }
+                }*/
+                console.log('充值提交后返回');
+                console.log(res);
+                let type=``;
+                (res.code == 0)?type='success':type='error';
+                return {
+                    dummyResult: {
+                        code:res.code,
+                        type:type,
+                        message:res.message,
+                        description:res.data,
+                    }
+                };
             }
         }
     },
@@ -164,37 +188,25 @@ export const memberAc= {
                         body: ``,
                     },
                     true);
-                if (res.code == 0) {
-                    message.success('提现成功');
-                    return {result: res};
+                /*if (res.code == 0) {
+                    //message.success('提现成功');
+                    return {postResult: res};
                 } else {
                     throw res;
-                }
+                }*/
+                return {dummyResult: res};
             }
         }
     },
-    /*//提交充值或提现申请  type 1 充值 3提现
-    postOperation: (pram) => {
+
+    modifyState: (prams) => {
         return {
-            type: 'member/FETCH',
-            async payload() {
-                const res = await cFetch(`${url_operation}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: `[${pram}]`,
-                    },
-                    false);
-                if (res.code == 0) {
-                    return {readResult: res};
-                } else {
-                    throw res;
-                }
+            type: 'member/MODIFY_STATE',
+            payload() {
+                return prams
             }
         }
-    },*/
-
+    },
     modifyState: (prams) => {
         return {
             type: 'member/MODIFY_STATE',

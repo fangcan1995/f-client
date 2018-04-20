@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-
 import { connect } from 'react-redux';
 import {myAuthInfoAc} from '../../../../actions/member-settings';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
-import memberActions, {memberAc} from '../../../../actions/member';
 import { Modal } from 'antd';
 import ModalResetPassword from './modalResetPassword';
 import ModalAuth from '../../../../components/modal/modal-auth/modal-auth';

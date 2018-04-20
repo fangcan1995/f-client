@@ -4,10 +4,12 @@ import { Button,Alert } from 'antd';
 export  class BbhAlert extends React.Component{
     render(){
         let {info}=this.props;
+        console.log('话术是');
+        console.log(info);
         return(
             <div className="form__wrapper">
                 <Alert
-                    message={info.messsage}
+                    message={info.message}
                     description={info.description}
                     type={info.type}
                     showIcon
@@ -30,6 +32,19 @@ export  class Loading extends React.Component{
                     :``
                 }
             </div>
+        )
+    }
+}
+export  class Posting extends React.Component{
+    render(){
+        let {isShow}=this.props;
+        return(
+            <p className="tips_posting">
+                {(isShow===true)?
+                    `提交中，请稍候...`
+                    :``
+                }
+            </p>
         )
     }
 }

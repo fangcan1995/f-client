@@ -23,6 +23,8 @@ class MemberSidebar extends React.Component {
     render(){
         let {member,auth}=this.props;
         let {accountsInfo}=member;
+        console.log('返回的会员信息');
+        console.log(member);
         return (
             <main className="main member">
                 <div className="wrapper">
@@ -34,7 +36,7 @@ class MemberSidebar extends React.Component {
                                 <div className="step">
                                     <i className="iconfont icon-phone able1" onClick={()=>{this.props.history.push('/my-account/recharge')}}></i>
                                     <i className={`iconfont icon-card able${accountsInfo.openAccountStatus}`} onClick={()=>{this.props.history.push('/my-account/bank-card')}}></i>
-                                    <i className={`iconfont icon-fxcp able${accountsInfo.riskStatus || 0}`} onClick={()=>{this.props.history.push('/my-settings/my-riskAssess')}}></i>
+                                    <i className={`iconfont icon-fxcp able${(!accountsInfo.riskStatus) || 0}`} onClick={()=>{this.props.history.push('/my-settings/my-riskAssess')}}></i>
                                 </div>
                             </div>
                             <div className="action">

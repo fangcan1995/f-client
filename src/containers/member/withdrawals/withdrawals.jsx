@@ -4,7 +4,7 @@ import Crumbs from '../../../components/crumbs/crumbs';
 import Tab from '../../../components/tab/tab';
 import './withdrawals.less';
 import CountDownButton from '../../../components/countDownButton/countDownButton';
-
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {memberAc} from '../../../actions/member';
 import {toMoney} from  '../../../assets/js/famatData';
@@ -25,11 +25,12 @@ class Withdrawals extends React.Component{
     componentDidMount() {
         //this.props.dispatch(memberAc.getInfo());
     }
-    bindCard(){
-        alert('去开户');
-    }
+
     withdrawals(value){
         value=this.refs.amount.value;
+        this.setState({
+            disabled:true
+        }); //还原按钮不可点击
         this.props.dispatch(memberAc.withdrawals(value));
     }
     handleChange(event){
@@ -66,11 +67,11 @@ class Withdrawals extends React.Component{
         }
     }
     render(){
-        console.log(this.props);
-        let {openAccountStatus,amount,result}=this.props.member.accountsInfo;
+        let {isPosting}=this.props.member;
+        let {openAccountStatus,amount,dummyResult}=this.props.member.accountsInfo;
 
-        if(result.code==='0'){
-            this.props.dispatch(memberAc.modifyState({result:''}));
+        if(dummyResult.code==='0'){
+            this.props.dispatch(memberAc.modifyState({dummyResult:''}));
             this.refs.amount.value='';
             this.props.dispatch(memberAc.getInfo());
         }
@@ -84,7 +85,7 @@ class Withdrawals extends React.Component{
                                 {
                                     (openAccountStatus===0)?
                                         <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先
-                                            <a href="javascript:void(0);" style={{color:'#31aaf5'}} onClick={()=>{this.bindCard()}}> 绑定银行卡！</a>
+                                            <Link to="/my-account/bank-card" style={{color: '#31aaf5'}}> 绑定银行卡！</Link>
                                         </p>
                                         :
                                         <div className="form__wrapper">
@@ -95,7 +96,7 @@ class Withdrawals extends React.Component{
                                             <dl className="form__bar">
                                                 <dt><label>提现金额</label></dt>
                                                 <dd>
-                                                    <input name="transAmt" id="transAmt"   maxLength={20} type="text" className="textInput moneyInput" ref="amount"
+                                                    <input name="transAmt" id="transAmt" maxLength={20} type="text" className="textInput moneyInput" ref="amount"
                                                            onChange={this.handleChange}
                                                     />
                                                     <i className="unit">元</i>
@@ -139,11 +140,16 @@ class Withdrawals extends React.Component{
 
                                     </dl>*/}
                                             <div className="form__bar">
-                                                {/*<button className="button able" style={{ width: '200px',marginTop:'20px'}} onClick={this.withdrawals}>确定</button>*/}
-                                                <Button type="primary" htmlType="submit" className="pop__large" onClick={this.withdrawals}
-                                                 disabled={this.state.disabled}>
-                                                    确认
-                                                </Button>
+                                                {isPosting ?
+                                                    <Button type="primary" htmlType="submit" className='pop__large' disabled={true}>
+                                                        <Posting isShow={isPosting}/>
+                                                    </Button>
+                                                    :
+                                                    <Button type="primary" htmlType="submit" className="pop__large" disabled={this.state.disabled}
+                                                            onClick={this.withdrawals}>
+                                                        确认
+                                                    </Button>
+                                                }
                                             </div>
                                         </div>
                                 }
