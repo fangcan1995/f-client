@@ -107,6 +107,7 @@ export const memberAc= {
     },
     //开户
     postOpenAccount: (pram) => {
+        console.log('开户');
         return {
             type: 'member/FETCH_POSTING',
             async payload() {
@@ -119,7 +120,6 @@ export const memberAc= {
                         body: ``,
                     },
                     true);
-
                 /*if (res.code == 0) {
                     return {dummyResult: res};
                 } else {
