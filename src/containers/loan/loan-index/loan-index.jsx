@@ -29,6 +29,7 @@ class Loan extends Component {
   showModal1  (loanType) {
     this.setState({
       visible: true,
+      modalAuth:true,
     })
     const { dispatch } = this.props;
     console.log(loanType)
@@ -317,18 +318,41 @@ class Loan extends Component {
               
             </Modal>
             :
-            <Modal title="提示信息"
-            visible={this.state.visible}
-            onOk={this.handleOk}
-            confirmLoading={this.state.confirmLoading}
-            onCancel={this.handleCancel1}
-            footer={this.state.footer}
-            className='config'
-          >
-           
-            <div className='content'>请先完成实名认证</div>
-            <Button className='config-btn' onClick={this.handelConfigClick}>立即认证</Button>
-          </Modal>
+            // <Modal title="提示信息"
+            //   visible={this.state.visible}
+            //   onOk={this.handleOk}
+            //   confirmLoading={this.state.confirmLoading}
+            //   onCancel={this.handleCancel1}
+            //   footer={this.state.footer}
+            //   className='config'
+            // >
+            
+            //   <div className='content'>请先完成实名认证</div>
+            //   <Button className='config-btn' onClick={this.handelConfigClick}>立即认证</Button>
+            // </Modal>
+            <Modal
+            title="开户"
+            wrapClassName="vertical-center-modal"
+            visible={this.state.modalAuth}
+            width="520px"
+            footer={null}
+            destroyOnClose={true}
+            onCancel={() => {
+                this.toggleModal(`modalAuth`,false);
+
+            }}
+        >
+
+            <ModalAuth key={this.state.key} info={
+                {
+                    callback:(obj)=>{
+                        this.toggleModal(`modalAuth`,false);
+                    }
+                }
+            }
+            />
+            }
+        </Modal>
             }
             
             <Modal title="提示信息" visible={loans.postinged}
@@ -348,29 +372,7 @@ class Loan extends Component {
             }
               
             </Modal>
-            <Modal
-                    title="开户"
-                    wrapClassName="vertical-center-modal"
-                    visible={this.state.modalAuth}
-                    width="520px"
-                    footer={null}
-                    destroyOnClose={true}
-                    onCancel={() => {
-                        this.toggleModal(`modalAuth`,false);
-
-                    }}
-                >
-
-                    <ModalAuth key={this.state.key} info={
-                        {
-                            callback:(obj)=>{
-                                this.toggleModal(`modalAuth`,false);
-                            }
-                        }
-                    }
-                    />
-                    }
-                </Modal>
+            
             <Floor
               otherClassName="faq"
               tit="常见问题"
