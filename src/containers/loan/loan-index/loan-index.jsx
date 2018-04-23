@@ -47,6 +47,9 @@ class Loan extends Component {
     // }, 2000);
   }
   
+  componentDidMount(){
+    
+  }
   handleCancel = () => {
     console.log('Clicked cancel button');
     const { dispatch } = this.props;
