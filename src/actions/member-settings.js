@@ -210,13 +210,11 @@ export const myAuthInfoAc={
         }
     },
     postPassword: (pram,dispatch) => {
-
         console.log('提交给后台的参数是：');
-
         pram=parseJson2URL(pram);
         console.log(pram);
         return {
-            type: 'mySettings/authInfo/FETCH',
+            type: 'mySettings/password/FETCH',
             async payload() {
                 const res = await cFetch(`${url_password}?${pram}`, {
                         method: 'POST',
@@ -226,13 +224,25 @@ export const myAuthInfoAc={
                         body: ``,
                     },
                     true);
-                if (res.code == 0) {
+                /*if (res.code == 0) {
                     message.success(res.message);
                     return {postResult: res};
                 } else {
                     message.error(res.message);
                     throw res;
-                }
+                }*/
+                let type=``;
+                (res.code == 0)?type='success':type='error';
+                console.log('修改密码返回的结果');
+                console.log(res);
+                return {
+                    postResult: {
+                        code:res.code,
+                        type:type,
+                        message:res.message||``,
+                        description:res.data||``,
+                    }
+                };
             }
         }
     },

@@ -25,7 +25,10 @@ export const memberAc= {
             async payload() {
                 const res = await cFetch(`${url_memberInfo}`,{method: 'GET'}, true);
                 const {code, data} = res;
+
                 if (code == 0) {
+                    console.log('后台返回的数据');
+                    console.log(res);
                     return {
                         basicInfo:{
                             trueName:data.baseInfo.trueName,
