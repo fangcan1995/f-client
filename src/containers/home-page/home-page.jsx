@@ -278,8 +278,7 @@ class HomePage extends Component {
             homePage.standard.map((item)=>{
               if(item.type=='project'){
               return (      
-                <li className="standard__card" key={item.id}>
-                  <a onClick={this.handleStandardClick.bind(this,item.id)}> 
+                <li className="standard__card" key={item.id} onClick={this.handleStandardClick.bind(this,item.id)}>
                     <div className="card__scroll">
                       <div className="card__header">
                         <h4 className="tit">{item.name}</h4>
@@ -306,13 +305,11 @@ class HomePage extends Component {
                     <div className="card__footer">
                       <a onClick={this.handleStandardClick.bind(this,item.standardId)} className="join">立即加入</a>
                     </div>
-                    </a>
                 </li>
                
               )}else if(item.type=="transfer"){
                 return (
-                    <li className="standard__card" key={item.investId}>
-                      <a onClick={this.handleStandardClick.bind(this,item.standardId)}> 
+                    <li className="standard__card" key={item.id} onClick={this.handleStandardClick.bind(this,item.standardId)}>
                         <div className="card__scroll">
                           <div className="card__header">
                             <h4 className="tit">{item.name}</h4>
@@ -339,7 +336,6 @@ class HomePage extends Component {
                         <div className="card__footer">
                           <a onClick={this.handleStandardClick.bind(this,item.standardId)} className="join">立即加入</a>
                         </div>
-                      </a>
                     </li>
                 )
               }
@@ -404,7 +400,7 @@ class HomePage extends Component {
                   {
                     homePage.med.mediaReportInfosDtoList.map((item)=>{
                       return (
-                        <a><li key={item.affInfoId} onClick={this.handleNewsClick.bind(this,item.affInfoId)}>{item.affInfoName}</li></a>
+                        <a key={item.affInfoId} ><li onClick={this.handleNewsClick.bind(this,item.affInfoId)}>{item.affInfoName}</li></a>
                       )
                     })
                   }
