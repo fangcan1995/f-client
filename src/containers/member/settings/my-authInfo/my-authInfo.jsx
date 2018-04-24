@@ -9,6 +9,7 @@ import ModalResetPassword from './modalResetPassword';
 import ModalAuth from '../../../../components/modal/modal-auth/modal-auth';
 
 import './authInfo.less';
+import {memberAc} from "../../../../actions/member";
 class MyAuthInfo extends React.Component {
     constructor(props) {
         super(props);
@@ -96,7 +97,7 @@ class MyAuthInfo extends React.Component {
                                             <th><i className="iconfont icon-id"></i>实名认证</th>
                                             <td className="Result"><span className="importantTxt">未认证</span></td>
                                             <td className="detail"></td>
-                                            <td className="operate"><a href="javascript:void(0);" onClick={this.bindCard}>认证</a></td>
+                                            <td className="operate"><a href="javascript:void(0);" onClick={() => this.toggleModal(`modalAuth`,true)}>认证</a></td>
                                         </tr>
                                         :``
                                 }
@@ -171,6 +172,7 @@ class MyAuthInfo extends React.Component {
                     footer={null}
                     destroyOnClose={true}
                     onCancel={() => {
+                        this.props.dispatch(memberAc.getInfo());
                         this.toggleModal(`modalAuth`,false);
 
                     }}
@@ -179,6 +181,7 @@ class MyAuthInfo extends React.Component {
                         <ModalAuth key={this.state.key} info={
                             {
                                 callback:(obj)=>{
+                                    this.props.dispatch(memberAc.getInfo());
                                     this.toggleModal(`modalAuth`,false);
                                 }
                             }

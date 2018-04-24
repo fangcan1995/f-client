@@ -83,6 +83,20 @@ export default createReducer(initialState, {
         isFetching: false,
         errorMessage: action.message
     }),
+    ['mySettings/password/FETCH_PENDING']:(state,action) => state.mergeDeep({
+        isFetching: true,
+        isPosting: true,
+    }),
+    ['mySettings/password/FETCH_FULFILLED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        isPosting: false,
+        authInfo:action.payload
+    }),
+    ['mySettings/password/FETCH_REJECTED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        isPosting: false,
+        errorMessage: action.message
+    }),
     ['mySettings/authInfo/MODIFY_STATE']:(state,action) => state.mergeDeep({
         authInfo:action.payload
     }),
