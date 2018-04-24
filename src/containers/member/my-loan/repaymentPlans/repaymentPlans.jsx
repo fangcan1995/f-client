@@ -118,7 +118,7 @@ class RepaymentPlans extends React.Component{
 
                                 </div>
                                 <div name="已还金额">
-                                        (<PieChart
+                                        <PieChart
                                             data={charts.doneDto.data}
                                             style={{height: '300px', width: '930px'}}
                                             totalTitle="累计利息"
