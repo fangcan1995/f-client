@@ -18,15 +18,20 @@ class SubjectPc extends React.Component{
     render(){
         let {special}=this.props;
         let {info,isFetching}=special;
-        console.log(special);
+        //console.log(this.props);
         return (
             <main className="special_pc">
                 {
                 (info === '') ? <Loading isShow={isFetching}/>
                     :
-                    (info.code==='0')?
-                    <div className="contentBlock" dangerouslySetInnerHTML={{ __html: special.info.data.content }}></div>
-                        :<Page404 isShow={true} />
+                    <div>
+                        {
+                            (info.code==='0')?
+                                <div className="contentBlock" dangerouslySetInnerHTML={{ __html: special.info.data.content }}></div>
+                                :<Page404 isShow={true} />
+                        }
+                    </div>
+
                 }
 
             </main>
