@@ -70,7 +70,7 @@ export  class Page404 extends React.Component{
         let {isShow}=this.props;
         return(
             <div className="tips_404">
-                        <img src={require('../../assets/images/public/404.jpg')} />
+                        <img src={require('../../assets/images/public/404.png')} />
                             <h2>很抱歉，您访问的页面不在地球上...</h2>
                           {/*  <p><img  src={require('../../assets/images/public/loading.gif')} />正在自动跳转到上一页，如没有跳转请点击此链接</p>*/}
                             <p>
