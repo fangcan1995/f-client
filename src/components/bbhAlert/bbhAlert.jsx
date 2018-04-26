@@ -65,3 +65,20 @@ export  class NoRecord extends React.Component{
         )
     }
 }
+export  class Page404 extends React.Component{
+    render(){
+        let {isShow}=this.props;
+        return(
+            <div className="tips_404">
+                        <img src={require('../../assets/images/public/404.jpg')} />
+                            <h2>很抱歉，您访问的页面不在地球上...</h2>
+                          {/*  <p><img  src={require('../../assets/images/public/loading.gif')} />正在自动跳转到上一页，如没有跳转请点击此链接</p>*/}
+                            <p>
+                                <a href="/">返回首页</a>
+                                <a href="javascript:window.history.go(-1)">返回上一页</a>
+                            </p>
+            </div>
+
+        )
+    }
+}

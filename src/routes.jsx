@@ -9,7 +9,8 @@ import HomePage from './containers/home-page/home-page';
 import Login from './containers/login/login';
 import Signup from './containers/signup/signup';
 import Forget from './containers/forget/signup';
-import MobileApp from './containers/about/mobile-app/mobileApp'
+import MobileApp from './containers/about/mobile-app/mobileApp';
+import SubjectPc from './containers/special/subject_pc';
 import InvestList from './containers/invest/invest-list/subject-list/subject-list';
 import TransferList from './containers/invest/invest-list/transfer-list/transfers-list';
 
@@ -73,6 +74,7 @@ export default (
             <Route path="/transfer-detail" component={TransferDetail} />
             <Route path="/loan-index" component={LoanIndex} />
             <Route path="/mobile-app" component={MobileApp} />
+            <Route path="/subject_pc" component={SubjectPc} />
             <Route strict path="/my-account" render={(props) => {
                 const { match } = props;
                 return (
