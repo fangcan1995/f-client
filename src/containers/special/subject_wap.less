@@ -1,0 +1,59 @@
+
+
+
+/*当页面大于 1200px 时，大屏幕，主要是 PC 端*/
+@media (min-width: 1200px) {
+  .special_wap{
+    width:1180px;
+    margin: 0 auto;
+    background: #fff;
+    .article{
+      width: 100%;
+      box-sizing: border-box;
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 30px 20px;
+      font-size: 16px;
+      .title{
+        font-size:24px;
+        text-align:center;
+        margin-bottom: 16px;
+      }
+      p{
+        margin-bottom: 20px
+      }
+    }
+  }
+}
+//移动端
+@media  (max-width: 1000px) {
+  html{width: 100%;min-width: 320px; max-width: 1000px;font-size: 62.5%;}
+  body{ width: 100%;min-width: 320px; max-width: 1000px;font-size: 12px;}
+  .root{width: 100%;min-width: 320px; max-width: 1000px; }
+  .app{width: 100%;;min-width: 320px; max-width: 1000px;}
+  .header{ display: none;}
+  footer{ display: none;}
+  .special_wap{
+    width: 100%;
+    background: #fff;
+    margin: 0 auto;
+    .article{
+      width: 100%;
+      box-sizing: border-box;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      font-size: 16px;
+      .title{
+        font-size:24px;
+        text-align:center;
+        margin-bottom: 16px;
+      }
+      p{
+        margin-bottom: 20px
+      }
+
+    }
+  }
+
+}

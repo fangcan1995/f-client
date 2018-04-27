@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './subject.less';
+import './subject_pc.less';
 import { connect } from 'react-redux';
 import specialAc from "../../actions/special";
 import {Loading,NoRecord,Page404} from '../../components/bbhAlert/bbhAlert';

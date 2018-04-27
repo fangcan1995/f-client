@@ -383,7 +383,7 @@ class Signup extends Component {
               <FormItem className="agreement">
                 {
                   agreementProps(
-                    <Checkbox> 我已阅读并同意<NavLink to="/login">《用户注册及服务协议》</NavLink></Checkbox>
+                    <Checkbox> 我已阅读并同意<a to="/subject_common/6" target="_blank">《用户注册及服务协议》</a></Checkbox>
                   )
                 }
               </FormItem>
