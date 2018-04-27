@@ -29,7 +29,7 @@ class SubjectWap extends React.Component{
                                 (info.code==='0')?
 
                                     <div className={`article_${special.info.data.subjectType}`}>
-                                        <h2 className="title" dangerouslySetInnerHTML={{ __html: special.info.data.subjectName }}></h2>
+                                       {/* <h2 className="title" dangerouslySetInnerHTML={{ __html: special.info.data.subjectName }}></h2>*/}
                                         <div className="contentBlock" dangerouslySetInnerHTML={{ __html: special.info.data.content }}></div>
                                     </div>
                                     :<Page404 isShow={true} />
