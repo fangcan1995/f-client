@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './subject_wap.less';
+import './subject_common.less';
 import { connect } from 'react-redux';
 import specialAc from "../../actions/special";
 import {Loading,NoRecord,Page404} from '../../components/bbhAlert/bbhAlert';
-class SubjectWap extends React.Component{
+class SubjectCommon extends React.Component{
     constructor(props) {
         super(props);
     }
@@ -24,13 +24,14 @@ class SubjectWap extends React.Component{
                 {
                     (info === '') ? <Loading isShow={isFetching}/>
                         :
-                        <div>
+                        <div className='article'>
                             {
                                 (info.code==='0')?
 
-
+                                    <div className={`article_${special.info.data.subjectType}`}>
+                                       {/* <h2 className="title" dangerouslySetInnerHTML={{ __html: special.info.data.subjectName }}></h2>*/}
                                         <div className="contentBlock" dangerouslySetInnerHTML={{ __html: special.info.data.content }}></div>
-
+                                    </div>
                                     :<Page404 isShow={true} />
                             }
                         </div>
@@ -47,4 +48,4 @@ function mapStateToProps(state) {
         special
     };
 }
-export default connect(mapStateToProps)(SubjectWap);
+export default connect(mapStateToProps)(SubjectCommon);
