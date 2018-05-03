@@ -11,6 +11,7 @@ import aboutReducer from './aboutReducer';
 import memberInvestments from './member-investments';
 import memberLoans from './member-loans';
 import memberSettings from './member-settings';
+import memberMessages from './member-messages';
 import investList from './invest-list';
 import investDetail from './invest-detail';
 import member from './member';
@@ -34,6 +35,7 @@ export {
     investList,
     investDetail,
     memberSettings,
+    memberMessages,
     member,
     superPartner,
     aboutContentReducer,

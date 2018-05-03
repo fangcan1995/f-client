@@ -1,9 +1,7 @@
 import cFetch from './../utils/cFetch';
-import cookie from 'js-cookie';
-import { API_CONFIG } from './../config/api';
+
 import parseJson2URL from './../utils/parseJson2URL';
 import {urls,urls_auth,token} from './../utils/url';
-import {message} from "antd/lib/index";
 
 const url_getMList=`${urls}/message/mail/page`;  //获取消息列表
 const url_setRead=`${urls}/message/mail/read`; //设为已读
@@ -22,15 +20,18 @@ export const myMessagesAc= {
             type: 'mySettings/messages/FETCH',
             async payload() {
                 params = parseJson2URL(params);
+                console.log('提交后台的参数');
+                console.log(params);
                 const res = await cFetch(`${url_getMList}?` + params, {method: 'GET'}, true);
                 const {code, data} = res;
+                console.log(data);
                 if (data.page.total > 0) {
                     for (let index of data.page.list.keys()) {
                         data.page.list[index] = Object.assign({isShow: '0',isChecked: 0}, data.page.list[index]);
                     }
                 }
                 if (code == 0) {
-                    return {myList: data};
+                    return data;
                 } else {
                     throw res;
                 }
