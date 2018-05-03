@@ -48,8 +48,8 @@ export default class MyAvatar extends React.Component {
     }
     render() {
         let {photo}=this.props;
-        console.log('头像');
-        console.log(photo);
+        //console.log('头像');
+        //console.log(photo);
        let disableChange=this.props.disableChange || false; //是否可以替换
         let photo_url=``;
         if(photo){
@@ -69,7 +69,7 @@ export default class MyAvatar extends React.Component {
         const token = cookie.getJSON('token') || {};
         const { access_token } = token;
         const actionUrl=`${urls}/members/photo?access_token=${access_token}`;
-        console.log(actionUrl);
+        //console.log(actionUrl);
         return (
             <Upload
                 name="file"

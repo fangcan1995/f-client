@@ -23,8 +23,8 @@ class MemberSidebar extends React.Component {
     render(){
         let {member,auth}=this.props;
         let {accountsInfo}=member;
-        console.log('返回的会员信息');
-        console.log(member);
+        //console.log('返回的会员信息');
+        //console.log(member);
         return (
             <main className="main member">
                 <div className="wrapper">
