@@ -89,7 +89,7 @@ export default (
                             <Route path={`${match.url}/bank-card`} component={userIsAuthenticated(BankCard)} />
                             <Route path={`${match.url}/recharge`} component={userIsAuthenticated(Recharge)} />
                             <Route path={`${match.url}/withdrawals`} component={userIsAuthenticated(Withdrawals)} />
-                            <Route path={`${match.url}/transaction-record`} component={TransactionRecord} />
+                            <Route path={`${match.url}/transaction-record`} component={TransactionRecord} key={new Date().getTime()} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>

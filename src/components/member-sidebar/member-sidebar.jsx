@@ -51,7 +51,7 @@ class MemberSidebar extends React.Component {
                                 <ListItemLink to="/my-account/bank-card">银行卡</ListItemLink>
                                 <ListItemLink to="/my-account/recharge">充值</ListItemLink>
                                 <ListItemLink to="/my-account/withdrawals">提现</ListItemLink>
-                                <ListItemLink to="/my-account/transaction-record">交易记录</ListItemLink>
+                                <ListItemLink to="/my-account/transaction-record" >交易记录</ListItemLink>
                             </ul>
                             <h3><i className="iconfont icon-invest"></i>我的投资</h3>
                             <ul>

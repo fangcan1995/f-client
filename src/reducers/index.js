@@ -17,6 +17,7 @@ import member from './member';
 import superPartner from './super-partner';
 import aboutContentReducer from './aboutContentReducer';
 import special from './special';
+import transactionRecord from './transaction-record';
 export {
     auth,
     login,
@@ -36,5 +37,6 @@ export {
     member,
     superPartner,
     aboutContentReducer,
-    special
+    special,
+    transactionRecord
 }
