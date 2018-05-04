@@ -29,14 +29,13 @@ class TransformPage extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(1111111111111);
         this.setState({
             childId: nextProps.childId
         })
     }
 
     render() {
-        const { childId, dispatch, aboutContent, content, tabName, match, random } = this.props;
+        const { childId, dispatch, aboutContent, content, tabName, match, key } = this.props;
         const { pageInfo, status, artical } = aboutContent;
         if(status === 2) {
             return (
@@ -46,7 +45,7 @@ class TransformPage extends Component {
                     match={match}
                     articalId={match.params.articalId}
                     dispatch={dispatch}
-                    random={random}
+                    key={key}
                 />
             );
         }
@@ -59,7 +58,7 @@ class TransformPage extends Component {
                             match={match}
                             childId={childId}
                             dispatch={dispatch}
-                            random={random}
+                            key={key}
                         />
                     );
 
@@ -71,7 +70,7 @@ class TransformPage extends Component {
                             match={match}
                             childId={childId}
                             dispatch={dispatch}
-                            random={random}
+                            key={key}
                         />
                     )
                 }
@@ -80,7 +79,7 @@ class TransformPage extends Component {
             else {
                 if(childId === '82') {
                     return (
-                        <ConstantTable random={random} />
+                        <ConstantTable key={key} />
                     )
                 }
                 return (
@@ -90,14 +89,14 @@ class TransformPage extends Component {
                         match={match}
                         articalId={match.params.articalId}
                         dispatch={dispatch}
-                        random={random}
+                        key={key}
                     />
                 );
             }
         }
         else {
             return (
-                <div random={random}>
+                <div key={key}>
                     <div className="tabs__nav">
                         <li className="tab tab--active">{tabName}</li>
                     </div>

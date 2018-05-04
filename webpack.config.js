@@ -99,6 +99,7 @@ const config = {
             template: path.join(SRC_PATH, '/index.html'),
             inject: true,
             hash: false,
+            favicon: './favicon.ico',
             chunks: ['vendor', 'main']
         }),
 
