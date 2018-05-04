@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { aboutContentAction, articalListAction, articalAction } from '../../../actions/aboutContent';
+import { withRouter } from 'react-router';
 
 import List from '../list/list';
 import ArticalContent from '../content/content';
@@ -11,23 +12,31 @@ class TransformPage extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            childId: this.props.childId
+        }
     }
 
     componentDidMount() {
         const { childId, dispatch, aboutContent, match } = this.props;
         const status = aboutContent.status;
-        console.log(status);
         if(!match.params.articalId) {
             dispatch(articalListAction(childId, 1));
         }
         else {
-            console.log('test');
             dispatch(articalAction(match.params.articalId));
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        console.log(1111111111111);
+        this.setState({
+            childId: nextProps.childId
+        })
+    }
+
     render() {
-        const { childId, dispatch, aboutContent, content, tabName, match } = this.props;
+        const { childId, dispatch, aboutContent, content, tabName, match, random } = this.props;
         const { pageInfo, status, artical } = aboutContent;
         if(status === 2) {
             return (
@@ -35,8 +44,9 @@ class TransformPage extends Component {
                     tabName={tabName}
                     content={artical}
                     match={match}
-                    childId={childId}
+                    articalId={match.params.articalId}
                     dispatch={dispatch}
+                    random={random}
                 />
             );
         }
@@ -49,6 +59,7 @@ class TransformPage extends Component {
                             match={match}
                             childId={childId}
                             dispatch={dispatch}
+                            random={random}
                         />
                     );
 
@@ -60,6 +71,7 @@ class TransformPage extends Component {
                             match={match}
                             childId={childId}
                             dispatch={dispatch}
+                            random={random}
                         />
                     )
                 }
@@ -68,7 +80,7 @@ class TransformPage extends Component {
             else {
                 if(childId === '82') {
                     return (
-                        <ConstantTable />
+                        <ConstantTable random={random} />
                     )
                 }
                 return (
@@ -76,15 +88,16 @@ class TransformPage extends Component {
                         tabName={tabName}
                         content={pageInfo}
                         match={match}
-                        childId={childId}
+                        articalId={match.params.articalId}
                         dispatch={dispatch}
+                        random={random}
                     />
                 );
             }
         }
         else {
             return (
-                <div>
+                <div random={random}>
                     <div className="tabs__nav">
                         <li className="tab tab--active">{tabName}</li>
                     </div>

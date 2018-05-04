@@ -5,11 +5,11 @@ import {
 } from '../utils/url'
 
 
-/* let aboutUrl = `${urls}/information/type`;
-let urlArticalList = `${urls}/information/articles`; */
+let aboutUrl = `${urls}/information/type`;
+let urlArticalList = `${urls}/information/articles`;
 
-let aboutUrl = `http://172.16.1.234:8020/web/information/type`;
-let urlArticalList = `http://172.16.1.234:8020/web/information/articles`;
+//let aboutUrl = `http://172.16.1.234:8020/web/information/type`;
+//let urlArticalList = `http://172.16.1.234:8020/web/information/articles`;
 
 let constantUrls = [
     `${urls}/statistics/totalData`,
