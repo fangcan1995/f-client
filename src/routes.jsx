@@ -8,7 +8,7 @@ import MemberSidebar from './components/member-sidebar/member-sidebar';
 import HomePage from './containers/home-page/home-page';
 import Login from './containers/login/login';
 import Signup from './containers/signup/signup';
-import Forget from './containers/forget/signup';
+import Forget from './containers/forget/forget';
 import MobileApp from './containers/about/mobile-app/mobileApp';
 import SubjectPc from './containers/special/subject_pc';
 import SubjectWap from './containers/special/subject_wap';

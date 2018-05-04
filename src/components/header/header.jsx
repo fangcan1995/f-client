@@ -41,7 +41,7 @@ class Header extends Component {
               <nav className="shortnav">
                 <ul>
                   {/* <li><a href="/about/90/96">新手指南</a></li> */}
-                  <li><Link  to={'/about/90/96'}>新手指南</Link></li>
+                  <li><Link  to={'/about/90/96/5488cec104c94deaad2410df3d29f81e'}>新手指南</Link></li>
                   {/* <li><a href="/about/90/96">帮助中心</a></li> */}
                   <li><Link  to={'/about/90/96'}>帮助中心</Link></li>
                   <li><a href="/mobile-app"><i className="iconfont icon-222"></i>手机APP</a></li>
@@ -58,7 +58,7 @@ class Header extends Component {
               </nav>
             </div>
             <div className="top__left">
-              <p className="hotline">服务热线：400-024-0909（周一至周五8:30～17:00）</p>
+              <p className="hotline">服务热线：0411-84609558（周一至周五8:30～17:00）</p>
             </div>
           </div>
         </div>

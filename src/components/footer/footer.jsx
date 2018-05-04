@@ -68,7 +68,7 @@ class Footer extends Component  {
                     </div>
                     <div className="ServiceInfo">
                         <h3>客服热线：</h3>
-                        <div>400-024-0909</div>
+                        <div>0411-84609558</div>
                         <p>（客服时间：周一至周五 8:30-17:30）</p>
                         {/* <div className="ServiceButton">
                             <a href="" className="ServiceButton__button"><i className="iconfont icon-kefu"></i>在线客服</a>

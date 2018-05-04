@@ -43,7 +43,7 @@ class HomePage extends Component {
   }
   handleNoticeClick(e){
     console.log(e);
-    this.props.history.push(`/about/90/91`)
+    this.props.history.push(`/about/90/91/${e}`)
   }
   handleMoreClick(){
     console.log('22')
@@ -66,7 +66,7 @@ class HomePage extends Component {
   }
   handleNewsClick(e){
     console.log(e)
-    this.props.history.push(`/about/90/95${e}`)
+    this.props.history.push(`/about/90/95/${e}`)
   }
   handleMimageClick(e){
     console.log(e)
@@ -194,7 +194,7 @@ class HomePage extends Component {
       </div>
       <div className="wrapper">
         <div className="notice">
-          <i className="notice__icon iconfont icon-gonggao"></i>
+          <i className="notice__icon iconfont icon-gonggao"></i><span className='notice__tip'>最新公告:</span>
           <div className="notice__text">
             <Carousel vertical={true} autoplay key={homePage.notice.length}  wrapAround={true} 
             renderTopCenterControls={({ currentSlide }) => (
