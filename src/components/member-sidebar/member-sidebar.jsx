@@ -23,8 +23,8 @@ class MemberSidebar extends React.Component {
     render(){
         let {member,auth}=this.props;
         let {accountsInfo}=member;
-        console.log('返回的会员信息');
-        console.log(member);
+        //console.log('返回的会员信息');
+        //console.log(member);
         return (
             <main className="main member">
                 <div className="wrapper">
@@ -51,7 +51,7 @@ class MemberSidebar extends React.Component {
                                 <ListItemLink to="/my-account/bank-card">银行卡</ListItemLink>
                                 <ListItemLink to="/my-account/recharge">充值</ListItemLink>
                                 <ListItemLink to="/my-account/withdrawals">提现</ListItemLink>
-                                <ListItemLink to="/my-account/transaction-record">交易记录</ListItemLink>
+                                <ListItemLink to="/my-account/transaction-record" >交易记录</ListItemLink>
                             </ul>
                             <h3><i className="iconfont icon-invest"></i>我的投资</h3>
                             <ul>

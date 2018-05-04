@@ -71,7 +71,7 @@ class MyAuthInfo extends React.Component {
                                         <th><i className="iconfont icon-user"></i>真实姓名</th>
                                         <td className="Result">未认证</td>
                                         <td className="detail"></td>
-                                        <td className="operate"><a href="javascript:void(0);" onClick={this.bindCard}>认证</a></td>
+                                        <td className="operate"><a href="javascript:void(0);"  onClick={() => this.toggleModal(`modalAuth`,true)}>认证</a></td>
                                     </tr>
                                         :``
                                 }

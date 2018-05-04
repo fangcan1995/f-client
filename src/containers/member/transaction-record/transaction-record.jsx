@@ -3,231 +3,71 @@ import PropTypes from 'prop-types';
 import Crumbs from '../../../components/crumbs/crumbs';
 import Tab from '../../../components/tab/tab';
 import Pagination from '../../../components/pagination/pagination';
-import  {getData}  from '../../../assets/js/getData';
+import {Loading,NoRecord} from '../../../components/bbhAlert/bbhAlert';
+
 import './transaction-record.less';
 import { Modal,Select,DatePicker } from 'antd';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import {transactionRecordAc} from "../../../actions/transaction-record";
+const { RangePicker } = DatePicker;
+const Option = Select.Option;
+
 class TransactionRecord extends React.Component{
     constructor(props){
         super(props);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleDateStartChange = this.handleDateStartChange.bind(this);
-        this.handleDateEndChange = this.handleDateEndChange.bind(this);
-        this.state={
-            dataList:{},  //数据
-            status:0,
-            DateStart:'',
-            DateEnd:'',
-        };
-    }
-    handleChange(value) {
-        this.setState({
-            status:value
-        },()=>{
-            let filter={
-                status:this.state.status,
-                DateStart:this.state.DateStart,
-                DateEnd:this.state.DateEnd,
-            };
-            this.loadData(1,10,filter);
-        })
-    }
-    handleDateStartChange(date,dateString) {
-        dateString=dateString+' 00:00:00';
-        this.setState({
-            DateStart:moment(dateString)
-        },()=>{
-            let filter={
-                pid:this.state.pid,
-                DateStart:this.state.DateStart,
-                DateEnd:this.state.DateEnd,
-            }
-            this.loadData(1,10,filter);
-        })
-    }
-    handleDateEndChange(date,dateString) {
-        dateString=dateString+' 23:59:59';
-        this.setState({
-            DateEnd:moment(dateString),
-        },()=>{
-            let filter={
-                pid:this.state.pid,
-                DateStart:this.state.DateStart,
-                DateEnd:this.state.DateEnd,
-            }
-            this.loadData(1,10,filter);
-        })
-    }
-    loadData(currentPage,pageSize,filter){
-        let data=getData(`http://localhost:9002/members`,currentPage,pageSize,filter);
-        if (data){
-            this.setState({
-                dataList:data.data
-            });
-        }else{
-            let mockDate={
-                code: "0",
-                data:{
-                    list:[
-                        {
-                            proId:'1',
-                            proStatus:'4',
-                            col1:'汇车贷-HCD201704170002',
-                            col2:'2018-07-08',
-                            col3:'9',
-                            col4:'100000.00',
-                            col5:'1000.00',
-                            col6:'0.00',
-                            col7:'0.00',
-                            col8:'11000.00',
-                            col9:'待还款',
-                        },
-                        {
-                            proId:'1',
-                            proStatus:'4',
-                            col1:'汇车贷-HCD201704170002',
-                            col2:'2018-06-08',
-                            col3:'8',
-                            col4:'0.00',
-                            col5:'1000.00',
-                            col6:'0.00',
-                            col7:'0.00',
-                            col8:'1000.00',
-                            col9:'待还款',
-                        },
-                        {
-                            proId:'1',
-                            proStatus:'4',
-                            col1:'汇车贷-HCD201704170002',
-                            col2:'2018-05-08',
-                            col3:'7',
-                            col4:'0.00',
-                            col5:'1000.00',
-                            col6:'0.00',
-                            col7:'0.00',
-                            col8:'1000.00',
-                            col9:'待还款',
-                        },
-                        {
-                            proId:'1',
-                            proStatus:'4',
-                            col1:'汇车贷-HCD201704170002',
-                            col2:'2018-04-08',
-                            col3:'6',
-                            col4:'0.00',
-                            col5:'1000.00',
-                            col6:'0.00',
-                            col7:'0.00',
-                            col8:'1000.00',
-                            col9:'待还款',
-                        },
-                        {
-                            proId:'1',
-                            proStatus:'4',
-                            col1:'汇车贷-HCD201704170002',
-                            col2:'2018-03-08',
-                            col3:'5',
-                            col4:'0.00',
-                            col5:'1000.00',
-                            col6:'0.00',
-                            col7:'0.00',
-                            col8:'1000.00',
-                            col9:'待还款',
-                        },
-                        {
-                            proId:'1',
-                            proStatus:'4',
-                            col1:'汇车贷-HCD201704170002',
-                            col2:'2018-02-08',
-                            col3:'4',
-                            col4:'0.00',
-                            col5:'1000.00',
-                            col6:'0.00',
-                            col7:'0.00',
-                            col8:'1000.00',
-                            col9:'待还款',
-                        },
-                        {
-                            proId:'1',
-                            proStatus:'7',
-                            col1:'汇车贷-HCD201704170002',
-                            col2:'2018-01-08',
-                            col3:'3',
-                            col4:'0.00',
-                            col5:'1000.00',
-                            col6:'10.00',
-                            col7:'0.00',
-                            col8:'1010.00',
-                            col9:'逾期未还',
-                        },
-                        {
-                            proId:'1',
-                            proStatus:'2',
-                            col1:'汇车贷-HCD201704170002',
-                            col2:'2017-12-08',
-                            col3:'2',
-                            col4:'0.00',
-                            col5:'1000.00',
-                            col6:'100.00',
-                            col7:'0.00',
-                            col8:'1100.00',
-                            col9:'逾期还款',
-                        },
-                        {
-                            proId:'1',
-                            proStatus:'1',
-                            col1:'汇车贷-HCD201704170002',
-                            col2:'2017-11-08',
-                            col3:'1',
-                            col4:'0.00',
-                            col5:'1000.00',
-                            col6:'0.00',
-                            col7:'0.00',
-                            col8:'1000.00',
-                            col9:'已正常还款',
-                        },
-                        {
-                            proId:'2',
-                            proStatus:'0',
-                            col1:'汇车贷-HCD201704170001',
-                            col2:'2016-10-08',
-                            col3:'4',
-                            col4:'10000.00',
-                            col5:'1000.00',
-                            col6:'0.00',
-                            col7:'0.00',
-                            col8:'11000.00',
-                            col9:'已提前还款',
-                            col10:''
-                        },
-
-                    ],
-                    pageNum: 1,
-                    pageSize: 10,
-                    total:13
-                },
-                message: "SUCCESS",
-                time: "2018-01-17 11:49:39"
-            };
-            this.setState({
-                dataList:mockDate.data
-            });
-        }
-
+        this.typeChange = this.typeChange.bind(this);
+        this.statusChange = this.statusChange.bind(this);
+        this.dateChange = this.dateChange.bind(this);
     }
     componentDidMount () {
-        this.loadData(1,10,{status:0});
+        window.scrollTo(0,0);  //转到页面顶部
+        let {transactionRecord,dispatch} = this.props;
+        let {filter}=transactionRecord;
+        let filter_new=Object.assign({},filter);
+        for(var name in filter_new){
+            filter_new[name]=``;
+        }
+        dispatch(transactionRecordAc.modifyState({filter:filter_new,data:``}));
+        dispatch(transactionRecordAc.getData(filter_new));    //获取数据
+    }
+    typeChange(value) {
+        let {transactionRecord,dispatch} = this.props;
+        let {filter}=transactionRecord;
+        let filter_new=Object.assign({},filter);
+        filter_new.trade_type=value;
+        this.props.dispatch(transactionRecordAc.modifyState({filter:filter_new,data:``}));
+        dispatch(transactionRecordAc.getData(filter_new));    //获取数据
+    }
+    statusChange(value) {
+        let {transactionRecord,dispatch} = this.props;
+        let {filter}=transactionRecord;
+        let filter_new=Object.assign({},filter);
+        filter_new.trade_result=value;
+        this.props.dispatch(transactionRecordAc.modifyState({filter:filter_new,data:``}));
+        dispatch(transactionRecordAc.getData(filter_new));    //获取数据
+    }
+    dateChange(value,dateString) {
+        let {transactionRecord,dispatch} = this.props;
+        let {filter}=transactionRecord;
+        let filter_new=Object.assign({},filter);
+        filter_new.dateStart=dateString[0];
+        filter_new.dateEnd=dateString[1];
+        this.props.dispatch(transactionRecordAc.modifyState({filter:filter_new,data:``}));
+        filter_new.dateStart=dateString[0]+' 00:00:00';
+        filter_new.dateEnd=dateString[1]+' 23:59:59';
+        dispatch(transactionRecordAc.getData(filter_new));    //获取数据
     }
     render(){
-        const {list,pageNum,total,pageSize}=this.state.dataList;
-        const totalPage=Math.ceil(total/pageSize);
+        console.log('-----this.props--------');
+        console.log(this.props);
+        let {transactionRecord,dispatch} = this.props;
+        let {filter,data,isFetching}=transactionRecord;
         return (
             <div className="member__main" id="area">
                 <Crumbs/>
                 <div className="member__cbox">
                     <Tab>
-
                         <div name="交易记录">
                             <div className="tab_content">
                                 <p className="info">
@@ -242,18 +82,18 @@ class TransactionRecord extends React.Component{
                                                 </div>
                                                 <div className="filter__cell">
                                                     <Select
-                                                        defaultValue="0"
+                                                        defaultValue=""
                                                         style={{ width: 100 }}
-                                                        onChange={this.handleChange}
+                                                        onChange={this.typeChange}
                                                         getPopupContainer={() => document.getElementById('area')}
                                                     >
-                                                        <option value="0">全部</option>
-                                                        <option value="1">充值</option>
-                                                        <option value="2">提现</option>
-                                                        <option value="3">投资</option>
-                                                        <option value="4">回款</option>
-                                                        <option value="5">费用</option>
-                                                        <option value="6">奖励</option>
+                                                        <Option value="">全部</Option>
+                                                        <Option value="1">充值</Option>
+                                                        <Option value="2">提现</Option>
+                                                        <Option value="3">投资</Option>
+                                                        <Option value="4">回款</Option>
+                                                        <Option value="5">费用</Option>
+                                                        <Option value="6">奖励</Option>
                                                     </Select>
                                                 </div>
                                                 <div className="filter__cell">
@@ -261,50 +101,38 @@ class TransactionRecord extends React.Component{
                                                 </div>
                                                 <div className="filter__cell">
                                                     <Select
-                                                        defaultValue="0"
+                                                        defaultValue=""
                                                         style={{ width: 100 }}
-                                                        onChange={this.handleChange}
+                                                        onChange={this.statusChange}
                                                         getPopupContainer={() => document.getElementById('area')}
                                                     >
-                                                        <option value="">全部</option>
-                                                        <option value="1">成功</option>
-                                                        <option value="0">失败</option>
+                                                        <Option value="">全部</Option>
+                                                        <Option value="1">成功</Option>
+                                                        <Option value="0">失败</Option>
                                                     </Select>
                                                 </div>
                                                 <div className="filter__cell">
                                                     <h5>交易时间:</h5>
                                                 </div>
                                                 <div className="filter__cell">
-                                                    <DatePicker
+                                                    <RangePicker
                                                         format={ 'YYYY-MM-DD'}
-                                                        placeholder="开始日期"
-                                                        onChange={ this.handleDateStartChange }
+                                                        placeholder={['开始日期', '结束日期']}
+                                                        onChange={ this.dateChange }
                                                         getCalendarContainer={() => document.getElementById('area')}
                                                     />
                                                 </div>
-                                                <div className="filter__cell">
-                                                    <h5>-</h5>
-                                                </div>
-                                                <div className="filter__cell">
-                                                    <DatePicker
-                                                        /*defaultValue={moment(`${getNowFormatDate('-')}`, dateFormat)}*/
-                                                        format={ 'YYYY-MM-DD'}
-                                                        placeholder="结束日期"
-                                                        onChange={ this.handleDateEndChange}
-                                                        getCalendarContainer={() => document.getElementById('area')}
-                                                    />
-                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                                 {
-                                    JSON.stringify(this.state.dataList) == "{}"? <div>连接错误,请稍后再试</div>
+                                    (data === '') ? <Loading isShow={isFetching}/>
                                         :
-                                        list.length>0 ?
+                                        data.page.total>0 ?
                                             <div className="table__wrapper">
-                                                <table className={`tableList table${this.state.status}`}>
+                                                <table className={`tableList table${filter.trade_type}`}>
                                                     <thead>
                                                     <tr>
                                                         <th>交易时间</th>
@@ -315,9 +143,9 @@ class TransactionRecord extends React.Component{
                                                     </thead>
                                                     <tbody>
                                                     {
-                                                        list.map((item, rowIndex) => (
+                                                        data.page.list.map((item, rowIndex) => (
                                                             <tr key={`row-${rowIndex}`}>
-                                                                <td>{item.col1}</td>
+                                                                <td>{item.sendTime}</td>
                                                                 <td>{item.col2}</td>
                                                                 <td>{item.col3}</td>
                                                                 <td>{item.col4}</td>
@@ -327,33 +155,32 @@ class TransactionRecord extends React.Component{
                                                 </table>
                                                 <Pagination config = {
                                                     {
-                                                        currentPage:1,
-                                                        pageSize:10,
-                                                        totalPage:2,
-                                                        filter:this.state.status,
-                                                        paging:(obj)=>{
-                                                            this.loadData(obj.currentPage,obj.pageCount,{status:obj.filter});
+                                                        currentPage:data.page.pageNum,
+                                                        pageSize:data.page.pageSize,
+                                                        totalPage:data.page.pages,
+                                                        paging: (obj) => {
+                                                            filter.pageNum=obj.currentPage,
+                                                                dispatch(transactionRecordAc.modifyState({filter:filter,data:''}));  //初始化页面
+                                                            dispatch(transactionRecordAc.getData(filter));    //获取数据
                                                         }
                                                     }
                                                 } ></Pagination>
                                             </div>
-                                            :''
+                                            :<NoRecord isShow={true} title={`暂无记录`}/>
                                 }
                             </div>
                         </div>
                     </Tab>
-
                 </div>
             </div>
         )
     }
 }
-
 function mapStateToProps(state) {
-    const { auth, } = state.toJS();
+    const { auth,transactionRecord } = state.toJS();
     return {
         auth,
-
+        transactionRecord
     };
 }
 

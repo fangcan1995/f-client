@@ -22,17 +22,18 @@ class MyMessages extends React.Component {
 
     componentDidMount() {
         window.scrollTo(0,0);
+        this.props.dispatch(myMessagesAc.modifyState({readTag:``,messagesList:''}));  //修改状态
         this.props.dispatch(myMessagesAc.getMessagesList());
 
     }
     filter(params){
-        this.props.dispatch(myMessagesAc.modifyState({readTag:params,myList:''}));  //修改状态
+        this.props.dispatch(myMessagesAc.modifyState({readTag:params,messagesList:''}));  //修改状态
         this.props.dispatch(myMessagesAc.getMessagesList({readTag:params}));  //获取数据
     }
     //读消息，并设为已读
     setReaded(index,id){
-        let {list} = this.props.memberSettings.messages.myList.page;
-        let {readCount}=this.props.memberSettings.messages.myList;
+        let {list} = this.props.memberMessages.messagesList.page;
+        let {readCount}=this.props.memberMessages.messagesList;
         (list[index].isShow=='0')?list[index].isShow='1':list[index].isShow='0';
         if(list[index].readTag=='0'){
             readCount=readCount-1;
@@ -40,7 +41,7 @@ class MyMessages extends React.Component {
             this.props.dispatch(myMessagesAc.setRead(Array.of(id)));  //后台设为已读
         };
         let newState={
-            myList:{
+            messagesList:{
                 page:{
                     list:list
                 },
@@ -60,13 +61,13 @@ class MyMessages extends React.Component {
         if(pram.length>0){
             pram=pram.toString();
             this.props.dispatch(myMessagesAc.deleteMessage(pram));
-            //this.props.dispatch(myMessagesAc.modifyState({myList:''}));  //修改状态
+            //this.props.dispatch(myMessagesAc.modifyState({messagesList:''}));  //修改状态
             //this.props.dispatch(myMessagesAc.getMessagesList());
         }
     }
     //选取一个
     onChange(e) {
-        let {list} = this.props.memberSettings.messages.myList.page;
+        let {list} = this.props.memberSettings.messages.messagesList.page;
         let index=list.findIndex((x)=>
              x.id ==parseInt(e.target.value)
         );
@@ -81,7 +82,7 @@ class MyMessages extends React.Component {
             selectIds.splice(selectIdsIndex,1); //从选中的数组中删除
         }
         let newState={
-            myList:{
+            messagesList:{
                 page:{
                     list:list
                 },
@@ -91,7 +92,7 @@ class MyMessages extends React.Component {
     }
     //全选
     onAllChange(e){
-        let {list} = this.props.memberSettings.messages.myList.page;
+        let {list} = this.props.memberMessages.messagesList.page;
         if(e.target.checked){
             for(let index of list.keys()){
                 list[index].isChecked=1;
@@ -104,7 +105,7 @@ class MyMessages extends React.Component {
             selectIds=[];
         }
         let newState={
-            myList:{
+            messagesList:{
                 page:{
                     list:list
                 },
@@ -113,11 +114,13 @@ class MyMessages extends React.Component {
         this.props.dispatch(myMessagesAc.modifyState(newState));   //
     }
     render() {
-        let {myList,readTag,isFetching,deleteResult} = this.props.memberSettings.messages;
-        if(deleteResult!=``){
+        console.log(this.props);
+        let {messagesList,readTag,isFetching,deleteResult} = this.props.memberMessages;
+        console.log(messagesList);
+        /*if(deleteResult!=``){
             this.props.dispatch(myMessagesAc.modifyState({deleteResult:''}));  //修改状态
             this.props.dispatch(myMessagesAc.getMessagesList());
-        }
+        }*/
         return (
             <div className="member__main myMessage">
                 <Crumbs/>
@@ -149,13 +152,13 @@ class MyMessages extends React.Component {
                             </div>
                             <div className="tab_content" style={{marginTop:'15px'}}>
                                 {
-                                    myList === '' ? <Loading isShow={isFetching}/>
+                                    messagesList === '' ? <Loading isShow={isFetching}/>
                                         :
-                                        myList.page.total > 0 ?
+                                        messagesList.page.total > 0 ?
                                             <div>
                                                 <p className="info" style={{textAlign:'right',paddingBottom:'10px'}}>
-                                                    （共{myList.page.total}条
-                                                        {(readTag === '')?`, ${myList.readCount}条未读`:``
+                                                    （共{messagesList.page.total}条
+                                                        {(readTag === '')?`, ${messagesList.readCount}条未读`:``
                                                     }）
                                                 </p>
                                                 <div className="list">
@@ -168,7 +171,7 @@ class MyMessages extends React.Component {
                                                         <li>操作</li>
                                                     </ul>
                                                     {
-                                                        myList.page.list.map((l, i) => (
+                                                        messagesList.page.list.map((l, i) => (
                                                             <div key={`row-${i}`}>
                                                                 <ul className="body">
                                                                     <li><Checkbox onChange={this.onChange} value={`${l.id}`} checked={l.isChecked}></Checkbox></li>
@@ -196,12 +199,12 @@ class MyMessages extends React.Component {
                                                 </div>
                                                 <Pagination config={
                                                     {
-                                                        currentPage:  myList.page.pageNum,
-                                                        pageSize: myList.page.pageSize,
-                                                        totalPage: myList.page.pages,
+                                                        currentPage:  messagesList.page.pageNum,
+                                                        pageSize: messagesList.page.pageSize,
+                                                        totalPage: messagesList.page.pages,
                                                         filter:readTag,
                                                         paging: (obj) => {
-                                                            this.props.dispatch(myMessagesAc.modifyState({myList:''}));  //修改状态
+                                                            this.props.dispatch(myMessagesAc.modifyState({messagesList:''}));  //修改状态
                                                             this.props.dispatch(myMessagesAc.getMessagesList(
                                                                 {
                                                                     pageNum:obj.currentPage,
@@ -224,10 +227,10 @@ class MyMessages extends React.Component {
     }
 }
 function mapStateToProps(state) {
-    const { auth,memberSettings } = state.toJS();
+    const { auth,memberMessages } = state.toJS();
     return {
         auth,
-        memberSettings
+        memberMessages
     };
 }
 
