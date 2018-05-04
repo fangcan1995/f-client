@@ -8,8 +8,8 @@ import { Checkbox  } from 'antd';
 import { connect } from 'react-redux';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import './message.less';
-
 let selectIds = [];  //用于保存全中的消息id
+
 class MyMessages extends React.Component {
     constructor(props){
         super(props);
@@ -19,15 +19,20 @@ class MyMessages extends React.Component {
         this.setReaded= this.setReaded.bind(this);
         this.filter=this.filter.bind(this);
     }
-
     componentDidMount() {
         window.scrollTo(0,0);
-        this.props.dispatch(myMessagesAc.modifyState({readTag:``,messagesList:''}));  //修改状态
+        this.props.dispatch(myMessagesAc.reset(''));
         this.props.dispatch(myMessagesAc.getMessagesList());
-
+    }
+    componentDidUpdate(){
+        let {deleteResult,readTag} = this.props.memberMessages;
+        //如果有数据被删除
+        if(deleteResult!==''){
+            this.props.dispatch(myMessagesAc.getMessagesList({readTag:readTag}));
+        }
     }
     filter(params){
-        this.props.dispatch(myMessagesAc.modifyState({readTag:params,messagesList:''}));  //修改状态
+        this.props.dispatch(myMessagesAc.reset(params));  //修改状态
         this.props.dispatch(myMessagesAc.getMessagesList({readTag:params}));  //获取数据
     }
     //读消息，并设为已读
@@ -38,36 +43,26 @@ class MyMessages extends React.Component {
         if(list[index].readTag=='0'){
             readCount=readCount-1;
             list[index].readTag='1';
-            this.props.dispatch(myMessagesAc.setRead(Array.of(id)));  //后台设为已读
+            this.props.dispatch(myMessagesAc.setRead(Array.of(id)));//后台设为已读处理
         };
-        let newState={
-            messagesList:{
-                page:{
-                    list:list
-                },
-                readCount:readCount
-            }
-        }
-        this.props.dispatch(myMessagesAc.modifyState(newState));   //显示消息内容
+        this.props.dispatch(myMessagesAc.modify_list({page:{list:list}, readCount:readCount}));   //前台设为已读处理,显示消息内容
 
     }
     //删除一条或多条消息
-    deleteMessage(pram){
+    deleteMessage(params){
         /*如删除一条或多条数据，则重新获取数据，删除1条时，体验较差
         最好删除一条时前端删除，实现比较麻烦，后期迭代
         */
-        console.log('要删除的数据');
-        console.log(pram);
-        if(pram.length>0){
-            pram=pram.toString();
-            this.props.dispatch(myMessagesAc.deleteMessage(pram));
-            //this.props.dispatch(myMessagesAc.modifyState({messagesList:''}));  //修改状态
-            //this.props.dispatch(myMessagesAc.getMessagesList());
+        let arr_ids=[];
+        typeof params!="object"? arr_ids.push(params): arr_ids=params;
+        if(arr_ids.length>0){
+            arr_ids=arr_ids.toString();
+            this.props.dispatch(myMessagesAc.deleteMessage(arr_ids));
         }
     }
     //选取一个
     onChange(e) {
-        let {list} = this.props.memberSettings.messages.messagesList.page;
+        let {list} = this.props.memberMessages.messagesList.page;
         let index=list.findIndex((x)=>
              x.id ==parseInt(e.target.value)
         );
@@ -81,14 +76,7 @@ class MyMessages extends React.Component {
             );
             selectIds.splice(selectIdsIndex,1); //从选中的数组中删除
         }
-        let newState={
-            messagesList:{
-                page:{
-                    list:list
-                },
-            }
-        }
-        this.props.dispatch(myMessagesAc.modifyState(newState));
+        this.props.dispatch(myMessagesAc.modify_list({page:{list:list}}));
     }
     //全选
     onAllChange(e){
@@ -104,23 +92,12 @@ class MyMessages extends React.Component {
             }
             selectIds=[];
         }
-        let newState={
-            messagesList:{
-                page:{
-                    list:list
-                },
-            }
-        }
-        this.props.dispatch(myMessagesAc.modifyState(newState));   //
+        this.props.dispatch(myMessagesAc.modify_list({page:{list:list}}));
     }
     render() {
+        console.log('----------this.props-------------');
         console.log(this.props);
         let {messagesList,readTag,isFetching,deleteResult} = this.props.memberMessages;
-        console.log(messagesList);
-        /*if(deleteResult!=``){
-            this.props.dispatch(myMessagesAc.modifyState({deleteResult:''}));  //修改状态
-            this.props.dispatch(myMessagesAc.getMessagesList());
-        }*/
         return (
             <div className="member__main myMessage">
                 <Crumbs/>
@@ -202,15 +179,13 @@ class MyMessages extends React.Component {
                                                         currentPage:  messagesList.page.pageNum,
                                                         pageSize: messagesList.page.pageSize,
                                                         totalPage: messagesList.page.pages,
-                                                        filter:readTag,
                                                         paging: (obj) => {
-                                                            this.props.dispatch(myMessagesAc.modifyState({messagesList:''}));  //修改状态
                                                             this.props.dispatch(myMessagesAc.getMessagesList(
                                                                 {
                                                                     pageNum:obj.currentPage,
                                                                     readTag:readTag
                                                                 }
-                                                                ))
+                                                                ))  //重新获取数据
                                                         }
                                                     }
                                                 }>
@@ -233,5 +208,4 @@ function mapStateToProps(state) {
         memberMessages
     };
 }
-
 export default connect(mapStateToProps)(MyMessages);
