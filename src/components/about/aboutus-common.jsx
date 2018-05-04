@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Link, Switch, Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import './aboutus-common.less';
 import { connect } from 'react-redux';
 
@@ -48,6 +49,7 @@ class About extends Component {
         this.state = {
             current: parseInt(currents[currents.length >= 3 && currents.length === 3 ? currents.length - 1 : currents.length - 2]),
             targetName: '',
+            random: Math.random()
         }
     }
 
@@ -63,6 +65,9 @@ class About extends Component {
 
     handleSelectChildPage(e) {
         const { dispatch } = this.props;
+        this.setState({
+            random: Math.random()
+        })
         dispatch(articalListAction(e.target.id, 1));
     }
 
@@ -72,6 +77,9 @@ class About extends Component {
         const parent = this.relations.find(r => {
             return r.parentId == currentParentId
         });
+        this.setState({
+            random: Math.random()
+        })
         dispatch(articalListAction(parent.children[0].childId, 1));
     }
 
@@ -88,9 +96,17 @@ class About extends Component {
                 });
                 relations.push({
                     parentId: item.id,
+                    hidden: false,
                     children
                 });
 
+            }
+            else {
+                relations.push({
+                    parentId: item.id,
+                    hidden: true,
+                    children: []
+                });
             }
         });
         return relations;
@@ -112,13 +128,15 @@ class About extends Component {
 
     sideBarTop = (list, match, location, defaultParent, relation) => {
         const container = list.map((item, i) => {
+            console.log(relation[i]);
             if (item.disclosureDtos.length > 0) {
                 if (i === 0) {
                     this.defaultName = item.disclosureDtos[0].affTypeName;
                 }
             }
             const children = this.sideBarContent(item, match);
-            return (
+            return !relation[i].hidden ?
+            (
                 <dl key={item.id} onClick={this.collapse.bind(this, relation && relation[i].parentId)}
                     className={
                         this.state.current === item.id
@@ -141,23 +159,24 @@ class About extends Component {
                     </dd>
                 </dl>
             )
+            : null;
         });
         return container;
     }
 
     componentDidMount() {
-        window.scrollTo(0, 0);
-        const { dispatch, match, location } = this.props;
+        const { dispatch } = this.props;
         dispatch(aboutContentAction());
     }
 
 
     render() {
         const { match, aboutContent, dispatch, location } = this.props;
-
-        //alert(location.pathname);
+        
         //重置父级菜单和子集菜单的关联
         const relations = this.relations = this.createRelation(aboutContent.menuList);
+        console.log(aboutContent.menuList);
+        console.log(relations);
         //获取当前的路径，当前路径的父级菜单id 和 自己菜单的id
         const currentLocation = location.pathname.split('/');
         let currentParentId, currentChildId, currentTabName;
@@ -217,6 +236,7 @@ class About extends Component {
                                                             match={match}
                                                             childId={match.params.childId}
                                                             dispatch={dispatch}
+                                                            random={this.state.random}
                                                         />
                                                     );
                                                 }
@@ -232,6 +252,7 @@ class About extends Component {
                                                             match={match}
                                                             childId={match.params.childId}
                                                             dispatch={dispatch}
+                                                            random={this.state.random}
                                                         />
                                                     );
                                                 }
