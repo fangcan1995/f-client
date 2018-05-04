@@ -16,10 +16,7 @@ const createForm = Form.create;
 const FormItem = Form.Item;
 const phoneNumberRegExp = /^1[3|4|5|7|8]\d{9}$/;
 const passwordRegExp = /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*?_., ]).*$/;
-const configPasswordRegExp = ()=>{
-  // console.log(this.passwordProps)
-  return false
-};
+let configPasswordRegExp = null
 const params = {
   client_id: 'member',
   client_secret: 'secret',
@@ -43,6 +40,15 @@ class Forget extends Component {
     form: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
   }
+
+  configPasswordRegExp = ()=>{  
+    const { form } = this.props;
+    let fullCreds = form.getFieldsValue();
+    console.log(fullCreds.password)
+    configPasswordRegExp = new RegExp (`^${fullCreds.password}$`);
+    return configPasswordRegExp
+  };
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(getImageCode());
@@ -233,7 +239,7 @@ class Forget extends Component {
     const configPasswordProps = getFieldDecorator('config_password', {
       validate: [{
         rules: [
-          { required: true, pattern: configPasswordRegExp(), message: '密码长度6-16位，包含数字、字母、符号。' }
+          { required: true, pattern: configPasswordRegExp, message: '与第一次输入的密码不一致' }
           
         ],
         trigger: ['onBlur', 'onChange']
@@ -378,6 +384,7 @@ class Forget extends Component {
                     <Input
                       type="password"
                       autoComplete="off"
+                      onBlur={this.configPasswordRegExp}
                       placeholder="设置6-16位的登录密码"
                       onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
                     />
