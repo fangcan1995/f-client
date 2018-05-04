@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import { connect } from 'react-redux';
-import {myRiskAssessAc} from '../../../../actions/member-settings';
+import {myMessagesAc, myRiskAssessAc} from '../../../../actions/member-settings';
 import './riskAssess.less';
 import { Radio,Button } from 'antd';
 import {memberAc} from "../../../../actions/member";
@@ -11,6 +11,14 @@ import {Loading,NoRecord,Posting} from '../../../../components/bbhAlert/bbhAlert
 
 const RadioGroup = Radio.Group;
 
+const Result=({data,isShow})=>(
+    (!{isShow})? ``
+        :<div>测评结果{data}</div>
+)
+const List=({data,isShow})=>(
+    (!{isShow})? ``
+        :<div>题目{data}</div>
+)
 class MyRiskAssess extends React.Component {
     constructor(props){
         super(props);
@@ -24,9 +32,16 @@ class MyRiskAssess extends React.Component {
     }
     componentDidMount() {
         window.scrollTo(0,0);
-        this.props.dispatch(myRiskAssessAc.getResult());
-
-        this.props.dispatch(myRiskAssessAc.getRiskAssessList());
+        this.props.dispatch(myRiskAssessAc.getResult()); //获取测评结果
+        //this.props.dispatch(myRiskAssessAc.getRiskAssessList());
+    }
+    componentDidUpdate(){
+        /*let {deleteResult,readTag} = this.props.memberMessages;
+        //如果有数据被删除
+        if(deleteResult!==''){
+            this.props.dispatch(myMessagesAc.getMessagesList({readTag:readTag}));
+        }*/
+        console.log('组件更新了');
     }
     disabled(){
         let {myList}=this.props.memberSettings.riskAssess;
@@ -74,9 +89,10 @@ class MyRiskAssess extends React.Component {
         this.props.dispatch(myRiskAssessAc.getRiskAssessList());
     }
     render(){
-        let {dispatch}=this.props;
-        let {riskAssess,isFetching,isPosting}=this.props.memberSettings;
-        let {result,myList,status,postResult}=riskAssess;
+        let {dispatch,memberRiskAssess}=this.props;
+        console.log('-----------------------------');
+        console.log(memberRiskAssess);
+        let {result,myList,status,postResult,isFetching,isPosting}=memberRiskAssess;
         if(postResult.code==='0'){
             window.scrollTo(0,0);
             this.props.dispatch(myRiskAssessAc.modifyState({postResult:``}));
@@ -89,6 +105,11 @@ class MyRiskAssess extends React.Component {
                 <div className="member__cbox">
                     <Tab>
                         <div name="风险评估">
+                            <Result data="123" />
+                            <List data="123" />
+
+
+
                             {
                                 (status==='0')?
                                     <div className="tab_content">
@@ -176,10 +197,10 @@ class MyRiskAssess extends React.Component {
     }
 }
 function mapStateToProps(state) {
-    const { auth,memberSettings } = state.toJS();
+    const { auth,memberRiskAssess } = state.toJS();
     return {
         auth,
-        memberSettings
+        memberRiskAssess
     };
 }
 export default connect(mapStateToProps)(MyRiskAssess);
