@@ -20,7 +20,8 @@ developmentConfig.devServer = {
     inline: true,
     progress: true,
     //host:"172.16.4.5",
-    port: 4400,
+    //host:"172.16.6.2",
+    //port: 4800,
 };
 
 module.exports = developmentConfig;

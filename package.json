@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "rimraf": "rimraf",
-    "start": "webpack-dev-server --inline --hot --port 4400 --content-base build --config webpack.config.dev.js",
+    "start": "webpack-dev-server --inline --hot  --content-base build --config webpack.config.dev.js",
     "build": "npm run clean && webpack --display-error-details --config webpack.config.prod.js",
     "clean": "npm run rimraf -- build"
   },

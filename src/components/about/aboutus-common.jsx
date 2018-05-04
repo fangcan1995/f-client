@@ -236,7 +236,7 @@ class About extends Component {
                                                             match={match}
                                                             childId={match.params.childId}
                                                             dispatch={dispatch}
-                                                            random={this.state.random}
+                                                            key={match.params.childId}
                                                         />
                                                     );
                                                 }
@@ -252,7 +252,7 @@ class About extends Component {
                                                             match={match}
                                                             childId={match.params.childId}
                                                             dispatch={dispatch}
-                                                            random={this.state.random}
+                                                            key={match.params.childId}
                                                         />
                                                     );
                                                 }
