@@ -10,7 +10,7 @@ import parseJson2URL from '../../utils/parseJson2URL';
 import parseQueryString from '../../utils/parseQueryString';
 
 import Card from '../../components/login-card/login-card';
-import './signup.less';
+import './forget.less';
 
 const createForm = Form.create;
 const FormItem = Form.Item;

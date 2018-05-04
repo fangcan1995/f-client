@@ -31,7 +31,7 @@ const params = {
 function noop() {
   return false;
 }
-
+let login_ip = null
 const SignupWithRouter = withRouter(Signup)
 class Login extends Component {
   state={
@@ -41,6 +41,7 @@ class Login extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(getImageCode());
+    login_ip=localStorage.getItem('configIp')
   }
   handleSignupClick(){
     const { dispatch } = this.props;
@@ -91,6 +92,7 @@ class PasswordForm extends Component {
   }
   handleSubmit = e => {
     e.preventDefault();
+    
     const { dispatch, form } = this.props;
     form.validateFields((errors) => {
 
@@ -98,7 +100,7 @@ class PasswordForm extends Component {
 
       let creds = form.getFieldsValue();
       creds.password = hex_md5(creds.password);
-      
+      creds = {...creds,login_ip}
       creds = `?${parseJson2URL({...creds, ...params})}`;
       dispatch(loginUser(creds))
       .then(res => {

@@ -107,18 +107,20 @@ export const myMessagesAc= {
 export const myRiskAssessAc={
     getResult: () => {
         return {
-            type: 'mySettings/riskAssess/FETCH',
+            type: 'mySettings/riskAssess/FETCH_RESULT',
             async payload() {
                 const res = await cFetch(`${url_getResult}`, {method: 'GET'}, true);
                 const {code, data} = res;
-
+                console.log('测评结果是：');
+                console.log(data);
                 if (code == 0) {
-                    return {
+                    /*return {
                         result: data,
                         status:data.requireEval
-                    };
+                    };*/
+                    return data;
                 } else {
-                    throw res;
+                    throw data;
                 }
             }
         }
