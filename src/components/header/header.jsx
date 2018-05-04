@@ -40,8 +40,10 @@ class Header extends Component {
               
               <nav className="shortnav">
                 <ul>
-                  <li><a href="/about/90/96">新手指南</a></li>
-                  <li><a href="/about/90/96">帮助中心</a></li>
+                  {/* <li><a href="/about/90/96">新手指南</a></li> */}
+                  <li><Link  to={'/about/90/96'}>新手指南</Link></li>
+                  {/* <li><a href="/about/90/96">帮助中心</a></li> */}
+                  <li><Link  to={'/about/90/96'}>帮助中心</Link></li>
                   <li><a href="/mobile-app"><i className="iconfont icon-222"></i>手机APP</a></li>
                 </ul>
               </nav>

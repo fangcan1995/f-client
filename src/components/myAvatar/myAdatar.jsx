@@ -2,7 +2,9 @@ import React,{ Component } from "react";
 import { Upload, Icon, message,Avatar } from 'antd';
 import './myAdatar.less';
 import {urls} from './../../utils/url';
+import tx from './../../assets/images/myAccount/tx.jpg';
 import cookie from 'js-cookie';
+import  {memberAc}  from '../../actions/member';
 export default class MyAvatar extends React.Component {
     constructor(props) {
         super(props);
@@ -46,13 +48,20 @@ export default class MyAvatar extends React.Component {
     }
     render() {
         let {photo}=this.props;
+        //console.log('头像');
+        //console.log(photo);
        let disableChange=this.props.disableChange || false; //是否可以替换
         let photo_url=``;
-        if(photo!=``){
+        if(photo){
+            photo_url=photo;
+        }else{
+            photo_url=tx;
+        }
+        /*if(photo!=``){
             photo_url=photo;
         }else{
             photo_url=`http://www.baba88.com/static/quote_518/images/logo.png`;
-        }
+        }*/
         const uploadButton = (
             <Avatar size="large" className="memberPhoto" src={photo_url} />
         );
@@ -60,6 +69,7 @@ export default class MyAvatar extends React.Component {
         const token = cookie.getJSON('token') || {};
         const { access_token } = token;
         const actionUrl=`${urls}/members/photo?access_token=${access_token}`;
+        //console.log(actionUrl);
         return (
             <Upload
                 name="file"

@@ -9,7 +9,10 @@ import HomePage from './containers/home-page/home-page';
 import Login from './containers/login/login';
 import Signup from './containers/signup/signup';
 import Forget from './containers/forget/signup';
-import MobileApp from './containers/about/mobile-app/mobileApp'
+import MobileApp from './containers/about/mobile-app/mobileApp';
+import SubjectPc from './containers/special/subject_pc';
+import SubjectWap from './containers/special/subject_wap';
+import SubjectCommon from './containers/special/subject_common';
 import InvestList from './containers/invest/invest-list/subject-list/subject-list';
 import TransferList from './containers/invest/invest-list/transfer-list/transfers-list';
 
@@ -73,6 +76,9 @@ export default (
             <Route path="/transfer-detail" component={TransferDetail} />
             <Route path="/loan-index" component={LoanIndex} />
             <Route path="/mobile-app" component={MobileApp} />
+            <Route path="/subject_1" component={SubjectPc} />
+            <Route path="/subject_2" component={SubjectWap} />
+            <Route path="/subject_3" component={SubjectCommon} />
             <Route strict path="/my-account" render={(props) => {
                 const { match } = props;
                 return (
@@ -83,7 +89,7 @@ export default (
                             <Route path={`${match.url}/bank-card`} component={userIsAuthenticated(BankCard)} />
                             <Route path={`${match.url}/recharge`} component={userIsAuthenticated(Recharge)} />
                             <Route path={`${match.url}/withdrawals`} component={userIsAuthenticated(Withdrawals)} />
-                            <Route path={`${match.url}/transaction-record`} component={TransactionRecord} />
+                            <Route path={`${match.url}/transaction-record`} component={TransactionRecord} key={new Date().getTime()} />
                             <Redirect to="/" />
                         </Switch>
                     </MemberSidebar>

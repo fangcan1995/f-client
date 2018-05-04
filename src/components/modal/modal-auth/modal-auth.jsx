@@ -43,7 +43,6 @@ class ModalAuth extends React.Component {
 
     render() {
         let {member,auth}=this.props;
-
         let {accountsInfo,isPosting}=member;
         let {dummyResult}=accountsInfo;
         if(dummyResult===``) {

@@ -25,7 +25,7 @@ const initialState = Immutable.fromJS({
 });
 
 export default createReducer(initialState, {
-    ['mySettings/messages/FETCH_PENDING']:(state,action) => state.mergeDeep({
+    /*['mySettings/messages/FETCH_PENDING']:(state,action) => state.mergeDeep({
         isFetching: true,
     }),
     ['mySettings/messages/FETCH_FULFILLED']:(state,action) => state.mergeDeep({
@@ -38,7 +38,7 @@ export default createReducer(initialState, {
     }),
     ['mySettings/messages/MODIFY_STATE']:(state,action) => state.mergeDeep({
         messages:action.payload
-    }),
+    }),*/
 
 
     ['mySettings/riskAssess/FETCH_PENDING']:(state,action) => state.mergeDeep({
@@ -81,6 +81,20 @@ export default createReducer(initialState, {
     }),
     ['mySettings/authInfo/FETCH_REJECTED']:(state,action) => state.mergeDeep({
         isFetching: false,
+        errorMessage: action.message
+    }),
+    ['mySettings/password/FETCH_PENDING']:(state,action) => state.mergeDeep({
+        isFetching: true,
+        isPosting: true,
+    }),
+    ['mySettings/password/FETCH_FULFILLED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        isPosting: false,
+        authInfo:action.payload
+    }),
+    ['mySettings/password/FETCH_REJECTED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        isPosting: false,
         errorMessage: action.message
     }),
     ['mySettings/authInfo/MODIFY_STATE']:(state,action) => state.mergeDeep({

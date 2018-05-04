@@ -1,9 +1,7 @@
 import cFetch from './../utils/cFetch';
-import cookie from 'js-cookie';
-import { API_CONFIG } from './../config/api';
+
 import parseJson2URL from './../utils/parseJson2URL';
 import {urls,urls_auth,token} from './../utils/url';
-import {message} from "antd/lib/index";
 
 const url_getMList=`${urls}/message/mail/page`;  //获取消息列表
 const url_setRead=`${urls}/message/mail/read`; //设为已读
@@ -22,15 +20,18 @@ export const myMessagesAc= {
             type: 'mySettings/messages/FETCH',
             async payload() {
                 params = parseJson2URL(params);
+                console.log('提交后台的参数');
+                console.log(params);
                 const res = await cFetch(`${url_getMList}?` + params, {method: 'GET'}, true);
                 const {code, data} = res;
+                console.log(data);
                 if (data.page.total > 0) {
                     for (let index of data.page.list.keys()) {
                         data.page.list[index] = Object.assign({isShow: '0',isChecked: 0}, data.page.list[index]);
                     }
                 }
                 if (code == 0) {
-                    return {myList: data};
+                    return data;
                 } else {
                     throw res;
                 }
@@ -39,7 +40,7 @@ export const myMessagesAc= {
     },
     setRead: (pram) => {
         return {
-            type: 'mySettings/messages/FETCH',
+            type: 'mySettings/messages/SET_READED',
             async payload() {
                 const res = await cFetch(`${url_setRead}`, {
                         method: 'PUT',
@@ -50,7 +51,7 @@ export const myMessagesAc= {
                     },
                     true);
                 if (res.code == 0) {
-                    return {readResult: res};
+                    return res;
                 } else {
                     throw res;
                 }
@@ -59,7 +60,7 @@ export const myMessagesAc= {
     },
     deleteMessage: (pram,dispatch) => {
         return {
-            type: 'mySettings/messages/FETCH',
+            type: 'mySettings/messages/DELETE',
             async payload() {
                 const res = await cFetch(`${url_delete}`, {
                         method: 'DELETE',
@@ -70,7 +71,7 @@ export const myMessagesAc= {
                     },
                     true);
                 if (res.code == 0) {
-                    return {deleteResult: res};
+                    return  res;
                 } else {
                     throw res;
                 }
@@ -85,6 +86,23 @@ export const myMessagesAc= {
             }
         }
     },
+    reset: (prams) => {
+        return {
+            type: 'mySettings/messages/RESET',
+            payload() {
+                return prams
+            }
+        }
+    },
+    modify_list: (prams) => {
+        return {
+            type: 'mySettings/messages/MODIFY_LIST',
+            payload() {
+                return prams
+            }
+        }
+    },
+
 }
 export const myRiskAssessAc={
     getResult: () => {
@@ -93,9 +111,6 @@ export const myRiskAssessAc={
             async payload() {
                 const res = await cFetch(`${url_getResult}`, {method: 'GET'}, true);
                 const {code, data} = res;
-                /*console.log('***************');
-                console.log(url_getResult);
-                console.log(data);*/
 
                 if (code == 0) {
                     return {
@@ -210,13 +225,11 @@ export const myAuthInfoAc={
         }
     },
     postPassword: (pram,dispatch) => {
-
         console.log('提交给后台的参数是：');
-
         pram=parseJson2URL(pram);
         console.log(pram);
         return {
-            type: 'mySettings/authInfo/FETCH',
+            type: 'mySettings/password/FETCH',
             async payload() {
                 const res = await cFetch(`${url_password}?${pram}`, {
                         method: 'POST',
@@ -226,13 +239,25 @@ export const myAuthInfoAc={
                         body: ``,
                     },
                     true);
-                if (res.code == 0) {
+                /*if (res.code == 0) {
                     message.success(res.message);
                     return {postResult: res};
                 } else {
                     message.error(res.message);
                     throw res;
-                }
+                }*/
+                let type=``;
+                (res.code == 0)?type='success':type='error';
+                console.log('修改密码返回的结果');
+                console.log(res);
+                return {
+                    postResult: {
+                        code:res.code,
+                        type:type,
+                        message:res.message||``,
+                        description:res.data||``,
+                    }
+                };
             }
         }
     },
