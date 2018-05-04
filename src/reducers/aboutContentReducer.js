@@ -35,6 +35,11 @@ export default createReducer(initialState, {
             menuList: action.payload
         });
     },
+    /* ['GET_ARTICALLIST_PENDING']: (state, action) => {
+        return state.merge({
+            status: 0
+        });
+    }, */
     ['GET_ARTICALLIST_FULFILLED']: (state, action) => {
         return state.merge({
             pageInfo: action.payload.data,

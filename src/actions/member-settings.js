@@ -40,7 +40,7 @@ export const myMessagesAc= {
     },
     setRead: (pram) => {
         return {
-            type: 'mySettings/messages/FETCH',
+            type: 'mySettings/messages/SET_READED',
             async payload() {
                 const res = await cFetch(`${url_setRead}`, {
                         method: 'PUT',
@@ -51,7 +51,7 @@ export const myMessagesAc= {
                     },
                     true);
                 if (res.code == 0) {
-                    return {readResult: res};
+                    return res;
                 } else {
                     throw res;
                 }
@@ -60,7 +60,7 @@ export const myMessagesAc= {
     },
     deleteMessage: (pram,dispatch) => {
         return {
-            type: 'mySettings/messages/FETCH',
+            type: 'mySettings/messages/DELETE',
             async payload() {
                 const res = await cFetch(`${url_delete}`, {
                         method: 'DELETE',
@@ -71,7 +71,7 @@ export const myMessagesAc= {
                     },
                     true);
                 if (res.code == 0) {
-                    return {deleteResult: res};
+                    return  res;
                 } else {
                     throw res;
                 }
@@ -86,25 +86,41 @@ export const myMessagesAc= {
             }
         }
     },
+    reset: (prams) => {
+        return {
+            type: 'mySettings/messages/RESET',
+            payload() {
+                return prams
+            }
+        }
+    },
+    modify_list: (prams) => {
+        return {
+            type: 'mySettings/messages/MODIFY_LIST',
+            payload() {
+                return prams
+            }
+        }
+    },
+
 }
 export const myRiskAssessAc={
     getResult: () => {
         return {
-            type: 'mySettings/riskAssess/FETCH',
+            type: 'mySettings/riskAssess/FETCH_RESULT',
             async payload() {
                 const res = await cFetch(`${url_getResult}`, {method: 'GET'}, true);
                 const {code, data} = res;
-                /*console.log('***************');
-                console.log(url_getResult);
-                console.log(data);*/
-
+                console.log('测评结果是：');
+                console.log(data);
                 if (code == 0) {
-                    return {
+                    /*return {
                         result: data,
                         status:data.requireEval
-                    };
+                    };*/
+                    return data;
                 } else {
-                    throw res;
+                    throw data;
                 }
             }
         }

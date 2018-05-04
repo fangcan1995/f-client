@@ -12,6 +12,7 @@ import memberInvestments from './member-investments';
 import memberLoans from './member-loans';
 import memberSettings from './member-settings';
 import memberMessages from './member-messages';
+import memberRiskAssess from './member-riskAssess';
 import investList from './invest-list';
 import investDetail from './invest-detail';
 import member from './member';
@@ -36,6 +37,7 @@ export {
     investDetail,
     memberSettings,
     memberMessages,
+    memberRiskAssess,
     member,
     superPartner,
     aboutContentReducer,

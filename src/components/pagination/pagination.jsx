@@ -3,6 +3,7 @@ import './pagination.less';
 export default class Pagination extends Component{
     constructor(props) {
         super(props)
+        this.jumpPage = this.jumpPage.bind(this);
         // 设置当前页码，默认为第一页
         this.state = {
             pageCount:props.config.pageSize,
@@ -162,9 +163,21 @@ export default class Pagination extends Component{
         this.go( currentPage )
     }
     jumpPage(e){
-        this.setState(
-            {page: e.target.value}
-        );
+        let currentPage=e.target.value;
+        if(!parseInt(currentPage)){
+            return;
+        }else{
+            currentPage=parseInt(currentPage);
+            const {
+                totalPage,
+            } = this.props.config;
+            if(currentPage > totalPage || currentPage<1){
+                console.log('非法');
+                return;
+            }
+        }
+
+        this.go( currentPage)
     }
     render(){
         const Pages = this.create.bind(this)();

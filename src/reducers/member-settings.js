@@ -4,13 +4,13 @@ import Immutable from 'immutable';
 const initialState = Immutable.fromJS({
     isFetching:false,
     isPosting:false,
-    messages:{
+    /*messages:{
         isFetching:false,
         myList:'',
         readTag: '',
         readResult:{},
         deleteResult:{}
-    },
+    },*/
     riskAssess:{
         status:'',
         myList:'',
