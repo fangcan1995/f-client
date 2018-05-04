@@ -14,8 +14,6 @@ class articalContent extends Component {
 
     componentDidMount() {
         const { dispatch, articalId } = this.props;
-        console.log(1);
-        //dispatch(articalAction(articalId));
     }
 
     render() {

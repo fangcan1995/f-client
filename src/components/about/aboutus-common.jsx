@@ -128,7 +128,6 @@ class About extends Component {
 
     sideBarTop = (list, match, location, defaultParent, relation) => {
         const container = list.map((item, i) => {
-            console.log(relation[i]);
             if (item.disclosureDtos.length > 0) {
                 if (i === 0) {
                     this.defaultName = item.disclosureDtos[0].affTypeName;
@@ -175,8 +174,6 @@ class About extends Component {
         
         //重置父级菜单和子集菜单的关联
         const relations = this.relations = this.createRelation(aboutContent.menuList);
-        console.log(aboutContent.menuList);
-        console.log(relations);
         //获取当前的路径，当前路径的父级菜单id 和 自己菜单的id
         const currentLocation = location.pathname.split('/');
         let currentParentId, currentChildId, currentTabName;
