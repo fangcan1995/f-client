@@ -3,8 +3,7 @@ import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
     isFetching:false,
-    isPosting:false,
-    status:'',
+    showResult:true,
     myList:'',
     result:'',
     postResult:'',
@@ -14,7 +13,11 @@ const initialState = Immutable.fromJS({
 export default createReducer(initialState, {
     //同步修改数据
     ['mySettings/riskAssess/MODIFY_STATE']:(state,action) => state.mergeDeep({
-        riskAssess:action.payload
+        myList:action.payload
+    }),
+    //同步切换结果和题目
+    ['mySettings/riskAssess/TOGGLE']:(state,action) => state.mergeDeep({
+        showResult:action.payload
     }),
     //异步获取测评题目
     ['mySettings/riskAssess/FETCH_PENDING']:(state,action) => state.mergeDeep({
@@ -22,7 +25,7 @@ export default createReducer(initialState, {
     }),
     ['mySettings/riskAssess/FETCH_FULFILLED']:(state,action) => state.mergeDeep({
         isFetching: false,
-        riskAssess:action.payload
+        myList:action.payload
     }),
     ['mySettings/riskAssess/FETCH_REJECTED']:(state,action) => state.mergeDeep({
         isFetching: false,
@@ -48,7 +51,7 @@ export default createReducer(initialState, {
     ['mySettings/riskAssess/FETCH_POST_FULFILLED']:(state,action) => state.mergeDeep({
         isFetching: false,
         isPosting: false,
-        riskAssess:action.payload
+        postResult:action.payload
     }),
     ['mySettings/riskAssess/FETCH_POST_REJECTED']:(state,action) => state.mergeDeep({
         isFetching: false,

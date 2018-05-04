@@ -5,9 +5,12 @@ import  {poundage,addCommas,checkMoney,income}  from '../../../../assets/js/cost
 import StepperInput from '../../../../components/stepperInput/stepperInput';
 import { Checkbox,message,Select } from 'antd';
 import { Alert } from 'antd';
-import './modalInvest.less'
+import './modalInvest.less';
+import {Loading,NoRecord,Posting} from '../../../../components/bbhAlert/bbhAlert';
+import {BbhAlert} from '../../../../components/bbhAlert/bbhAlert';
 import { connect } from 'react-redux';
 import  investDetailActions  from '../../../../actions/invest-detail';
+import {memberAc} from "../../../../actions/member";
 class ModalInvest extends React.Component {
     constructor(props) {
         super(props);
@@ -37,7 +40,7 @@ class ModalInvest extends React.Component {
         }
     }
     handleSubmit(e) {
-        const {callback, investAmount} = this.props.config;
+        const {callback, investAmount,id} = this.props.config;
         //1 验证是否同意协议
         if (!this.state.isRead) {
             this.setState({
@@ -46,11 +49,30 @@ class ModalInvest extends React.Component {
             return false;
         }
         //2 提交后台
-        console.log('提交投资申请');
-        this.props.dispatch(investDetailActions.postInvest({Amount:1000}));
+        //console.log('提交投资申请');
+        this.props.dispatch(investDetailActions.postInvest(
+            {
+                projectId:id,
+                investAmt:investAmount,
+                ifTransfer:false,
+                investWay:1,
+                transfer:false
+            }
+            ));
     }
-
+    modalClose(){
+        //清空
+        /*let {dummyResult}=this.props.member.accountsInfo;
+        if(dummyResult.code==0){
+            this.props.dispatch(memberAc.getInfo());  //成功重新获取新户信息
+        }*/
+        //this.props.dispatch(memberAc.modifyState({'postResult':``}));
+        let {callback}=this.props.config;
+        callback();
+    }
     render() {
+        console.log('props');
+        console.log(this.props);
         let {investAmount} = this.props.config;
         let {postResult}=this.props.investDetail;
         let {redEnvelopes,rateCoupons}=this.props.investDetail;
@@ -140,23 +162,17 @@ class ModalInvest extends React.Component {
                     </div>
                 </div>
             );
-        }else if(postResult.code==1 || postResult.code==2){
-            return(
-                <div className="pop__invest">
-                    <Alert
-                        message={postResult.message}
-                        description={postResult.description}
-                        type={postResult.type}
-                        showIcon
-                    />
-                    <div className="form__wrapper">
-                        <button className="button able" style={{marginTop:'30px'}} onClick={() => callback()}>确定</button>
-                    </div>
-                </div>
-            )
         }else{
             return(
-                <div className="pop__invest">等待开发</div>
+                <div className="pop__invest">
+                    <BbhAlert
+                        info={{message:postResult.message,description:postResult.description,type:postResult.type,
+                            callback:()=>{
+                                this.modalClose()
+                            }
+                        }}
+                    />
+                </div>
             )
         }
     }

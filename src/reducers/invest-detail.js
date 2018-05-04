@@ -97,10 +97,19 @@ export default createReducer(initialState, {
         isFetching: false,
         errorMessage: action.message
     }),
-    /*['investDetail/investInfo/MODIFY_STATE']:(state,action) => state.mergeDeep({
-        investInfo:action.payload
-    }),*/
 
+    //投资
+    ['investDetail/invest/POST_PENDING']: (state, action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['investDetail/invest/POST_FULFILLED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        postResult: action.payload,
+    }),
+    ['investDetail/invest/POST_REJECTED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
 
 
     ['investDetail/memberInfo/MODIFY_STATE']:(state,action) => state.mergeDeep({

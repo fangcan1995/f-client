@@ -174,7 +174,8 @@ class MasterInvestBox extends React.Component {
                                     defaultValue:investInfo.min, //默认金额
                                     min:investInfo.min,
                                     max:investInfo.max,
-                                    step:investInfo.step,
+                                    //step:investInfo.step,
+                                    step:100, //递增金额
                                     callback:(obj)=>{
                                         this.setState({
                                             tips:obj.tips,
