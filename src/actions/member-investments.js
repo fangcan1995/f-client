@@ -22,6 +22,7 @@ export const memberInvestAc={
             async payload() {
                 const res = await cFetch(`${url_investCharts}` , {method: 'GET'}, true);
                 const {code, data} = res;
+                //console.log(data);
                 if (code == 0) {
                     let {totalInvestmentDto,accumulatedIncomeDto}=data;
                     let charts={

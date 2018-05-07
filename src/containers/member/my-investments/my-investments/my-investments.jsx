@@ -77,7 +77,7 @@ class MyInvestments extends React.Component{
         let {dispatch}=this.props;
         let {myInvestments,isFetching}=this.props.memberInvestments;
         let {myList,charts,status,modalPlan,modalTransfer,currentPro,currentId}=myInvestments;
-        //console.log(myList);
+        console.log(currentId);
         let thead=[];
         thead[0]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>还款方式</th><th>投资金额(元)</th><th>投资时间</th><th>投资进度</th></tr>;
         thead[1]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>投资金额(元)</th><th>投资时间</th><th>下期回款日期</th><th>下期回款金额(元)</th><th>操作</th></tr>;
@@ -187,7 +187,7 @@ class MyInvestments extends React.Component{
                                                                 <td>{l.earnShdEarnAmou}</td>
                                                                 <td>
                                                                     <a onClick={() => this.toggleModal('modalPlan', true, l.investId)}>回款计划</a>
-                                                                    <a onClick={() => dispatch(actionsMyInvestments.toggleModal('modalTransfer', true, l.investId))}>债权转让</a>
+                                                                    <a onClick={() => this.toggleModal('modalTransfer', true, l.investId)}>债权转让</a>
                                                                     <a href="">投资合同</a>
                                                                 </td>
                                                             </tr>
@@ -277,12 +277,7 @@ class MyInvestments extends React.Component{
                     onCancel={() => this.toggleModal('modalPlan',false,'')}
                 >
                     {modalPlan===true?
-                        <ModalPlan info={
-                            {
-                                currentId:currentPro.currentId,
-                            }
-
-                        }
+                        <ModalPlan info={{currentId:currentId,}}
                         />:''
                     }
                 </Modal>
@@ -292,14 +287,14 @@ class MyInvestments extends React.Component{
                     visible={modalTransfer}
                     width="520px"
                     footer={null}
-                    onCancel={() => this.transferCallback()}
+                    onCancel={() => this.toggleModal('modalTransfer',false,'')}
                 >
                     {modalTransfer===true?
-                        <ModalTransfer info={
+                        <ModalTransfer  info={
                             {
                                 currentId:currentId,
                                 callback:(obj)=>{
-                                    this.transferCallback();
+                                    this.toggleModal('modalTransfer',false,'');
                                 }
                             }
                         }

@@ -3,16 +3,20 @@ import PropTypes from 'prop-types';
 import moment from "moment";
 import { connect } from 'react-redux';
 import {memberInvestAc} from "../../../../actions/member-investments";
+import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 class ModalPlan extends React.Component {
     componentDidMount () {
         this.props.dispatch(memberInvestAc.getPlanList(this.props.info.currentId));
     }
     render() {
-        let {currentId,planList}=this.props.myInvestments;
+        console.log('计划');
+        console.log(this.props.memberInvestments);
+        let {isFetching}=this.props.memberInvestments;
+        let {currentId,planList}=this.props.memberInvestments.myInvestments;
         let {callback}=this.props.info;
         return (
                     <div className="table__wrapper">
-                        {(planList==='')?``
+                        {(planList==='')?<Loading isShow={isFetching}/>
                             :
                             <table className="tableList">
                                 <thead>
