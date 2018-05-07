@@ -1,8 +1,8 @@
 import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import parseJson2URL from './../utils/parseJson2URL';
-import {urls,token} from './../utils/url';
-
+import {token} from './../utils/url';
+let urls='http://172.16.1.228:9090';
 const url_sblist=`${urls}/invest/projects/loan/page`;//获取散标列表
 const url_transferlist=`${urls}/invest/transfer/loan/page`;//获取债转标列表
 
@@ -18,6 +18,7 @@ export const sbListAc={
                 console.log(`${url_sblist}?`+params);
                 console.log('返回的数据');
                 console.log(data);
+
                 if (code == 0) {
                     return {
                         list:data
