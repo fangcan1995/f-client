@@ -18,6 +18,7 @@ import partnerBrand5 from '../../assets/images/homePage/partner_brand_5.png';
 import partnerBrand6 from '../../assets/images/homePage/partner_brand_6.png';
 import partnerBrand7 from '../../assets/images/homePage/partner_brand_7.png';
 import partnerBrand8 from '../../assets/images/homePage/partner_brand_8.png';
+import small from '../../assets/images/homePage/small_tile.jpg';
 
 import Floor from '../../components/home-page-floor/home-page-floor';
 
@@ -58,7 +59,10 @@ class HomePage extends Component {
   }
   handleAdClick(e){
     console.log(e)
-    this.props.history.push(`/about/90/94/${e}`)
+    if(e){
+      return this.props.history.push(`/about/90/94/${e}`)
+    }
+    this.props.history.push(`/about/90/94`)
   }
   handleCommediaClick(e){
     console.log(e)
@@ -383,11 +387,20 @@ class HomePage extends Component {
                 })}
                 
               </Carousel>   */}
-              <div className="dynamicImg__outer">
-                <img src={homePage.com.imgsrc} alt="" className="news__img dynamicImg__inner" onClick={this.handleAdClick.bind(this,homePage.com.id)} />
-              </div>
+              {
+                homePage.com?<div>
+                  <div className="dynamicImg__outer">
+                    <img src={homePage.com.imgsrc} alt="" className="news__img dynamicImg__inner" onClick={this.handleAdClick.bind(this,homePage.com.id)} />
+                  </div>
+                  <p className="news__text">{homePage.com.title}</p>
+                </div>:<div>
+                  <div className="dynamicImg__outer">
+                    <img src={small} alt="" className="news__img dynamicImg__inner" onClick={this.handleAdClick.bind(this,'')} />
+                  </div>
+                  <p className="news__text">巴巴汇金服资金存管上线</p>
+                </div>
+              }
               
-              <p className="news__text">{homePage.com.title}</p>
             </div>
           </Floor>
           <Floor
