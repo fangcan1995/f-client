@@ -45,31 +45,6 @@ class TransferList extends Component {
         let prams=Object.assign({pageNum:1,pageSize:10},orderBy);
         this.props.dispatch(tranferListAc.getList(prams));
     }
-    /*getStatusName(status,id,transferId){
-        let investButton=``;
-        switch(status){
-            case 1:
-                investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">待审核</Link>;
-                break;
-            case 2:
-                investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn start">立即加入</Link>;
-                break;
-            case 3:
-                investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">满标待划转</Link>;
-                break;
-            case 4:
-                investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">还款中</Link>;
-                break;
-            case 6:
-                investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">已流标</Link>;
-                break;
-            case 5:
-                investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">已结清</Link>;
-                break;
-
-        }
-        return investButton;
-    }*/
     render(){
         let {dispatch}=this.props;
         let {transferList,isFetching}=this.props.investList;

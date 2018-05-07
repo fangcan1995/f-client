@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import StepperInput from '../../../../components/stepperInput/stepperInput';
-import {income,addCommas} from "../../../../assets/js/cost";
-import {toDefinedString, toMoney, toNumber} from "../../../../assets/js/famatData"
+import {income} from "../../../../assets/js/cost";
+import {addCommas, toMoney, toNumber} from "../../../../assets/js/famatData"
 import {  Link} from 'react-router-dom';
 import { Modal } from 'antd';
 import ModalInvest from '../modal-invest/modalInvest';
@@ -154,7 +154,7 @@ class MasterInvestBox extends React.Component {
             return(
                 <div className="form_area">
                     <ul className="m-amount">
-                        <li><strong>开放金额：</strong>{investInfo.money}元</li>
+                        <li><strong>开放金额：</strong>{addCommas(toMoney(investInfo.money))}元</li>
                     </ul>
                     {this.getStatusName(investInfo.status,investInfo.id)}
                 </div>
@@ -166,8 +166,8 @@ class MasterInvestBox extends React.Component {
                     <div className="form_area">
                         <div>
                             <ul className="m-amount">
-                                <li><strong>开放金额：</strong>{investInfo.money}元</li>
-                                <li><strong>可投金额：</strong>{investInfo.surplusAmount}元</li>
+                                <li><strong>开放金额：</strong>{addCommas(investInfo.money)}元</li>
+                                <li><strong>可投金额：</strong>{addCommas(investInfo.surplusAmount)}元</li>
                             </ul>
                             <StepperInput config = {
                                 {

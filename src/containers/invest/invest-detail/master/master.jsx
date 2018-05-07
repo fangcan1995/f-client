@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 /*import  {getData}  from '../../../../assets/js/getData';*/
+import {toMoney,toNumber,addCommas} from  '../../../../assets/js/famatData';
 import { connect } from 'react-redux';
 import  investDetailActions  from '../../../../actions/invest-detail';
 import  {memberAc}  from '../../../../actions/member';
@@ -70,7 +71,7 @@ class InvestDetailMaster extends React.Component {
                                 </dl>
                                 <dl className="item3">
                                     <dt className="subtitle">起投金额</dt>
-                                    <dd><i>{investInfo.minInvestAmount}</i>元</dd>
+                                    <dd><i>{addCommas(toMoney(investInfo.minInvestAmount))}</i>元</dd>
                                 </dl>
                                 <dl className="progressbar">
                                     <dt><div className="finished" style={{ width:`${investInfo.investmentProgress}%`}}><i className="iconfont">&#xe64d;</i></div></dt>

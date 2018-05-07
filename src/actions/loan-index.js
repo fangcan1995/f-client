@@ -89,7 +89,8 @@ export const checkForm = (e) => {
       type: 'loan/POST_LOAN_DATA',
       // async/await配合promise处理异步
       async payload() {
-        const res = await cFetch(`${urls}/loans/apply` , { 
+
+        const res = await cFetch(`http://172.16.1.228:9090/loans/apply` , {
           method: 'POST', 
           headers: {
                 'Content-Type': 'application/json'

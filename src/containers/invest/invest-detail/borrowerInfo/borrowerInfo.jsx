@@ -1,17 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import  {addCommas}  from '../../../../assets/js/cost';
+import {addCommas, toMoney, toNumber} from "../../../../assets/js/famatData"
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
-class BorrowerInfo extends React.Component {
+    export default ({loanInfo,...rest}) => {
 
-    render(){
-        let {loanInfo}=this.props.investDetail;
         let {projectInfoBaseInfoDto,loanCreditCountDto,projectInfoLoanInfoDto,mortgageCarHis,mortgageHouseHis,filesList}=loanInfo;
         return (
             <ul className="m-intro">
                 <li>
-                    {(loanInfo === '') ? ''
+                    {(loanInfo === '') ? <Loading isShow={true} />
                         :
                         <div>
                             <dl className="intro">
@@ -98,7 +96,6 @@ class BorrowerInfo extends React.Component {
                                             <li key={`row-${i}`}>
                                                 <a href={`${l.uploadPath}`} target="_blank">
                                                     <img src={`${l.uploadPath}`} />
-                                                    {/*{l.fileName}*/}
                                                 </a>
                                             </li>
                                         ))}
@@ -115,16 +112,5 @@ class BorrowerInfo extends React.Component {
             </ul>
         );
 
-
-
-    }
 }
 
-function mapStateToProps(state) {
-    const { auth,investDetail } = state.toJS();
-    return {
-        auth,
-        investDetail
-    };
-}
-export default connect(mapStateToProps)(BorrowerInfo);

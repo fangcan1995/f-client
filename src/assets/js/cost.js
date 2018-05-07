@@ -67,18 +67,7 @@ export  function income(val,y_per,time,type){
     return amount.toFixed(2);
 }
 
-//金额格式化,小数点前三位加个逗号，2为小数点
-export  function addCommas(nStr){
-    nStr += '';//改变成字符串
-    let x = nStr.split('.');
-    let x1 = x[0];
-    let x2 = x.length > 1 ? '.' + x[1].substring(0,2) : '.00';  //小数点超出2位，只保留两位，没有小数点后补.00
-    let rgx = /(\d+)(\d{3})/;
-    while (rgx.test(x1)) {
-        x1 = x1.replace(rgx, '$1' + ',' + '$2');
-    }
-    return x1 + x2;
-}
+
 //计算手续费
 export  function poundage(amount,rate){
     return ((amount*rate).toFixed(2));

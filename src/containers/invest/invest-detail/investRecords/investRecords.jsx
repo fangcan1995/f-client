@@ -4,6 +4,7 @@ import moment from "moment";
 import { connect } from 'react-redux';
 import Pagination from '../../../../components/pagination/pagination';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
+import {addCommas, toMoney, toNumber} from "../../../../assets/js/famatData";
 class InvestRecords extends React.Component{
     constructor(props) {
         super(props);
@@ -18,15 +19,12 @@ class InvestRecords extends React.Component{
         });
     }
     render(){
-
         let {investRecords,isFetching}=this.props.investDetail;
         let {callback,pageSize,pageNum} =this.props;
-
         let {list}=investRecords;
         if(investRecords.total>0){
             list=list.slice((this.state.pageNum-1)*pageSize,(this.state.pageNum-1)*pageSize+pageSize);
         }
-
         return (
             <ul  className="m-record">
                 {(investRecords === '') ? <li><Loading isShow={isFetching} /></li>
@@ -47,7 +45,7 @@ class InvestRecords extends React.Component{
                                         list.map((l, i) => (
                                             <tr key={`row-${i}`}>
                                                 <td>{l.investor}</td>
-                                                <td>{l.investAmt}</td>
+                                                <td className="money">{toMoney(l.investAmt)}</td>
                                                 <td>{l.investTime}</td>
                                                 <td>{l.investWayString}</td>
                                             </tr>
