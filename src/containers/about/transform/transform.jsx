@@ -20,6 +20,7 @@ class TransformPage extends Component {
     componentDidMount() {
         const { childId, dispatch, aboutContent, match } = this.props;
         const status = aboutContent.status;
+        console.log(11111111111);
         if(!match.params.articalId) {
             dispatch(articalListAction(childId, 1));
         }
@@ -28,11 +29,11 @@ class TransformPage extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    /* componentWillReceiveProps(nextProps) {
         this.setState({
             childId: nextProps.childId
         })
-    }
+    } */
 
     render() {
         const { childId, dispatch, aboutContent, content, tabName, match, key } = this.props;
@@ -45,7 +46,7 @@ class TransformPage extends Component {
                     match={match}
                     articalId={match.params.articalId}
                     dispatch={dispatch}
-                    key={key}
+                    key={match.params.articalId}
                 />
             );
         }
@@ -58,7 +59,7 @@ class TransformPage extends Component {
                             match={match}
                             childId={childId}
                             dispatch={dispatch}
-                            key={key}
+                            key={match.params.childId}
                         />
                     );
 
@@ -70,7 +71,7 @@ class TransformPage extends Component {
                             match={match}
                             childId={childId}
                             dispatch={dispatch}
-                            key={key}
+                            key={match.params.childId}
                         />
                     )
                 }
@@ -79,7 +80,7 @@ class TransformPage extends Component {
             else {
                 if(childId === '82') {
                     return (
-                        <ConstantTable key={key} />
+                        <ConstantTable key={match.params.childId} />
                     )
                 }
                 return (
@@ -89,14 +90,14 @@ class TransformPage extends Component {
                         match={match}
                         articalId={match.params.articalId}
                         dispatch={dispatch}
-                        key={key}
+                        key={match.params.articalId}
                     />
                 );
             }
         }
         else {
             return (
-                <div key={key}>
+                <div key={match.params.childId}>
                     <div className="tabs__nav">
                         <li className="tab tab--active">{tabName}</li>
                     </div>
