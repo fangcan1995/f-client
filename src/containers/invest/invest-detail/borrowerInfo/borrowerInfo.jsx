@@ -80,8 +80,8 @@ class BorrowerInfo extends React.Component {
                                     <dd>
                                         <p><strong>房产地址:</strong>{mortgageHouseHis.houseAdress}</p>
                                         <p><strong>房屋类型:</strong>{mortgageHouseHis.houseType}</p>
-                                        <p><strong>建筑面积:</strong>{mortgageHouseHis.area}</p>
-                                        <p><strong>竣工年份:</strong>--年</p>
+                                        <p><strong>建筑面积:</strong>{mortgageHouseHis.area}平方米</p>
+                                        <p><strong>竣工年份:</strong>{mortgageHouseHis.houseAge}年</p>
                                         <p><strong>尚欠贷余额:</strong>{mortgageHouseHis.debtMoney}元</p>
                                         <p><strong>土地所有证号:</strong>{mortgageHouseHis.landNo}</p>
                                         <p><strong>房屋产权所有证号:</strong>{mortgageHouseHis.houseBelongNo}</p>

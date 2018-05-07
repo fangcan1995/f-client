@@ -2,6 +2,8 @@ import { createReducer } from 'redux-immutablejs';
 import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
+    isFetching:false,
+    isPosting:false,
     investInfo:``,
     memberInfo:``,
     loanInfo:``,

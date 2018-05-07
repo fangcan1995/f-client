@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import { Progress } from 'antd';
 import { connect } from 'react-redux';
 import moment from "moment";
-import {sbListAc, tranferListAc} from "../../../../actions/invest-list"
+import {tranferListAc} from "../../../../actions/invest-list"
 import Pagination from '../../../../components/pagination/pagination';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
+import {InvestTab,ProgressBar,InvestButton} from '../investComponents';
 import '../invest-list.less';
 let orderBy={};
 class TransferList extends Component {
@@ -24,7 +25,6 @@ class TransferList extends Component {
         for(var i in sort){
             newSort[i]=0;
         };
-        //let orderBy={};
         switch (sort[type]){
             case 0:
                 newSort[type]=1;
@@ -45,7 +45,7 @@ class TransferList extends Component {
         let prams=Object.assign({pageNum:1,pageSize:10},orderBy);
         this.props.dispatch(tranferListAc.getList(prams));
     }
-    getStatusName(status,id,transferId){
+    /*getStatusName(status,id,transferId){
         let investButton=``;
         switch(status){
             case 1:
@@ -69,20 +69,17 @@ class TransferList extends Component {
 
         }
         return investButton;
-    }
+    }*/
     render(){
         let {dispatch}=this.props;
         let {transferList,isFetching}=this.props.investList;
         let {list,sort}=transferList;
+        console.log('-----------transferList--------');
+        console.log(transferList);
         return (
             <main className="main transfer-list">
             <div className="wrapper">
-                <div className="tablist">
-                    <div className="tabs__nav">
-                        <Link to="/invest-list" className="tab">散标</Link>
-                        <Link to="/transfer-list" className="tab tab--active">债权</Link>
-                    </div>
-                </div>
+                <InvestTab isTransfer={true} />
                 {
                     list ===''? <Loading isShow={isFetching} />
                         :
@@ -117,11 +114,10 @@ class TransferList extends Component {
                                                     <td className="rtxt">{l.surplusAmount}元</td>
                                                     <td>{l.investNumber}人</td>
                                                     <td style={{ width: 170}}>
-                                                        <Progress percent={parseInt(l.investmentProgress)} size="small" />
+                                                        <ProgressBar value={l.investmentProgress} />
                                                     </td>
                                                     <td>
-                                                        {this.getStatusName(l.transStatus,l.projectId,l.id)}
-
+                                                        <InvestButton status={l.status} id={l.id} />
                                                     </td>
                                                 </tr>
                                             ))

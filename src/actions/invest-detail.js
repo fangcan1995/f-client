@@ -1,10 +1,10 @@
 import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
 import {addCommas,checkMoney} from './../assets/js/cost';
-import {token} from './../utils/url';
+import {urls,token} from './../utils/url';
 import {url_putRList} from './member-settings';
 import parseJson2URL from "../utils/parseJson2URL";
-let urls='http://172.16.1.228:9090';
+//let urls='http://172.16.1.228:9090';
 const url_invest_projects_loan=`${urls}/invest/projects/loan`; //投资信息
 const url_invest_transfer_loan=`${urls}/invest/transfer/loan` //债转投资信息
 const url_projects_info=`${urls}/invest/projects/info`  ;//标的详情

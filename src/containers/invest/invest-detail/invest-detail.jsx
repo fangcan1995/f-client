@@ -21,13 +21,13 @@ class InvestDetail extends React.Component{
         dispatch(investDetailActions.getLoanInfo(proId)); //借款人信息披露
         dispatch(investDetailActions.getInvestRecords(proId));//投资记录
         dispatch(investDetailActions.getRepayRecords(proId)); //还款记录
-
-
     }
     render(){
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
         let proId=pathSnippets[1];
         let {investDetail}=this.props;
+        console.log('-----------investDetail-----------');
+        console.log(investDetail);
         let {investInfo,memberInfo,loanInfo,investRecords,repayRecords}=investDetail;
         let project=investInfo.data;
 

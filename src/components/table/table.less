@@ -24,25 +24,6 @@
           color: #81868f;
           text-align: center;
       }
-        /*.order {
-            cursor:default;
-            i{
-                display:inline-block;
-                width:20px;
-                height:20px;
-                background:url(../../assets/images/invest/order.png) 5px 7px no-repeat;
-            }
-            &.asc{
-                i{
-                    background:url(../../assets/images/invest/order_top.png) 5px 7px no-repeat;
-                }
-            }
-            &.desc{
-                i{
-                    background:url(../../assets/images/invest/order_bottom.png) 5px 7px no-repeat;
-                }
-            }
-        }*/
       .order0 {
         cursor:pointer;
         i{
@@ -137,9 +118,14 @@
                 color: #fff;
                 font-size: 14px;
                 margin-right:10px;
+
                 &.end{
-                    background: #b8c4cc;
-                }
+                    background: @color-page-btn-enable;
+                } //准备删除
+              &.disabled{
+                background: @color-page-btn-enable;
+              }
+
             }
         }
     }
