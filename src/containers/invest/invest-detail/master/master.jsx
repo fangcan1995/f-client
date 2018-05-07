@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-/*import  {getData}  from '../../../../assets/js/getData';*/
 import {toMoney,toNumber,addCommas} from  '../../../../assets/js/famatData';
 import { connect } from 'react-redux';
 import  investDetailActions  from '../../../../actions/invest-detail';
@@ -12,16 +11,6 @@ class InvestDetailMaster extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            /*investAmount:0,
-            project:{},
-            member:{},
-
-            modalInvest: false,
-            modalRecharge: false,
-            modalRiskAssess: false,
-            tips:'',
-            allowedInvest:true,
-            code:100*/
         }
     }
     componentDidMount () {
@@ -30,18 +19,6 @@ class InvestDetailMaster extends React.Component {
         }
         this.props.dispatch(investDetailActions.getInvestInfo(this.props.id));
     }
-
-    /*rechargeCallback(){
-        this.toggleModal(`modalRecharge`,false);
-        //this.loadData();
-        let newState= {
-            code:0,
-            type:'',
-            message:'',
-            description:''
-        };
-        dispatch(investDetailActions.statePostResultModify(newState));
-    }*/
     render(){
         let {investInfo}=this.props.investDetail;
         let {member,auth}=this.props;
@@ -88,20 +65,21 @@ class InvestDetailMaster extends React.Component {
                         {/*投资区域*/}
                         <div className="m-invest">
                             {(investInfo !=``)?
-                            <InvestBox type={0}
-                                        investInfo={{
-                                            id:investInfo.id,
-                                            status:investInfo.status,
-                                            money:investInfo.money,
-                                            surplusAmount:investInfo.surplusAmount,
-                                            min:investInfo.minInvestAmount,
-                                            max:(investInfo.maxInvestAmount<investInfo.surplusAmount)?investInfo.maxInvestAmount:investInfo.surplusAmount,
-                                            step:investInfo.increaseAmount,
-                                            rate:investInfo.annualRate,
-                                            loanExpiry:investInfo.loanExpiry,
-                                            noviceLoan:investInfo.noviceLoan //'1'新手标
-                                        }}
-                            />
+                                <InvestBox type={0}
+                                           investInfo={{
+                                               id:investInfo.id,
+                                               status:investInfo.status,
+                                               money:investInfo.money,
+                                               surplusAmount:investInfo.surplusAmount,
+                                               min:investInfo.minInvestAmount,
+                                               max:(investInfo.maxInvestAmount<investInfo.surplusAmount)?investInfo.maxInvestAmount:investInfo.surplusAmount,
+                                               //step:investInfo.increaseAmount,  //递增金额
+                                               step:100,  //递增金额
+                                               rate:investInfo.annualRate,
+                                               loanExpiry:investInfo.loanExpiry,
+                                               noviceLoan:investInfo.noviceLoan //'1'新手标
+                                           }}
+                                />
                             :``}
                         </div>
                     </div>

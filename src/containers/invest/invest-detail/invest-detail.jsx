@@ -43,10 +43,10 @@ class InvestDetail extends React.Component{
                                 <BorrowerInfo loanInfo={loanInfo} />
                             </div>
                             <div name="投标记录" style={{marginBottom:'30px'}}>
-                                <InvestRecords pageSize={3}/>
+                                <InvestRecords pageSize={10}/>
                             </div>
                             <div name="还款记录" style={{marginBottom:'30px'}}>
-                                <RepayRecords pageSize={5}/>
+                                <RepayRecords pageSize={10}/>
                             </div>
                             <div name="风险信息">
                                 <RiskNotice />

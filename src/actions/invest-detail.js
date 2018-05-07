@@ -151,8 +151,7 @@ let investDetailActions = {
 
     //提交投资申请
     postInvest:(params)  => {
-        console.log('提交给后台的参数是');
-        console.log(params);
+
         return {
             type: 'investDetail/invest/POST',
             async payload() {
