@@ -114,11 +114,11 @@ export const myRiskAssessAc={
                 console.log('测评结果是：');
                 console.log(data);
                 if (code == 0) {
-                    /*return {
+                    return {
                         result: data,
-                        status:data.requireEval
-                    };*/
-                    return data;
+                        hideResult:data.requireEval
+                    };
+                    //return data;
                 } else {
                     throw data;
                 }
@@ -131,11 +131,13 @@ export const myRiskAssessAc={
             async payload() {
                 const res = await cFetch(`${url_getRList}` , {method: 'GET'}, true);
                 const {code, data} = res;
+                console.log('返回的题目');
+                console.log(data)
                 if (code == 0) {
                     for(let index of data.keys()){
                         data[index]=Object.assign({isChecked:''},data[index]);
                     }
-                    return {myList: data};
+                    return data;
                 } else {
                     throw res;
                 }
@@ -165,12 +167,12 @@ export const myRiskAssessAc={
                 console.log('提交测评返回的结果');
                 console.log(res);
                 return {
-                    postResult: {
+
                         code:res.code,
                         type:type,
                         message:res.message,
                         description:res.data||``,
-                    }
+
                 };
             }
         }
@@ -198,9 +200,25 @@ export const myRiskAssessAc={
             }
         }
     },*/
+    toggle: (prams) => {
+        return {
+            type: 'mySettings/riskAssess/TOGGLE',
+            payload() {
+                return prams
+            }
+        }
+    },
     modifyState: (prams) => {
         return {
             type: 'mySettings/riskAssess/MODIFY_STATE',
+            payload() {
+                return prams
+            }
+        }
+    },
+    reset: (prams) => {
+        return {
+            type: 'mySettings/riskAssess/RESET',
             payload() {
                 return prams
             }

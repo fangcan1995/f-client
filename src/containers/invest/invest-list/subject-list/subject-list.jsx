@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Progress } from 'antd';
 import { connect } from 'react-redux';
 import moment from "moment";
 import {sbListAc} from "../../../../actions/invest-list";
 import Pagination from '../../../../components/pagination/pagination';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
+import {InvestTab,ProgressBar,InvestButton} from '../investComponents';
 import '../invest-list.less';
-import {memberLoansAc} from "../../../../actions/member-loans";
+
+
 let orderBy={};
 class SubjectList extends Component {
     constructor(props) {
@@ -16,6 +17,7 @@ class SubjectList extends Component {
         this.multiFilter = this.multiFilter.bind(this);
     }
     componentDidMount () {
+        //处理来自新手标的路由
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
         if(pathSnippets[1]=='newNoviceLoan'){
             let filter={
@@ -31,11 +33,11 @@ class SubjectList extends Component {
             };
             this.props.dispatch(sbListAc.stateSbModify({filter:filter}));
             this.props.dispatch(sbListAc.getList({status:``}));
-
         }
 
 
     }
+    //处理年化收益率的分组
     todoFilter(filter){
         for (var key in filter) {
             if(filter[key]==='') {
@@ -63,18 +65,17 @@ class SubjectList extends Component {
         //console.log(Object.assign({},filter));
         return Object.assign({},filter);
     }
+    //多条件查询
     multiFilter(type,value){
         let filter=this.props.investList.sbList.filter;
         let sort=this.props.investList.sbList.sort;
         //修改
         filter[type]=value;
-
-        //this.props.dispatch(sbListAc.stateSbModify({filter:filter,list:``}));
         this.props.dispatch(sbListAc.stateSbModify({list:``,filter:filter,sort:sort}));
         let prams=Object.assign({pageNum:1,pageSize:10},this.todoFilter(filter),orderBy);
         this.props.dispatch(sbListAc.getList(prams));
-        //this.props.dispatch(sbListAc.getList(this.todoFilter(filter)));
     }
+    //排序
     sort(type){
         let sbList=this.props.investList.sbList;
         let sort=sbList.sort;
@@ -101,47 +102,17 @@ class SubjectList extends Component {
         let prams=Object.assign({pageNum:1,pageSize:10},this.todoFilter(filter),orderBy);
         this.props.dispatch(sbListAc.getList(prams));
     }
-    getStatusName(status,id){
-        let investButton=``;
-        switch(status){
-            case 1:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn end">待发布</Link>;
-                break;
-            case 2:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn start">立即投资</Link>;
-                break;
-            case 3:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn end">满标待划转</Link>;
-                break;
-            case 4:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn end">还款中</Link>;
-                break;
-            case 6:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn end">已流标</Link>;
-                break;
-            case 5:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn end">已结清</Link>;
-                break;
-        }
-        return investButton;
-
-    }
     render(){
         let {dispatch}=this.props;
         let {sbList,isFetching}=this.props.investList;
         let {list,filter,sort}=sbList;
         let {noviceLoan,loanExpiry,rateGroup}=filter;
         console.log('--------------this.props--------------');
-        console.log(list);
+        console.log(this.props.investList);
         return (
             <main className="main invest-list">
                 <div className="wrapper">
-                    <div className="tablist">
-                        <div className="tabs__nav">
-                            <Link to="/invest-list" className="tab tab--active">散标</Link>
-                            <Link to="/transfer-list" className="tab">债权</Link>
-                        </div>
-                    </div>
+                    <InvestTab isTransfer={false} />
                     <div className="filter">
                         <div className="filter__outer">
                             <div className="filter__inner">
@@ -242,10 +213,10 @@ class SubjectList extends Component {
                                                         <td className="rtxt">{l.surplusAmount}元</td>
                                                         <td>{l.investNumber}人</td>
                                                         <td style={{ width: 170}}>
-                                                            <Progress percent={parseInt(l.investmentProgress)} size="small" />
+                                                            <ProgressBar value={l.investmentProgress} />
                                                         </td>
                                                         <td>
-                                                            {this.getStatusName(l.status,l.id)}
+                                                            <InvestButton status={l.status} id={l.id} />
                                                         </td>
                                                     </tr>
                                                 ))

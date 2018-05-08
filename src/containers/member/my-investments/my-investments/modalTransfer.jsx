@@ -6,7 +6,7 @@ import { Checkbox,message,Alert } from 'antd';
 import { connect } from 'react-redux';
 import {memberInvestAc} from "../../../../actions/member-investments";
 import {BbhAlert} from '../../../../components/bbhAlert/bbhAlert';
-
+import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 class ModalTransfer extends React.Component {
     constructor(props) {
         super(props);
@@ -115,13 +115,14 @@ class ModalTransfer extends React.Component {
     render() {
         console.log(this.props);
         let {callback}=this.props.info;
+        let {isFetching}=this.props.memberInvestments;
         let {postResult,transferInfo}=this.props.memberInvestments.myInvestments;
         let {amount,tips,isRead,postSwitch} =this.state;
         return (
             <div className="pop__transfer">
                 {
                     (postResult === ``) ?
-                        (transferInfo===``)?('')
+                        (transferInfo===``)?<Loading isShow={isFetching}/>
                         :(<div className="form__wrapper">
                                 <dl className="form__bar">
                                     <dt><label>实际投资金额:</label></dt>
@@ -165,8 +166,14 @@ class ModalTransfer extends React.Component {
                                     }
                                 </div>
                                 <div className="form__bar">
-
-                                    <button className="button able" onClick={this.handleSubmit}>确认</button>
+                                    {isPosting ?
+                                        <button className="button unable" style={{marginTop: '30px'}}><Posting
+                                            isShow={isPosting}/></button>
+                                        :
+                                        <button className="button able" style={{marginTop: '30px'}}
+                                                onClick={this.handleSubmit}>确定</button>
+                                    }
+                                    {/*<button className="button able" onClick={this.handleSubmit}>确认</button>*/}
                                 </div>
                             </div>)
                         :

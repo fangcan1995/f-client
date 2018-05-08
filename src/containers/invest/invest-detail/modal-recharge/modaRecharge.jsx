@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import  {checkMoney,addCommas}  from '../../../../assets/js/cost';
-import { Alert } from 'antd';
+import  {checkMoney}  from '../../../../assets/js/cost';
+import {addCommas} from "../../../../assets/js/famatData";
+import { Button } from 'antd';
 import './modaRecharge.less'
 import { connect } from 'react-redux';
 import  {memberAc}  from '../../../../actions/member';
-import  investDetailActions  from '../../../../actions/invest-detail';
 import {Loading,NoRecord,Posting} from '../../../../components/bbhAlert/bbhAlert';
 import {BbhAlert} from '../../../../components/bbhAlert/bbhAlert';
 class ModalRecharge extends React.Component {
@@ -38,12 +38,6 @@ class ModalRecharge extends React.Component {
         //3 提交后台
         this.props.dispatch(memberAc.recharge(this.state.value));
         let {postResult}=this.props.member.accountsInfo;
-        console.log(postResult);
-        /*let {info,callback}=this.props.config;
-        console.log('aaaaaaaaaaaaa');
-        console.log(callback);
-        info.callback();
-        //this.props.dispatch(investDetailActions.statePostResultModify({}));*/
 
     }
     //改变金额
@@ -141,12 +135,13 @@ class ModalRecharge extends React.Component {
                                 </div>
                                 <div className="form__wrapper">
                                     {isPosting ?
-                                        <button className="button unable" style={{marginTop: '30px'}}><Posting
-                                            isShow={isPosting}/></button>
+                                        <Button className="button unable" style={{marginTop: '30px'}}><Posting
+                                            isShow={isPosting}/></Button>
                                         :
-                                        <button className="button able" style={{marginTop: '30px'}}
-                                                onClick={this.handleSubmit}>确定</button>
+                                        <Button className="button able" style={{marginTop: '30px'}}
+                                                onClick={this.handleSubmit}>确定</Button>
                                     }
+
                                 </div>
                             </div>
                             : ''

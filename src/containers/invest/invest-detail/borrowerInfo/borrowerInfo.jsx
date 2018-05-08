@@ -1,17 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import  {addCommas}  from '../../../../assets/js/cost';
+import {addCommas, toMoney, toNumber} from "../../../../assets/js/famatData"
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
-class BorrowerInfo extends React.Component {
+    export default ({loanInfo,...rest}) => {
 
-    render(){
-        let {loanInfo}=this.props.investDetail;
         let {projectInfoBaseInfoDto,loanCreditCountDto,projectInfoLoanInfoDto,mortgageCarHis,mortgageHouseHis,filesList}=loanInfo;
         return (
             <ul className="m-intro">
                 <li>
-                    {(loanInfo === '') ? ''
+                    {(loanInfo === '') ? <Loading isShow={true} />
                         :
                         <div>
                             <dl className="intro">
@@ -80,8 +78,8 @@ class BorrowerInfo extends React.Component {
                                     <dd>
                                         <p><strong>房产地址:</strong>{mortgageHouseHis.houseAdress}</p>
                                         <p><strong>房屋类型:</strong>{mortgageHouseHis.houseType}</p>
-                                        <p><strong>建筑面积:</strong>{mortgageHouseHis.area}</p>
-                                        <p><strong>竣工年份:</strong>--年</p>
+                                        <p><strong>建筑面积:</strong>{mortgageHouseHis.area}平方米</p>
+                                        <p><strong>竣工年份:</strong>{mortgageHouseHis.houseAge}年</p>
                                         <p><strong>尚欠贷余额:</strong>{mortgageHouseHis.debtMoney}元</p>
                                         <p><strong>土地所有证号:</strong>{mortgageHouseHis.landNo}</p>
                                         <p><strong>房屋产权所有证号:</strong>{mortgageHouseHis.houseBelongNo}</p>
@@ -98,7 +96,6 @@ class BorrowerInfo extends React.Component {
                                             <li key={`row-${i}`}>
                                                 <a href={`${l.uploadPath}`} target="_blank">
                                                     <img src={`${l.uploadPath}`} />
-                                                    {/*{l.fileName}*/}
                                                 </a>
                                             </li>
                                         ))}
@@ -115,16 +112,5 @@ class BorrowerInfo extends React.Component {
             </ul>
         );
 
-
-
-    }
 }
 
-function mapStateToProps(state) {
-    const { auth,investDetail } = state.toJS();
-    return {
-        auth,
-        investDetail
-    };
-}
-export default connect(mapStateToProps)(BorrowerInfo);

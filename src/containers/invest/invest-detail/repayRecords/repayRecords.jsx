@@ -4,6 +4,7 @@ import moment from "moment";
 import { connect } from 'react-redux';
 import Pagination from '../../../../components/pagination/pagination';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
+import {toMoney} from "../../../../assets/js/famatData";
 
 class RepayRecords extends React.Component{
     constructor(props) {
@@ -52,9 +53,9 @@ class RepayRecords extends React.Component{
                                             <tr key={`row-${i}`}>
                                                 <td>{l.rpmtIssue}</td>
                                                 <td>{moment(l.shdRpmtDate).format('YYYY-MM-DD')}</td>
-                                                <td>{l.rpmtCapital}</td>
-                                                <td>{l.rpmtIint}</td>
-                                                <td>{l.rpmtCapitalIintSum}</td>
+                                                <td>{toMoney(l.rpmtCapital)}</td>
+                                                <td>{toMoney(l.rpmtIint)}</td>
+                                                <td>{toMoney(l.rpmtCapitalIintSum)}</td>
                                                 <td>{l.rpmtStatusString}</td>
                                             </tr>
                                         ))}

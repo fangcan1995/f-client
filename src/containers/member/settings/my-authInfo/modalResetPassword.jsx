@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form,Row,Input,Button,Checkbox,Col,Alert } from 'antd';
+import { Form,Row,Input,Button,Checkbox,Col,Alert,Icon } from 'antd';
 import { connect } from 'react-redux';
 import {myAuthInfoAc} from '../../../../actions/member-settings';
 import { hex_md5 } from '../../../../utils/md5';
@@ -14,6 +14,7 @@ function noop() {
     return false;
 }
 class ModalResetPassword extends React.Component {
+    conole
     static propTypes = {
         form: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired
@@ -52,12 +53,14 @@ class ModalResetPassword extends React.Component {
         }
     }
     render() {
+       /* console.log('propTypes');
+        console.log(propTypes);*/
         let {isPosting}=this.props.memberSettings;
         let {callback}=this.props.info;
         console.log('this.props');
         console.log(this.props);
         let {postResult}=this.props.memberSettings.authInfo;
-        //let postResult=``;
+
         const { getFieldDecorator,getFieldValue } = this.props.form;
         const oldPasswordProps = getFieldDecorator('oldPassword', {
             rules: [
@@ -116,6 +119,7 @@ class ModalResetPassword extends React.Component {
                                     newPasswordProps(
                                         <Input
                                             type="password"
+                                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                             autoComplete="off"
                                             placeholder="设置6-16位的登录密码"
                                             onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}

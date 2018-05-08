@@ -4,6 +4,7 @@ import moment from "moment";
 import { connect } from 'react-redux';
 import Pagination from '../../../../components/pagination/pagination';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
+import {toMoney} from "../../../../assets/js/famatData";
 
 class TransferInvestRecords extends React.Component{
     constructor(props) {
@@ -48,7 +49,7 @@ class TransferInvestRecords extends React.Component{
                                         list.map((l, i) => (
                                             <tr key={`row-${i}`}>
                                                 <td>{l.investor}</td>
-                                                <td>{l.investAmt}</td>
+                                                <td>{toMoney(l.investAmt)}</td>
                                                 <td>{l.investTime}</td>
                                                 <td>{l.investWayString}</td>
                                             </tr>

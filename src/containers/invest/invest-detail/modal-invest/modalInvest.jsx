@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import  {getData}  from '../../../../assets/js/getData';
 import  {poundage,addCommas,checkMoney,income}  from '../../../../assets/js/cost';
-import StepperInput from '../../../../components/stepperInput/stepperInput';
-import { Checkbox,message,Select } from 'antd';
-import { Alert } from 'antd';
+import { Checkbox,message,Select,Button } from 'antd';
 import './modalInvest.less';
-import {Loading,NoRecord,Posting} from '../../../../components/bbhAlert/bbhAlert';
+import {Posting} from '../../../../components/bbhAlert/bbhAlert';
 import {BbhAlert} from '../../../../components/bbhAlert/bbhAlert';
 import { connect } from 'react-redux';
 import  investDetailActions  from '../../../../actions/invest-detail';
@@ -62,20 +59,17 @@ class ModalInvest extends React.Component {
     }
     modalClose(){
         //清空
-        /*let {dummyResult}=this.props.member.accountsInfo;
-        if(dummyResult.code==0){
+        let {postResult}=this.props.investDetail;
+        if(postResult.code==0){
             this.props.dispatch(memberAc.getInfo());  //成功重新获取新户信息
-        }*/
-        //this.props.dispatch(memberAc.modifyState({'postResult':``}));
+        }
+        this.props.dispatch(investDetailActions.statePostResultModify(``));
         let {callback}=this.props.config;
         callback();
     }
     render() {
-        console.log('props');
-        console.log(this.props);
         let {investAmount} = this.props.config;
-        let {postResult}=this.props.investDetail;
-        let {redEnvelopes,rateCoupons}=this.props.investDetail;
+        let {postResult,isPosting,redEnvelopes,rateCoupons}=this.props.investDetail;
         let {annualRate, loanExpiry} = this.props.investDetail.investInfo;
         if(postResult===``) {
             return (
@@ -156,8 +150,22 @@ class ModalInvest extends React.Component {
                             }
                         </div>
                         <div className="form__bar">
-                            <button className="button able" onClick={this.handleSubmit}>确认投资
-                            </button>
+                            {/*{isPosting ?
+                                <button className="button unable" style={{marginTop: '30px'}}><Posting
+                                    isShow={isPosting}/></button>
+                                :
+                                <button className="button able" style={{marginTop: '30px'}}
+                                        onClick={this.handleSubmit}>确定</button>
+                            }*/}
+                            {
+                                isPosting?
+                                    <Button type="primary" style={{width:'100%'}} className='btn' disabled={true}>
+                                        <Posting isShow={isPosting}/>
+                                    </Button>
+                                    :<Button type="primary"  loading={this.state.iconLoading} onClick={this.handleSubmit} style={{width:'100%'}} className='btn'>
+                                        确定
+                                    </Button>
+                            }
                         </div>
                     </div>
                 </div>
