@@ -197,32 +197,38 @@ class HomePage extends Component {
         </div>
       </div>
       <div className="wrapper">
-        <div className="notice">
+       
+          {homePage.notice.length?
+          <div className="notice">
           <i className="notice__icon iconfont icon-gonggao"></i><span className='notice__tip'>最新公告:</span>
           <div className="notice__text">
             <Carousel vertical={true} autoplay key={homePage.notice.length}  wrapAround={true} 
-            renderTopCenterControls={({ currentSlide }) => (
-                <button></button>
-              )}
-              renderCenterLeftControls={({ previousSlide }) => (
-                <button onClick={previousSlide}></button>
-              )}
-              renderCenterRightControls={({ nextSlide }) => (
-                <button onClick={nextSlide}></button>
-              )}>
-              {homePage.notice.map((item)=>{
-                        return (                         
-                            <div key={item.noticeId} className="notice__text" onClick={this.handleNoticeClick.bind(this,item.noticeId)}>
-                              <a >{item.noticeTitle}</a><span><time className="notice__date">[ {item.putTime} ]</time></span>
-                            </div>                        
-                        )
-                      })}
-            </Carousel>
+              renderTopCenterControls={({ currentSlide }) => (
+                  <button></button>
+                )}
+                renderCenterLeftControls={({ previousSlide }) => (
+                  <button onClick={previousSlide}></button>
+                )}
+                renderCenterRightControls={({ nextSlide }) => (
+                  <button onClick={nextSlide}></button>
+                )}>
+                {homePage.notice.map((item)=>{
+                          return (                         
+                              <div key={item.noticeId} className="notice__text" onClick={this.handleNoticeClick.bind(this,item.noticeId)}>
+                                <a >{item.noticeTitle}</a><span><time className="notice__date">[ {item.putTime} ]</time></span>
+                              </div>                        
+                          )
+                        })}
+              </Carousel>
+              </div> 
+              {/* <p className="notice__text">关于巴巴汇金服反洗钱知识普及公告<time className="notice__date">[ 2017-1-6 ]</time></p> */}
+              <a onClick={this.handleMoreClick.bind(this)} className="notice__more">更多 ></a>
+            </div>
+            :<div className='noNotice'></div>
+          }
             
-          </div> 
-          {/* <p className="notice__text">关于巴巴汇金服反洗钱知识普及公告<time className="notice__date">[ 2017-1-6 ]</time></p> */}
-          <a onClick={this.handleMoreClick.bind(this)} className="notice__more">更多 ></a>
-        </div>
+            
+          
         {
           homePage.sprog.length?
           <Floor

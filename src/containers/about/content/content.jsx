@@ -18,7 +18,8 @@ class articalContent extends Component {
 
     render() {
         const { tabName, match, content, childId, dispatch } = this.props;
-        if (content.list) {
+        console.log(content)
+        if (content&&content.list) {
             const list = content.list;
             if (list[0]) {
                 return (

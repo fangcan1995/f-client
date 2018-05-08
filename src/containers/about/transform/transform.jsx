@@ -20,7 +20,6 @@ class TransformPage extends Component {
     componentDidMount() {
         const { childId, dispatch, aboutContent, match } = this.props;
         const status = aboutContent.status;
-        console.log(11111111111);
         if(!match.params.articalId) {
             dispatch(articalListAction(childId, 1));
         }
@@ -28,12 +27,6 @@ class TransformPage extends Component {
             dispatch(articalAction(match.params.articalId));
         }
     }
-
-    /* componentWillReceiveProps(nextProps) {
-        this.setState({
-            childId: nextProps.childId
-        })
-    } */
 
     render() {
         const { childId, dispatch, aboutContent, content, tabName, match, key } = this.props;
@@ -59,7 +52,7 @@ class TransformPage extends Component {
                             match={match}
                             childId={childId}
                             dispatch={dispatch}
-                            key={match.params.childId}
+                            key={this.childId}
                         />
                     );
 
