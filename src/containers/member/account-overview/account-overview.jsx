@@ -23,22 +23,14 @@ class AccountOverview extends React.Component{
         console.log('-------this.props-------');
         console.log(this.props);
         let {charts,accountsInfo}=this.props.member;
-        console.log('统计图表数据');
-        console.log(charts);
+
         let {amount,redInfo,couponInfo}=accountsInfo;
+        console.log('数据');
+        console.log(accountsInfo);
         return (
             <div className="member__main">
                 <Crumbs />
                 <div className="member__cbox">
-                    {/*<div className="pop__invest">
-                        <BbhAlert
-                            info={{message:'成功',description:'开户成功',type:'success',
-                                callback:()=>{
-                                    this.modalClose()
-                                }
-                            }}
-                        />
-                    </div>*/}
                     <div className="master">
                         <div className="accountInfo">
                             <div className="infoLine">

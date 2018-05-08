@@ -94,6 +94,8 @@ export const memberInvestAc={
             async payload() {
                 const res = await cFetch(`${url_getTransfer}${pram}` , {method: 'GET'}, true);
                 const {code, data} = res;
+                console.log('返回的债转详情');
+                console.log(data);
                 if (code == 0) {
                     transferInfo:data
                 } else {
@@ -105,8 +107,10 @@ export const memberInvestAc={
     //债转申请
     postTransfer:(params) =>  {
         params = parseJson2URL(params);
+        console.log('给后台传的是body');
+        console.log(params);
         return {
-            type: 'myInvest/investments/FETCH',
+            type: 'myInvest/investments/TRANSFER_APP',
             async payload() {
                 const res = await cFetch(`${url_postTransferApp}`, {
                         method: 'POST',

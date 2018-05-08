@@ -13,7 +13,11 @@ const initialState = Immutable.fromJS({
         currentId:'',
         postResult:``,
         planList:``,
-        transferInfo:``
+        transferInfo:{
+            transFinanced:1000,
+            proTransferFee:0.01,
+            proMinInvestAmount:100,
+        }//假数据
     },
     myReceiving:{
         charts:``,
@@ -34,6 +38,22 @@ export default createReducer(initialState, {
         isFetching: false,
         errorMessage: action.message
     }),
+
+    ['myInvest/investments/TRANSFER_APP_PENDING']:(state,action) => state.mergeDeep({
+        isFetching: true,
+        isPosting: true,
+    }),
+    ['myInvest/investments/TRANSFER_APP_FULFILLED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        isPosting: false,
+        myInvestments:action.payload
+    }),
+    ['myInvest/investments/TRANSFER_APP_REJECTED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        isPosting: false,
+        errorMessage: action.message
+    }),
+
     ['myInvest/investments/MODIFY_STATE']:(state,action) => state.mergeDeep({
         myInvestments:action.payload
     }),

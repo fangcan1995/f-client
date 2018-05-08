@@ -15,6 +15,13 @@ import {memberInvestAc} from "../../../../actions/member-investments";
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import './investments.less';
 class MyInvestments extends React.Component{
+    constructor(props) {
+        super(props);
+        this.toggleModal = this.toggleModal.bind(this);
+        this.state = {
+            key:Math.random(),
+        }
+    }
     componentDidMount () {
         window.scrollTo(0,0);
         this.props.dispatch(memberInvestAc.stateModify({status:1,myList:``}));
@@ -38,6 +45,9 @@ class MyInvestments extends React.Component{
                 };
                 dispatch(memberInvestAc.stateModify(myReceiving_new));
             }else{
+                this.setState({
+                    key:Math.random()
+                });
                 myReceiving_new={
                     modalPlan: false,
                     currentId: '',
@@ -53,7 +63,9 @@ class MyInvestments extends React.Component{
                 };
                 dispatch(memberInvestAc.stateModify(myReceiving_new));
             }else{
-
+                this.setState({
+                    key:Math.random()
+                });
                 myReceiving_new={
                     modalTransfer: false,
                     currentId: '',
@@ -180,7 +192,7 @@ class MyInvestments extends React.Component{
                                                             <tr key={`row-${i}`}>
                                                                 <td><p><a href={`/invest-list/${l.proId}`} target="_blank">{l.proName}</a></p></td>
                                                                 <td>{l.proMoney}</td>
-                                                                <td>{l.loanExpiry}</td>
+                                                                <td>{l.loanExpiry}个月</td>
                                                                 <td>{l.proMoneyEnd}</td>
                                                                 <td>{l.inveCreateTime}</td>
                                                                 <td>{l.earnShdEarnDate}</td>
@@ -290,14 +302,14 @@ class MyInvestments extends React.Component{
                     onCancel={() => this.toggleModal('modalTransfer',false,'')}
                 >
                     {modalTransfer===true?
-                        <ModalTransfer  info={
-                            {
+                        <ModalTransfer
+                            key={this.state.key}
+                            info={{
                                 currentId:currentId,
                                 callback:(obj)=>{
                                     this.toggleModal('modalTransfer',false,'');
                                 }
-                            }
-                        }
+                            }}
                         />:''
                     }
                 </Modal>
