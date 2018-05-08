@@ -3,186 +3,73 @@ import PropTypes from 'prop-types';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import { connect } from 'react-redux';
-import {myMessagesAc, myRiskAssessAc} from '../../../../actions/member-settings';
+import { myRiskAssessAc} from '../../../../actions/member-settings';
+import { Button } from 'antd';
 import './riskAssess.less';
-import { Radio,Button } from 'antd';
-import {memberAc} from "../../../../actions/member";
-import {Loading,NoRecord,Posting} from '../../../../components/bbhAlert/bbhAlert';
-
-const RadioGroup = Radio.Group;
+import RiskQuestions from './riskQuestions';
 
 class MyRiskAssess extends React.Component {
     constructor(props){
         super(props);
-        this.onChange = this.onChange.bind(this);
         this.reset = this.reset.bind(this);
-        this.disabled= this.disabled.bind(this);
-        this.state = {
-            loading: false,
-            iconLoading: false,
-        }
     }
     componentDidMount() {
         window.scrollTo(0,0);
         this.props.dispatch(myRiskAssessAc.getResult()); //获取测评结果
-        //this.props.dispatch(myRiskAssessAc.getRiskAssessList());
     }
     componentDidUpdate(){
         let {dispatch,memberRiskAssess}=this.props;
-        /*if(memberRiskAssess.result.requireEval===1 ){
-            dispatch(myRiskAssessAc.toggle(0));
-            dispatch(myRiskAssessAc.getRiskAssessList());
-        }*/
-
         if(memberRiskAssess.postResult.code==='0'){
+            console.log('提交得到了测评结果');
             window.scrollTo(0,0);
             this.props.dispatch(myRiskAssessAc.reset());
-            this.props.dispatch(memberAc.getInfo());
             this.props.dispatch(myRiskAssessAc.getResult()); //获取测评结果
-            // console.log('组件更新了');
-
         }
-
-    }
-    disabled(){
-        let {myList}=this.props.memberRiskAssess;
-        if(myList!=''){
-            let i=myList.findIndex(
-                (x)=>x.isChecked==''
-            );
-            if(i!==-1){
-                return true
-            }else{
-                return false
-            }
-        }
-    }
-    //选择答案
-    onChange = (e) => {
-        let {myList}=this.props.memberRiskAssess;
-
-        let i=myList.findIndex((x)=>x.examId==e.target.name);
-        myList[i].isChecked=e.target.value;
-        this.props.dispatch(myRiskAssessAc.modifyState(myList));
-    }
-    //提交答案
-    handleSubmit = () => {
-        let {myList,result}=this.props.memberRiskAssess;
-        let questionAndAnswerDtoList=[];
-        for (let index of myList.keys()){
-            questionAndAnswerDtoList.push({questionId:myList[index].examId,answerCode:myList[index].isChecked});
-        }
-        let putJson={};
-        if(result.riskResultId){
-            putJson={
-                riskResultId:result.riskResultId,
-                questionAndAnswerDtoList:questionAndAnswerDtoList
-            }
-        }else{
-            putJson={
-                questionAndAnswerDtoList:questionAndAnswerDtoList
-            }
-        }
-        this.props.dispatch(myRiskAssessAc.putRiskAssess(putJson));
     }
     //重新评估
     reset(){
-        this.props.dispatch(myRiskAssessAc.toggle('1'));
-        this.props.dispatch(myRiskAssessAc.getRiskAssessList());
+        this.props.dispatch(myRiskAssessAc.toggle('1'));  //显示题目
     }
     render(){
         let {dispatch,memberRiskAssess}=this.props;
-        console.log('-----------------------------');
-        console.log(memberRiskAssess);
-        let {result,myList,hideResult,postResult,isFetching,isPosting}=memberRiskAssess;
-
+        let {result,hideResult,isFetching}=memberRiskAssess;
         return(
             <div className="member__main riskAssess">
                 <Crumbs/>
                 <div className="member__cbox">
                     <Tab>
                         <div name="风险评估">
-                            <div>
-                                {
-                                    (hideResult===``)? ``
-                                        :(hideResult===`0`)?
-                                        <div className="tab_content">
-                                            <ul className="result">
-                                                {/*<li><strong>姓名：</strong>
-                                                <p>{result.name}</p>
-                                            </li>*/}
-                                                <li><strong>评测等级：</strong>
-                                                    <p>{result.riskLevel}</p>
-                                                </li>
-                                                <li><strong>获得称号：</strong>
-                                                    <p>
-                                                        <em>{result.name}</em>
-                                                        {result.remarks}
-                                                    </p>
-                                                </li>
-                                                <li><strong>投资最大额度为：</strong>
-                                                    <p>{result.investTotal}元</p>
-                                                </li>
-                                                <li><strong>剩余可投金额：</strong>
-                                                    <p>{result.surplusInvestTotal}元</p>
-                                                </li>
-                                                <li className="form__bar">
-                                                    <Button type="primary"  onClick={this.reset} style={{width:'20%'}} className='large'>
-                                                        重新评估
-                                                    </Button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        :<div className="riskAssessApp">
-                                            <div className="form__wrapper">
-                                                {(myList==='') ? <Loading isShow={isFetching} />
-                                                    :
-                                                    <div>
-                                                        {
-                                                            (myList.length>0)?
-                                                                <div>
-                                                                    {myList.map((l, i) => (
-                                                                        <dl className="controls" key={`row-${i}`}>
-                                                                            <dt>{i+1}.{l.examName}</dt>
-                                                                            <dd>
-
-                                                                                <RadioGroup onChange={this.onChange} value={`${l.isChecked}`} name={`${l.examId}`}>
-                                                                                    {l.answersDtoList.map((ll,ii)=>(
-                                                                                        <Radio value={`${ll.answerCode}`} key={`row-${ii}`}>{ll.answerCode} .{ll.answer}</Radio>
-                                                                                    ))}
-                                                                                </RadioGroup>
-                                                                                {
-                                                                                    l.isChecked===''?
-                                                                                        <span className="error">必选</span>
-                                                                                        :``
-                                                                                }
-                                                                            </dd>
-                                                                        </dl>
-                                                                    ))}
-                                                                    <div className="form__bar center">
-                                                                        {isPosting ?
-                                                                            <Button type="primary"  style={{width:'20%'}} className='large'
-                                                                                    disabled={isPosting}
-                                                                            ><Posting isShow={isPosting}/>
-                                                                            </Button>
-                                                                            :
-                                                                            <Button type="primary"  loading={this.state.iconLoading} onClick={this.handleSubmit} style={{width:'20%'}} className='large'
-                                                                                    disabled={this.disabled()}
-                                                                            >
-                                                                                立即评估
-                                                                            </Button>
-                                                                        }
-                                                                    </div>
-                                                                </div>
-                                                                : <NoRecord isShow={true} />
-                                                        }
-                                                    </div>
-                                                }
-                                            </div>
-                                        </div>
-                                }
-                            </div>
-
+                            {
+                                (hideResult===``)? ``
+                                    :(hideResult===`0`)?
+                                    <div className="tab_content">
+                                        <ul className="result">
+                                            <li><strong>评测等级：</strong>
+                                                <p>{result.riskLevel}</p>
+                                            </li>
+                                            <li><strong>获得称号：</strong>
+                                                <p>
+                                                    <em>{result.name}</em>
+                                                    {result.remarks}
+                                                </p>
+                                            </li>
+                                            <li><strong>投资最大额度为：</strong>
+                                                <p>{result.investTotal}元</p>
+                                            </li>
+                                            <li><strong>剩余可投金额：</strong>
+                                                <p>{result.surplusInvestTotal}元</p>
+                                            </li>
+                                            <li className="form__bar">
+                                                <Button type="primary"  onClick={this.reset} style={{width:'20%'}} className='large'>
+                                                    重新评估
+                                                </Button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    :<div className="riskAssessApp">
+                                        <RiskQuestions   />
+                                    </div>
+                            }
                         </div>
                     </Tab>
                 </div>
