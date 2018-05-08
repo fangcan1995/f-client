@@ -14,7 +14,6 @@ function noop() {
     return false;
 }
 class ModalResetPassword extends React.Component {
-    conole
     static propTypes = {
         form: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired
@@ -53,15 +52,14 @@ class ModalResetPassword extends React.Component {
         }
     }
     render() {
-       /* console.log('propTypes');
-        console.log(propTypes);*/
         let {isPosting}=this.props.memberSettings;
         let {callback}=this.props.info;
-        console.log('this.props');
-        console.log(this.props);
+
         let {postResult}=this.props.memberSettings.authInfo;
 
         const { getFieldDecorator,getFieldValue } = this.props.form;
+        console.log('this.props.form');
+        console.log(this.props.form);
         const oldPasswordProps = getFieldDecorator('oldPassword', {
             rules: [
                 { required: true, min: 6, message: '密码至少为 6 个字符' }

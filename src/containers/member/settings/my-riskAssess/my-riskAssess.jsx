@@ -66,9 +66,7 @@ class MyRiskAssess extends React.Component {
                                             </li>
                                         </ul>
                                     </div>
-                                    :<div className="riskAssessApp">
-                                        <RiskQuestions   />
-                                    </div>
+                                    :<RiskQuestions   />
                             }
                         </div>
                     </Tab>

@@ -4,7 +4,7 @@ import { Radio,Button } from 'antd';
 import { connect } from 'react-redux';
 import { myRiskAssessAc} from '../../../../actions/member-settings';
 import {memberAc} from "../../../../actions/member";
-
+import './riskAssessApp.less';
 const RadioGroup = Radio.Group;
 
 class riskQuestions extends React.Component {
@@ -56,7 +56,7 @@ class riskQuestions extends React.Component {
         let {dispatch,memberRiskAssess}=this.props;
         let {result,myList,postResult,isFetching,isPosting}=memberRiskAssess;
         return(
-            <div className="form__wrapper">
+            <div className="form__wrapper riskAssessApp">
                 {(myList==='') ? <Loading isShow={isFetching} />
                     :
                     <div>

@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {addCommas, toMoney, toNumber} from "../../../../assets/js/famatData"
+import {addCommas, toMoney, toNumber,cardGetAge,cardGetSex} from "../../../../assets/js/famatData"
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
-    export default ({loanInfo,...rest}) => {
+    export default ({loanInfo,isFetching,...rest}) => {
 
         let {projectInfoBaseInfoDto,loanCreditCountDto,projectInfoLoanInfoDto,mortgageCarHis,mortgageHouseHis,filesList}=loanInfo;
         return (
             <ul className="m-intro">
                 <li>
-                    {(loanInfo === '') ? <Loading isShow={true} />
+                    {(loanInfo === '') ? <Loading isShow={isFetching} />
                         :
                         <div>
                             <dl className="intro">

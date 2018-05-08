@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import  {getData}  from '../../../../assets/js/getData';
-import  {poundage,addCommas,checkMoney}  from '../../../../assets/js/cost';
+
+import  {poundage,checkMoney}  from '../../../../assets/js/cost';
+import {addCommas} from '../../../../assets/js/famatData';
 import { Checkbox,message,Alert } from 'antd';
 import { connect } from 'react-redux';
 import {memberInvestAc} from "../../../../actions/member-investments";
 import {BbhAlert} from '../../../../components/bbhAlert/bbhAlert';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
+import {memberAc} from "../../../../actions/member";
+import {myRiskAssessAc} from "../../../../actions/member-settings";
+
 class ModalTransfer extends React.Component {
     constructor(props) {
         super(props);
@@ -29,6 +33,15 @@ class ModalTransfer extends React.Component {
     }
     componentDidMount () {
         this.props.dispatch(memberInvestAc.getTransfer(this.props.info.currentId));
+    }
+    componentDidUpdate(){
+        let {postResult,transferInfo}=this.props.memberInvestments.myInvestments;
+        if(postResult.code==='0'){
+            console.log('提交了债权转让');
+            window.scrollTo(0,0);
+            //this.props.dispatch(myRiskAssessAc.reset());
+            //this.props.dispatch(myRiskAssessAc.getResult()); //获取测评结果
+        }
     }
     onChange(e) {
         this.setState({
@@ -112,97 +125,87 @@ class ModalTransfer extends React.Component {
             }
         });
     }
+    modalClose(){
+        this.props.dispatch(memberAc.modifyState({'postResult':``}));
+        let {callback}=this.props.config;
+        callback();
+    }
     render() {
+        console.log('债转数据');
         console.log(this.props);
         let {callback}=this.props.info;
-        let {isFetching}=this.props.memberInvestments;
+
+        let {isFetching,isPosting}=this.props.memberInvestments;
         let {postResult,transferInfo}=this.props.memberInvestments.myInvestments;
         let {amount,tips,isRead,postSwitch} =this.state;
         return (
             <div className="pop__transfer">
-                {
-                    (postResult === ``) ?
-                        (transferInfo===``)?<Loading isShow={isFetching}/>
-                        :(<div className="form__wrapper">
-                                <dl className="form__bar">
-                                    <dt><label>实际投资金额:</label></dt>
-                                    <dd><i id="Accountbalance" className="money">{transferInfo.transFinanced}</i> 元</dd>
-                                </dl>
-                                <dl className="form__bar">
-                                    <dt><label>转让金额:</label></dt>
-                                    <dd>
-                                        <input type="text" className="textInput moneyInput" autoComplete="off"
-                                               maxLength="13" onChange={this.changeAmount} ref="amount"/>
-                                        <span className="unit">元</span>
-                                    </dd>
-                                </dl>
-                                <dl className="form__bar">
-                                    <dt><label>手续费：</label></dt>
-                                    <dd>
-                                        <i id="cost"
-                                           className="money">{addCommas(poundage(amount, transferInfo.proTransferFee))}</i>
-                                        元
-                                    </dd>
-                                </dl>
-                                <dl className="form__bar">
-                                    <dt><label>预期到账金额：</label></dt>
-                                    <dd><i id="money" className="money">
-                                        {amount != 0 ?
-                                            addCommas(amount - poundage(amount, transferInfo.proTransferFee))
-                                            : `0.00`
-                                        }
-                                    </i>元
-                                    </dd>
-                                </dl>
-                                <dl className="form__bar"></dl>
-                                <dl className="form__bar">
-                                    <p>
-                                        <Checkbox onChange={this.onChange}>我已阅读并同意<a href="/transfer.html" target="_blank">《巴巴汇债权转让服务协议》</a></Checkbox>
-                                    </p>
-                                </dl>
-                                <div className="form__bar">
-                                    {(tips != '') ? (<span className="errorMessages">{tips}</span>)
-                                        : ('')
-                                    }
-                                </div>
-                                <div className="form__bar">
-                                    {isPosting ?
-                                        <button className="button unable" style={{marginTop: '30px'}}><Posting
-                                            isShow={isPosting}/></button>
-                                        :
-                                        <button className="button able" style={{marginTop: '30px'}}
-                                                onClick={this.handleSubmit}>确定</button>
-                                    }
-                                    {/*<button className="button able" onClick={this.handleSubmit}>确认</button>*/}
-                                </div>
-                            </div>)
-                        :
-                        <div>
-                            <BbhAlert
-                                info={{
-                                    message:'失败',
-                                    description:'连接失败，请重试',
-                                    type:'error',
-                                    callback:(obj)=>{
-                                        callback();
-                                    }
-                                }}
-                            />
-                            <BbhAlert
-                                info={{
-                                    message:'成功',
-                                    description:'您的申请已经提交',
-                                    type:'success',
-                                    callback:(obj)=>{
-                                        callback();
-                                    }
-                                }}
-                            />
-                        </div>
-                }
+                <div className="form__wrapper">
+                    <dl className="form__bar">
+                        <dt><label>实际投资金额:</label></dt>
+                        <dd><i id="Accountbalance" className="money">{transferInfo.transFinanced}</i> 元</dd>
+                    </dl>
+                    <dl className="form__bar">
+                        <dt><label>转让金额:</label></dt>
+                        <dd>
+                            <input type="text" className="textInput moneyInput" autoComplete="off"
+                                   maxLength="13" onChange={this.changeAmount} ref="amount"/>
+                            <span className="unit">元</span>
+                        </dd>
+                    </dl>
+                    <dl className="form__bar">
+                        <dt><label>手续费：</label></dt>
+                        <dd>
+                            <i id="cost"
+                               className="money">{addCommas(poundage(amount, transferInfo.proTransferFee))}</i>
+                            元
+                        </dd>
+                    </dl>
+                    <dl className="form__bar">
+                        <dt><label>预期到账金额：</label></dt>
+                        <dd><i id="money" className="money">
+                            {amount != 0 ?
+                                addCommas(amount - poundage(amount, transferInfo.proTransferFee))
+                                : `0.00`
+                            }
+                        </i>元
+                        </dd>
+                    </dl>
+                    <dl className="form__bar"></dl>
+                    <dl className="form__bar">
+                        <p>
+                            <Checkbox onChange={this.onChange}>我已阅读并同意<a href="/transfer.html"
+                                                                         target="_blank">《巴巴汇债权转让服务协议》</a></Checkbox>
+                        </p>
+                    </dl>
+                    <div className="form__bar">
+                        {(tips != '') ? (<span className="errorMessages">{tips}</span>)
+                            : ('')
+                        }
+                    </div>
+                    <div className="form__bar">
+                        {isPosting ?
+                            <button className="button unable" style={{marginTop: '30px'}}><Posting
+                                isShow={isPosting}/></button>
+                            :
+                            <button className="button able" style={{marginTop: '30px'}}
+                                    onClick={this.handleSubmit}>确定</button>
+                        }
+                        {/*<button className="button able" onClick={this.handleSubmit}>确认</button>*/}
+                    </div>
+                </div>
+                <BbhAlert isShow={false}
+                    info={{
+                        message: postResult.message, description: postResult.description, type: postResult.type,
+                        callback: () => {
+                            this.modalClose()
+                        }
+                    }}
+                />
             </div>
         );
     }
+
 };
 function mapStateToProps(state) {
     const { auth,memberInvestments } = state.toJS();

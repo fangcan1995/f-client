@@ -55,6 +55,7 @@ let investDetailActions = {
             async payload() {
                 const res = await cFetch(`${url_projects_info}/${id}` , {method: 'GET'}, false);
                 const {code, data} = res;
+                console.log('返回的项目详情');
                 if (code == 0) {
                     return data;
                 } else {

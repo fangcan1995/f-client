@@ -7,6 +7,7 @@ import {sbListAc} from "../../../../actions/invest-list";
 import Pagination from '../../../../components/pagination/pagination';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import {InvestTab,ProgressBar,InvestButton} from '../investComponents';
+import {toMoney,toNumber,addCommas} from  '../../../../assets/js/famatData';
 import '../invest-list.less';
 
 
@@ -206,11 +207,11 @@ class SubjectList extends Component {
                                                         <td className="t_table">
                                                             <p><Link to={"/invest-detail/" + l['id']} title="longText">{l.name}</Link></p>
                                                         </td>
-                                                        <td className="rtxt">{l.money}元</td>
+                                                        <td className="rtxt">{toMoney(l.money)}元</td>
                                                         <td><em className="redTxt">{l.annualRate}%</em></td>
                                                         <td>{l.loanExpiry}个月</td>
                                                         <td>{moment(l.putTime).format('YYYY-MM-DD')}</td>
-                                                        <td className="rtxt">{l.surplusAmount}元</td>
+                                                        <td className="rtxt">{toMoney(l.surplusAmount)}元</td>
                                                         <td>{l.investNumber}人</td>
                                                         <td style={{ width: 170}}>
                                                             <ProgressBar value={l.investmentProgress} />

@@ -3,6 +3,7 @@ import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
     isFetching:false,
+    isPosting:false,
     myInvestments:{
         charts:``,
         myList:``,

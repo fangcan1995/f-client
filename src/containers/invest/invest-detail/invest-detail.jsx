@@ -30,7 +30,7 @@ class InvestDetail extends React.Component{
         let {investDetail}=this.props;
         console.log('-----------investDetail-----------');
         console.log(investDetail);
-        let {investInfo,memberInfo,loanInfo,investRecords,repayRecords}=investDetail;
+        let {investInfo,memberInfo,loanInfo,investRecords,repayRecords,isFetching}=investDetail;
         let project=investInfo.data;
 
         return (
@@ -40,7 +40,7 @@ class InvestDetail extends React.Component{
                     <div className="tab_info">
                         <Tab>
                             <div name="项目信息" >
-                                <BorrowerInfo loanInfo={loanInfo} />
+                                <BorrowerInfo loanInfo={loanInfo} isFetching={isFetching} />
                             </div>
                             <div name="投标记录" style={{marginBottom:'30px'}}>
                                 <InvestRecords pageSize={10}/>

@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PieChart from '../../../../components/charts/pie';
-import {addCommas} from '../../../../assets/js/cost';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
 import { Modal } from 'antd';
 import ModalRepaymentApp from './modalRepaymentApp';
+import {toMoney,toNumber,addCommas} from  '../../../../assets/js/famatData';
 import { connect } from 'react-redux';
 import  {memberLoansAc}  from '../../../../actions/member-loans';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';

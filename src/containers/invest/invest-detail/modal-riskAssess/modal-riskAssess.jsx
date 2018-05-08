@@ -13,40 +13,30 @@ class ModalRiskAssess extends React.Component {
     constructor(props){
         super(props);
         this.onChange = this.onChange.bind(this);
-       /* this.reset = this.reset.bind(this);*/
-        this.disabled= this.disabled.bind(this);
-        this.state = {
-            loading: false,
-            iconLoading: false,
-        }
+        this.handleSubmit= this.handleSubmit.bind(this);
     }
     componentDidMount() {
-        this.props.dispatch(myRiskAssessAc.getResult());
-        this.props.dispatch(myRiskAssessAc.getRiskAssessList());
+        this.props.dispatch(myRiskAssessAc.getRiskAssessList()); //获取题目
     }
-    disabled(){
-        let {myList}=this.props.memberSettings.riskAssess;
+    //选择答案
+    onChange = (e) => {
+        let {myList}=this.props.memberRiskAssess;
+        let i=myList.findIndex((x)=>x.examId==e.target.name);
+        myList[i].isChecked=e.target.value;
+        this.props.dispatch(myRiskAssessAc.modifyState(myList));
+    }
+    //提交答案
+    handleSubmit = () => {
+        let {myList,result}=this.props.memberRiskAssess;
+        //验证是否填写了全部题目
         if(myList!=''){
             let i=myList.findIndex(
                 (x)=>x.isChecked==''
             );
-            if(i!==-1){
-                return true
-            }else{
+            if(i!=-1){
                 return false
             }
         }
-    }
-    //选择答案
-    onChange = (e) => {
-        let {myList}=this.props.memberSettings.riskAssess;
-        let i=myList.findIndex((x)=>x.examId==e.target.name);
-        myList[i].isChecked=e.target.value;
-        this.props.dispatch(myRiskAssessAc.modifyState({myList:myList}));
-    }
-    //提交答案
-    handleSubmit = () => {
-        let {myList,result}=this.props.memberSettings.riskAssess;
         let questionAndAnswerDtoList=[];
         for (let index of myList.keys()){
             questionAndAnswerDtoList.push({questionId:myList[index].examId,answerCode:myList[index].isChecked});
@@ -64,18 +54,18 @@ class ModalRiskAssess extends React.Component {
         }
         this.props.dispatch(myRiskAssessAc.putRiskAssess(putJson));
     }
+
     //关闭
     modalClose(){
-        //this.props.dispatch(memberAc.modifyState({postResult:``}));
+        this.props.dispatch(myRiskAssessAc.reset());
         let {callback}=this.props.config;
         callback();
     }
     render(){
-        let {dispatch}=this.props;
-        let {riskAssess,isFetching,isPosting}=this.props.memberSettings;
-        let {myList,postResult}=riskAssess;
-        console.log('postResult');
-        console.log(postResult);
+        let {dispatch,memberRiskAssess}=this.props;
+        let {result,myList,postResult,isFetching,isPosting}=memberRiskAssess;
+        /*let {riskAssess,isFetching,isPosting}=this.props.memberSettings;
+        let {myList,postResult}=riskAssess;*/
         if(postResult===''){
             return(
                 <div className="pop__riskAssess">
@@ -113,12 +103,11 @@ class ModalRiskAssess extends React.Component {
                                         <div className="form__bar center">
                                             {
                                                 isPosting?
-                                                    <Button type="primary" style={{width:'20%'}} className='large' disabled={true}>
+                                                    <Button type="primary" style={{width:'30%'}} className='large' disabled={true}>
                                                         <Posting isShow={isPosting}/>
                                                     </Button>
-                                                    :<Button type="primary"  loading={this.state.iconLoading} onClick={this.handleSubmit} style={{width:'20%'}} className='large'
-                                                             disabled={this.disabled()}>
-                                                        立即评估
+                                                    :<Button type="primary"  onClick={this.handleSubmit} style={{width:'30%'}} className='large'
+                                                        >立即评估
                                                     </Button>
                                             }
                                         </div>
@@ -145,10 +134,10 @@ class ModalRiskAssess extends React.Component {
     }
 }
 function mapStateToProps(state) {
-    const { auth,memberSettings } = state.toJS();
+    const { auth,memberRiskAssess } = state.toJS();
     return {
         auth,
-        memberSettings
+        memberRiskAssess
     };
 }
 export default connect(mapStateToProps)(ModalRiskAssess);

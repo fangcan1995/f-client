@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 
 import PieChart from '../../../components/charts/pie';
 import BarChart from '../../../components/charts/bar';
-import {addCommas} from '../../../assets/js/cost';
 import './account-overview.less';
 import Tab from '../../../components/tab/tab';
 import { connect } from 'react-redux';
 import  memberActions  from '../../../actions/member';
 import  {memberAc}  from '../../../actions/member';
 import { Link, NavLink } from 'react-router-dom';
-import {toMoney,toNumber} from  '../../../assets/js/famatData';
+import {toMoney,toNumber,addCommas} from  '../../../assets/js/famatData';
 import Crumbs from '../../../components/crumbs/crumbs';
 import {BbhAlert} from '../../../components/bbhAlert/bbhAlert';
 class AccountOverview extends React.Component{

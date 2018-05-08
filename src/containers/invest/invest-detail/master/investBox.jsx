@@ -9,6 +9,7 @@ import { Modal } from 'antd';
 import ModalInvest from '../modal-invest/modalInvest';
 import ModalRecharge from '../modal-recharge/modaRecharge'
 import ModalRiskAssess from '../modal-riskAssess/modal-riskAssess';
+import RiskQuestions from '../../../member/settings/my-riskAssess/riskQuestions';
 import  {memberAc}  from '../../../../actions/member';
 import ModalAuth from '../../../../components/modal/modal-auth/modal-auth';
 import {InvestButton} from '../../invest-list/investComponents';
@@ -51,6 +52,8 @@ class MasterInvestBox extends React.Component {
         console.log('-------------this.props---------------');
         console.log(this.props);
         let {amount,redInfo,couponInfo,postResult,openAccountStatus,riskStatus,riskLevel,noviceStatus}=member.accountsInfo;
+        console.log('会员信息');
+        console.log(member.accountsInfo);
         let {isFetching}=member;
         return(
             <div className="form_area">
@@ -199,6 +202,7 @@ class MasterInvestBox extends React.Component {
                     wrapClassName="vertical-center-modal"
                     visible={this.state.modalRiskAssess}
                     width="780px"
+                    height="600px"
                     footer={null}
                     onCancel={() => {
                         this.callback(`modalRiskAssess`);

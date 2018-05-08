@@ -59,9 +59,12 @@ class ModalInvest extends React.Component {
     }
     modalClose(){
         //清空
+        let {dispatch}=this.props;
         let {postResult}=this.props.investDetail;
         if(postResult.code==0){
-            this.props.dispatch(memberAc.getInfo());  //成功重新获取新户信息
+            dispatch(memberAc.getInfo());  //成功重新获取新户信息
+            dispatch(investDetailActions.getInvestRecords(this.props.id));//成功重新获取投资记录
+            dispatch(investDetailActions.getInvestInfo(this.props.id)); //成功重新获取标的信息
         }
         this.props.dispatch(investDetailActions.statePostResultModify(``));
         let {callback}=this.props.config;

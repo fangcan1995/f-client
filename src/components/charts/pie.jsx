@@ -1,7 +1,7 @@
 import React,{ Component } from "react";
 import ReactEcharts from 'echarts-for-react';
 import {getEchartPie} from '../../assets/js/getEchart';
-import {addCommas} from '../../assets/js/cost';
+import {toMoney,toNumber,addCommas} from  '../../assets/js/famatData';
 import './pie.less';
 export default class PieChart extends Component{
     constructor(props) {
@@ -33,7 +33,7 @@ export default class PieChart extends Component{
             unit='元'
         }
         if(!labelLine){
-            labelLine=true
+            labelLine=false
         }else{
             if(labelLine==='false'){
                 labelLine=false;
