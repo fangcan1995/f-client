@@ -14,7 +14,7 @@ class MyAuthInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            modalResetPassword:true,
+            modalResetPassword:false,
             modalAuth:false,
             key:Math.random()
         }

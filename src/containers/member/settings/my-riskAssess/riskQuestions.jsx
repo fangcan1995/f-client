@@ -83,9 +83,9 @@ class riskQuestions extends React.Component {
                                     ))}
                                     <div className="form__bar center">
                                         {isPosting ?
-                                            <Button type="primary"  style={{width:'20%'}} className='large' disabled={isPosting}><Posting isShow={isPosting}/>
+                                            <Button type="primary"  style={{width:'30%'}} className='large' disabled={isPosting}><Posting isShow={isPosting}/>
                                             </Button>
-                                            : <Button type="primary"  onClick={this.handleSubmit} style={{width:'20%'}} className='large'
+                                            : <Button type="primary"  onClick={this.handleSubmit} style={{width:'30%'}} className='large'
                                             >
                                                 立即评估
                                             </Button>
