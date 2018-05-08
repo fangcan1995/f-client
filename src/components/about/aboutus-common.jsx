@@ -171,7 +171,6 @@ class About extends Component {
 
     render() {
         const { match, aboutContent, dispatch, location } = this.props;
-        
         //重置父级菜单和子集菜单的关联
         const relations = this.relations = this.createRelation(aboutContent.menuList);
         //获取当前的路径，当前路径的父级菜单id 和 自己菜单的id
@@ -233,7 +232,7 @@ class About extends Component {
                                                             match={match}
                                                             childId={match.params.childId}
                                                             dispatch={dispatch}
-                                                            key={match.params.childId}
+                                                            key={match.params.articalId}
                                                         />
                                                     );
                                                 }
