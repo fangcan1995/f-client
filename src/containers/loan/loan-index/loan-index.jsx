@@ -254,8 +254,8 @@ class Loan extends Component {
                                             <select name="refundWay" id="refundWay" className="textInput" ref='repayType'>
                                                 <option value="1" defaultValue="">按月付息，到期还本</option>
                                                 <option value="2">一次性还本还息</option>
-                                                <option value="3" disabled>等本等息</option>
-                                                <option value="4" disabled>等额本金</option>
+                             {/*                   <option value="3" disabled>等本等息</option>
+                                                <option value="4" disabled>等额本金</option>*/}
                                             </select>
                                         </dd>
                                     </dl>

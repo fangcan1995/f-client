@@ -11,7 +11,7 @@ import ModalRecharge from '../modal-recharge/modaRecharge'
 import ModalRiskAssess from '../modal-riskAssess/modal-riskAssess';
 import RiskQuestions from '../../../member/settings/my-riskAssess/riskQuestions';
 import  {memberAc}  from '../../../../actions/member';
-import ModalAuth from '../../../../components/modal/modal-auth/modal-auth';
+import ModalSteps from '../../../../components/modal/modal-steps/modal-steps';
 import {InvestButton} from '../../invest-list/investComponents';
 class MasterInvestBox extends React.Component {
     constructor(props) {
@@ -203,6 +203,7 @@ class MasterInvestBox extends React.Component {
                     visible={this.state.modalRiskAssess}
                     width="780px"
                     height="600px"
+                    header={null}
                     footer={null}
                     onCancel={() => {
                         this.callback(`modalRiskAssess`);
@@ -223,8 +224,8 @@ class MasterInvestBox extends React.Component {
                 <Modal
                     title="开户"
                     wrapClassName="vertical-center-modal"
-                    visible={this.state.modalAuth}
-                    width="520px"
+                    visible={true}
+                    width="620px"
                     footer={null}
                     destroyOnClose={true}
                     onCancel={() => {
@@ -232,7 +233,7 @@ class MasterInvestBox extends React.Component {
                     }}
                 >
 
-                    <ModalAuth key={this.state.key} info={
+                    <ModalSteps key={this.state.key} info={
                         {
                             callback:(obj)=>{
                                 this.callback(`modalAuth`);
@@ -240,7 +241,6 @@ class MasterInvestBox extends React.Component {
                         }
                     }
                     />
-                    }
                 </Modal>
             </div>
         )

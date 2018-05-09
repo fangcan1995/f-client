@@ -52,14 +52,45 @@
     font-size: 18px;
   }
 
-
-
-
-
-
-
 }
 .form__wrapper{
+  //定义验证样式
+  .ant-form-item-required:before{
+    color: @text-color-error
+  }//必填星号
+  .has-error.has-feedback:after{
+    content: none;
+  }//填写错误，input后不显示X
+  .has-error .ant-form-explain, .has-error .ant-form-split {
+    color: @text-color-error;
+  }//错误文字
+  .has-error .ant-input, .has-error .ant-input {
+    border-color: @text-color-error;
+    &:hover{
+      border-color: #f04134;
+    }
+  }
+.has-success.has-feedback:after {
+  content: '\E630';
+  color: @text-color-right;
+}
+.center{ text-align: center}
+  .mp{
+    margin-top: 20px;
+  }
+  .tips{
+    margin: 10px auto;
+    min-height: 30px;
+    line-height: 20px;
+    color: @text-color-error;
+    font-size: 12px;
+    &:before {
+      content: '\E614';
+      color: @text-color-error;
+      font-family: iconfont;
+    }
+  }
+  //end
   //padding: 30px 30px;
   .form__bar{
     width: 100%;

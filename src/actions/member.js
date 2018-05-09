@@ -4,6 +4,7 @@ import {addCommas,checkMoney} from './../assets/js/cost';
 import { message } from 'antd';
 import {urls,token} from './../utils/url';
 import parseJson2URL from "../utils/parseJson2URL";
+import {urls_auth} from "../utils/url";
 
 
 const url_memberInfo=`${urls}/accounts/my/info`; //获取会员信息
@@ -13,8 +14,8 @@ const url_incomeDay=`${urls}/accounts/income/day`; //获取日收益统计
 const url_openAccount=`${urls}/accounts`; //开户
 const url_recharge=`${urls}/accounts/operation?escrowCode=100100&type=1`; //充值
 const url_withdrawals=`${urls}/accounts/operation?escrowCode=100100&type=3`; //提现
-
-
+const url_tradePassword=`${urls_auth}/uaa/oauth/password`; //修改交易密码
+const url_certification=`${urls_auth}/uaa/oauth/password`; //实名认证
 export const memberAc= {
 
     getInfo: (params) => {
@@ -200,7 +201,66 @@ export const memberAc= {
             }
         }
     },
+    //设置交易密码
+    setTradePassword: (params) => {
+        console.log('提交给后台的参数是：');
+        params=parseJson2URL(params);
+        console.log(params);
+        return {
+            type: 'member/tradePassword/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_tradePassword}?${params}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: ``,
+                    },
+                    true);
 
+                let type=``;
+                (res.code == 0)?type='success':type='error';
+                console.log('修改密码返回的结果');
+                console.log(res);
+                return {
+                        code:res.code,
+                        type:type,
+                        message:res.message||``,
+                        description:res.data||``,
+                };
+            }
+        }
+    },
+    //实名认证
+    certification: (params) => {
+        console.log('实名认证提交给后台的参数是：');
+        params=parseJson2URL(params);
+        console.log(params);
+        return {
+            type: 'member/certification/FETCH',
+            async payload() {
+                const res = await cFetch(`${url_certification}?${params}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: ``,
+                    },
+                    true);
+
+                let type=``;
+                (res.code == 0)?type='success':type='error';
+                console.log('实名认证返回的结果');
+                console.log(res);
+                return {
+                    code:res.code,
+                    type:type,
+                    message:res.message||``,
+                    description:res.data||``,
+                };
+            }
+        }
+    },
     modifyState: (prams) => {
         return {
             type: 'member/MODIFY_STATE',
@@ -209,9 +269,9 @@ export const memberAc= {
             }
         }
     },
-    modifyState: (prams) => {
+    clear: (prams) => {
         return {
-            type: 'member/MODIFY_STATE',
+            type: 'member/CLEAR',
             payload() {
                 return prams
             }

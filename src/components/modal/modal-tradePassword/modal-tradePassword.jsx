@@ -2,28 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form,Row,Input,Button,Checkbox,Col,Alert,Icon } from 'antd';
 import { connect } from 'react-redux';
-import {myAuthInfoAc} from '../../../../actions/member-settings';
-import { hex_md5 } from '../../../../utils/md5';
-import {memberAc} from "../../../../actions/member";
-import {Loading,NoRecord,Posting,BbhAlert} from '../../../../components/bbhAlert/bbhAlert';
+import {memberAc} from "../../../actions/member";
+import {Loading,NoRecord,Posting,BbhAlert} from '../../../components/bbhAlert/bbhAlert';
+import {tradePasswordRegExp } from '../../../utils/regExp';
+import {formItemLayout,noop } from '../../../utils/formSetting';
+import {hex_md5} from "../../../utils/md5";
 
-const passwordRegExp = /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*?_., ]).*$/;
+import "./modal-tradePassword.less"
+
 const createForm = Form.create;
 const FormItem = Form.Item;
-function noop() {
-    return false;
-}
-class ModalResetPassword extends React.Component {
+
+class ModalTradePassword extends React.Component {
     static propTypes = {
         form: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired
     }
-    modalClose(){
-        //清空postResult
-        this.props.dispatch(myAuthInfoAc.modifyState({'postResult':``}));
-        let {callback}=this.props.info;
-        callback();
-    }
+
+
+    //提交
     handleSubmit = (e) => {
         e.preventDefault();
         const { dispatch, form } = this.props;
@@ -37,27 +34,25 @@ class ModalResetPassword extends React.Component {
                 old_password:hex_md5(form.getFieldsValue().oldPassword),
                 new_password:hex_md5(form.getFieldsValue().newPassword),
             }
-            //console.log('提交后台的数据是');
-            //console.log(appInfo);
-            dispatch(myAuthInfoAc.postPassword(appInfo));
+            console.log('提交后台的数据是');
+            console.log(appInfo);
+            dispatch(memberAc.setTradePassword(appInfo));
 
         });
     }
-    compareToFirstPassword = (rule, value, callback) => {
-        const form = this.props.form;
-        if (value && value !== form.getFieldValue('newPassword')) {
-            callback('两次输入的密码不一致');
-        } else {
-            callback();
-        }
+    //回调
+    modalClose(){
+        let {onSuccess,onFail,dispatch}=this.props;
+        //清空postResult
+        dispatch(memberAc.clear());
+        onSuccess();
     }
-    render() {
-        let {isPosting}=this.props.memberSettings;
-        let {callback}=this.props.info;
-        let {postResult}=this.props.memberSettings.authInfo;
+    render(){
+        console.log('-------------this.props---------------');
+        console.log(this.props);
+        let {onSuccess,onFail}=this.props;
+        let {isPosting,postResult}=this.props.member;
         const { getFieldDecorator,getFieldValue } = this.props.form;
-        console.log('this.props.form');
-        console.log(this.props.form);
         const oldPasswordProps = getFieldDecorator('oldPassword', {
             rules: [
                 { required: true, min: 6, message: '密码至少为 6 个字符' }
@@ -66,34 +61,20 @@ class ModalResetPassword extends React.Component {
         const newPasswordProps = getFieldDecorator('newPassword', {
             validate: [{
                 rules: [
-                    { required: true, pattern: passwordRegExp, message: '密码长度为6-16位，必须包含数字、字母、符号' }
+                    { required: true, pattern: tradePasswordRegExp, message: '密码长度为6-16位，必须包含数字、字母、符号' }
 
                 ],
                 trigger: ['onBlur', 'onChange']
             }]
         });
-
-        const formItemLayout = {
-            labelCol: {
-                xs: { span: 24 },
-                sm: { span: 6 },
-            },
-            wrapperCol: {
-                xs: { span: 24 },
-                sm: { span: 18 },
-            },
-        };
-
-            return (
-                <div className="pop__password">
-                    {postResult===``?
+        if(postResult.type!=`success`){
+            return(
+                <div className="pop__password pop">
                     <div className="form__wrapper">
                         <Form layout="horizontal" onSubmit={this.handleSubmit} id='frm'>
-
                             <FormItem
                                 { ...formItemLayout }
                                 label="原密码"
-                                hasFeedback
                             >
                                 {
                                     oldPasswordProps(
@@ -109,7 +90,6 @@ class ModalResetPassword extends React.Component {
                             <FormItem
                                 { ...formItemLayout }
                                 label="新密码"
-                                hasFeedback
                             >
                                 {
                                     newPasswordProps(
@@ -123,11 +103,9 @@ class ModalResetPassword extends React.Component {
                                     )
                                 }
                             </FormItem>
-
                             <FormItem
                                 {...formItemLayout}
                                 label="确认新密码"
-                                hasFeedback
                             >
                                 {getFieldDecorator('confirm', {
                                     rules: [{
@@ -144,8 +122,8 @@ class ModalResetPassword extends React.Component {
                                     />
                                 )}
                             </FormItem>
-
-                            <FormItem>
+                            <div className='tips'>{postResult.message}</div>
+                            <FormItem className='center'>
                                 {(isPosting) ? <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
                                         <Posting isShow={isPosting}/>
                                     </Button>
@@ -154,26 +132,32 @@ class ModalResetPassword extends React.Component {
                                 }
                             </FormItem>
                         </Form>
+                        <button onClick={()=>onFail()}>下一步</button>
                     </div>
-                        :<BbhAlert
-                            info={{message:postResult.message,description:postResult.description,type:postResult.type,
-                                callback:()=>{
-                                    this.modalClose()
-                                }
-                            }}
-                        />}
                 </div>
             )
+        }else{
+            return(
+                <div className="pop__password pop">
+                    <BbhAlert
+                        info={{message:postResult.message,description:postResult.description,type:postResult.type,
+                            callback:()=>{
+                                this.modalClose()
+                            }
+                        }}
+                    />
+                </div>
+            )
+        }
 
     }
-};
-
+}
 function mapStateToProps(state) {
-    const { auth, memberSettings} = state.toJS();
+    const { auth, member} = state.toJS();
     return {
         auth,
-        memberSettings,
+        member,
     };
 }
-ModalResetPassword = connect(mapStateToProps)(createForm()(ModalResetPassword));
-export default connect(mapStateToProps)(ModalResetPassword);
+ModalTradePassword = connect(mapStateToProps)(createForm()(ModalTradePassword));
+export default connect(mapStateToProps)(ModalTradePassword);

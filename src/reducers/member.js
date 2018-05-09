@@ -4,6 +4,8 @@ import Immutable from 'immutable';
 const initialState = Immutable.fromJS({
     isFetching:false,
     isPosting:false,
+    openOthers:false,
+    postResult:``,
     accountsInfo:{
         basicInfo:``,
         amount:'',
@@ -20,7 +22,6 @@ const initialState = Immutable.fromJS({
         dummyResult:``,
         postResult:``,
     },
-
     charts:{
         chartsMonth:'',
         chartsDay:'',
@@ -40,6 +41,39 @@ export default createReducer(initialState, {
         isFetching: false,
         errorMessage: action.message
     }),
+    //实名认证
+    ['member/certification/FETCH_PENDING']:(state,action) => state.mergeDeep({
+        isFetching: true,
+        isPosting: true,
+    }),
+    ['member/certification/FETCH_FULFILLED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        isPosting: false,
+        postResult:action.payload
+    }),
+    ['member/certification/FETCH_REJECTED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        isPosting: false,
+        errorMessage: action.message
+    }),
+    //富友开户
+
+    //设置交易密码
+    ['member/tradePassword/FETCH_PENDING']:(state,action) => state.mergeDeep({
+        isFetching: true,
+        isPosting: true,
+    }),
+    ['member/tradePassword/FETCH_FULFILLED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        isPosting: false,
+        postResult:action.payload
+    }),
+    ['member/tradePassword/FETCH_REJECTED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        isPosting: false,
+        errorMessage: action.message
+    }),
+
     //开户，充值，提现临时用
     ['member/FETCH_POSTING_PENDING']:(state,action) => state.mergeDeep({
         isFetching: true,
@@ -70,6 +104,10 @@ export default createReducer(initialState, {
     }),
     ['member/MODIFY_STATE']:(state,action) => state.mergeDeep({
         accountsInfo:action.payload
+    }),
+    ['member/CLEAR']:(state,action) => state.mergeDeep({
+        postResult:``,
+        isPosting:false,
     }),
 
 })
