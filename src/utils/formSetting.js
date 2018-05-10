@@ -1,3 +1,7 @@
+import parseJson2URL from "./parseJson2URL";
+import {message} from "antd/lib/index";
+import {getImageCode, sendVerifyCode, setVerifyCodeCd} from "../actions/login";
+
 export const formItemLayout = {
     labelCol: {
         span:6
@@ -11,3 +15,4 @@ export const formItemLayout = {
 export function noop() {
     return false;
 }
+

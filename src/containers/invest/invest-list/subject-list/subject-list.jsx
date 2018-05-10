@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import moment from "moment";
 import {sbListAc} from "../../../../actions/invest-list";
 import Pagination from '../../../../components/pagination/pagination';
-import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
+import {Loading,NoRecord,WaitThirdParty} from '../../../../components/bbhAlert/bbhAlert';
 import {InvestTab,ProgressBar,InvestButton} from '../investComponents';
 import {toMoney,toNumber,addCommas} from  '../../../../assets/js/famatData';
 import '../invest-list.less';
@@ -112,6 +112,7 @@ class SubjectList extends Component {
         console.log(this.props.investList);
         return (
             <main className="main invest-list">
+
                 <div className="wrapper">
                     <InvestTab isTransfer={false} />
                     <div className="filter">

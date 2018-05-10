@@ -16,6 +16,7 @@ import memberRiskAssess from './member-riskAssess';
 import investList from './invest-list';
 import investDetail from './invest-detail';
 import member from './member';
+import account from './member_account';
 import superPartner from './super-partner';
 import aboutContentReducer from './aboutContentReducer';
 import special from './special';
@@ -39,6 +40,7 @@ export {
     memberMessages,
     memberRiskAssess,
     member,
+    account,
     superPartner,
     aboutContentReducer,
     special,

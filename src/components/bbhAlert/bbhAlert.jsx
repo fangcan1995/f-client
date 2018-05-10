@@ -1,11 +1,10 @@
 import React from 'react';
+import { Link} from 'react-router-dom';
 import './bbhAlert.less';
 import { Button,Alert } from 'antd';
 export  class BbhAlert extends React.Component{
     render(){
         let {info}=this.props;
-        console.log('话术是');
-        console.log(info);
         return(
             <div className="form__wrapper">
                 <Alert
@@ -79,6 +78,26 @@ export  class Page404 extends React.Component{
                             </p>
             </div>
 
+        )
+    }
+}
+export  class WaitThirdParty extends React.Component{
+    render(){
+        let {isShow,title,callback}=this.props;
+        return(
+            <div className="tips_thirdParty">
+                {(isShow===true)?
+                    <div className='form__wrapper'>
+                        <div className='form__bar'>请您在新页面完成{title},成功前不要关闭此页面。</div>
+                        <div className=''>
+                            <Button className='ant-btn-primary btn call_sucess' type="primary">{title}成功</Button>
+                            <a className='ant-btn-primary btn call_fail' href='http://www.baidu.com' target='_blank'>遇到问题</a>
+                        </div>
+                        <div className='form__bar'>客服热线：****** （服务时间：******）</div>
+                    </div>
+                    :``
+                }
+            </div>
         )
     }
 }

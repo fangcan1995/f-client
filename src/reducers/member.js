@@ -26,6 +26,7 @@ const initialState = Immutable.fromJS({
         chartsMonth:'',
         chartsDay:'',
     },
+    toFuyou:``
 
 });
 
@@ -38,6 +39,18 @@ export default createReducer(initialState, {
         accountsInfo:action.payload
     }),
     ['member/FETCH_REJECTED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
+    //获取给富友的开户信息
+    ['member/fuyou/FETCH_PENDING']:(state,action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['member/fuyou/FETCH_FULFILLED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        toFuyou:action.payload
+    }),
+    ['member/fuyou/FETCH_REJECTED']:(state,action) => state.mergeDeep({
         isFetching: false,
         errorMessage: action.message
     }),

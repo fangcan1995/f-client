@@ -5,7 +5,7 @@ import { message } from 'antd';
 import {urls,token} from './../utils/url';
 import parseJson2URL from "../utils/parseJson2URL";
 import {urls_auth} from "../utils/url";
-
+import {API_CONFIG} from "../config/api";
 
 const url_memberInfo=`${urls}/accounts/my/info`; //获取会员信息
 const url_incomeMonth=`${urls}/accounts/income/month`; //获取月收益统计
@@ -16,94 +16,58 @@ const url_recharge=`${urls}/accounts/operation?escrowCode=100100&type=1`; //充�
 const url_withdrawals=`${urls}/accounts/operation?escrowCode=100100&type=3`; //提现
 const url_tradePassword=`${urls_auth}/uaa/oauth/password`; //修改交易密码
 const url_certification=`${urls_auth}/uaa/oauth/password`; //实名认证
-const url_uyouOpenAccountInfo=`http://172.16.1.252:9030/account`; //给富有的开户信息
-export const memberAc= {
-
-    getInfo: (params) => {
-        //console.log('token');
-        //console.log(cookie.getJSON('token').access_token);
+const url_uyouOpenAccountInfo=`http://172.16.1.252:9090/account/fuyou`; //给富有的开户信息
+export const sendMemberVerifyCode = params => {
+    return {
+        type: 'member/SEND_VERIFY_CODE',
+        async payload() {
+            const res = await cFetch(API_CONFIG.baseUri + API_CONFIG.setTradePasswordVerifyCode + params, { credentials: 'include' }, false);
+            const { code, data } = res;
+            //console.log(res);
+            if ( code == 0 ) {
+                return data || {};
+            } else {
+                throw res;
+            }
+        }
+    }
+}
+export const setMemberVerifyCodeCd = cd => {
+    return {
+        type: 'member/SET_VERIFY_CODE_CD',
+        payload: cd,
+    }
+}
+export const accountAc= {
+    //获取会员帐户信息
+    getAccountInfo: (params) => {
         return {
-            type: 'member/FETCH',
+            type: 'member/account/FETCH',
             async payload() {
                 const res = await cFetch(`${url_memberInfo}`,{method: 'GET'}, true);
                 const {code, data} = res;
-
                 if (code == 0) {
                     console.log('后台返回的会员信息');
                     console.log(res);
-                    return {
-                        basicInfo:{
-                            trueName:data.baseInfo.trueName,
-                            memberId:data.baseInfo.memberId
-                        },
-                        amount:data.accountInfo,
-                        redInfo:data.memberRedInfo,
-                        couponInfo:data.memberCoupon,
-                        openAccountStatus:data.openAccountStatus,
-                        noviceStatus:data.noviceStatus,
-                        acBank:data.acBank,
-                        riskStatus:data.riskStatus,
-                        riskLevel:data.riskLevel,
-                        userName:data.member.userName,
-                        photo:data.member.photo,
-
+                    let mock={
+                        isCertification:'1',	//是否实名认证（0：未实名；1：已实名）
+                        isOpenAccount:'0',	//是否开户（0：未开户；1：已开户）
+                        isRisk:'0',	//是否风险测评（0：否；1：是）
+                        isSetTradepassword:'0',	//是否设置交易密码（0：未设置；1：已设置）
+                        isNovice:'1',	//是否新手（0：否；1：是）
+                        userName:'',	//真实姓名
+                        idNumber:'',	//身份证号
+                        photo:'',	//头像
+                        riskLevel:'',	//风险测评等级
+                        surplusAmount:'',//剩余投资限额
+                        availableBalance:'',	//账户可用余额
+                        bankName:'',	//开户行
+                        bankNo:'',	//银行卡号
+                        memberRedInfo:'',	//红包信息
+                        memberCoupon:'',	//加息券信息
                     };
-                } else {
-                    throw res;
-                }
-            }
-        }
-    },
-    getMonth: (params) => {
-        return {
-            type: 'member/FETCH_CHARTS',
-            async payload() {
-                const res = await cFetch(`${url_incomeMonth}` , {method: 'GET'}, true);
-                const {code, data} = res;
-                let xAxis_data=[];
-                let series_data=[];
-                for (var key in data.monthTimeSituationDto) {
-                    xAxis_data.push(data.monthTimeSituationDto[key]);
-                }
-                for (var key in data.monthIncomeSituationDto) {
-                    series_data.push(data.monthIncomeSituationDto[key]);
-                }
-
-                if (code == 0) {
-                    return {
-                        chartsMonth:{
-                            xAxis_data:xAxis_data,
-                            series_data:[{data:series_data}]
-                        }
-                    };
-                } else {
-                    throw res;
-                }
-            }
-        }
-    },
-    getDay: (params) => {
-        return {
-            type: 'member/FETCH_CHARTS',
-            async payload() {
-                const res = await cFetch(`${url_incomeDay}` , {method: 'GET'}, true);
-                const {code, data} = res;
-                let xAxis_data=[];
-                let series_data=[];
-                for (var key in data.dayTimeSituationDto) {
-                    xAxis_data.push(data.dayTimeSituationDto[key]);
-                }
-                for (var key in data.dayIncomeSituationDto) {
-                    series_data.push(data.dayIncomeSituationDto[key]);
-                }
-
-                if (code == 0) {
-                    return {
-                        chartsDay:{
-                            xAxis_data:xAxis_data,
-                            series_data:[{data:series_data}]
-                        }
-                    };
+                    //data=mock;
+                    return mock;
                 } else {
                     throw res;
                 }
@@ -113,12 +77,12 @@ export const memberAc= {
     //获取给富有的开户信息
     getFuyouOpenAccountInfo:(params)=> {
         return {
-            type: 'member/fuyou/FETCH',
+            type: 'member/account/OPENACCONT_FETCH',
             async payload() {
-                const res = await cFetch(`${url_uyouOpenAccountInfo}`, {method: 'POST'}, true);
+                const res = await cFetch(`${url_uyouOpenAccountInfo}`, {method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
-                    console.log('后台获取的给富有的开户信息');
+                    console.log('后台获取的给富友的开户信息');
                     console.log(data);
                     return data;
                 }else {
@@ -128,8 +92,6 @@ export const memberAc= {
             }
         }
     },
-
-
     //开户
     postOpenAccount: (pram) => {
         console.log('开户');
@@ -177,12 +139,12 @@ export const memberAc= {
                         body: ``,
                     },
                     true);
-               /* if (res.code == 0) {
-                    message.success('充值成功');
-                    return {postResult: res};
-                } else {
-                    throw res;
-                }*/
+                /* if (res.code == 0) {
+                     message.success('充值成功');
+                     return {postResult: res};
+                 } else {
+                     throw res;
+                 }*/
                 console.log('充值提交后返回');
                 console.log(res);
                 let type=``;
@@ -228,7 +190,7 @@ export const memberAc= {
         params=parseJson2URL(params);
         console.log(params);
         return {
-            type: 'member/tradePassword/FETCH',
+            type: 'member/account/TRADEPASSWORD_FETCH',
             async payload() {
                 const res = await cFetch(`${url_tradePassword}?${params}`, {
                         method: 'POST',
@@ -244,10 +206,10 @@ export const memberAc= {
                 console.log('修改密码返回的结果');
                 console.log(res);
                 return {
-                        code:res.code,
-                        type:type,
-                        message:res.message||``,
-                        description:res.data||``,
+                    code:res.code,
+                    type:type,
+                    message:res.message||``,
+                    description:res.data||``,
                 };
             }
         }
@@ -258,7 +220,7 @@ export const memberAc= {
         params=parseJson2URL(params);
         console.log(params);
         return {
-            type: 'member/certification/FETCH',
+            type: 'member/account/CERTIFICATION_FETCH',
             async payload() {
                 const res = await cFetch(`${url_certification}?${params}`, {
                         method: 'POST',
@@ -292,7 +254,15 @@ export const memberAc= {
     },
     clear: (prams) => {
         return {
-            type: 'member/CLEAR',
+            type: 'member/account/CLEAR',
+            payload() {
+                return prams
+            }
+        }
+    },
+    change_goOutState: (prams) => {
+        return {
+            type: 'member/account/GOOUT_STATE',
             payload() {
                 return prams
             }
