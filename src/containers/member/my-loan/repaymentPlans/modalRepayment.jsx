@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import  {addCommas}  from '../../../../assets/js/cost';
+import  {addCommas}  from '../../../../utils/cost';
 import { Form,Row,Input,Button,Checkbox,Col } from 'antd';
 import { connect } from 'react-redux';
 import  {repaymentsAc}  from '../../../../actions/member-loans';

@@ -7,8 +7,8 @@ import CountDownButton from '../../../components/countDownButton/countDownButton
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {memberAc} from '../../../actions/member';
-import {toMoney} from  '../../../assets/js/famatData';
-import  {checkMoney,addCommas}  from '../../../assets/js/cost';
+import {toMoney} from '../../../utils/famatData';
+import  {checkMoney,addCommas}  from '../../../utils/cost';
 import {Button} from 'antd';
 class Withdrawals extends React.Component{
     constructor(props) {

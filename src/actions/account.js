@@ -1,6 +1,6 @@
 import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
-import {addCommas,checkMoney} from './../assets/js/cost';
+import {addCommas,checkMoney} from '../utils/cost';
 import { message } from 'antd';
 import {urls,token} from './../utils/url';
 import parseJson2URL from "../utils/parseJson2URL";
@@ -63,8 +63,8 @@ export const accountAc= {
                         availableBalance:'',	//账户可用余额
                         bankName:'',	//开户行
                         bankNo:'',	//银行卡号
-                        memberRedInfo:'',	//红包信息
-                        memberCoupon:'',	//加息券信息
+                        memberRedInfo:{number: 0, amountSum: 0},	//红包信息
+                        memberCoupon:{number: 0, amountSum: 0},	//加息券信息
                     };
                     //data=mock;
                     return mock;

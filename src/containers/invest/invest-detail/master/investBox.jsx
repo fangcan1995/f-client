@@ -2,17 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import StepperInput from '../../../../components/stepperInput/stepperInput';
-import {income} from "../../../../assets/js/cost";
-import {addCommas, toMoney, toNumber} from "../../../../assets/js/famatData"
+import {income} from "../../../../utils/cost";
+import {addCommas, toMoney, toNumber} from "../../../../utils/famatData"
 import {  Link} from 'react-router-dom';
-import { Modal } from 'antd';
+import { Modal,Button } from 'antd';
 import ModalInvest from '../modal-invest/modalInvest';
 import ModalRecharge from '../modal-recharge/modaRecharge'
 import ModalRiskAssess from '../modal-riskAssess/modal-riskAssess';
 import RiskQuestions from '../../../member/settings/my-riskAssess/riskQuestions';
-import  {memberAc}  from '../../../../actions/member';
+import  {accountAc}  from '../../../../actions/account';
 import ModalSteps from '../../../../components/modal/modal-steps/modal-steps';
 import {InvestButton} from '../../invest-list/investComponents';
+import investDetailActions from "../../../../actions/invest-detail";
+import {formItemLayout} from "../../../../utils/formSetting";
+
+const modal_config={
+    invest:{
+        title:"投资",
+        wrapClassName:"vertical-center-modal",
+        width:"520px",
+        height:"400px",
+        footer:null,
+    }
+}
+
 class MasterInvestBox extends React.Component {
     constructor(props) {
         super(props);
@@ -29,6 +42,13 @@ class MasterInvestBox extends React.Component {
             code:100
         }
     }
+
+    componentDidMount () {
+        if(this.props.auth.isAuthenticated){
+            this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
+        }
+    }
+
     //模态框开启关闭
     toggleModal=(modal,visile,id)=>{
         if(visile){
@@ -44,17 +64,15 @@ class MasterInvestBox extends React.Component {
     };
     callback(modal,status){
         this.toggleModal(modal,false);
-        this.props.dispatch(memberAc.modifyState({accountsInfo:``}));
-        this.props.dispatch(memberAc.getInfo());  //成功重载数据
+        this.props.dispatch(accountAc.modifyState({accountsInfo:``}));
+        this.props.dispatch(accountAc.getInfo());  //成功重载数据
     }
     render(){
-        let {member,auth,investInfo,type}=this.props;
-        console.log('-------------this.props---------------');
-        console.log(this.props);
-        let {amount,redInfo,couponInfo,postResult,openAccountStatus,riskStatus,riskLevel,noviceStatus}=member.accountsInfo;
+        let {account,auth,investInfo,type}=this.props;
+        let {isFetching,accountsInfo}=account;
+        let {availableBalance,memberRedInfo,memberCoupon,postResult,isCertification,isOpenAccount,isRisk,riskLevel,isNovice}=accountsInfo;
         console.log('会员信息');
-        console.log(member.accountsInfo);
-        let {isFetching}=member;
+        console.log(account.accountsInfo);
         return(
             <div className="form_area">
                 {investInfo===``?``
@@ -92,21 +110,21 @@ class MasterInvestBox extends React.Component {
                                 <li>
                                     <strong>我的可用余额：</strong>
                                     {
-                                        (1==1)? `${toMoney(amount.availableBalance)} 元`
+                                        (1==1)? `${toMoney(availableBalance)} 元`
                                             : <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
                                     }
                                 </li>
                                 <li>
                                     <strong>可用红包总计：</strong>
                                     {
-                                        (1==1)? `${toMoney(redInfo.amountSum)} 元`
+                                        (1==1)? `${toMoney(memberRedInfo.amountSum)} 元`
                                             : <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
                                     }
                                 </li>
                                 <li>
                                     <strong>可用加息券：</strong>
                                     {
-                                        (1==1)? `${toNumber(couponInfo.number)} 张`
+                                        (1==1)? `${toNumber(memberCoupon.number)} 张`
                                             : <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
                                     }
                                 </li>
@@ -119,7 +137,21 @@ class MasterInvestBox extends React.Component {
                                     </i>元
                                 </li>
                             </ul>
-                            {
+                            <div>
+                                {
+                                    isFetching ? ``
+                                        :<div>
+                                            {
+                                                !auth.isAuthenticated?
+                                                    <Link  to={`/login?redirect=%2Finvest-detail%2F${investInfo.id}`} className="btn">我要登录</Link>
+                                                    :(isNovice===`0` && investInfo.noviceLoan=='1')? <a className='btn end'>仅限新手</a>
+                                                        :<a  className="btn" onClick={() => this.toggleModal(`modalAuth`,true)}>立即投资</a>
+                                            }
+                                        </div>
+                                }
+                            </div>
+
+                            {/*{
                                 isFetching?<a href="javascript:void(0);" className="btn end" onClick={() => this.toggleModal(`modalAuth`,true)}>载入中...</a>
                                     :(
                                         !auth.isAuthenticated?<Link  to={`/login?redirect=%2Finvest-detail%2F${investInfo.id}`} className="btn">我要登录</Link>
@@ -138,7 +170,7 @@ class MasterInvestBox extends React.Component {
 
                                             )
                                     )
-                            }
+                            }*/}
                         </div>
                 }
                 {/*投资弹窗*/}
@@ -224,10 +256,12 @@ class MasterInvestBox extends React.Component {
                 <Modal
                     title="开户"
                     wrapClassName="vertical-center-modal"
-                    visible={true}
+                    visible={this.state.modalAuth}
                     width="620px"
                     footer={null}
                     destroyOnClose={true}
+                    maskClosable={false}
+
                     onCancel={() => {
                         this.callback(`modalAuth`);
                     }}
@@ -248,10 +282,10 @@ class MasterInvestBox extends React.Component {
     }
 }
 function mapStateToProps(state) {
-    const { auth,member } = state.toJS();
+    const { auth,account } = state.toJS();
     return {
         auth,
-        member
+        account
     };
 }
 export default  connect(mapStateToProps)(MasterInvestBox);

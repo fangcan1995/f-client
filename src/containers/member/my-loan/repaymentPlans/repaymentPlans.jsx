@@ -4,7 +4,7 @@ import PieChart from '../../../../components/charts/pie'
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
-import {addCommas} from '../../../../assets/js/cost';
+import {addCommas} from '../../../../utils/cost';
 import { Modal,Select,DatePicker } from 'antd';
 import ModalRepayment from './modalRepayment';
 import { connect } from 'react-redux';

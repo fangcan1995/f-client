@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import  {poundage,checkMoney}  from '../../../../assets/js/cost';
-import {addCommas} from '../../../../assets/js/famatData';
+import  {poundage,checkMoney}  from '../../../../utils/cost';
+import {addCommas} from '../../../../utils/famatData';
 import { Checkbox,message,Alert,Button } from 'antd';
 import { connect } from 'react-redux';
 import {memberInvestAc} from "../../../../actions/member-investments";

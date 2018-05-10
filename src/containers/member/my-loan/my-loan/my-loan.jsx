@@ -6,7 +6,7 @@ import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
 import { Modal } from 'antd';
 import ModalRepaymentApp from './modalRepaymentApp';
-import {toMoney,toNumber,addCommas} from  '../../../../assets/js/famatData';
+import {toMoney,toNumber,addCommas} from '../../../../utils/famatData';
 import { connect } from 'react-redux';
 import  {memberLoansAc}  from '../../../../actions/member-loans';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';

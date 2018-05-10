@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {addCommas, toMoney, toNumber,cardGetAge,cardGetSex} from "../../../../assets/js/famatData"
+import {addCommas, toMoney, toNumber,cardGetAge,cardGetSex} from "../../../../utils/famatData"
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
     export default ({loanInfo,isFetching,...rest}) => {
 

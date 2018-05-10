@@ -6,12 +6,9 @@ import BorrowerInfo from './borrowerInfo/borrowerInfo';
 import InvestRecords from './investRecords/investRecords';
 import RepayRecords from './repayRecords/repayRecords';
 import RiskNotice from './riskNotice/riskNotice';
-
-import './invest-detail.less';
-import { connect } from 'react-redux';
-import { Form,Row,Input,Button,Checkbox,Col,Alert } from 'antd';
 import  investDetailActions  from '../../../actions/invest-detail';
-import StepperInput from '../../../components/stepperInput/stepperInput';
+import { connect } from 'react-redux';
+import './invest-detail.less';
 class InvestDetail extends React.Component{
     constructor(props) {
         super(props);
@@ -28,11 +25,8 @@ class InvestDetail extends React.Component{
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
         let proId=pathSnippets[1];
         let {investDetail}=this.props;
-        console.log('-----------investDetail-----------');
-        console.log(investDetail);
         let {investInfo,memberInfo,loanInfo,investRecords,repayRecords,isFetching}=investDetail;
-        let project=investInfo.data;
-
+        //let project=investInfo.data;
         return (
             <main className="main sbDetail">
                 <div className="wrapper">

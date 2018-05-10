@@ -1,6 +1,6 @@
 import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
-import {addCommas,checkMoney} from './../assets/js/cost';
+import {addCommas,checkMoney} from '../utils/cost';
 import {urls,token} from './../utils/url';
 import {url_putRList} from './member-settings';
 import parseJson2URL from "../utils/parseJson2URL";

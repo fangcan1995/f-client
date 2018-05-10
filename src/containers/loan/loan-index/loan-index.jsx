@@ -9,7 +9,7 @@ import { getImageCode } from '../../../actions/login'
 import { showModal,hideModal } from '../../../actions/login-modal';
 import LoginModal from '../../../components/login-modal/login-modal'
 import { getApplyData,checkForm ,formData,postLoanData, hideModal1 } from '../../../actions/loan-index'
-import {checkMoney} from '../../../assets/js/cost';
+import {checkMoney} from '../../../utils/cost';
 import parseJson2URL from '../../../utils/parseJson2URL';
 import  memberActions  from '../../../actions/member';
 import ModalAuth from '../../../components/modal/modal-auth/modal-auth'

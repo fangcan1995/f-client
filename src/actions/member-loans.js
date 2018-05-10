@@ -4,7 +4,7 @@ import parseJson2URL from './../utils/parseJson2URL';
 import {urls,token} from '../utils/url'
 import { API_CONFIG } from './../config/api';
 import readBlobAsDataURL from '../utils/readBlobAsDataURL';
-import {toMoney,toNumber,addCommas} from  '../assets/js/famatData';
+import {toMoney,toNumber,addCommas} from '../utils/famatData';
 
 const url_loansCharts=`${urls}/members/loans/statistics`; //统计图数据
 const url_loansList=`${urls}/members/loans`;//获取借款列表

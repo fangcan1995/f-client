@@ -5,8 +5,8 @@ import Tab from '../../../components/tab/tab';
 
 import { connect } from 'react-redux';
 import {memberAc} from '../../../actions/member';
-import {toMoney,toNumber} from  '../../../assets/js/famatData';
-import  {checkMoney,addCommas}  from '../../../assets/js/cost';
+import {toMoney,toNumber} from '../../../utils/famatData';
+import  {checkMoney,addCommas}  from '../../../utils/cost';
 import {Loading,NoRecord,Posting} from '../../../components/bbhAlert/bbhAlert';
 import { Link, withRouter } from 'react-router-dom';
 import {Button} from 'antd';

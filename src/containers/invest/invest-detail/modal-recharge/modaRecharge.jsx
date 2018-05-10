@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import  {checkMoney}  from '../../../../assets/js/cost';
-import {addCommas} from "../../../../assets/js/famatData";
+import  {checkMoney}  from '../../../../utils/cost';
+import {addCommas} from "../../../../utils/famatData";
 import { Button } from 'antd';
 import './modaRecharge.less'
 import { connect } from 'react-redux';

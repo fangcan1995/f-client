@@ -1,27 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {toMoney,toNumber,addCommas} from  '../../../../assets/js/famatData';
+import {toMoney,toNumber,addCommas} from '../../../../utils/famatData';
 import { connect } from 'react-redux';
 import  investDetailActions  from '../../../../actions/invest-detail';
-import  {memberAc}  from '../../../../actions/member';
+//import  {accountAc}  from '../../../../actions/account';
 import InvestBox from "./investBox"
 import moment from "moment";
 
 class InvestDetailMaster extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-        }
-    }
     componentDidMount () {
-        if(this.props.auth.isAuthenticated){
-            this.props.dispatch(memberAc.getInfo());
-        }
+        /*if(this.props.auth.isAuthenticated){
+            this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
+        }*/
         this.props.dispatch(investDetailActions.getInvestInfo(this.props.id));
     }
     render(){
         let {investInfo}=this.props.investDetail;
-        let {member,auth}=this.props;
+
         return (
             <div>
                 <div>
@@ -138,11 +133,11 @@ class InvestDetailMaster extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { auth,investDetail,member } = state.toJS();
+    const { auth,investDetail } = state.toJS();
     return {
         auth,
         investDetail,
-        member
+
     };
 }
 export default connect(mapStateToProps)(InvestDetailMaster);

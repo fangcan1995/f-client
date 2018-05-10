@@ -7,7 +7,7 @@ import {sbListAc} from "../../../../actions/invest-list";
 import Pagination from '../../../../components/pagination/pagination';
 import {Loading,NoRecord,WaitThirdParty} from '../../../../components/bbhAlert/bbhAlert';
 import {InvestTab,ProgressBar,InvestButton} from '../investComponents';
-import {toMoney,toNumber,addCommas} from  '../../../../assets/js/famatData';
+import {toMoney,toNumber,addCommas} from '../../../../utils/famatData';
 import '../invest-list.less';
 
 

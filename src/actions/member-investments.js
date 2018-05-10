@@ -1,6 +1,6 @@
 import cFetch from '../utils/cFetch';
 import cookie from 'js-cookie';
-import {toMoney,toNumber,addCommas} from  '../assets/js/famatData';
+import {toMoney,toNumber,addCommas} from '../utils/famatData';
 import parseJson2URL from './../utils/parseJson2URL';
 import {urls,token} from './../utils/url';
 

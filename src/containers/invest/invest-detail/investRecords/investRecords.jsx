@@ -4,7 +4,7 @@ import moment from "moment";
 import { connect } from 'react-redux';
 import Pagination from '../../../../components/pagination/pagination';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
-import {addCommas, toMoney, toNumber} from "../../../../assets/js/famatData";
+import {addCommas, toMoney, toNumber} from "../../../../utils/famatData";
 class InvestRecords extends React.Component{
     constructor(props) {
         super(props);

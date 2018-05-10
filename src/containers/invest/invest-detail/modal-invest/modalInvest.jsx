@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import  {poundage,addCommas,checkMoney,income}  from '../../../../assets/js/cost';
+import  {poundage,addCommas,checkMoney,income}  from '../../../../utils/cost';
 import { Checkbox,message,Select,Button } from 'antd';
 import './modalInvest.less';
 import {BbhAlert,Posting} from '../../../../components/bbhAlert/bbhAlert';

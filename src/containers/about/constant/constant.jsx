@@ -17,7 +17,7 @@ import ReactEcharts from 'echarts-for-react';
 import {getEchartLine,getEchartBar} from '../../../assets/js/getEchart';
 import PieChart from '../../../components/charts/pie';
 import BarChart from '../../../components/charts/bar';
-import {addCommas} from '../../../assets/js/cost';
+import {addCommas} from '../../../utils/cost';
 
 
 

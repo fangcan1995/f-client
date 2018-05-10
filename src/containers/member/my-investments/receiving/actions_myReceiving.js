@@ -1,6 +1,6 @@
 import cFetch from './../../../../utils/cFetch';
 import cookie from 'js-cookie';
-import {addCommas} from '../../../../assets/js/cost';
+import {addCommas} from '../../../../utils/cost';
 let actionsMyReceiving = {
     getData: (status) => (dispatch, memberInvestments) => {
         dispatch(actionsMyReceiving.getPie());

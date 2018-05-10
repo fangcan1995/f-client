@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import  memberActions  from '../../../actions/member';
 import  {memberAc}  from '../../../actions/member';
 import { Link, NavLink } from 'react-router-dom';
-import {toMoney,toNumber,addCommas} from  '../../../assets/js/famatData';
+import {toMoney,toNumber,addCommas} from '../../../utils/famatData';
 import Crumbs from '../../../components/crumbs/crumbs';
 import {BbhAlert} from '../../../components/bbhAlert/bbhAlert';
 class AccountOverview extends React.Component{
