@@ -35,11 +35,11 @@ class ModalBindCard extends React.Component {
         let {onSuccess,onFail}=this.props;
         let {isPosting,toOthersInfo,postResult,isOpenOthers}=this.props.account;
         console.log('去富有开户携带的信息');
-        console.log(toOthersInfo);
+        console.log(typeof toOthersInfo);
         if(postResult.type!=`success`){
             return(
                 <div className="pop__password pop">
-                    {isOpenOthers?<WaitThirdParty isShow={true} title='绑卡' callback={this.modalClose} />
+                    {(isOpenOthers )?<WaitThirdParty isShow={true} title='绑卡' callback={this.modalClose} />
                         :<div className="form__wrapper">
                             <form name="webReg" id="webReg" method="post" action={toOthersInfo.url}  target="_blank" >
                                 <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />
@@ -59,7 +59,11 @@ class ModalBindCard extends React.Component {
                                 <input type="hidden" name="signature" value={toOthersInfo.signature} /><br/>
                                 <input type="hidden" name="ver" value={toOthersInfo.ver} /><br/>
                                 <div className='center'>
-                                    <Button type="primary" htmlType="submit" className="pop__large">去富友开户</Button>
+                                    {
+                                        toOthersInfo==``?<Button type="primary" htmlType="submit" className="pop__large" disabled={true}>去富友开户</Button>
+                                            :<Button type="primary" htmlType="submit" className="pop__large" >去富友开户</Button>
+                                    }
+
                                 </div>
                             </form>
                         </div>

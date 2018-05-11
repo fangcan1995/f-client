@@ -59,7 +59,7 @@ class InvestDetailMaster extends React.Component {
                         </dl>
                         {/*投资区域*/}
                         <div className="m-invest">
-                            {(investInfo !=``)?
+                            {(111 !=``)?
                                 <InvestBox type={0}
                                            investInfo={{
                                                id:investInfo.id,

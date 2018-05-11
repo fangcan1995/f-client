@@ -7,26 +7,29 @@ import PieChart from "../charts/pie";
 export default class BbhModal extends Component{
     constructor(props) {
         super(props);
-
     }
+
     render(){
+        //alert(this.refs.pop);
         console.log('弹框的参数');
         console.log(this.props);
-        let {config}=this.props;
-        let {title,header,width,height,onCancel}=config;
+        let {config,visible,onCancel}=this.props;
+        let {title,width,height}=config;
+
         return(
             <Modal
-                title="123456"
+                title={title||``}
                 wrapClassName="vertical-center-modal"
-                visible={false}
-                width="520px"
-                height="400px"
+                visible={visible}
+                width={width||`520px`}
                 footer={null}
                 onCancel={() => {
-                    this.callback(`modalInvest`);
+                    onCancel();
                 }}
             >
+                <div className="pop" ref='pop' style={{minHeight:`${height||`400px`}`}}>
                 {this.props.children}
+                </div>
             </Modal>
             )
 

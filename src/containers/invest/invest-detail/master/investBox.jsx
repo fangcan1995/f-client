@@ -17,14 +17,31 @@ import investDetailActions from "../../../../actions/invest-detail";
 import {formItemLayout} from "../../../../utils/formSetting";
 import BbhModal from "../../../../components/modal/bbh_modal";
 const modal_config={
-    invest:{
-        title:"投资",
-        width:"520px",
-        height:"400px",
-        header:null,
-        onCancel:()=>{
-            console.log('弹框毁掉');
-        }}
+    ModalSteps: {
+        title: "",
+        width: "620px",
+        height: "400px"
+    },
+    ModalBindCard: {
+        title: "开户",
+        width: "620px",
+        height: "400px"
+    },
+    ModalTradePassword: {
+        title: "设置交易密码",
+        width: "620px",
+        height: "400px"
+    },
+    ModalRiskAssess: {
+        title: "风险评估",
+        width: "800px",
+        height: "600px"
+    },
+    ModalInvestSteps: {
+        title: "投资",
+        width: "620px",
+        height: "400px"
+    },
 
 }
 
@@ -38,6 +55,8 @@ class MasterInvestBox extends React.Component {
             modalRecharge: false,
             modalRiskAssess: false,
             modalAuth:false,
+            bbhModal:false,
+            currentModule:``,
             key:Math.random(),
             tips:'',
             allowedInvest:true,
@@ -53,17 +72,52 @@ class MasterInvestBox extends React.Component {
 
     //模态框开启关闭
     toggleModal=(modal,visile,id)=>{
+        console.log('会员信息');
+        console.log(this.props.account.accountsInfo);
+        let {isCertification,isOpenAccount,isSetTradepassword,isRisk,riskLevel}=this.props.account.accountsInfo;
+        let currentModule=``;
+        if(isCertification===`0`) {
+            currentModule = `ModalSteps`;   //没有实名认证
+        }else if(isCertification===`1`){
+            //完成实名认证
+            if(isOpenAccount==='0' && isSetTradepassword===`0`){
+                currentModule = `ModalSteps`;  //实名认证,未开户，未设置交易密码，跳到三步走第二部
+            }else if(isOpenAccount===`0`){
+                currentModule = `ModalBindCard`;  //去开户
+            }else if(isSetTradepassword===`0`){
+                currentModule = `ModalTradePassword`;  //去交易密码
+            }else{
+                //完成开户和设置交易密码
+                if(isRisk==='0'){
+                    currentModule = `ModalRiskAssess`;   //去测评
+                }else if(isRisk==='1'){
+                    currentModule=`ModalInvestSteps`;  //去投资
+                }
+
+            }
+
+        }
+
         if(visile){
             this.setState({
+                currentModule:currentModule,
                 [modal]: true,
             });
         }else{
             this.setState({
+                currentModule:``,
                 [modal]: false,
                 key:Math.random()
             });
         }
     };
+    closeBbhModal(){
+        this.setState({
+            currentModule:``,
+            bbhModal: false,
+            key:Math.random()
+        });
+    }
     callback(modal,status){
         this.toggleModal(modal,false);
         this.props.dispatch(accountAc.modifyState({accountsInfo:``}));
@@ -73,10 +127,11 @@ class MasterInvestBox extends React.Component {
         let {account,auth,investInfo,type}=this.props;
         let {isFetching,accountsInfo}=account;
         let {availableBalance,memberRedInfo,memberCoupon,postResult,isCertification,isOpenAccount,isRisk,riskLevel,isNovice}=accountsInfo;
-        console.log('会员信息');
-        console.log(account.accountsInfo);
+        console.log('当前窗口');
+        console.log(this.state.currentModule);
         return(
             <div className="form_area">
+                <button onClick={() => this.toggleModal(`bbhModal`,true)}>测试用</button>
                 {investInfo===``?``
                     :(investInfo.status!=2)?
                         <div>
@@ -141,44 +196,35 @@ class MasterInvestBox extends React.Component {
                             </ul>
                             <div>
                                 {
-                                    isFetching ? ``
-                                        :<div>
-                                            {
-                                                !auth.isAuthenticated?
-                                                    <Link  to={`/login?redirect=%2Finvest-detail%2F${investInfo.id}`} className="btn">我要登录</Link>
-                                                    :(isNovice===`0` && investInfo.noviceLoan=='1')? <a className='btn end'>仅限新手</a>
-                                                        :<a  className="btn" onClick={() => this.toggleModal(`modalAuth`,true)}>立即投资</a>
-                                            }
-                                        </div>
+                                    !auth.isAuthenticated?
+                                        <Link  to={`/login?redirect=%2Finvest-detail%2F${investInfo.id}`} className="btn">我要登录</Link>
+                                        :(investInfo.noviceLoan!='1')?<a  className="btn" onClick={() => this.toggleModal(`modalAuth`,true)}>立即投资</a>
+                                            :(isNovice===`0`)?<a className='btn end'>仅限新手</a>
+                                            :<a  className="btn" onClick={() => this.toggleModal(`modalAuth`,true)}>立即投资</a>
+
                                 }
+
                             </div>
-
-                            {/*{
-                                isFetching?<a href="javascript:void(0);" className="btn end" onClick={() => this.toggleModal(`modalAuth`,true)}>载入中...</a>
-                                    :(
-                                        !auth.isAuthenticated?<Link  to={`/login?redirect=%2Finvest-detail%2F${investInfo.id}`} className="btn">我要登录</Link>
-                                            :(openAccountStatus===0?<a  className="btn" onClick={() => this.toggleModal(`modalAuth`,true)}>立即开户</a>
-                                                :(riskStatus===`1`?<a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,investInfo.id)}>立即风险评估</a>
-                                                        :(1!=1?<a className="btn" onClick={() => this.toggleModal(`modalRiskAssess`,true,investInfo.id)}>重新风险评估</a>
-                                                                :(noviceStatus===0 && investInfo.noviceLoan=='1'?<a className='btn end'>仅限新手</a>
-                                                                        :(amount.availableBalance<this.state.investAmount?<a className="btn" onClick={() => this.toggleModal(`modalRecharge`,true,investInfo.id)}>立即充值</a>
-                                                                                :(this.state.tips!=''?<a className='btn end'>立即投资</a>
-                                                                                        : <a className='btn' onClick={() => this.toggleModal(`modalInvest`,true,investInfo.id)}>立即投资</a>
-                                                                                )
-                                                                        )
-                                                                )
-                                                        )
-                                                )
-
-                                            )
-                                    )
-                            }*/}
                         </div>
                 }
-
-                <BbhModal config={modal_config.invest}>
-                    <div>456</div>
-                </BbhModal>
+                {this.state.currentModule!=``?
+                    <BbhModal config={modal_config[this.state.currentModule]} visible={this.state.bbhModal} onCancel={()=>this.toggleModal(`bbhModal`,false)}>
+                        {this.state.currentModule === `ModalSteps` ?
+                            <ModalSteps key={this.state.key} onSuccess={()=>{this.closeBbhModal()}} onFail={()=>{this.closeBbhModal()}} />
+                            :(this.state.currentModule === `ModalTradePassword`)?
+                                <ModalTradePassword />
+                                :(this.state.currentModule === `ModalBindCard`)?
+                                    <div>开户</div>
+                                    :(this.state.currentModule === `ModalRiskAssess`)?
+                                        <ModalRiskAssess key={this.state.key} config={{callback:(obj)=>{this.toggleModal(`bbhModal`,false);}
+                                            }}
+                                        />
+                                        :(this.state.currentModule === `ModalInvestSteps`)?<div>投资三步走</div>
+                                            :``
+                        }
+                    </BbhModal>
+                    :``
+                }
                 {/*投资弹窗*/}
                 <Modal
                     title="投资"
@@ -272,13 +318,7 @@ class MasterInvestBox extends React.Component {
                     }}
                 >
 
-                    <ModalSteps key={this.state.key} info={
-                        {
-                            callback:(obj)=>{
-                                this.callback(`modalAuth`);
-                            }
-                        }
-                    }
+                    <ModalSteps key={this.state.key} info={{callback:(obj)=>{this.callback(`modalAuth`);}}}
                     />
                 </Modal>
             </div>

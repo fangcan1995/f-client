@@ -8,11 +8,11 @@ const initialState = Immutable.fromJS({
     postResult:``,
     verifyCodeCd:``,
     accountsInfo:{
-        isCertification:'',	//是否实名认证（0：未实名；1：已实名）
-        isOpenAccount:'',	//是否开户（0：未开户；1：已开户）
-        isRisk:'',	//是否风险测评（0：否；1：是）
-        isSetTradepassword:'',	//是否设置交易密码（0：未设置；1：已设置）
-        isNovice:'',	//是否新手（0：否；1：是）
+        isCertification:'0',	//是否实名认证（0：未实名；1：已实名）
+        isOpenAccount:'0',	//是否开户（0：未开户；1：已开户）
+        isRisk:'0',	//是否风险测评（0：否；1：是）
+        isSetTradepassword:'0',	//是否设置交易密码（0：未设置；1：已设置）
+        isNovice:'1',	//是否新手（0：否；1：是）
         userName:'',	//真实姓名
         idNumber:'',	//身份证号
         photo:'',	//头像

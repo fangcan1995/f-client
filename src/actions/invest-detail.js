@@ -165,7 +165,7 @@ let investDetailActions = {
                         body: JSON.stringify(params),
                     },
                     true);
-                //console.log()
+
                 console.log('投资提交后返回');
                 console.log(res);
                 let type = ``;
