@@ -16,7 +16,7 @@ const url_recharge=`${urls}/accounts/operation?escrowCode=100100&type=1`; //充�
 const url_withdrawals=`${urls}/accounts/operation?escrowCode=100100&type=3`; //提现
 const url_tradePassword=`${urls_auth}/uaa/oauth/password`; //修改交易密码
 const url_certification=`${urls_auth}/uaa/oauth/password`; //实名认证
-const url_uyouOpenAccountInfo=`http://172.16.1.252:9090/account/fuyou`; //给富有的开户信息
+const url_uyouOpenAccountInfo=`http://172.16.1.252:9090/payAccount`; //给富有的开户信息
 export const sendMemberVerifyCode = params => {
     return {
         type: 'member/SEND_VERIFY_CODE',

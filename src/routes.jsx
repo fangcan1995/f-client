@@ -21,6 +21,7 @@ import TransferDetail from './containers/invest/invest-detail/transfer-detail';
 
 import LoanIndex from './containers/loan/loan-index/loan-index';
 
+import PayAccount from './containers/payAccount/payAccount';
 // member
 import AccountOverview from './containers/member/account-overview/account-overview';
 import BankCard from './containers/member/bank-card/bank-card';
@@ -79,6 +80,7 @@ export default (
             <Route path="/subject_1" component={SubjectPc} />
             <Route path="/subject_2" component={SubjectWap} />
             <Route path="/subject_3" component={SubjectCommon} />
+            <Route path="/payAccount" component={PayAccount} />
             <Route strict path="/my-account" render={(props) => {
                 const { match } = props;
                 return (
