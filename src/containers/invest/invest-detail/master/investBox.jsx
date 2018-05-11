@@ -15,15 +15,17 @@ import ModalSteps from '../../../../components/modal/modal-steps/modal-steps';
 import {InvestButton} from '../../invest-list/investComponents';
 import investDetailActions from "../../../../actions/invest-detail";
 import {formItemLayout} from "../../../../utils/formSetting";
-
+import BbhModal from "../../../../components/modal/bbh_modal";
 const modal_config={
     invest:{
         title:"投资",
-        wrapClassName:"vertical-center-modal",
         width:"520px",
         height:"400px",
-        footer:null,
-    }
+        header:null,
+        onCancel:()=>{
+            console.log('弹框毁掉');
+        }}
+
 }
 
 class MasterInvestBox extends React.Component {
@@ -173,6 +175,10 @@ class MasterInvestBox extends React.Component {
                             }*/}
                         </div>
                 }
+
+                <BbhModal config={modal_config.invest}>
+                    <div>456</div>
+                </BbhModal>
                 {/*投资弹窗*/}
                 <Modal
                     title="投资"
@@ -261,7 +267,6 @@ class MasterInvestBox extends React.Component {
                     footer={null}
                     destroyOnClose={true}
                     maskClosable={false}
-
                     onCancel={() => {
                         this.callback(`modalAuth`);
                     }}
