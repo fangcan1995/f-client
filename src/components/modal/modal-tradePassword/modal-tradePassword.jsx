@@ -18,7 +18,8 @@ class ModalTradePassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            errMessages:``
+            errMessages:``,
+            isReset:false
         }
         //this.bindCard = this.bindCard.bind(this);
     }
@@ -92,7 +93,12 @@ class ModalTradePassword extends React.Component {
         }
         cd();
     })
-
+    //重新设置交易密码
+    reset(){
+        this.setState({
+            isReset:true,
+        });
+    }
     //回调
     modalClose(){
         let {onSuccess,onFail,dispatch}=this.props;
@@ -101,9 +107,9 @@ class ModalTradePassword extends React.Component {
         onSuccess();
     }
     render(){
-        console.log('-------------this.props---------------');
+        console.log('-------------设置交易密码模块---------------');
         console.log(this.props);
-        let {onSuccess,onFail}=this.props;
+        let {onSuccess,onFail,attach}=this.props;
         let {isPosting,postResult,accountsInfo,verifyCodeCd}=this.props.account;
         let {isCertification,isOpenAccount,isSetTradepassword}=accountsInfo;
         const { getFieldDecorator,getFieldValue } = this.props.form;
@@ -121,6 +127,21 @@ class ModalTradePassword extends React.Component {
                 trigger: ['onBlur', 'onChange']
             }]
         });
+        if(isSetTradepassword==='1'&& this.state.isReset){
+            return(
+                <div className="pop__password pop">
+                    <div className="form__wrapper">
+                        <div className='center'>
+                            <p className='result_tips'>您已经设置了交易密码</p>
+                        </div>
+                        <div className='center'>
+                            <Button type="primary" htmlType="submit" className="pop__large" onClick={()=>onFail()}>下一步</Button>
+                            <Button type="primary" htmlType="submit" className="pop__large" onClick={()=> this.reset()}>重新设置</Button>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
         if(postResult.type!=`success`){
             return(
                 <div className="pop__password pop">

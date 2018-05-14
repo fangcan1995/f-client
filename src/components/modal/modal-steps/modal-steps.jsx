@@ -79,7 +79,11 @@ class ModalSteps extends React.Component {
             content:<ModalCertification onSuccess={() => {this.ck_certification_success();}}  onFail={() => {this.ck_certification_fail();}}/>
         }, {
             title: '设置交易密码',
-            content: <ModalTradePassword onSuccess={() => {this.ck_tradePassword_success();}}  onFail={() => {this.ck_tradePassword_fail();}}/>
+            content: <ModalTradePassword
+                onSuccess={() => {this.ck_tradePassword_success();}}
+                onFail={() => {this.ck_tradePassword_fail();}}
+                attach={'steps'}
+            />
         }, {
             title: '绑定银行卡',
             content: <ModalBindCard onSuccess={() => {this.ck_tradePassword_success();}}  onFail={() => {this.ck_tradePassword_fail();}}/>
