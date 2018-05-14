@@ -17,7 +17,7 @@ class ModalInvestSteps extends React.Component {
         this.modalClose= this.modalClose.bind(this);
         this.state = {
             tips: '',  //错误提示
-            current: 0,  //开户进度
+            current: 0,  //进度
         }
     }
 
@@ -40,16 +40,17 @@ class ModalInvestSteps extends React.Component {
 
     }
     modalClose(){
+        let {onSuccess,onFail,dispatch}=this.props;
         //清空postResult
-        this.props.dispatch(memberAc.modifyState({'dummyResult':``}));
-        let {callback}=this.props.info;
-        callback();
+        //this.props.dispatch(memberAc.modifyState({'清空postResult':``}));
+        onSuccess();
     }
     ck_recharge_success(){
         console.log('充值成功回调');
-        this.setState({
+        this.modalClose();
+        /*this.setState({
             current:1
-        })
+        })*/
     }
     ck_recharge_fail(){
         console.log('充值失败回调');
@@ -82,12 +83,13 @@ class ModalInvestSteps extends React.Component {
         })
     }
     render() {
-        let {account,auth}=this.props;
+        let {account,auth,value}=this.props;
         let {accountsInfo,isPosting}=account;
         let {postResult}=accountsInfo;
-        const { current } = this.state;const steps = [{
+        const { current } = this.state;
+        const steps = [{
             title: '金额确认',
-            content:<ModalRecharge onSuccess={() => {this.ck_recharge_success();}}  onFail={() => {this.ck_recharge_fail();}}/>
+            content:<ModalRecharge value={value} onSuccess={() => {this.ck_recharge_success();}}  onFail={() => {this.modalClose();}}/>
         }, {
             title: '投资确认',
             content: <ModalInvest onSuccess={() => {this.ck_tradePassword_success();}}  onFail={() => {this.ck_tradePassword_fail();}}/>
@@ -107,8 +109,11 @@ class ModalInvestSteps extends React.Component {
             );
         }else{
             return(
-                <div className="pop_steps">
-
+                <div  className="pop_steps">
+                    <Steps  current={current}>
+                        {steps.map(item => <Step key={item.title} title={item.title} />)}
+                    </Steps>
+                    <div className="steps-content">{steps[this.state.current].content}</div>
                 </div>
             )
         }

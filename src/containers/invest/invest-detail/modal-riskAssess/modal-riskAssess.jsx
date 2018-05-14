@@ -9,7 +9,7 @@ import {BbhAlert} from '../../../../components/bbhAlert/bbhAlert';
 import { Alert } from 'antd';
 const RadioGroup = Radio.Group;
 import {Loading,NoRecord,Posting} from '../../../../components/bbhAlert/bbhAlert';
-class ModalRiskAssess extends React.Component {
+class ModalRiskAssess2 extends React.Component {
     constructor(props){
         super(props);
         this.onChange = this.onChange.bind(this);
@@ -140,4 +140,4 @@ function mapStateToProps(state) {
         memberRiskAssess
     };
 }
-export default connect(mapStateToProps)(ModalRiskAssess);
+export default connect(mapStateToProps)(ModalRiskAssess2);

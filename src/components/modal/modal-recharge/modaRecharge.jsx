@@ -84,67 +84,51 @@ class ModalRecharge extends React.Component {
         callback();
     }
     render() {
-        let {isPosting}=this.props.account;
-        let {accountBalance,callback}=this.props.config;
-        let {postResult}=this.props.account.accountsInfo;
+        //console.log(this.props);
+        let {value,account,onFail,onSuccess}=this.props;
+        let {isPosting,accountsInfo,postResult}=account;
+        let {availableBalance}=accountsInfo;
 
         if(postResult==='') {
             return (
-                <div className="pop__invest">
+                <div>
                     {
                         JSON.stringify(this.state.info) != "{}" ?
                             <div className="form__wrapper" id="area">
                                 <dl className="form__bar">
-                                    <p><label
-                                        style={{textAlign: 'center', color: '#f00', fontSize: '14px'}}>(虚拟充值)</label>
-                                    </p>
+                                    <dt><label>投资金额:</label></dt>
+                                    <dd>
+                                        {addCommas(parseFloat(value))}元
+                                    </dd>
                                 </dl>
                                 <dl className="form__bar">
-                                    <dt><label>我的可用余额:</label></dt>
+                                    <dt><label>可用余额:</label></dt>
                                     <dd>
-                                        {addCommas(parseFloat(accountBalance))}元
+                                        {addCommas(parseFloat(availableBalance))}元
                                     </dd>
                                 </dl>
+                                {
+                                    (parseFloat(value)>=availableBalance)?
 
                                 <dl className="form__bar">
-                                    <dt><label>充值金额:</label></dt>
+                                    <dt><label>需充值:</label></dt>
                                     <dd>
-                                        <input type="text" className="textInput moneyInput" autoComplete="off"
-                                               maxLength="8" onChange={this.handleChange} ref="amount"/>
+                                        {addCommas(parseFloat(parseFloat(value)-availableBalance))}元
                                     </dd>
                                 </dl>
-
-                                <dl className="form__bar short">
-                                    <dt><label>充值后可用余额：</label></dt>
-                                    <dd><i id="money" className="money">
-                                        {(this.state.value == '') ? addCommas(parseFloat(accountBalance))
-                                            : addCommas(parseFloat(this.state.value) + parseFloat(accountBalance))
-                                        }
-
-                                    </i>元
-                                    </dd>
-                                </dl>
-
-                                <div className="form__bar">
-                                    {(this.state.tips != '') ?
-                                        <div className="errorMessages">
-                                            {this.state.tips}
-                                        </div> : ``
-                                    }
-                                </div>
+                                :   ``
+                                }
+                                <dl className="form__bar">
                                 <div className="tips__area">
                                     <p><strong>提示：</strong>您的充值金额将会在10-15分钟内到账，请耐心等候</p>
                                 </div>
-                                <div className="form__wrapper">
-                                    {isPosting ?
-                                        <Button className="button unable" style={{marginTop: '30px'}}><Posting
-                                            isShow={isPosting}/></Button>
-                                        :
-                                        <Button className="button able" style={{marginTop: '30px'}}
-                                                onClick={this.handleSubmit}>确定</Button>
-                                    }
-
-                                </div>
+                                </dl>
+                                <dl className="form__bar" style={{marginTop:'30px'}}>
+                                    <div className="center">
+                                        <Button type="primary" htmlType="submit" className="pop__large" onClick={()=>onFail()}>返回详情</Button>
+                                        <Button type="primary" htmlType="submit" className="pop__large" onClick={()=>handleSubmit()}>余额不足，去充值</Button>
+                                    </div>
+                                </dl>
                             </div>
                             : ''
                     }

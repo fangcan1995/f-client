@@ -127,7 +127,7 @@ class ModalTradePassword extends React.Component {
                 trigger: ['onBlur', 'onChange']
             }]
         });
-        if(isSetTradepassword==='1'&& this.state.isReset){
+        if(isSetTradepassword==='1'&& !this.state.isReset){
             return(
                 <div className="pop__password pop">
                     <div className="form__wrapper">
@@ -141,110 +141,114 @@ class ModalTradePassword extends React.Component {
                     </div>
                 </div>
             )
-        }
-        if(postResult.type!=`success`){
-            return(
-                <div className="pop__password pop">
-                    <div className="form__wrapper">
-                        <Form layout="horizontal" onSubmit={this.handleSubmit} id='frm'>
-                            <FormItem
-                                { ...formItemLayout }
-                                label="交易密码"
-                            >
-                                {
-                                    newPasswordProps(
+        }else{
+            //未成功
+            if(postResult.type!=`success`){
+                return(
+                    <div className="pop__password pop">
+                        <div className="form__wrapper">
+                            <Form layout="horizontal" onSubmit={this.handleSubmit} id='frm'>
+                                <FormItem
+                                    { ...formItemLayout }
+                                    label="交易密码"
+                                >
+                                    {
+                                        newPasswordProps(
+                                            <Input
+                                                type="password"
+                                                autoComplete="off"
+                                                placeholder="设置6-16位的交易密码"
+                                                onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
+                                            />
+                                        )
+                                    }
+                                </FormItem>
+                                <FormItem
+                                    {...formItemLayout}
+                                    label="确认密码"
+                                >
+                                    {getFieldDecorator('confirm', {
+                                        rules: [{
+                                            required: true, message: '请确认密码',
+                                        }, {
+                                            validator: this.compareToFirstPassword,
+                                        }],
+                                    })(
                                         <Input
                                             type="password"
                                             autoComplete="off"
-                                            placeholder="设置6-16位的交易密码"
+                                            placeholder=""
                                             onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
                                         />
-                                    )
-                                }
-                            </FormItem>
-                            <FormItem
-                                {...formItemLayout}
-                                label="确认密码"
-                            >
-                                {getFieldDecorator('confirm', {
-                                    rules: [{
-                                        required: true, message: '请确认密码',
-                                    }, {
-                                        validator: this.compareToFirstPassword,
-                                    }],
-                                })(
-                                    <Input
-                                        type="password"
-                                        autoComplete="off"
-                                        placeholder=""
-                                        onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
-                                    />
-                                )}
-                            </FormItem>
-                            <FormItem
-                                { ...formItemLayout }
-                                label="短信验证码"
-                                required
-                            >
-                                <Row gutter={8}>
-                                    <Col span={14}>
-                                        <FormItem
-                                            hasFeedback
-                                        >
-                                            {
-                                                verifyCodeProps(
-                                                    <Input
-                                                        type="text"
-                                                        size="large"
-                                                        autoComplete="off"
-                                                        placeholder="请输入短信验证码"
-                                                        onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
-                                                        ref={ c => this.verifyCodeInputRef = c }
-                                                    />
-                                                )
-                                            }
-                                        </FormItem>
-                                    </Col>
-                                    <Col span={10}>
-                                        <Button
-                                            className="verifyCode__btn"
-                                            size="large"
-                                            type="dashed"
-                                            htmlType="button"
-                                            disabled={ !!verifyCodeCd }
-                                            onClick={ this.handleSendVerifyCodeBtnClick }
-                                        >{ verifyCodeCd || '获取验证码' }</Button>
-                                    </Col>
-                                </Row>
-                            </FormItem>
-                            <div className='tips'>{postResult.message}{this.state.errMessages}</div>
-                            <FormItem className='center'>
-                                {(isPosting) ? <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
-                                        <Posting isShow={isPosting}/>
-                                    </Button>
-                                    :
-                                    <Button type="primary" htmlType="submit" className="pop__large">确认</Button>
-                                }
-                            </FormItem>
+                                    )}
+                                </FormItem>
+                                <FormItem
+                                    { ...formItemLayout }
+                                    label="短信验证码"
+                                    required
+                                >
+                                    <Row gutter={8}>
+                                        <Col span={14}>
+                                            <FormItem
+                                                hasFeedback
+                                            >
+                                                {
+                                                    verifyCodeProps(
+                                                        <Input
+                                                            type="text"
+                                                            size="large"
+                                                            autoComplete="off"
+                                                            placeholder="请输入短信验证码"
+                                                            onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
+                                                            ref={ c => this.verifyCodeInputRef = c }
+                                                        />
+                                                    )
+                                                }
+                                            </FormItem>
+                                        </Col>
+                                        <Col span={10}>
+                                            <Button
+                                                className="verifyCode__btn"
+                                                size="large"
+                                                type="dashed"
+                                                htmlType="button"
+                                                disabled={ !!verifyCodeCd }
+                                                onClick={ this.handleSendVerifyCodeBtnClick }
+                                            >{ verifyCodeCd || '获取验证码' }</Button>
+                                        </Col>
+                                    </Row>
+                                </FormItem>
+                                <div className='tips'>{postResult.message}{this.state.errMessages}</div>
+                                <FormItem className='center'>
+                                    {(isPosting) ? <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
+                                            <Posting isShow={isPosting}/>
+                                        </Button>
+                                        :
+                                        <Button type="primary" htmlType="submit" className="pop__large">确认</Button>
+                                    }
+                                </FormItem>
 
-                        </Form>
-                        <button onClick={()=>onFail()}>下一步</button>
+                            </Form>
+                            <button onClick={()=>onFail()}>下一步</button>
+                        </div>
                     </div>
-                </div>
-            )
-        }else{
-            return(
-                <div className="pop__password pop">
-                    <BbhAlert
-                        info={{message:postResult.message,description:postResult.description,type:postResult.type,
-                            callback:()=>{
-                                this.modalClose()
-                            }
-                        }}
-                    />
-                </div>
-            )
+                )
+            }else{
+                //成功
+                return(
+                    <div className="pop__password pop">
+                        <BbhAlert
+                            info={{message:postResult.message,description:postResult.description,type:postResult.type,
+                                callback:()=>{
+                                    this.modalClose()
+                                }
+                            }}
+                        />
+                    </div>
+                )
+            }
         }
+
 
     }
 }

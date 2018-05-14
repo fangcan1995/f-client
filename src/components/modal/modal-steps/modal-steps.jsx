@@ -1,20 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert,Steps,Button,Form,Row,Input, } from 'antd';
-import './modal-steps.less'
+import { Steps } from 'antd';
 import { connect } from 'react-redux';
-import {memberAc} from "../../../actions/member";
 import {BbhAlert} from '../../../components/bbhAlert/bbhAlert';
-import {Loading,NoRecord,Posting } from '../../../components/bbhAlert/bbhAlert';
 import ModalTradePassword from '../../../components/modal/modal-tradePassword/modal-tradePassword';
 import ModalCertification from '../../../components/modal/modal-certification/modal-certification';
 import ModalBindCard from '../../../components/modal/modal-bindCard/modal-bindCard';
+import './modal-steps.less'
+
 const Step = Steps.Step;
 
 class ModalSteps extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.modalClose= this.modalClose.bind(this);
         this.state = {
             tips: '',  //错误提示
@@ -22,24 +20,29 @@ class ModalSteps extends React.Component {
         }
     }
 
-    componentDidMount () {
+    componentWillMount () {
        //获取会员信息
-        if(this.props.auth.isAuthenticated) {
+        /*if(this.props.auth.isAuthenticated) {
             this.props.dispatch(memberAc.getInfo());
+        }*/
+        let {accountsInfo}=this.props.account;
+        let {isCertification,isOpenAccount,isSetTradepassword}=accountsInfo;
+        if(isCertification==='0'){
+            this.setState({
+                current:0,
+            });
+        }else if(isCertification==='1'){
+            this.setState({
+                current:1,
+            });
+
+        }else{
+            //没有获取到实名认证信息
         }
+
     }
 
-    handleSubmit(e) {
-        let info={
-            trueName:this.refs.trueName.value,
-            idNumber:this.refs.idNumber.value,
-            bankNo:this.refs.bankNo.value,
-        }
-        this.props.dispatch(memberAc.postOpenAccount(info));  //绑卡
 
-        //this.props.dispatch(memberAc.getInfo()); //重新获取用户信息
-
-    }
     modalClose(){
         //清空postResult
         this.props.dispatch(memberAc.modifyState({'dummyResult':``}));
@@ -71,9 +74,9 @@ class ModalSteps extends React.Component {
         })
     }
     render() {
-        let {member,auth}=this.props;
-        let {accountsInfo,isPosting}=member;
-        let {dummyResult}=accountsInfo;
+        let {account,auth}=this.props;
+        let {accountsInfo,isPosting}=account;
+        let {postResult}=accountsInfo;
         const { current } = this.state;const steps = [{
             title: '实名认证',
             content:<ModalCertification onSuccess={() => {this.ck_certification_success();}}  onFail={() => {this.ck_certification_fail();}}/>
@@ -88,37 +91,23 @@ class ModalSteps extends React.Component {
             title: '绑定银行卡',
             content: <ModalBindCard onSuccess={() => {this.ck_tradePassword_success();}}  onFail={() => {this.ck_tradePassword_fail();}}/>
         }];
+        return(
+            <div  className="pop pop_steps">
+                <Steps  current={current}>
+                    {steps.map(item => <Step key={item.title} title={item.title} />)}
+                </Steps>
+                <div className="steps-content">{steps[this.state.current].content}</div>
+            </div>
+        )
 
-        if(dummyResult===``) {
-            return (
-                <div  className="pop pop_steps">
-                    <Steps  current={current}>
-                        {steps.map(item => <Step key={item.title} title={item.title} />)}
-                    </Steps>
-                    <div className="steps-content">{steps[this.state.current].content}</div>
-                </div>
-            );
-        }else{
-            return(
-                <div className="pop">
-                    <BbhAlert
-                        info={{message:dummyResult.message,description:dummyResult.description,type:dummyResult.type,
-                            callback:()=>{
-                                this.modalClose()
-                            }
-                        }}
-                    />
-                </div>
-            )
-        }
     }
 }
 
 function mapStateToProps(state) {
-    const { auth,member } = state.toJS();
+    const { auth,account } = state.toJS();
     return {
         auth,
-        member
+        account
     };
 }
 export default connect(mapStateToProps)(ModalSteps);
