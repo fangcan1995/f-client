@@ -192,9 +192,9 @@ class MasterInvestBox extends React.Component {
                                 {
                                     !auth.isAuthenticated?
                                         <Link  to={`/login?redirect=%2Finvest-detail%2F${investInfo.id}`} className="btn">我要登录</Link>
-                                        :(investInfo.noviceLoan!='1')?<a  className="btn" onClick={() => this.toggleModal(`modalAuth`,true)}>立即投资</a>
+                                        :(investInfo.noviceLoan!='1')?<a  className="btn" onClick={() => this.toggleModal(`bbhModal`,true)}>立即投资</a>
                                             :(isNovice===`0`)?<a className='btn end'>仅限新手</a>
-                                            :<a  className="btn" onClick={() => this.toggleModal(`modalAuth`,true)}>立即投资</a>
+                                            :<a  className="btn" onClick={() => this.toggleModal(`bbhModal`,true)}>立即投资</a>
 
                                 }
 
@@ -211,7 +211,7 @@ class MasterInvestBox extends React.Component {
                                     <ModalBindCard onSuccess={() => {this.callback();}}  onFail={() => {this.callback();}} />
                                     :(this.state.currentModule === `ModalRiskAssess`)?
                                         <ModalRiskAssess onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} value={10000} />
-                                        :(this.state.currentModule === `ModalInvestSteps`)?<ModalInvestSteps value={10000} onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} />
+                                        :(this.state.currentModule === `ModalInvestSteps`)?<ModalInvestSteps key={this.state.key} value={10000} onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} />
                                             :``
                         }
                     </BbhModal>

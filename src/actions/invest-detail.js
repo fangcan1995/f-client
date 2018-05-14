@@ -152,7 +152,6 @@ let investDetailActions = {
 
     //提交投资申请
     postInvest:(params)  => {
-
         return {
             type: 'investDetail/invest/POST',
             async payload() {

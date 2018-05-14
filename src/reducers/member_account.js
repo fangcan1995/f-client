@@ -18,7 +18,7 @@ const initialState = Immutable.fromJS({
         photo:'',	//头像
         riskLevel:'',	//风险测评等级
         surplusAmount:10000,//剩余投资限额
-        availableBalance:1000,	//账户可用余额
+        availableBalance:0,	//账户可用余额
         bankName:'',	//开户行
         bankNo:'',	//银行卡号
         memberRedInfo:'',	//红包信息
@@ -58,8 +58,20 @@ export default createReducer(initialState, {
         isFetching: false,
         errorMessage: action.message
     }),
+    //异步获取调转富友需要携带的信息
+    ['member/account/UYOU_FETCH_PENDING']:(state,action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['member/account/UYOU_FETCH_FULFILLED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        toOthersInfo:action.payload
+    }),
+    ['member/account/UYOU_FETCH_REJECTED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
     //异步获取开户需要携带的信息
-    ['member/account/OPENACCONT_FETCH_PENDING']:(state,action) => state.mergeDeep({
+   /* ['member/account/OPENACCONT_FETCH_PENDING']:(state,action) => state.mergeDeep({
         isFetching: true,
     }),
     ['member/account/OPENACCONT_FETCH_FULFILLED']:(state,action) => state.mergeDeep({
@@ -69,7 +81,7 @@ export default createReducer(initialState, {
     ['member/account/OPENACCONT_FETCH_REJECTED']:(state,action) => state.mergeDeep({
         isFetching: false,
         errorMessage: action.message
-    }),
+    }),*/
     //实名认证
     ['member/account/CERTIFICATION_FETCH_PENDING']:(state,action) => state.mergeDeep({
         isPosting: true,

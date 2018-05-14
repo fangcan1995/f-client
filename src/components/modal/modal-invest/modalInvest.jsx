@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import  {poundage,addCommas,checkMoney,income}  from '../../../utils/cost';
+import  {poundage,checkMoney,income}  from '../../../utils/cost';
 import { Checkbox,message,Select,Button } from 'antd';
 import './modalInvest.less';
 import {BbhAlert,Posting} from '../../../components/bbhAlert/bbhAlert';
 import { connect } from 'react-redux';
 import  investDetailActions  from '../../../actions/invest-detail';
 import {accountAc} from "../../../actions/account";
+import {addCommas} from "../../../utils/famatData";
 class ModalInvest extends React.Component {
     constructor(props) {
         super(props);
@@ -18,11 +19,12 @@ class ModalInvest extends React.Component {
         }
     }
     componentDidMount () {
-        if(this.props.auth.isAuthenticated){
-            this.props.dispatch(investDetailActions.getRedEnvelopes(this.props.config.id));
-            this.props.dispatch(investDetailActions.getRateCoupons(this.props.config.id));
+        let {auth,investDetail,dispatch}=this.props;
+        let {id,annualRate,loanExpiry}=investDetail.investInfo;
+        if(auth.isAuthenticated){
+            dispatch(investDetailActions.getRedEnvelopes(id));
+            dispatch(investDetailActions.getRateCoupons(id));
         }
-
     }
 
     onChange(e) {
@@ -36,7 +38,6 @@ class ModalInvest extends React.Component {
         }
     }
     handleSubmit(e) {
-        const {callback, investAmount,id} = this.props.config;
         //1 验证是否同意协议
         if (!this.state.isRead) {
             this.setState({
@@ -44,9 +45,11 @@ class ModalInvest extends React.Component {
             });
             return false;
         }
+        const { investAmount,investDetail,dispatch} = this.props;
+        let {id}=investDetail.investInfo;
         //2 提交后台
-        //console.log('提交投资申请');
-        this.props.dispatch(investDetailActions.postInvest(
+        /*console.log('提交投资申请');
+        dispatch(investDetailActions.postInvest(
             {
                 projectId:id,
                 investAmt:investAmount,
@@ -54,23 +57,24 @@ class ModalInvest extends React.Component {
                 investWay:1,
                 transfer:false
             }
-            ));
+            ));*/
+        //3 下一步
+        this.modalClose();
     }
     modalClose(){
         //清空
-        let {dispatch}=this.props;
-        let {postResult}=this.props.investDetail;
+        let {investAmount,account,onFail,onSuccess,dispatch}=this.props;
+        /*let {postResult}=this.props.investDetail;
         if(postResult.code==0){
             dispatch(accountAc.getAccountInfo());  //成功重新获取新户信息
             dispatch(investDetailActions.getInvestRecords(this.props.id));//成功重新获取投资记录
             dispatch(investDetailActions.getInvestInfo(this.props.id)); //成功重新获取标的信息
         }
-        this.props.dispatch(investDetailActions.statePostResultModify(``));
-        let {callback}=this.props.config;
-        callback();
+        dispatch(investDetailActions.statePostResultModify(``));*/
+        onSuccess();
     }
     render() {
-        let {investAmount} = this.props.config;
+        let {investAmount,account,onFail,onSuccess}=this.props;
         let {postResult,isPosting,redEnvelopes,rateCoupons}=this.props.investDetail;
         let {annualRate, loanExpiry} = this.props.investDetail.investInfo;
         if(postResult===``) {
@@ -78,12 +82,9 @@ class ModalInvest extends React.Component {
                 <div className="pop__invest">
                     <div className="form__wrapper" id="area" >
                         <dl className="form__bar">
-                            <p><label style={{textAlign:'center',color:'#f00',fontSize:'14px'}}>(虚拟投资)</label></p>
-                        </dl>
-                        <dl className="form__bar">
                             <dt><label>投资金额:</label></dt>
                             <dd>
-                                <span id="money" className="money">{investAmount}</span>元
+                                <span id="money" className="money">{addCommas(parseFloat(investAmount))}</span>元
                             </dd>
                         </dl>
                         <dl className="form__bar">
@@ -164,7 +165,7 @@ class ModalInvest extends React.Component {
                                     <Button type="primary" style={{width:'100%'}} className='btn' disabled={true}>
                                         <Posting isShow={isPosting}/>
                                     </Button>
-                                    :<Button type="primary"  loading={this.state.iconLoading} onClick={this.handleSubmit} style={{width:'100%'}} className='btn'>
+                                    :<Button type="primary"   onClick={this.handleSubmit} style={{width:'100%'}} className='btn'>
                                         确定
                                     </Button>
                             }

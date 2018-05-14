@@ -16,7 +16,9 @@ const url_recharge=`${urls}/accounts/operation?escrowCode=100100&type=1`; //充�
 const url_withdrawals=`${urls}/accounts/operation?escrowCode=100100&type=3`; //提现
 const url_tradePassword=`${urls_auth}/uaa/oauth/password`; //修改交易密码
 const url_certification=`${urls_auth}/uaa/oauth/password`; //实名认证
-const url_uyouOpenAccountInfo=`http://172.16.1.252:9090/payAccount`; //给富有的开户信息
+const url_uyouOpenAccountInfo=`http://172.16.1.252:9090/payment/fuiou/account`; //给富有的开户信息
+const url_uyouRecharge=`http://172.16.1.252:9090/payment/fuiou/deposit?transAmt=`; //给富有的充值信息
+const url_uyouWithdrawals=`http://172.16.1.252:9090/payAccount?aMount=`; //给富有的提现信息
 export const sendMemberVerifyCode = params => {
     return {
         type: 'member/SEND_VERIFY_CODE',
@@ -74,15 +76,31 @@ export const accountAc= {
             }
         }
     },
-    //获取给富有的开户信息
-    getFuyouOpenAccountInfo:(params)=> {
+    //获取给富有的信息
+    getFuyouInfo:(params)=> {
+        console.log('参数是1111');
+        console.log(params);
+        let url=``;
+        switch (params.type){
+            case 'OpenAccount':
+                url=url_uyouOpenAccountInfo;
+                break;
+            case 'reCharge':
+                url=url_uyouRecharge+params.value;
+                break;
+            case 'Withdrawals':
+                url=url_uyouWithdrawals+params.value;
+                break;
+            default:
+                break;
+        }
         return {
-            type: 'member/account/OPENACCONT_FETCH',
+            type: 'member/account/UYOU_FETCH',
             async payload() {
-                const res = await cFetch(`${url_uyouOpenAccountInfo}`, {method: 'GET'}, true);
+                const res = await cFetch(`${url}`, {method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
-                    console.log('后台获取的给富友的开户信息');
+                    console.log('后台获取的给富友的信息');
                     console.log(data);
                     return data;
                 }else {

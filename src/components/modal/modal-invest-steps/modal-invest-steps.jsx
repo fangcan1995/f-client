@@ -6,8 +6,8 @@ import {memberAc} from "../../../actions/member";
 import {BbhAlert} from '../../../components/bbhAlert/bbhAlert';
 
 import ModalInvest from '../../../components/modal/modal-invest/modalInvest';
-import ModalRecharge from '../../../components/modal/modal-recharge/modaRecharge'
-
+import ModalRecharge from '../../../components/modal/modal-recharge/modaRecharge';
+import ModalInvestResult from '../../../components/modal/modal-investResult/modal-investResult';
 const Step = Steps.Step;
 
 class ModalInvestSteps extends React.Component {
@@ -23,9 +23,9 @@ class ModalInvestSteps extends React.Component {
 
     componentDidMount () {
        //获取会员信息
-        if(this.props.auth.isAuthenticated) {
-            this.props.dispatch(memberAc.getInfo());
-        }
+        //if(this.props.auth.isAuthenticated) {
+            //this.props.dispatch(memberAc.getInfo());
+        //}
     }
 
     handleSubmit(e) {
@@ -47,10 +47,10 @@ class ModalInvestSteps extends React.Component {
     }
     ck_recharge_success(){
         console.log('充值成功回调');
-        this.modalClose();
-        /*this.setState({
+        //this.modalClose();
+        this.setState({
             current:1
-        })*/
+        })
     }
     ck_recharge_fail(){
         console.log('充值失败回调');
@@ -89,13 +89,13 @@ class ModalInvestSteps extends React.Component {
         const { current } = this.state;
         const steps = [{
             title: '金额确认',
-            content:<ModalRecharge value={value} onSuccess={() => {this.ck_recharge_success();}}  onFail={() => {this.modalClose();}}/>
+            content:<ModalRecharge investAmount={value} onSuccess={() => {this.ck_recharge_success();}}  onFail={() => {this.modalClose();}}/>
         }, {
             title: '投资确认',
-            content: <ModalInvest onSuccess={() => {this.ck_tradePassword_success();}}  onFail={() => {this.ck_tradePassword_fail();}}/>
+            content: <ModalInvest investAmount={value} onSuccess={() => {this.ck_investApp_success();}}  onFail={() => {this.modalClose();}}/>
         }, {
             title: '投资完成',
-            content: <div>投资完成</div>
+            content: <ModalInvestResult>投资完成</ModalInvestResult>
         }];
 
         if(postResult===``) {
