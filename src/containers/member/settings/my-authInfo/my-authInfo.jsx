@@ -95,7 +95,7 @@ class MyAuthInfo extends React.Component {
                                         : info.trueNameStatus === '1' ?
                                         <tr className="no">
                                             <th><i className="iconfont icon-id"></i>实名认证</th>
-                                            <td className="Result"><span className="importantTxt">未认证</span></td>
+                                            <td className="Result">未认证</td>
                                             <td className="detail"></td>
                                             <td className="operate"><a href="javascript:void(0);" onClick={() => this.toggleModal(`modalAuth`,true)}>认证</a></td>
                                         </tr>
@@ -134,6 +134,38 @@ class MyAuthInfo extends React.Component {
                                                    () => this.toggleModal(`modalResetPassword`,true)
                                                }>
                                                 修改登录密码
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    :``
+                                }
+                                {'0' === '0' ?
+                                    <tr  className="no">
+                                        <th><i className="iconfont no icon-Pass"></i>交易密码</th>
+                                        <td className="Result">未设置</td>
+                                        <td className="detail"></td>
+                                        <td className="operate">
+                                            <a href="javascript:void(0);"
+                                               onClick={
+                                                   () => this.toggleModal(`modalResetPassword`,true)
+                                               }>
+                                                设置交易密码
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    :``
+                                }
+                                {'0' === '0' ?
+                                    <tr >
+                                        <th><i className="iconfont icon-Pass"></i>交易密码</th>
+                                        <td className="Result">已设置</td>
+                                        <td className="detail">******</td>
+                                        <td className="operate">
+                                            <a href="javascript:void(0);"
+                                               onClick={
+                                                   () => this.toggleModal(`modalResetPassword`,true)
+                                               }>
+                                                修改交易密码
                                             </a>
                                         </td>
                                     </tr>

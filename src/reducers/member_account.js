@@ -7,7 +7,8 @@ const initialState = Immutable.fromJS({
     isOpenOthers:false,
     postResult:``,
     verifyCodeCd:``,
-    accountsInfo:{
+    accountsInfo:``,
+    /*accountsInfo:{
         isCertification:'',	//是否实名认证（0：未实名；1：已实名）
         isOpenAccount:'',	//是否开户（0：未开户；1：已开户）
         isRisk:'',	//是否风险测评（0：否；1：是）
@@ -23,7 +24,7 @@ const initialState = Immutable.fromJS({
         bankNo:'',	//银行卡号
         memberRedInfo:'',	//红包信息
         memberCoupon:'',	//加息券信息
-    },
+    },*/
     toOthersInfo:``  //调第三方接口携带的信息
 
 });
@@ -97,16 +98,13 @@ export default createReducer(initialState, {
 
     //异步设置/重置交易密码
     ['member/account/TRADEPASSWORD_FETCH_PENDING']:(state,action) => state.mergeDeep({
-        isFetching: true,
         isPosting: true,
     }),
     ['member/account/TRADEPASSWORD_FETCH_FULFILLED']:(state,action) => state.mergeDeep({
-        isFetching: false,
         isPosting: false,
         postResult:action.payload
     }),
     ['member/account/TRADEPASSWORD_FETCH_REJECTED']:(state,action) => state.mergeDeep({
-        isFetching: false,
         isPosting: false,
         errorMessage: action.message
     }),

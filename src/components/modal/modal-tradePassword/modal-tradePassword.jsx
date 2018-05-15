@@ -45,11 +45,13 @@ class ModalTradePassword extends React.Component {
                 return false;
             }
             let appInfo={
-                type:`member`,
-                username:this.props.auth.user.userName,
-                new_password:hex_md5(form.getFieldsValue().newPassword),
-                verify_code:form.getFieldsValue().verify_code,
+                //type:`member`,
+                //access_token:`85bd5fd4-d0fe-44df-8e7c-b7eea9645b94`,  //虚拟
+                tradePassword:hex_md5(form.getFieldsValue().newPassword),
+                code:form.getFieldsValue().verify_code,
             }
+            console.log('提交给后台的数据是');
+            console.log(appInfo);
             dispatch(accountAc.setTradePassword(appInfo));
 
         });
@@ -107,8 +109,7 @@ class ModalTradePassword extends React.Component {
         onSuccess();
     }
     render(){
-        console.log('-------------设置交易密码模块---------------');
-        console.log(this.props);
+
         let {onSuccess,onFail,attach}=this.props;
         let {isPosting,postResult,accountsInfo,verifyCodeCd}=this.props.account;
         let {isCertification,isOpenAccount,isSetTradepassword}=accountsInfo;
@@ -224,7 +225,7 @@ class ModalTradePassword extends React.Component {
                                             <Posting isShow={isPosting}/>
                                         </Button>
                                         :
-                                        <Button type="primary" htmlType="submit" className="pop__large">确认</Button>
+                                        <Button type="primary" htmlType="submit" className="pop__large" >确认</Button>
                                     }
                                 </FormItem>
 

@@ -15,6 +15,7 @@ import {InvestButton} from '../../invest-list/investComponents';
 import investDetailActions from "../../../../actions/invest-detail";
 import {formItemLayout} from "../../../../utils/formSetting";
 import BbhModal from "../../../../components/modal/bbh_modal";
+import { Button} from 'antd';
 const modal_config={
     ModalSteps: {
         title: "",
@@ -67,8 +68,7 @@ class MasterInvestBox extends React.Component {
 
     //模态框开启关闭
     toggleModal=(modal,visile,id)=>{
-        console.log('会员信息');
-        console.log(this.props.account.accountsInfo);
+        //
         let {isCertification,isOpenAccount,isSetTradepassword,isRisk,riskLevel,surplusAmount}=this.props.account.accountsInfo;
         let currentModule=``;
         if(isCertification===`0`) {
@@ -92,13 +92,9 @@ class MasterInvestBox extends React.Component {
                     }else{
                         currentModule = `ModalRiskAssess`;   //去测评
                     }
-
                 }
-
             }
-
         }
-
         if(visile){
             this.setState({
                 currentModule:currentModule,
@@ -108,9 +104,13 @@ class MasterInvestBox extends React.Component {
             this.setState({
                 currentModule:``,
                 [modal]: false,
-                key:Math.random()
+                key:Math.random(),
             });
         }
+        //
+
+
+
     };
     callback(status){
         this.toggleModal('bbhModal',false);
@@ -118,12 +118,11 @@ class MasterInvestBox extends React.Component {
         //this.props.dispatch(accountAc.getInfo());  //成功重载数据
     }
     render(){
-
         let {account,auth,investInfo,type}=this.props;
         let {isFetching,accountsInfo}=account;
         let {availableBalance,memberRedInfo,memberCoupon,postResult,isCertification,isOpenAccount,isRisk,riskLevel,isNovice}=accountsInfo;
-        console.log('token');
-        console.log(auth);
+        console.log('--------accountsInfo---------');
+        console.log(accountsInfo);
         return(
             <div className="form_area">
                 <button onClick={() => this.toggleModal(`bbhModal`,true)}>测试用</button>
@@ -158,48 +157,69 @@ class MasterInvestBox extends React.Component {
                                 {this.state.tips!=''? <span className="tips error">{this.state.tips}</span>
                                     :''}
                             </div>
-                            <ul className="others">
-                                <li>
-                                    <strong>我的可用余额：</strong>
-                                    {
-                                        (1==1)? `${toMoney(availableBalance)} 元`
-                                            : <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
-                                    }
-                                </li>
-                                <li>
-                                    <strong>可用红包总计：</strong>
-                                    {
-                                        (1==1)? `${toMoney(memberRedInfo.amountSum)} 元`
-                                            : <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
-                                    }
-                                </li>
-                                <li>
-                                    <strong>可用加息券：</strong>
-                                    {
-                                        (1==1)? `${toNumber(memberCoupon.number)} 张`
-                                            : <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
-                                    }
-                                </li>
-                                <li>
-                                    <strong>预期可赚取：</strong>
-                                    <i id="money">
-                                        {(this.state.investAmount==0)?income(investInfo.min,(investInfo.rate),investInfo.loanExpiry,'m')
-                                            :income(this.state.investAmount,(investInfo.rate),investInfo.loanExpiry,'m')
-                                        }
-                                    </i>元
-                                </li>
-                            </ul>
-                            <div>
-                                {
-                                    !auth.isAuthenticated?
+                            {(!auth.isAuthenticated)?
+                                <div>
+                                    <ul className="others">
+                                        <li>
+                                            <strong>我的可用余额：</strong>
+                                            <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
+                                        </li>
+                                        <li>
+                                            <strong>可用红包总计：</strong>
+                                            <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
+                                        </li>
+                                        <li>
+                                            <strong>可用加息券：</strong>
+                                            <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
+                                        </li>
+                                        <li>
+                                            <strong>预期可赚取：</strong>
+                                            <i id="money">
+                                                {(this.state.investAmount==0)?income(investInfo.min,(investInfo.rate),investInfo.loanExpiry,'m')
+                                                    :income(this.state.investAmount,(investInfo.rate),investInfo.loanExpiry,'m')
+                                                }
+                                            </i>元
+                                        </li>
+                                    </ul>
+                                    <div>
                                         <Link  to={`/login?redirect=%2Finvest-detail%2F${investInfo.id}`} className="btn">我要登录</Link>
-                                        :(investInfo.noviceLoan!='1')?<a  className="btn" onClick={() => this.toggleModal(`bbhModal`,true)}>立即投资</a>
-                                            :(isNovice===`0`)?<a className='btn end'>仅限新手</a>
-                                            :<a  className="btn" onClick={() => this.toggleModal(`bbhModal`,true)}>立即投资</a>
+                                    </div>
+                                </div>
+                                :<div>
+                                    <ul className="others">
+                                        <li>
+                                            <strong>我的可用余额：</strong>
+                                            {(accountsInfo!=``)? `${toMoney(availableBalance)} ` : ``} 元
+                                        </li>
+                                        <li>
+                                            <strong>可用红包总计：</strong>
+                                            {(accountsInfo!=``)? `${toMoney(memberRedInfo.amountSum)} ` : ``} 元
+                                        </li>
+                                        <li>
+                                            <strong>可用加息券：</strong>
+                                            {(accountsInfo!=``)? `${toMoney(memberRedInfo.number)} ` : ``} 张
+                                        </li>
+                                        <li>
+                                            <strong>预期可赚取：</strong>
+                                            <i id="money">
+                                                {(this.state.investAmount==0)?income(investInfo.min,(investInfo.rate),investInfo.loanExpiry,'m')
+                                                    :income(this.state.investAmount,(investInfo.rate),investInfo.loanExpiry,'m')
+                                                }
+                                            </i>元
+                                        </li>
+                                    </ul>
+                                    <div>
+                                        {
+                                            (accountsInfo===``)?``
+                                                :(investInfo.noviceLoan=='1' && isNovice==='0')?<Button type="primary"  className="pop__wp100" disabled={true}>仅限新手</Button>
+                                                :<Button type="primary" onClick={() => this.toggleModal(`bbhModal`,true)} className="pop__wp100" disabled={isFetching}>立即投资</Button>
 
-                                }
+                                        }
 
-                            </div>
+                                    </div>
+                                </div>
+                            }
+
                         </div>
                 }
                 {this.state.currentModule!=``?

@@ -17,9 +17,18 @@ class ModalBindCard extends React.Component {
     }
     //提交
     handleSubmit(event){
-        this.props.dispatch(accountAc.change_goOutState(true));
-        console.log('提交了');
+
+
         //event.preventDefault();   //阻止提交
+
+
+        let {toOthersInfo}=this.props.account;
+        console.log('切换状态');
+        console.log(toOthersInfo);
+        document.getElementById('webReg').action=toOthersInfo.url;
+        document.getElementById('webReg').submit();
+        this.props.dispatch(accountAc.change_goOutState(true));
+        return false;
     }
     //回调
     modalClose(){
@@ -33,13 +42,13 @@ class ModalBindCard extends React.Component {
         let {onSuccess,onFail}=this.props;
         let {isPosting,toOthersInfo,postResult,isOpenOthers}=this.props.account;
         console.log('去富有开户携带的信息');
-        console.log(typeof toOthersInfo);
+        console.log(toOthersInfo);
         if(postResult.type!=`success`){
             return(
-                <div className="pop__password pop">
+                <div className="pop__openOther">
                     {(isOpenOthers )?<WaitThirdParty isShow={true} title='绑卡' callback={this.modalClose} />
                         :<div className="form__wrapper">
-                            <form name="webReg" id="webReg" method="post" action={toOthersInfo.url}  target="_blank" >
+                            <form name="webReg" id="webReg" method="post"   target="_blank" >
                                 <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />
                                 <input type="hidden" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} />
                                 <input type="hidden" name="user_id_from" value={toOthersInfo.user_id_from} />
@@ -59,7 +68,7 @@ class ModalBindCard extends React.Component {
                                 <div className='center'>
                                     {
                                         toOthersInfo==``?<Button type="primary" htmlType="submit" className="pop__large" disabled={true}>去开户</Button>
-                                            :<Button type="primary" htmlType="submit" className="pop__large" >去开户</Button>
+                                            :<Button type="primary" htmlType="submit" className="pop__large" onClick={()=>this.handleSubmit()}>去开户</Button>
                                     }
 
                                 </div>

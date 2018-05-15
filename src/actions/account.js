@@ -14,7 +14,7 @@ const url_incomeDay=`${urls}/accounts/income/day`; //获取日收益统计
 const url_openAccount=`${urls}/accounts`; //开户
 const url_recharge=`${urls}/accounts/operation?escrowCode=100100&type=1`; //充值
 const url_withdrawals=`${urls}/accounts/operation?escrowCode=100100&type=3`; //提现
-const url_tradePassword=`${urls_auth}/uaa/oauth/password`; //修改交易密码
+const url_tradePassword=`http://172.16.1.225:8060/uaa/oauth/tradePassword`; //修改交易密码
 const url_certification=`${urls_auth}/uaa/oauth/password`; //实名认证
 const url_uyouOpenAccountInfo=`http://172.16.1.252:9090/payment/fuiou/account`; //给富有的开户信息
 const url_uyouRecharge=`http://172.16.1.252:9090/payment/fuiou/deposit?transAmt=`; //给富有的充值信息
@@ -65,8 +65,8 @@ export const accountAc= {
                         availableBalance:100,	//账户可用余额
                         bankName:'',	//开户行
                         bankNo:'',	//银行卡号
-                        memberRedInfo:{number: 0, amountSum: 0},	//红包信息
-                        memberCoupon:{number: 0, amountSum: 0},	//加息券信息
+                        memberRedInfo:{number: 1, amountSum: 1000},	//红包信息
+                        memberCoupon:{number: 1, amountSum: 0},	//加息券信息
                     };
                     //data=mock;
                     return mock;
@@ -204,18 +204,19 @@ export const accountAc= {
     },
     //设置交易密码
     setTradePassword: (params) => {
-        console.log('提交给后台的参数是：');
+        console.log('准备提交');
+        /*console.log('提交给后台的参数是：');
         params=parseJson2URL(params);
-        console.log(params);
+        console.log(params);*/
         return {
             type: 'member/account/TRADEPASSWORD_FETCH',
             async payload() {
-                const res = await cFetch(`${url_tradePassword}?${params}`, {
+                const res = await cFetch(`${url_tradePassword}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: ``,
+                        body : JSON.stringify(params),
                     },
                     true);
 
