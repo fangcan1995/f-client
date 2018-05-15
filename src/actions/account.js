@@ -15,7 +15,7 @@ const url_openAccount=`${urls}/accounts`; //开户
 const url_recharge=`${urls}/accounts/operation?escrowCode=100100&type=1`; //充值
 const url_withdrawals=`${urls}/accounts/operation?escrowCode=100100&type=3`; //提现
 const url_tradePassword=`http://172.16.1.225:8060/uaa/oauth/tradePassword`; //修改交易密码
-const url_certification=`${urls_auth}/uaa/oauth/password`; //实名认证
+const url_certification=`http://172.16.1.225:9090/members/auth`; //实名认证
 const url_uyouOpenAccountInfo=`http://172.16.1.252:9090/payment/fuiou/account`; //给富有的开户信息
 const url_uyouRecharge=`http://172.16.1.252:9090/payment/fuiou/deposit?transAmt=`; //给富有的充值信息
 const url_uyouWithdrawals=`http://172.16.1.252:9090/payAccount?aMount=`; //给富有的提现信息
@@ -52,12 +52,12 @@ export const accountAc= {
                     console.log('后台返回的会员信息');
                     console.log(res);
                     let mock={
-                        isCertification:'0',	//是否实名认证（0：未实名；1：已实名）
-                        isOpenAccount:'0',	//是否开户（0：未开户；1：已开户）
-                        isRisk:'0',	//是否风险测评（0：否；1：是）
-                        isSetTradepassword:'0',	//是否设置交易密码（0：未设置；1：已设置）
+                        isCertification:'1',	//是否实名认证（0：未实名；1：已实名）
+                        isOpenAccount:'1',	//是否开户（0：未开户；1：已开户）
+                        isRisk:'1',	//是否风险测评（0：否；1：是）
+                        isSetTradepassword:'1',	//是否设置交易密码（0：未设置；1：已设置）
                         isNovice:'1',	//是否新手（0：否；1：是）
-                        userName:'',	//真实姓名
+                        treeName:'张三',	//真实姓名
                         idNumber:'',	//身份证号
                         photo:'',	//头像
                         riskLevel:'',	//风险测评等级
@@ -78,8 +78,7 @@ export const accountAc= {
     },
     //获取给富有的信息
     getFuyouInfo:(params)=> {
-        console.log('参数是1111');
-        console.log(params);
+
         let url=``;
         switch (params.type){
             case 'OpenAccount':
@@ -235,18 +234,18 @@ export const accountAc= {
     },
     //实名认证
     certification: (params) => {
-        console.log('实名认证提交给后台的参数是：');
+        /*console.log('实名认证提交给后台的参数是：');
         params=parseJson2URL(params);
-        console.log(params);
+        console.log(params);*/
         return {
             type: 'member/account/CERTIFICATION_FETCH',
             async payload() {
-                const res = await cFetch(`${url_certification}?${params}`, {
+                const res = await cFetch(`${url_certification}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: ``,
+                        body : JSON.stringify(params),
                     },
                     true);
 

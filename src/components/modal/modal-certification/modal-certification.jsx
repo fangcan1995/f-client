@@ -28,10 +28,8 @@ class ModalCertification extends React.Component {
                 return false;
             }
             let appInfo={
-                type:`member`,
-                username:this.props.auth.user.userName,
-                trueName:form.getFieldsValue().trueName,
-                idCode:form.getFieldsValue().idCode,
+                tureName:form.getFieldsValue().trueName,
+                idNumber:form.getFieldsValue().idCode,
             }
             console.log('提交后台的数据是');
             console.log(appInfo);

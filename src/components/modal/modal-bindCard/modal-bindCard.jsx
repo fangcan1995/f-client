@@ -57,14 +57,14 @@ class ModalBindCard extends React.Component {
                                 <input type="hidden" name="certif_tp" value={toOthersInfo.certif_tp} />
                                 <input type="hidden" name="certif_id" value={toOthersInfo.certif_id} />
                                 <input type="hidden" name="email" value={toOthersInfo.email} />
-                                <input type="hidden" name="city_id" value={toOthersInfo.city_id} /><br/>
+                                <input type="hidden" name="city_id" value={toOthersInfo.city_id} />
                                 <input type="hidden" name="parent_bank_id" value={toOthersInfo.parent_bank_id} />
-                                <input type="hidden" name="bank_nm" value={toOthersInfo.bank_nm} /><br/>
-                                <input type="hidden" name="capAcntNo" value={toOthersInfo.capAcntNo} /><br/>
+                                <input type="hidden" name="bank_nm" value={toOthersInfo.bank_nm} />
+                                <input type="hidden" name="capAcntNo" value={toOthersInfo.capAcntNo} />
                                 <input type="hidden" name="page_notify_url" value={toOthersInfo.page_notify_url} />
                                 <input type="hidden" name="back_notify_url" value={toOthersInfo.back_notify_url} />
-                                <input type="hidden" name="signature" value={toOthersInfo.signature} /><br/>
-                                <input type="hidden" name="ver" value={toOthersInfo.ver} /><br/>
+                                <input type="hidden" name="signature" value={toOthersInfo.signature} />
+                                <input type="hidden" name="ver" value={toOthersInfo.ver} />
                                 <div className='center'>
                                     {
                                         toOthersInfo==``?<Button type="primary" htmlType="submit" className="pop__large" disabled={true}>去开户</Button>

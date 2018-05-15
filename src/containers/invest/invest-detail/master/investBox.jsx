@@ -16,34 +16,7 @@ import investDetailActions from "../../../../actions/invest-detail";
 import {formItemLayout} from "../../../../utils/formSetting";
 import BbhModal from "../../../../components/modal/bbh_modal";
 import { Button} from 'antd';
-const modal_config={
-    ModalSteps: {
-        title: "",
-        width: "620px",
-        height: "400px"
-    },
-    ModalBindCard: {
-        title: "开户",
-        width: "620px",
-        height: "400px"
-    },
-    ModalTradePassword: {
-        title: "设置交易密码",
-        width: "620px",
-        height: "400px"
-    },
-    ModalRiskAssess: {
-        title: "用户风险承受能力测评",
-        width: "800px",
-        height: "600px"
-    },
-    ModalInvestSteps: {
-        title: "投资",
-        width: "620px",
-        height: "400px"
-    },
-
-}
+import {modal_config} from "../../../../utils/modal_config";
 
 class MasterInvestBox extends React.Component {
     constructor(props) {
@@ -53,7 +26,6 @@ class MasterInvestBox extends React.Component {
             investAmount:props.investInfo.min,
             bbhModal:false,
             currentModule:``,
-            key:Math.random(),
             tips:'',
             /*allowedInvest:true,*/
             code:100
@@ -109,10 +81,9 @@ class MasterInvestBox extends React.Component {
         }
         //
 
-
-
     };
     callback(status){
+        console.log('销毁弹框');
         this.toggleModal('bbhModal',false);
         //this.props.dispatch(accountAc.modifyState({accountsInfo:``}));
         //this.props.dispatch(accountAc.getInfo());  //成功重载数据
@@ -225,14 +196,14 @@ class MasterInvestBox extends React.Component {
                 {this.state.currentModule!=``?
                     <BbhModal config={modal_config[this.state.currentModule]} visible={this.state.bbhModal} onCancel={()=>this.callback()}>
                         {this.state.currentModule === `ModalSteps` ?
-                            <ModalSteps key={this.state.key} onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}}  />
+                            <ModalSteps  onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}}  />
                             :(this.state.currentModule === `ModalTradePassword`)?
                                 <ModalTradePassword onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} />
                                 :(this.state.currentModule === `ModalBindCard`)?
                                     <ModalBindCard onSuccess={() => {this.callback();}}  onFail={() => {this.callback();}} />
                                     :(this.state.currentModule === `ModalRiskAssess`)?
-                                        <ModalRiskAssess onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} value={10000} />
-                                        :(this.state.currentModule === `ModalInvestSteps`)?<ModalInvestSteps key={this.state.key} value={10000} onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} />
+                                        <ModalRiskAssess onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} value={this.state.investAmount} />
+                                        :(this.state.currentModule === `ModalInvestSteps`)?<ModalInvestSteps  value={this.state.investAmount} onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} />
                                             :``
                         }
                     </BbhModal>

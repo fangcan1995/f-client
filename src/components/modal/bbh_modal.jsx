@@ -7,15 +7,20 @@ import PieChart from "../charts/pie";
 export default class BbhModal extends Component{
     constructor(props) {
         super(props);
+        this.state = {
+            key:Math.random(),
+        }
     }
-
+    onCancel(){
+        let {onCancel}=this.props;
+        this.setState({
+            key:Math.random(),
+        })
+        onCancel();
+    }
     render(){
-        //alert(this.refs.pop);
-        console.log('弹框的参数');
-        console.log(this.props);
         let {config,visible,onCancel}=this.props;
         let {title,width,height}=config;
-
         return(
             <Modal
                 title={title||``}
@@ -23,11 +28,12 @@ export default class BbhModal extends Component{
                 visible={visible}
                 width={width||`520px`}
                 footer={null}
+                maskClosable={false}  //点击蒙层不关闭
                 onCancel={() => {
-                    onCancel();
+                    this.onCancel();
                 }}
             >
-                <div className="pop" ref='pop' style={{minHeight:`${height||`400px`}`}}>
+                <div key={this.state.key} className="pop" ref='pop' style={{minHeight:`${height||`400px`}`}}>
                 {this.props.children}
                 </div>
             </Modal>

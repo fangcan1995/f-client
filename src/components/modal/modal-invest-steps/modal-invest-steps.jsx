@@ -18,6 +18,7 @@ class ModalInvestSteps extends React.Component {
         this.state = {
             tips: '',  //错误提示
             current: 0,  //进度
+            key:Math.random(),
         }
     }
 
@@ -43,6 +44,10 @@ class ModalInvestSteps extends React.Component {
         let {onSuccess,onFail,dispatch}=this.props;
         //清空postResult
         //this.props.dispatch(memberAc.modifyState({'清空postResult':``}));
+        this.setState({
+            current:0,
+            key:Math.random(),
+        })
         onSuccess();
     }
     ck_recharge_success(){
@@ -89,13 +94,13 @@ class ModalInvestSteps extends React.Component {
         const { current } = this.state;
         const steps = [{
             title: '金额确认',
-            content:<ModalRecharge investAmount={value} onSuccess={() => {this.ck_recharge_success();}}  onFail={() => {this.modalClose();}}/>
+            content:<ModalRecharge key={this.state.key} investAmount={value} onSuccess={() => {this.ck_recharge_success();}}  onFail={() => {this.modalClose();}}/>
         }, {
             title: '投资确认',
-            content: <ModalInvest investAmount={value} onSuccess={() => {this.ck_investApp_success();}}  onFail={() => {this.modalClose();}}/>
+            content: <ModalInvest key={this.state.key} investAmount={value} onSuccess={() => {this.ck_investApp_success();}}  onFail={() => {this.modalClose();}}/>
         }, {
             title: '投资完成',
-            content: <ModalInvestResult>投资完成</ModalInvestResult>
+            content: <ModalInvestResult  key={this.state.key}>投资完成</ModalInvestResult>
         }];
 
         if(postResult===``) {

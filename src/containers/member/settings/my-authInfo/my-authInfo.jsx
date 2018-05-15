@@ -1,42 +1,58 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {myAuthInfoAc} from '../../../../actions/member-settings';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
-import { Modal } from 'antd';
-import ModalResetPassword from './modalResetPassword';
-import ModalAuth from '../../../../components/modal/modal-auth/modal-auth';
+import BbhModal from "../../../../components/modal/bbh_modal";
+import ModalCertification from '../../../../components/modal/modal-certification/modal-certification';
+import ModalTradePassword from '../../../../components/modal/modal-tradePassword/modal-tradePassword';
+import ModalLoginPassword from '../../../../components/modal/modal-loginPassword/modal-loginPassword';
+import ModalBindCard from '../../../../components/modal/modal-bindCard/modal-bindCard';
+import {modal_config} from "../../../../utils/modal_config";
 
+import { Popconfirm, message, Button } from 'antd';
 import './authInfo.less';
+import {myAuthInfoAc} from '../../../../actions/member-settings';
 import {memberAc} from "../../../../actions/member";
+import  {accountAc}  from '../../../../actions/account';
+
+
 class MyAuthInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            modalResetPassword:false,
-            modalAuth:false,
-            key:Math.random()
+            //modalResetPassword:false,
+            //modalAuth:false,
+            bbhModal:false,
+            currentModule:``,
+            key:Math.random(),
         }
-        //this.bindCard = this.bindCard.bind(this);
+        this.confirm = this.confirm.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+    }
+    confirm() {
+        this.toggleModal(`ModalCertification`,true);
     }
     //模态框开启关闭
     toggleModal=(modal,visile)=>{
         if(visile){
             this.setState({
-                [modal]: true,
+                bbhModal:true,
+                currentModule: modal,
 
             });
         }else{
             this.setState({
-                [modal]: false,
+                bbhModal:false,
+                currentModule: ``,
                 key:Math.random()
             });
         }
     };
     componentDidMount() {
         window.scrollTo(0,0);
-        this.props.dispatch(myAuthInfoAc.getResult());
+        //this.props.dispatch(myAuthInfoAc.getResult());
+        this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
     }
     changeCard(){
         alert('去第三方,暂不开发');
@@ -44,86 +60,93 @@ class MyAuthInfo extends React.Component {
     changePhone(){
         alert('去第三方,暂不开发');
     }
-
+    callback(status){
+        this.toggleModal('bbhModal',false);
+    }
     render(){
         console.log('获取的数据');
         console.log(this.props);
         let {dispatch}=this.props;
         let {authInfo}=this.props.memberSettings;
         let {info}=authInfo;
+        let {account,auth}=this.props;
+        let {isFetching,accountsInfo}=account;
+        let {postResult,isCertification,isOpenAccount,isSetTradepassword}=accountsInfo;
         return(
             <div className="member__main">
                 <Crumbs/>
+
                 <div className="member__cbox">
                     <Tab>
                         <div name="基本信息">
                             <table className="authInfo">
                                 <tbody>
-                                {info.trueNameStatus === '0' ?
+                                {isCertification === '1' ?
                                     <tr>
                                         <th><i className="iconfont icon-user"></i>真实姓名</th>
                                         <td className="Result">已认证</td>
                                         <td className="detail">{info.trueName}</td>
                                         <td className="operate">{/*不可更改*/}</td>
                                     </tr>
-                                    : info.trueNameStatus === '1' ?
+                                    : isCertification === '0' ?
                                     <tr className="no">
                                         <th><i className="iconfont icon-user"></i>真实姓名</th>
                                         <td className="Result">未认证</td>
                                         <td className="detail"></td>
-                                        <td className="operate"><a href="javascript:void(0);"  onClick={() => this.toggleModal(`modalAuth`,true)}>认证</a></td>
+                                        <td className="operate"><a href="javascript:void(0);"  onClick={() => this.toggleModal(`ModalCertification`,true)}>认证</a></td>
                                     </tr>
                                         :``
                                 }
-                                {info.phoneNumberStatus==='0'?
+
                                     <tr>
                                         <th><i className="iconfont icon-phone"></i>手机号</th>
                                         <td className="Result">已设置</td>
-                                        <td className="detail">{info.phoneNumber}</td>
-                                        <td className="operate"><a href="javascript:void(0);" onClick={this.changePhone}>更改</a></td>
+                                        <td className="detail">{auth.user.userName}</td>
+                                        <td className="operate">{/*<a href="javascript:void(0);" onClick={this.changePhone}>更改</a>*/}</td>
                                     </tr>
-                                    :``
-                                }
+
                                 {
-                                    info.trueNameStatus==='0'?
+                                    isCertification==='1'?
                                         <tr>
                                             <th><i className="iconfont icon-id"></i>实名认证</th>
                                             <td className="Result">已认证</td>
                                             <td className="detail">{info.idNumber}</td>
                                             <td className="operate">{/*不可更改*/}</td>
                                         </tr>
-                                        : info.trueNameStatus === '1' ?
+                                        : isCertification === '0' ?
                                         <tr className="no">
                                             <th><i className="iconfont icon-id"></i>实名认证</th>
                                             <td className="Result">未认证</td>
                                             <td className="detail"></td>
-                                            <td className="operate"><a href="javascript:void(0);" onClick={() => this.toggleModal(`modalAuth`,true)}>认证</a></td>
+                                            <td className="operate"><a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalCertification`,true)}>认证</a></td>
                                         </tr>
                                         :``
                                 }
-                                {info.bankNoStatus==='0'?
+                                {isOpenAccount==='1'?
                                     <tr>
                                         <th><i className="iconfont no icon-card"></i>银行卡</th>
                                         <td className="Result">已开户</td>
                                         <td className="detail">{info.bankNo}</td>
                                         <td className="operate">
-                                            <a href="javascript:void(0);" onClick={this.changeCard}>更换</a>
+                                            {/*<a href="javascript:void(0);" onClick={this.changeCard}>更换</a>*/}
+                                            {(isCertification==='1')?<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalBindCard`,true)}>开户</a>
+                                                :<Popconfirm placement="top" title={`请您先完成实名认证`} onConfirm={this.confirm} okText="确定" cancelText="取消">
+                                                    <a href="javascript:void(0);">开户</a>
+                                                </Popconfirm>
+                                            }
                                         </td>
                                     </tr>
-                                    :info.bankNoStatus==='1'?
+                                    :isOpenAccount==='0'?
                                     <tr className="no">
                                         <th><i className="iconfont no icon-card"></i>银行卡</th>
                                         <td className="Result">未开户</td>
                                         <td className="detail"></td>
                                         <td className="operate">
-                                            <a href="javascript:void(0);" onClick={
-                                                () => this.toggleModal(`modalAuth`,true)
-                                            }>开户</a>
+                                            <a href="javascript:void(0);" onClick={() => this.toggleModal(`modalAuth`,true)}>开户</a>
                                         </td>
                                     </tr>
                                         :``
                                 }
-                                {info.phoneNumberStatus === '0' ?
                                     <tr>
                                         <th><i className="iconfont icon-Pass"></i>登录密码</th>
                                         <td className="Result">已设置</td>
@@ -137,25 +160,8 @@ class MyAuthInfo extends React.Component {
                                             </a>
                                         </td>
                                     </tr>
-                                    :``
-                                }
-                                {'0' === '0' ?
-                                    <tr  className="no">
-                                        <th><i className="iconfont no icon-Pass"></i>交易密码</th>
-                                        <td className="Result">未设置</td>
-                                        <td className="detail"></td>
-                                        <td className="operate">
-                                            <a href="javascript:void(0);"
-                                               onClick={
-                                                   () => this.toggleModal(`modalResetPassword`,true)
-                                               }>
-                                                设置交易密码
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    :``
-                                }
-                                {'0' === '0' ?
+
+                                {isSetTradepassword === '1' ?
                                     <tr >
                                         <th><i className="iconfont icon-Pass"></i>交易密码</th>
                                         <td className="Result">已设置</td>
@@ -171,67 +177,49 @@ class MyAuthInfo extends React.Component {
                                     </tr>
                                     :``
                                 }
+                                {isSetTradepassword === '0' ?
+                                    <tr  className="no">
+                                        <th><i className="iconfont no icon-Pass"></i>交易密码</th>
+                                        <td className="Result">未设置</td>
+                                        <td className="detail"></td>
+                                        <td className="operate">
+                                            <a href="javascript:void(0);"
+                                               onClick={
+                                                   () => this.toggleModal(`modalResetPassword`,true)
+                                               }>
+                                                设置交易密码
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    :``
+                                }
                                 </tbody>
                             </table>
                         </div>
                     </Tab>
 
                 </div>
-                <Modal
-                    title="修改登录密码"
-                    wrapClassName="vertical-center-modal"
-                    visible={this.state.modalResetPassword}
-                    width="520px"
-                    footer={null}
-                    destroyOnClose={true}
-                    onCancel={() =>
-                        this.toggleModal(`modalResetPassword`,false)
-                    }
-                >
-                    <ModalResetPassword key={this.state.key} info={
-                        {
-                            callback:(obj)=>{
-                                this.toggleModal(`modalResetPassword`,false);
-                            }
-                        }
-                    }/>
-                </Modal>
-                <Modal
-                    title="开户"
-                    wrapClassName="vertical-center-modal"
-                    visible={this.state.modalAuth}
-                    width="520px"
-                    footer={null}
-                    destroyOnClose={true}
-                    onCancel={() => {
-                        this.props.dispatch(memberAc.getInfo());
-                        this.toggleModal(`modalAuth`,false);
 
-                    }}
-                >
-
-                        <ModalAuth key={this.state.key} info={
-                            {
-                                callback:(obj)=>{
-                                    this.props.dispatch(memberAc.getInfo());
-                                    this.toggleModal(`modalAuth`,false);
-                                }
-                            }
-                        }
-                        />
-                    }
-                </Modal>
+                {this.state.currentModule!=``?
+                    <BbhModal config={modal_config[this.state.currentModule]} visible={this.state.bbhModal} onCancel={()=>this.callback()}>
+                        {(this.state.currentModule === `ModalTradePassword`)?<ModalTradePassword onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} />:``}
+                        {(this.state.currentModule === `ModalBindCard`)?<ModalBindCard onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} />:``}
+                        {(this.state.currentModule === `ModalCertification`)?<ModalCertification onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} />:``}
+                        {(this.state.currentModule === `ModalLoginPassword`)?<ModalLoginPassword onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} />:``}
+                    </BbhModal>
+                    :``
+                }
             </div>
         )
     }
 }
 
 function mapStateToProps(state) {
-    const { auth,memberSettings,member } = state.toJS();
+    const { auth,memberSettings,account } = state.toJS();
     return {
         auth,
         memberSettings,
-        member
+        account
     };
 }
 export default connect(mapStateToProps)(MyAuthInfo);

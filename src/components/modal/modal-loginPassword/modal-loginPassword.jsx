@@ -4,7 +4,7 @@ import { Form,Row,Input,Button,Checkbox,Col,Alert,Icon } from 'antd';
 import { connect } from 'react-redux';
 import {memberAc} from "../../../actions/member";
 import {Loading,NoRecord,Posting,BbhAlert} from '../../../components/bbhAlert/bbhAlert';
-import {tradePasswordRegExp } from '../../../utils/regExp';
+import {passwordRegExp } from '../../../utils/regExp';
 import {formItemLayout,noop } from '../../../utils/formSetting';
 import {hex_md5} from "../../../utils/md5";
 
@@ -61,7 +61,7 @@ class ModalLoginPassword extends React.Component {
         const newPasswordProps = getFieldDecorator('newPassword', {
             validate: [{
                 rules: [
-                    { required: true, pattern: tradePasswordRegExp, message: '密码长度为6-16位，必须包含数字、字母、符号' }
+                    { required: true, pattern: passwordRegExp, message: '密码长度为6-16位，必须包含数字、字母、符号' }
 
                 ],
                 trigger: ['onBlur', 'onChange']
