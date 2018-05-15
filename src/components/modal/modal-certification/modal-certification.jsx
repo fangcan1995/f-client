@@ -69,7 +69,7 @@ class ModalCertification extends React.Component {
 
         if(postResult.type!=`success` ){
             return(
-                <div className="pop__password pop">
+                <div className="pop__certification">
                     <div className="form__wrapper">
                         <Form layout="horizontal" onSubmit={this.handleSubmit} id='frm'>
 

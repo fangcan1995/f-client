@@ -129,7 +129,7 @@ class ModalTradePassword extends React.Component {
         });
         if(isSetTradepassword==='1'&& !this.state.isReset){
             return(
-                <div className="pop__password pop">
+                <div className="pop__password">
                     <div className="form__wrapper">
                         <div className='center'>
                             <p className='result_tips'>您已经设置了交易密码</p>

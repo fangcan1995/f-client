@@ -41,13 +41,26 @@
 }
 .pop{
 	padding: 0px 0px;
-
-	.ant-form-item-label {
-		label{
-			font-size: 14px;
-			color: @text-color-help;
+	.form__wrapper{
+		.ant-form-item-label {
+			text-align: left;
+			label{
+				font-size: 14px;
+				color: @text-color-help;
+			}
 		}
 	}
+	.pop__certification{
+		.form__wrapper{
+			padding: 0 50px;
+		}
+	}
+	.pop__password{
+		.form__wrapper{
+			padding: 0 50px;
+		}
+	}
+
 	.ant-modal-body{
 		.pop__password{
 			padding: 30px;
@@ -59,6 +72,10 @@
 	}
 	}
 	.ant-steps{
+		padding: 30px 30px;
+		.form__wrapper{
+			padding: 30px 30px;
+		}
 		.ant-steps-item {
 			.ant-steps-title {
 				font-size: 16px;

@@ -118,11 +118,12 @@ class MasterInvestBox extends React.Component {
         //this.props.dispatch(accountAc.getInfo());  //成功重载数据
     }
     render(){
+
         let {account,auth,investInfo,type}=this.props;
         let {isFetching,accountsInfo}=account;
         let {availableBalance,memberRedInfo,memberCoupon,postResult,isCertification,isOpenAccount,isRisk,riskLevel,isNovice}=accountsInfo;
-        console.log('当前窗口');
-        console.log(this.state.currentModule);
+        console.log('token');
+        console.log(auth);
         return(
             <div className="form_area">
                 <button onClick={() => this.toggleModal(`bbhModal`,true)}>测试用</button>

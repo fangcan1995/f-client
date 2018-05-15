@@ -92,7 +92,7 @@ class ModalSteps extends React.Component {
             content: <ModalBindCard onSuccess={() => {this.ck_tradePassword_success();}}  onFail={() => {this.ck_tradePassword_fail();}}/>
         }];
         return(
-            <div  className="pop pop_steps">
+            <div  className="pop_steps">
                 <Steps  current={current}>
                     {steps.map(item => <Step key={item.title} title={item.title} />)}
                 </Steps>

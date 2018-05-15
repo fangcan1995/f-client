@@ -26,17 +26,16 @@ class ModalInvestResult extends React.Component {
             dispatch(investDetailActions.getRedEnvelopes(id));
             dispatch(investDetailActions.getRateCoupons(id));
         }
-        this.setState({
-            num:this.state.num+1
-        },()=>{
-
-            this.app();
-
-        });
+        this.app();
 
     }
     app(){
-        console.log('提交投资申请'+this.state.num);
+        this.setState({
+            num:this.state.num+1
+        },()=>{
+            console.log('提交投资申请'+this.state.num);
+        })
+
         //2 提交后台
         /*console.log('提交投资申请');
         dispatch(investDetailActions.postInvest(
@@ -69,6 +68,12 @@ class ModalInvestResult extends React.Component {
         let {postResult,isPosting,redEnvelopes,rateCoupons}=this.props.investDetail;
         let {annualRate, loanExpiry} = this.props.investDetail.investInfo;
         if(postResult===``){
+            if(this.state.num<3){
+                setTimeout(
+                    ()=>{
+                        this.app();
+                    }, 3000);
+            }
             return (
                 <div className="pop__invest">
                     <Spin indicator={antIcon} />

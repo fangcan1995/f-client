@@ -58,8 +58,8 @@ class ModalBindCard extends React.Component {
                                 <input type="hidden" name="ver" value={toOthersInfo.ver} /><br/>
                                 <div className='center'>
                                     {
-                                        toOthersInfo==``?<Button type="primary" htmlType="submit" className="pop__large" disabled={true}>去富友开户</Button>
-                                            :<Button type="primary" htmlType="submit" className="pop__large" >去富友开户</Button>
+                                        toOthersInfo==``?<Button type="primary" htmlType="submit" className="pop__large" disabled={true}>去开户</Button>
+                                            :<Button type="primary" htmlType="submit" className="pop__large" >去开户</Button>
                                     }
 
                                 </div>
