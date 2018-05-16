@@ -195,6 +195,7 @@ class MasterInvestBox extends React.Component {
                         visible={this.state.bbhModal}
                         closeFunc={()=>this.closeModal()}
                         moduleName={this.state.currentModule}
+                        investAmount={this.state.investAmount}
                     >
                     </BbhModal>
                     :``

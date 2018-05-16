@@ -9,6 +9,9 @@ import {Loading,NoRecord,Posting,BbhAlert,WaitThirdParty} from '../../../compone
 class ModalRecharge extends React.Component {
     constructor(props) {
         super(props);
+        this.state={
+            tips:``
+        }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.modalClose = this.modalClose.bind(this);
     }
@@ -18,8 +21,6 @@ class ModalRecharge extends React.Component {
         if(investAmount>availableBalance){
             this.props.dispatch(accountAc.getFuyouInfo({type:'reCharge',value:(investAmount-availableBalance)})); //获取开户需携带的信息
         }
-        console.log('载入');
-
     }
     handleSubmit(e){
         let {toOthersInfo}=this.props.account;
@@ -33,22 +34,35 @@ class ModalRecharge extends React.Component {
 
     }
     modalClose(){
-        //清空
-        /*let {dummyResult}=this.props.member.accountsInfo;
-        if(dummyResult.code==0){
-            this.props.dispatch(memberAc.getInfo());  //成功重新获取新户信息
-        }*/
-        this.props.dispatch(accountAc.change_goOutState(false));
+        //this.props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息,暂时注释掉
+        this.props.dispatch(accountAc.dummyModifyAccount({availableBalance:investAmount}));  //虚拟
+
         console.log('充值成功回调');
-        let {investAmount,account,onFail,onSuccess}=this.props;
-        //this.props.dispatch(accountAc.modifyState({'availableBalance':investAmount}));  //模拟
-        onSuccess();
+        this.props.dispatch(accountAc.change_goOutState(false));
+        let {investAmount,onSuccess,dispatch,account}=this.props;
+        let {availableBalance,bankName,bankNo}=account.accountsInfo;
+
+        console.log('比较金额');
+        console.log(investAmount);
+        console.log(this.props.account.accountsInfo.availableBalance);
+        if(1<1){
+            this.setState({
+                tips:`请核实账户余额是否充足`
+            });
+        }else{
+            this.setState({
+                tips:``
+            });
+            dispatch(accountAc.clear());
+            onSuccess();
+        }
+
     }
     render() {
         console.log(this.props);
         let {investAmount,account,onFail,onSuccess}=this.props;
         let {isPosting,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
-        let {availableBalance}=accountsInfo;
+        let {availableBalance,bankName,bankNo}=accountsInfo;
         console.log('去富友充值携带的信息');
         console.log(toOthersInfo);
             return (
@@ -77,7 +91,7 @@ class ModalRecharge extends React.Component {
                                 </dd>
                             </dl>
                             {
-                                (parseFloat(investAmount) >= availableBalance) ?
+                                (parseFloat(investAmount) >availableBalance) ?
                                     <div>
                                     <dl className="form__bar">
                                         <dt><label>需充值:</label></dt>
@@ -87,15 +101,11 @@ class ModalRecharge extends React.Component {
                                     </dl>
                                         <dl className="form__bar">
                                             <dt><label>银行:</label></dt>
-                                            <dd>
-                                                中国建设银行
-                                            </dd>
+                                            <dd>{bankName}</dd>
                                         </dl>
                                         <dl className="form__bar">
                                             <dt><label>卡号:</label></dt>
-                                            <dd>
-                                                4367××××××8523
-                                            </dd>
+                                            <dd>{bankNo}</dd>
                                         </dl>
                                     </div>
                                     : ``
@@ -105,15 +115,19 @@ class ModalRecharge extends React.Component {
                                     <p><strong>提示：</strong>您的充值金额将会在10-15分钟内到账，请耐心等候</p>
                                 </div>
                             </dl>
+                                <dl className="form__bar">
+                                    <div className='tips'>{this.state.tips}</div>
+                                </dl>
                             <dl className="form__bar" style={{marginTop: '30px'}}>
                                 <div className="center">
                                     <Button type="primary"  className="pop__large"
                                             onClick={() => onFail()}>返回详情</Button>
-
                                     {
-                                        toOthersInfo==``?<Button type="primary" htmlType="submit" className="pop__large" disabled={true}>余额不足，去充值</Button>
+                                        (parseFloat(investAmount) <= availableBalance) ?<Button type="primary"  className="pop__large" onClick={()=>this.modalClose()}>下一步</Button>
+                                            :toOthersInfo==``?<Button type="primary" htmlType="submit" className="pop__large" disabled={true}>余额不足，去充值</Button>
                                             :<Button type="primary" htmlType="submit" className="pop__large" onClick={()=>this.handleSubmit()}>余额不足，去充值</Button>
                                     }
+
                                 </div>
                             </dl>
                             </form>

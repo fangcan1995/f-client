@@ -67,9 +67,9 @@ export const accountAc= {
                         photo:'',	//头像
                         riskLevel:'',	//风险测评等级
                         surplusAmount:1000000,//剩余投资限额
-                        availableBalance:100,	//账户可用余额
-                        bankName:'',	//开户行
-                        bankNo:'',	//银行卡号
+                        availableBalance:1000,	//账户可用余额
+                        bankName:'中国建设银行',	//开户行
+                        bankNo:'4367********8523',	//银行卡号
                         memberRedInfo:{number: 1, amountSum: 1000},	//红包信息
                         memberCoupon:{number: 1, amountSum: 0},	//加息券信息
                     };

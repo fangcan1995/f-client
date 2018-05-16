@@ -22,10 +22,18 @@ class riskQuestions extends React.Component {
     //选择答案
     onChange = (e) => {
         let {myList}=this.props.memberRiskAssess;
-        let i=myList.findIndex((x)=>x.examId==e.target.name);
-        myList[i].isChecked=e.target.value;
+        let j=myList.findIndex((x)=>x.examId==e.target.name);
+        myList[j].isChecked=e.target.value;
         this.props.dispatch(myRiskAssessAc.modifyState(myList));
-        console.log(myList);
+        //如全部完成，清空前端错误提示
+        let i=myList.findIndex(
+            (x)=>x.isChecked==''
+        );
+        if(i==-1){
+            this.setState({
+                tips:``,
+            });
+        }
     }
     //提交答案
     handleSubmit = () => {
@@ -36,6 +44,9 @@ class riskQuestions extends React.Component {
                 (x)=>x.isChecked==''
             );
             if(i!=-1){
+                this.setState({
+                    tips:`请完成全部测评题目`,
+                });
                 return false
             }
         }

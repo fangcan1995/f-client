@@ -51,42 +51,25 @@ class ModalInvestSteps extends React.Component {
         onSuccess();
     }
     ck_recharge_success(){
-        console.log('充值成功回调');
-        //this.modalClose();
+        console.log('充值成功跳转');
         this.setState({
             current:1
         })
     }
-    ck_recharge_fail(){
-        console.log('充值失败回调');
-        this.setState({
-            current:1
-        })
-    }
+
     ck_investApp_success(){
-        console.log('投资请求发送成功回调');
+        console.log('投资请求发送成功跳转');
         this.setState({
             current:2
         })
     }
-    ck_investApp_fail(){
-        console.log('投资请求发送失败回调');
-        this.setState({
-            current:2
-        })
-    }
+
     ck_invest_success(){
-        console.log('投资成功回调');
-        this.setState({
-            current:3
-        })
+        console.log('第三步关闭弹框');
+        let {onSuccess,dispatch}=this.props;
+        onSuccess();
     }
-    ck_invest_fail(){
-        console.log('投资失败回调');
-        this.setState({
-            current:3
-        })
-    }
+
     render() {
         let {account,auth,value}=this.props;
         let {accountsInfo,isPosting}=account;
@@ -94,10 +77,10 @@ class ModalInvestSteps extends React.Component {
         const { current } = this.state;
         const steps = [{
             title: '金额确认',
-            content:<ModalRecharge key={this.state.key} investAmount={value} onSuccess={() => {this.ck_recharge_success();}}  onFail={() => {this.modalClose();}}/>
+            content:<ModalRecharge key={this.state.key} investAmount={value} onSuccess={() => {this.ck_recharge_success();}}  />
         }, {
             title: '投资确认',
-            content: <ModalInvest key={this.state.key} investAmount={value} onSuccess={() => {this.ck_investApp_success();}}  onFail={() => {this.modalClose();}}/>
+            content: <ModalInvest key={this.state.key} investAmount={value} onSuccess={() => {this.ck_investApp_success();}}  />
         }, {
             title: '投资完成',
             content: <ModalInvestResult  key={this.state.key}>投资完成</ModalInvestResult>

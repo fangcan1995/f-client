@@ -19,13 +19,13 @@ class ModalInvestResult extends React.Component {
             num:0
         }
     }
-    componentWillMount () {
-        let {auth,investDetail,dispatch}=this.props;
+    componentDidMount () {
+        /*let {auth,investDetail,dispatch}=this.props;
         let {id,annualRate,loanExpiry}=investDetail.investInfo;
         if(auth.isAuthenticated){
             dispatch(investDetailActions.getRedEnvelopes(id));
             dispatch(investDetailActions.getRateCoupons(id));
-        }
+        }*/
         this.app();
 
     }
@@ -35,9 +35,9 @@ class ModalInvestResult extends React.Component {
         },()=>{
             console.log('提交投资申请'+this.state.num);
         })
-
+        let {dispatch,investAmount,id}=this.props;
         //2 提交后台
-        /*console.log('提交投资申请');
+        console.log('提交投资申请');
         dispatch(investDetailActions.postInvest(
             {
                 projectId:id,
@@ -46,7 +46,7 @@ class ModalInvestResult extends React.Component {
                 investWay:1,
                 transfer:false
             }
-            ));*/
+            ));
     }
     /*componentWillReceiveProps(){
         console.log('更新了');
@@ -97,7 +97,7 @@ class ModalInvestResult extends React.Component {
                     return (
                         <div className="pop__invest">
                             <Spin indicator={antIcon} />
-                            正在提交您的投资申请...
+                            第{this.state.num}次提交您的投资申请...
                         </div>
                     );
                 }else{
