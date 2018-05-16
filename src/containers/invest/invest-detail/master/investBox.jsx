@@ -6,11 +6,11 @@ import {income} from "../../../../utils/cost";
 import {addCommas, toMoney, toNumber} from "../../../../utils/famatData"
 import {  Link} from 'react-router-dom';
 import  {accountAc}  from '../../../../actions/account';
-import ModalSteps from '../../../../components/modal/modal-steps/modal-steps';
+/*import ModalSteps from '../../../../components/modal/modal-steps/modal-steps';
 import ModalTradePassword from '../../../../components/modal/modal-tradePassword/modal-tradePassword';
 import ModalBindCard from '../../../../components/modal/modal-bindCard/modal-bindCard';
 import ModalRiskAssess from '../../../../components/modal/modal-riskAssess/modal-riskAssess';
-import ModalInvestSteps from '../../../../components/modal/modal-invest-steps/modal-invest-steps';
+import ModalInvestSteps from '../../../../components/modal/modal-invest-steps/modal-invest-steps';*/
 import {InvestButton} from '../../invest-list/investComponents';
 import investDetailActions from "../../../../actions/invest-detail";
 import {formItemLayout} from "../../../../utils/formSetting";
@@ -27,7 +27,6 @@ class MasterInvestBox extends React.Component {
             bbhModal:false,
             currentModule:``,
             tips:'',
-            /*allowedInvest:true,*/
             code:100
         }
     }
@@ -82,11 +81,10 @@ class MasterInvestBox extends React.Component {
         //
 
     };
-    callback(status){
-        console.log('销毁弹框');
+    closeModal(status){
+        console.log('关闭弹框');
+        //this.props.dispatch(accountAc.getAccountInfo());  //成功重载数据,暂时注释掉
         this.toggleModal('bbhModal',false);
-        //this.props.dispatch(accountAc.modifyState({accountsInfo:``}));
-        //this.props.dispatch(accountAc.getInfo());  //成功重载数据
     }
     render(){
         let {account,auth,investInfo,type}=this.props;
@@ -96,7 +94,6 @@ class MasterInvestBox extends React.Component {
         console.log(accountsInfo);
         return(
             <div className="form_area">
-                <button onClick={() => this.toggleModal(`bbhModal`,true)}>测试用</button>
                 {investInfo===``?``
                     :(investInfo.status!=2)?
                         <div>
@@ -190,27 +187,18 @@ class MasterInvestBox extends React.Component {
                                     </div>
                                 </div>
                             }
-
                         </div>
                 }
                 {this.state.currentModule!=``?
-                    <BbhModal config={modal_config[this.state.currentModule]} visible={this.state.bbhModal} onCancel={()=>this.callback()}>
-                        {this.state.currentModule === `ModalSteps` ?
-                            <ModalSteps  onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}}  />
-                            :(this.state.currentModule === `ModalTradePassword`)?
-                                <ModalTradePassword onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} />
-                                :(this.state.currentModule === `ModalBindCard`)?
-                                    <ModalBindCard onSuccess={() => {this.callback();}}  onFail={() => {this.callback();}} />
-                                    :(this.state.currentModule === `ModalRiskAssess`)?
-                                        <ModalRiskAssess onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} value={this.state.investAmount} />
-                                        :(this.state.currentModule === `ModalInvestSteps`)?<ModalInvestSteps  value={this.state.investAmount} onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} />
-                                            :``
-                        }
+                    <BbhModal
+                        config={modal_config[this.state.currentModule]}
+                        visible={this.state.bbhModal}
+                        closeFunc={()=>this.closeModal()}
+                        moduleName={this.state.currentModule}
+                    >
                     </BbhModal>
                     :``
                 }
-
-
             </div>
         )
 

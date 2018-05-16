@@ -15,4 +15,24 @@ export const formItemLayout = {
 export function noop() {
     return false;
 }
+//获取post请求携带的参数
+export function postContent (params){
+    return{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body : JSON.stringify(params),
+    }
+}
 
+//获取put请求携带的参数
+export function putContent (params){
+    return{
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body : JSON.stringify(params),
+    }
+}

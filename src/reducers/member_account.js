@@ -31,8 +31,8 @@ const initialState = Immutable.fromJS({
 
 export default createReducer(initialState, {
     //同步修改数据
-    //修改帐户信息，假
-    ['member/account/MODIFY']:(state,action) => state.mergeDeep({
+    //修改帐户信息，虚拟
+    ['member/account/MODIFY_ACCOUNT']:(state,action) => state.mergeDeep({
         accountsInfo:action.payload
     }),
     //清除提交结果
@@ -46,7 +46,6 @@ export default createReducer(initialState, {
     ['member/account/GOOUT_STATE']:(state,action) => state.mergeDeep({
         isOpenOthers:action.payload
     }),
-
     //异步获取会员帐户信息
     ['member/account/FETCH_PENDING']:(state,action) => state.mergeDeep({
         isFetching: true,

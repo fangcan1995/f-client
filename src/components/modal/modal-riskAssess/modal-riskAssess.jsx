@@ -1,21 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import {myRiskAssessAc} from '../../../actions/member-settings';
 import { Radio,Button } from 'antd';
-import {memberAc} from "../../../actions/member";
 import {BbhAlert} from '../../../components/bbhAlert/bbhAlert';
-import { Alert } from 'antd';
-import './modal-riskAssess.less';
-
-const RadioGroup = Radio.Group;
 import {Loading,NoRecord,Posting} from '../../../components/bbhAlert/bbhAlert';
+import {accountAc} from "../../../actions/account";
+import './modal-riskAssess.less';
+const RadioGroup = Radio.Group;
 class ModalRiskAssess extends React.Component {
     constructor(props){
         super(props);
         this.state={
-            showQuestion:false
+            showQuestion:false,
+            tips:``
         }
         this.onChange = this.onChange.bind(this);
         this.handleSubmit= this.handleSubmit.bind(this);
@@ -28,9 +26,19 @@ class ModalRiskAssess extends React.Component {
     //选择答案
     onChange = (e) => {
         let {myList}=this.props.memberRiskAssess;
-        let i=myList.findIndex((x)=>x.examId==e.target.name);
-        myList[i].isChecked=e.target.value;
+        let j=myList.findIndex((x)=>x.examId==e.target.name);
+        myList[j].isChecked=e.target.value;
         this.props.dispatch(myRiskAssessAc.modifyState(myList));
+        //如全部完成，清空前端错误提示
+        let i=myList.findIndex(
+            (x)=>x.isChecked==''
+        );
+        if(i==-1){
+            this.setState({
+                tips:``,
+            });
+        }
+
     }
     //提交答案
     handleSubmit = () => {
@@ -41,9 +49,13 @@ class ModalRiskAssess extends React.Component {
                 (x)=>x.isChecked==''
             );
             if(i!=-1){
+                this.setState({
+                    tips:`请完成全部测评题目`,
+                });
                 return false
             }
         }
+
         let questionAndAnswerDtoList=[];
         for (let index of myList.keys()){
             questionAndAnswerDtoList.push({questionId:myList[index].examId,answerCode:myList[index].isChecked});
@@ -68,11 +80,14 @@ class ModalRiskAssess extends React.Component {
         this.props.dispatch(myRiskAssessAc.getRiskAssessList()); //获取题目
     }
     //关闭
-    /*modalClose(){
-        this.props.dispatch(myRiskAssessAc.reset());
-        let {callback}=this.props.config;
-        callback();
-    }*/
+    modalClose(){
+        console.log('测评成功回调');
+        let {onSuccess,dispatch}=this.props;
+        //props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息,暂时注释掉
+        dispatch(accountAc.dummyModifyAccount({isRisk:'1'}));  //虚拟
+        dispatch(accountAc.clear());
+        onSuccess();
+    }
 
     render(){
 
@@ -80,8 +95,7 @@ class ModalRiskAssess extends React.Component {
         let {accountsInfo}=account;
         let {isRisk,surplusAmount}=accountsInfo;
         let {result,myList,postResult,isFetching,isPosting}=memberRiskAssess;
-        /*let {riskAssess,isFetching,isPosting}=this.props.memberSettings;
-        let {myList,postResult}=riskAssess;*/
+
         if(!this.state.showQuestion){
             if(isRisk==='0'){
                 return(
@@ -142,28 +156,30 @@ class ModalRiskAssess extends React.Component {
                                                                 }
                                                             </dt>
                                                             <dd>
-
                                                                 <RadioGroup onChange={this.onChange} value={`${l.isChecked}`} name={`${l.examId}`}>
                                                                     {l.answersDtoList.map((ll,ii)=>(
                                                                         <Radio value={`${ll.answerCode}`} key={`row-${ii}`}>{ll.answerCode} .{ll.answer}</Radio>
                                                                     ))}
                                                                 </RadioGroup>
-
-
                                                             </dd>
                                                         </dl>
                                                     ))
                                                     :``
                                             }
-                                            <div className="form__bar center">
+                                            <div className='tips'>
                                                 {
-                                                    isPosting?
-                                                        <Button type="primary" style={{width:'30%'}} className='large' disabled={true}>
-                                                            <Posting isShow={isPosting}/>
-                                                        </Button>
-                                                        :<Button type="primary"  onClick={this.handleSubmit} style={{width:'30%'}} className='large'
-                                                        >立即评估
-                                                        </Button>
+                                                    postResult===``?this.state.tips
+                                                    :postResult.message
+                                                }
+                                                </div>
+                                            <div className="form__bar center">
+                                                {isPosting?
+                                                    <Button type="primary" className='pop__large' disabled={true}>
+                                                        <Posting isShow={isPosting}/>
+                                                    </Button>
+                                                    :<Button type="primary"  onClick={this.handleSubmit}  className='pop__large' >
+                                                        立即评估
+                                                    </Button>
                                                 }
                                             </div>
                                         </div>

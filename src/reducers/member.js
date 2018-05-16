@@ -115,6 +115,8 @@ export default createReducer(initialState, {
         isFetching: false,
         errorMessage: action.message
     }),
+
+
     ['member/MODIFY_STATE']:(state,action) => state.mergeDeep({
         accountsInfo:action.payload
     }),

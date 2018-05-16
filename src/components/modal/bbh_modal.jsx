@@ -1,8 +1,11 @@
 import React,{ Component } from "react";
+import ModalSteps from '../modal/modal-steps/modal-steps';
+import ModalTradePassword from '../modal/modal-tradePassword/modal-tradePassword';
+import ModalBindCard from '../modal/modal-bindCard/modal-bindCard';
+import ModalRiskAssess from '../modal/modal-riskAssess/modal-riskAssess';
+import ModalInvestSteps from '../modal/modal-invest-steps/modal-invest-steps';
+import { Modal } from 'antd';
 import './bbh_modal.less';
-import { Modal,Button } from 'antd';
-import PieChart from "../charts/pie";
-
 
 export default class BbhModal extends Component{
     constructor(props) {
@@ -12,15 +15,40 @@ export default class BbhModal extends Component{
         }
     }
     onCancel(){
-        let {onCancel}=this.props;
+        let {closeFunc}=this.props;
         this.setState({
             key:Math.random(),
         })
-        onCancel();
+        closeFunc();
     }
     render(){
-        let {config,visible,onCancel}=this.props;
+        let {config,visible,moduleName,investAmount}=this.props;
         let {title,width,height}=config;
+        let moduleContent=``;
+        switch (moduleName) {
+            case `ModalSteps`:
+                moduleContent=<ModalSteps key={this.state.key}  onSuccess={()=>{this.onCancel()}} />;
+                break;
+            case `ModalCertification`:
+                moduleContent=<ModalCertification key={this.state.key} onSuccess={()=>{this.onCancel()}} />;
+                break;
+            case `ModalTradePassword`:
+                moduleContent=<ModalTradePassword key={this.state.key} onSuccess={()=>{this.onCancel()}} />;
+                break;
+            case `ModalBindCard`:
+                moduleContent=<ModalBindCard key={this.state.key} onSuccess={()=>{this.onCancel()}} />;
+                break;
+            case `ModalRiskAssess`:
+                moduleContent=<ModalRiskAssess key={this.state.key} onSuccess={()=>{this.onCancel()}} />;
+                break;
+            case `ModalInvestSteps`:
+                moduleContent=<ModalInvestSteps key={this.state.key} value={investAmount} onSuccess={()=>{this.onCancel()}} />;
+                break;
+
+            default:
+                break
+        }
+
         return(
             <Modal
                 title={title||``}
@@ -33,8 +61,8 @@ export default class BbhModal extends Component{
                     this.onCancel();
                 }}
             >
-                <div key={this.state.key} className="pop" ref='pop' style={{minHeight:`${height||`400px`}`}}>
-                {this.props.children}
+                <div  className="pop" ref='pop' style={{minHeight:`${height||`400px`}`}}>
+                    {moduleContent}
                 </div>
             </Modal>
             )

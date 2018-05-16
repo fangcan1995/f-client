@@ -118,3 +118,15 @@ export  function cardGetSex(identityCard) {
     }
     return sex;
 }
+
+//格式化成功失败信息
+export  function formatPostResult(res){
+    let type=``;
+    (res.code == 0)?type='success':type='error';
+    return {
+        code:res.code,
+        type:type,
+        message:res.message||``,
+        description:res.data||``,
+    }
+}

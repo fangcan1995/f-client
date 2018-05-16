@@ -82,17 +82,19 @@ export  class Page404 extends React.Component{
     }
 }
 export  class WaitThirdParty extends React.Component{
+    onSuccess(){
+        let {callback}=this.props;
+        callback();
+    }
     render(){
         let {isShow,title,callback}=this.props;
-        console.log('---------------------------------');
-        console.log(this.props);
         return(
             <div className="tips_thirdParty">
                 {(isShow===true)?
                     <div className='form__wrapper'>
                         <div className='form__bar'>请您在新页面完成{title},成功前不要关闭此页面。</div>
                         <div className=''>
-                            <Button className='ant-btn-primary btn call_sucess' type="primary" onClick={()=>{callback()}}>{title}成功</Button>
+                            <Button className='ant-btn-primary btn call_sucess' type="primary" onClick={()=>{this.onSuccess()}}>{title}成功</Button>
                             <a className='ant-btn-primary btn call_fail' href='http://www.baidu.com' target='_blank'>遇到问题</a>
                         </div>
                         <div className='form__bar'>客服热线：****** （服务时间：******）</div>

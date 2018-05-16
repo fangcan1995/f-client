@@ -10,6 +10,7 @@ class ModalBindCard extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.modalClose = this.modalClose.bind(this);
     }
     componentDidMount () {
         //this.props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息
@@ -17,11 +18,7 @@ class ModalBindCard extends React.Component {
     }
     //提交
     handleSubmit(event){
-
-
         //event.preventDefault();   //阻止提交
-
-
         let {toOthersInfo}=this.props.account;
         console.log('切换状态');
         console.log(toOthersInfo);
@@ -32,13 +29,14 @@ class ModalBindCard extends React.Component {
     }
     //回调
     modalClose(){
-        let {onSuccess,onFail,dispatch}=this.props;
-        this.props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息
+        console.log('绑卡成功回调');
+        let {onSuccess,dispatch}=this.props;
+        //this.props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息,暂时注释掉
+        dispatch(accountAc.dummyModifyAccount({isOpenAccount:'1'}));  //虚拟
         dispatch(accountAc.clear());
+        onSuccess();
     }
     render(){
-        console.log('-------------this.props---------------');
-        console.log(this.props);
         let {onSuccess,onFail}=this.props;
         let {isPosting,toOthersInfo,postResult,isOpenOthers}=this.props.account;
         console.log('去富有开户携带的信息');

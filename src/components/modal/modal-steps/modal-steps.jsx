@@ -1,11 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Steps } from 'antd';
-import { connect } from 'react-redux';
-import {BbhAlert} from '../../../components/bbhAlert/bbhAlert';
 import ModalTradePassword from '../../../components/modal/modal-tradePassword/modal-tradePassword';
 import ModalCertification from '../../../components/modal/modal-certification/modal-certification';
 import ModalBindCard from '../../../components/modal/modal-bindCard/modal-bindCard';
+import { Steps } from 'antd';
+import { connect } from 'react-redux';
+import  {accountAc}  from '../../../actions/account';
+
 import './modal-steps.less'
 
 const Step = Steps.Step;
@@ -21,12 +21,8 @@ class ModalSteps extends React.Component {
     }
 
     componentWillMount () {
-       //获取会员信息
-        /*if(this.props.auth.isAuthenticated) {
-            this.props.dispatch(memberAc.getInfo());
-        }*/
         let {accountsInfo}=this.props.account;
-        let {isCertification,isOpenAccount,isSetTradepassword}=accountsInfo;
+        let {isCertification}=accountsInfo;
         if(isCertification==='0'){
             this.setState({
                 current:0,
@@ -36,60 +32,58 @@ class ModalSteps extends React.Component {
                 current:1,
             });
 
-        }else{
-            //没有获取到实名认证信息
         }
-
     }
 
 
     modalClose(){
-        //清空postResult
-        this.props.dispatch(memberAc.modifyState({'dummyResult':``}));
-        let {callback}=this.props.info;
+        let {callback}=this.props;
         callback();
     }
+
     ck_certification_success(){
-        console.log('实名认证成功回调');
+        console.log('实名认证成功跳转下一步');
+        let {dispatch}=this.props;
+        dispatch(accountAc.dummyModifyAccount({isCertification:'1'}));  //虚拟
+        dispatch(accountAc.clear());
         this.setState({
             current:1
         })
     }
-    ck_certification_fail(){
-        console.log('实名认证失败回调');
-        this.setState({
-            current:1
-        })
-    }
+
     ck_tradePassword_success(){
-        console.log('交易密码成功回调');
+        console.log('交易密码成功跳转下一步');
         this.setState({
             current:2
         })
     }
-    ck_tradePassword_fail(){
-        console.log('交易密码失败回调');
-        this.setState({
-            current:2
-        })
+    ck_bindCard_success(){
+        console.log('第三步关闭弹框');
+        let {onSuccess,dispatch}=this.props;
+        onSuccess();
     }
+
+
     render() {
+
         let {account,auth}=this.props;
+
         let {accountsInfo,isPosting}=account;
+        console.log('账户信息');
+        console.log(account);
         let {postResult}=accountsInfo;
         const { current } = this.state;const steps = [{
             title: '实名认证',
-            content:<ModalCertification onSuccess={() => {this.ck_certification_success();}}  onFail={() => {this.ck_certification_fail();}}/>
+            content:<ModalCertification onSuccess={() => {this.ck_certification_success();}}  />
         }, {
             title: '设置交易密码',
             content: <ModalTradePassword
                 onSuccess={() => {this.ck_tradePassword_success();}}
-                onFail={() => {this.ck_tradePassword_fail();}}
                 attach={'steps'}
             />
         }, {
             title: '绑定银行卡',
-            content: <ModalBindCard onSuccess={() => {this.ck_tradePassword_success();}}  onFail={() => {this.ck_tradePassword_fail();}}/>
+            content: <ModalBindCard onSuccess={() => {this.ck_bindCard_success();}} />
         }];
         return(
             <div  className="pop_steps">
@@ -104,7 +98,7 @@ class ModalSteps extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { auth,account } = state.toJS();
+    const { auth,account} = state.toJS();
     return {
         auth,
         account

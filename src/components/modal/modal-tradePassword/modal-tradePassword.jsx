@@ -45,13 +45,9 @@ class ModalTradePassword extends React.Component {
                 return false;
             }
             let appInfo={
-                //type:`member`,
-                //access_token:`85bd5fd4-d0fe-44df-8e7c-b7eea9645b94`,  //虚拟
                 tradePassword:hex_md5(form.getFieldsValue().newPassword),
                 code:form.getFieldsValue().verify_code,
             }
-            console.log('提交给后台的数据是');
-            console.log(appInfo);
             dispatch(accountAc.setTradePassword(appInfo));
 
         });
@@ -103,13 +99,20 @@ class ModalTradePassword extends React.Component {
     }
     //回调
     modalClose(){
-        let {onSuccess,onFail,dispatch}=this.props;
-        //清空postResult
-        dispatch(accountAc.clear());
-        onSuccess();
+        this.setState({
+            isReset:true,
+        },()=>{
+            console.log('点击成功提示页面中的确定-回调');
+            console.log(this.props);
+            let {onSuccess,dispatch}=this.props;
+            dispatch(accountAc.dummyModifyAccount({isSetTradepassword:'1'}));  //虚拟
+            //dispatch(accountAc.getAccountInfo());  //真实
+            dispatch(accountAc.clear());
+            onSuccess();
+        });
+
     }
     render(){
-
         let {onSuccess,onFail,attach}=this.props;
         let {isPosting,postResult,accountsInfo,verifyCodeCd}=this.props.account;
         let {isCertification,isOpenAccount,isSetTradepassword}=accountsInfo;
@@ -129,19 +132,24 @@ class ModalTradePassword extends React.Component {
             }]
         });
         if(isSetTradepassword==='1'&& !this.state.isReset){
-            return(
-                <div className="pop__password">
-                    <div className="form__wrapper">
-                        <div className='center'>
-                            <p className='result_tips'>您已经设置了交易密码</p>
-                        </div>
-                        <div className='center'>
-                            <Button type="primary" htmlType="submit" className="pop__large" onClick={()=>onFail()}>下一步</Button>
-                            <Button type="primary" htmlType="submit" className="pop__large" onClick={()=> this.reset()}>重新设置</Button>
+            if(this.state.isReset){
+                return ``
+            }else{
+                return(
+                    <div className="pop__password">
+                        <div className="form__wrapper">
+                            <div className='center'>
+                                <p className='result_tips'>您已经设置了交易密码</p>
+                            </div>
+                            <div className='center'>
+                                <Button type="primary" htmlType="submit" className="pop__large" onClick={()=>onFail()}>下一步</Button>
+                                <Button type="primary" htmlType="submit" className="pop__large" onClick={()=> this.reset()}>重新设置</Button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )
+                )
+            }
+
         }else{
             //未成功
             if(postResult.type!=`success`){
@@ -230,7 +238,6 @@ class ModalTradePassword extends React.Component {
                                 </FormItem>
 
                             </Form>
-                            <button onClick={()=>onFail()}>下一步</button>
                         </div>
                     </div>
                 )

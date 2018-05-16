@@ -22,7 +22,7 @@ export const modal_config={
     ModalRiskAssess: {
         title: "用户风险承受能力测评",
         width: "800px",
-        height: "600px"
+        height: "500px"
     },
     ModalInvestSteps: {
         title: "投资",

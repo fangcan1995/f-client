@@ -1,6 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Form,Row,Input,Button,Checkbox,Col,Alert,Icon } from 'antd';
+import { Form,Input,Button } from 'antd';
 import { connect } from 'react-redux';
 import {Loading,NoRecord,Posting,BbhAlert} from '../../../components/bbhAlert/bbhAlert';
 import {realnameRegExp,idcodeRegExp } from '../../../utils/regExp';
@@ -15,10 +14,7 @@ class ModalCertification extends React.Component {
     componentDidMount () {
         this.props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息
     }
-    static propTypes = {
-        form: PropTypes.object.isRequired,
-        dispatch: PropTypes.func.isRequired
-    }
+
     //提交
     handleSubmit = (e) => {
         e.preventDefault();
@@ -31,8 +27,6 @@ class ModalCertification extends React.Component {
                 tureName:form.getFieldsValue().trueName,
                 idNumber:form.getFieldsValue().idCode,
             }
-            console.log('提交后台的数据是');
-            console.log(appInfo);
             dispatch(accountAc.certification(appInfo));
 
         });
@@ -113,7 +107,6 @@ class ModalCertification extends React.Component {
                             </FormItem>
 
                         </Form>
-                        <button onClick={()=>onFail()}>下一步</button>
                     </div>
                 </div>
             )

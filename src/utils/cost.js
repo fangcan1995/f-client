@@ -72,3 +72,4 @@ export  function income(val,y_per,time,type){
 export  function poundage(amount,rate){
     return ((amount*rate).toFixed(2));
 }
+

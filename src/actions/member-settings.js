@@ -2,6 +2,9 @@ import cFetch from './../utils/cFetch';
 
 import parseJson2URL from './../utils/parseJson2URL';
 import {urls,urls_auth,token} from './../utils/url';
+import {formatPostResult} from "../utils/famatData";
+import {postContent,putContent} from "../utils/formSetting";
+
 
 const url_getMList=`${urls}/message/mail/page`;  //获取消息列表
 const url_setRead=`${urls}/message/mail/read`; //设为已读
@@ -144,36 +147,13 @@ export const myRiskAssessAc={
             }
         }
     },
-    putRiskAssess: (pram,dispatch) => {
-        pram=JSON.stringify(pram);
+    putRiskAssess: (params,dispatch) => {
         return {
             type: 'mySettings/riskAssess/FETCH_POST',
             async payload() {
-                const res = await cFetch(`${url_putRList}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: pram,
-                    },
-                    true);
-                /*if (res.code == 0) {
-                    return {postResult: res};
-                } else {
-                    throw res;
-                }*/
-                let type=``;
-                (res.code == 0)?type='success':type='error';
-                console.log('提交测评返回的结果');
-                console.log(res);
-                return {
+                const res = await cFetch(`${url_putRList}`, putContent(params), true);
+                return formatPostResult(res);
 
-                        code:res.code,
-                        type:type,
-                        message:res.message,
-                        description:res.data||``,
-
-                };
             }
         }
     },

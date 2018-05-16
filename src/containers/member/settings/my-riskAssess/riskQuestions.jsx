@@ -10,6 +10,9 @@ const RadioGroup = Radio.Group;
 class riskQuestions extends React.Component {
     constructor(props){
         super(props);
+        this.state={
+            tips:``
+        }
         this.onChange = this.onChange.bind(this);
         this.handleSubmit= this.handleSubmit.bind(this);
     }
@@ -22,6 +25,7 @@ class riskQuestions extends React.Component {
         let i=myList.findIndex((x)=>x.examId==e.target.name);
         myList[i].isChecked=e.target.value;
         this.props.dispatch(myRiskAssessAc.modifyState(myList));
+        console.log(myList);
     }
     //提交答案
     handleSubmit = () => {
