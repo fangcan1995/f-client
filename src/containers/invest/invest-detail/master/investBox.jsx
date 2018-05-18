@@ -90,8 +90,7 @@ class MasterInvestBox extends React.Component {
         let {account,auth,investInfo,type}=this.props;
         let {isFetching,accountsInfo}=account;
         let {availableBalance,memberRedInfo,memberCoupon,postResult,isCertification,isOpenAccount,isRisk,riskLevel,isNovice}=accountsInfo;
-        console.log('--------accountsInfo---------');
-        console.log(accountsInfo);
+
         return(
             <div className="form_area">
                 {investInfo===``?``

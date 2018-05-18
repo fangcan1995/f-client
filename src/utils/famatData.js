@@ -1,4 +1,5 @@
 import React from 'react';
+
 export  function toMoney(value){
     const len=2;
     const comma=false;
@@ -123,10 +124,46 @@ export  function cardGetSex(identityCard) {
 export  function formatPostResult(res){
     let type=``;
     (res.code == 0)?type='success':type='error';
+    console.log('提示信息-------------');
+    console.log(res.message);
+    //console.log(number(res.message));
     return {
         code:res.code,
         type:type,
         message:res.message||``,
-        description:res.data||``,
+        description:res.description||``,
     }
+}
+export function getTips(messageCode){
+    const errDicts = [
+        {
+            code:`invest_001`,
+            message:{code: 1, message: `前端验证提示1`, allowGoOn: true}
+        },
+        {
+            code:`invest_100`,
+            message:{code: 100, message: `交易密码错误`, allowGoOn: true}
+        },
+        {
+            code:`invest_101`,
+            message:{code: 101, message: `系统烦忙 请稍后`, allowGoOn: true}
+        },
+        {
+            code:`invest_102`,
+            message:{code: 101, message: `当前投资用户过多，请稍后再试`, allowGoOn: true}
+        },
+        {
+            code:`invest_201`,
+            message:{code: 201, message: `非法操作`, allowGoOn: false}
+        },
+    ];
+    let index=errDicts.findIndex((x)=>
+        x.code ==messageCode
+    );
+    if (index==-1){
+        return {code: 406, message: messageCode, allowGoOn: true}
+    }else{
+        return errDicts[index].message;
+    }
+
 }

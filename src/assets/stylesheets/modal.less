@@ -41,8 +41,12 @@
 }
 .pop{
 	padding: 0px 0px;
+
 	.form__wrapper{
       margin-top: 30px;
+		.ant-form-item{
+			margin-bottom: 12px;
+		}
 		.ant-form-item-label {
 			text-align: left;
 			label{
@@ -93,7 +97,58 @@
 	.pop__invest{
 		box-sizing: border-box;
 		height:400px;
-		padding: 30px 30px;
+		padding: 0px 30px 0 30px;
+		.ant-collapse{
+			.ant-collapse-item{
+				border-bottom: none;
+				&.collapse-item-active{
+					border-bottom: none;
+				}
+				.ant-collapse-header{
+					padding: 8px 0 8px 0px;
+					.arrow{
+						right:0;
+						/*&:before{
+							content: "\E61F"
+						}*/
+					}
+					&:hover{
+						color:@text-color-primary;
+						background: none;
+					}
+				}
+				.ant-collapse-content{
+					border-top:none;
+					padding: 0 0;
+					.ant-collapse-content-box{
+						padding-top: 5px;
+						padding-bottom: 5px;
+					}
+				}
+			}
+		}
+
+
+		.rewardList{
+			max-height: 100px;
+			overflow: auto;
+			ul{
+				.clearfix();
+				li{
+					float: left;
+					&:nth-child(1){
+						width:20px;
+					}
+					&:nth-child(2){
+						width:120px;
+					}
+					&:nth-child(3){
+						//width:150px;
+					}
+				}
+			}
+
+		}
 
 	}
 	.pop_steps{

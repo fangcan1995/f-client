@@ -29,5 +29,5 @@ export const API_CONFIG = {
   forgetSignup:'uaa/oauth/forget/password',
   signupVerifyCode: 'uaa/code/sms/register',
   forgetVerifyCode: 'uaa/code/sms/forget/password',
-    setTradePasswordVerifyCode:  'uaa/code/sms/forget/password', //设置交易密码
+    setTradePasswordVerifyCode:  '/uaa/code/sms/trade/password', //设置交易密码
 };

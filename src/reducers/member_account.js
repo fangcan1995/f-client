@@ -25,7 +25,8 @@ const initialState = Immutable.fromJS({
         memberRedInfo:'',	//红包信息
         memberCoupon:'',	//加息券信息
     },*/
-    toOthersInfo:``  //调第三方接口携带的信息
+    toOthersInfo:``,  //调第三方接口携带的信息
+    verifyCode:``
 
 });
 
@@ -45,6 +46,17 @@ export default createReducer(initialState, {
     //修改是否去了第三方的状态
     ['member/account/GOOUT_STATE']:(state,action) => state.mergeDeep({
         isOpenOthers:action.payload
+    }),
+    ['member/SEND_VERIFY_CODE_PENDING']: (state, action) => state.merge({
+        isFetching: true,
+    }),
+    ['member/SEND_VERIFY_CODE_FULFILLED']: (state, action) => state.merge({
+        isFetching: false,
+        verifyCode: action.payload
+    }),
+    ['member/SEND_VERIFY_CODE_REJECTED']: (state, action) => state.merge({
+        isFetching: false,
+        errorMessage: action.message
     }),
     //异步获取会员帐户信息
     ['member/account/FETCH_PENDING']:(state,action) => state.mergeDeep({

@@ -19,7 +19,7 @@ export const sendMemberVerifyCode = params => {
     return {
         type: 'member/SEND_VERIFY_CODE',
         async payload() {
-            const res = await cFetch(API_CONFIG.baseUri + API_CONFIG.setTradePasswordVerifyCode + params, { credentials: 'include' }, false);
+            const res = await cFetch('http://172.16.1.234:8060' + API_CONFIG.setTradePasswordVerifyCode + params, { credentials: 'include' }, false);
             const { code, data } = res;
             //console.log(res);
             if ( code == 0 ) {

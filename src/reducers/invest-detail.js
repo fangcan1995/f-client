@@ -102,14 +102,17 @@ export default createReducer(initialState, {
 
     //投资
     ['investDetail/invest/POST_PENDING']: (state, action) => state.mergeDeep({
-        isFetching: true,
+        //isFetching: true,
+        isPosting:true
     }),
     ['investDetail/invest/POST_FULFILLED']: (state, action) => state.mergeDeep({
-        isFetching: false,
+        //isFetching: false,
+        isPosting:false,
         postResult: action.payload,
     }),
     ['investDetail/invest/POST_REJECTED']: (state, action) => state.mergeDeep({
-        isFetching: false,
+        //isFetching: false,
+        isPosting:false,
         errorMessage: action.message
     }),
 
@@ -133,7 +136,11 @@ export default createReducer(initialState, {
         postResult:action.payload
     }),
 
-
+    //修改可用红包
+    ['investDetail/redEnvelopes/CHANGE_DEFAULT']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        redEnvelopes: action.payload,
+    }),
 })
 
 

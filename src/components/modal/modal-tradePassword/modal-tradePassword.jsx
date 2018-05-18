@@ -17,6 +17,7 @@ const FormItem = Form.Item;
 class ModalTradePassword extends React.Component {
     constructor(props) {
         super(props);
+        this.verifyCodeInputRef;
         this.state = {
             errMessages:``,
             isReset:false
@@ -39,14 +40,19 @@ class ModalTradePassword extends React.Component {
     //提交
     handleSubmit = (e) => {
         e.preventDefault();
-        const { dispatch, form } = this.props;
+        const { dispatch, form,account } = this.props;
         form.validateFields((errors) => {
             if (errors) {
                 return false;
             }
             let appInfo={
-                tradePassword:hex_md5(form.getFieldsValue().newPassword),
-                code:form.getFieldsValue().verify_code,
+                username:this.props.auth.user.userName,
+                send_terminal:`web`,
+                trade_password:hex_md5(form.getFieldsValue().newPassword),
+                trade_password_code:form.getFieldsValue().verify_code,
+                trade_password_token:login.verifyCode.token
+
+
             }
             dispatch(accountAc.setTradePassword(appInfo));
 

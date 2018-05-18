@@ -4,7 +4,9 @@ import {addCommas,checkMoney} from '../utils/cost';
 import {urls,token} from './../utils/url';
 import {url_putRList} from './member-settings';
 import parseJson2URL from "../utils/parseJson2URL";
-//let urls='http://172.16.1.228:9090';
+import {formatPostResult,getTips} from '../utils/famatData';
+import {postContent} from '../utils/formSetting';
+
 const url_invest_projects_loan=`${urls}/invest/projects/loan`; //投资信息
 const url_invest_transfer_loan=`${urls}/invest/transfer/loan` //债转投资信息
 const url_projects_info=`${urls}/invest/projects/info`  ;//标的详情
@@ -120,10 +122,61 @@ let investDetailActions = {
             type: 'investDetail/redEnvelopes/FETCH',
             async payload() {
                 const res = await cFetch(`${url_redEnvelopes}?projectId=${id}` , {method: 'GET'}, true);
-                const {code, data} = res;
+                let {code, data} = res;
                 if (code == 0) {
                     console.log('可用红包');
                     console.log(data);
+                    //假数据
+                    data=[
+                        {
+                            id:`1001`,  //编号
+                            type:`1`,   //类型 1 投资红包 2加息券
+                            title:`100元投资红包`,  //显示名称
+                            reAmount:100,       //核算金额
+                            validity:'2018年8月1日-2018年8月30日', //有效期
+                            default:true,   //是否推荐使用
+                        },
+                        {
+                            id:`1002`,
+                            type:2,
+                            title:`0.8%加息券`,
+                            reAmount:45,
+                            validity:'2018年8月1日-2018年8月30日', //有效期
+                            default:false,
+                        },
+                        {
+                            id:`1003`,
+                            type:2,
+                            title:`0.8%加息券`,
+                            reAmount:45,
+                            validity:'2018年8月1日-2018年8月30日', //有效期
+                            default:false,
+                        },
+                        {
+                            id:`1004`,
+                            type:2,
+                            title:`0.8%加息券`,
+                            reAmount:45,
+                            validity:'2018年8月1日-2018年8月30日', //有效期
+                            default:false,
+                        },
+                        {
+                            id:`1005`,
+                            type:2,
+                            title:`0.8%加息券`,
+                            reAmount:45,
+                            validity:'2018年8月1日-2018年8月30日', //有效期
+                            default:false,
+                        },
+                        {
+                            id:`1006`,
+                            type:2,
+                            title:`0.8%加息券`,
+                            reAmount:45,
+                            validity:'2018年8月1日-2018年8月30日', //有效期
+                            default:false,
+                        },
+                    ]
                     return data;
                 } else {
                     throw res;
@@ -151,30 +204,34 @@ let investDetailActions = {
     },
 
     //提交投资申请
-    postInvest:(params)  => {
+    postInvest:(params,times)  => {
         return {
             type: 'investDetail/invest/POST',
             async payload() {
                 //params = parseJson2URL(params);
-                const res = await cFetch(`${url_postInvest}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(params),
-                    },
-                    true);
+                const res = await cFetch(`${url_postInvest}`, postContent(params), true);
+                //测试用
 
-                console.log('投资提交后返回');
-                console.log(res);
-                let type = ``;
-                (res.code == 0) ? type = 'success' : type = 'error';
+                console.log('返回第'+(times+1)+'次请求的结果');
+                //res.message='invest_101';
+                let messageCode=res.message;
+                //end
+                let type=``;
+                (res.code == 0)?type='success':type='error';
+                if((times+1)===5){
+                    messageCode='invest_102';
+                }
                 return {
-                        code: res.code,
-                        type: type,
-                        message: res.message,
-                        description: res.message
-                };
+                    code:res.code,
+                    type:type,
+                    message:getTips(messageCode).message||``,
+                    description:res.description||``,
+                    userCode:getTips(messageCode).code,
+                    allowGoOn:getTips(messageCode).allowGoOn,
+                    times:times+1
+                }
+
+
             }
         }
     },
@@ -188,6 +245,11 @@ let investDetailActions = {
     //修改会员信息状态
     stateMemberInfoModify: json => ({
         type: 'investDetail/memberInfo/MODIFY_STATE',
+        payload: json
+    }),
+    //修改可用奖励
+    changeReward: json => ({
+        type: 'investDetail/redEnvelopes/CHANGE_DEFAULT',
         payload: json
     }),
 
@@ -208,11 +270,13 @@ let investDetailActions = {
         type: 'investDetail/investRecords/MODIFY_STATE',
         payload: json
     }),
+
     //修改转让标投资记录状态
     stateInvestTransferRecordsModify: json => ({
         type: 'investDetail/investTransferRecords/MODIFY_STATE',
         payload: json
     }),
+
     //修改借款记录状态
     stateRepayRecordsModify: json => ({
         type: 'investDetail/repayRecords/MODIFY_STATE',
