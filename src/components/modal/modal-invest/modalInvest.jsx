@@ -18,6 +18,7 @@ import {hex_md5} from "../../../utils/md5";
 const Panel = Collapse.Panel;
 const createForm = Form.create;
 const FormItem = Form.Item;
+
 function callback(key) {
     console.log(key);
 }

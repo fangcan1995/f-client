@@ -15,7 +15,7 @@ const url_certification=`http://172.16.1.225:9090/members/auth`; //实名认证
 const url_uyouOpenAccountInfo=`http://172.16.1.252:9090/payment/fuiou/account`; //给富有的开户信息
 const url_uyouReOpenAccountInfo=`http://172.16.1.252:9090/payment/fuiou/card`; //给富有的换卡信息
 const url_uyouRecharge=`http://172.16.1.252:9090/payment/fuiou/deposit?transAmt=`; //给富有的充值信息
-const url_uyouWithdrawals=`http://172.16.1.252:9090/payAccount?aMount=`; //给富有的提现信息
+const url_uyouWithdrawals=`http://172.16.1.252:9090/payment/fuiou/cash?transAmt=`; //给富有的提现信息
 export const sendMemberVerifyCode = params => {
     return {
         type: 'member/SEND_VERIFY_CODE',
@@ -105,7 +105,7 @@ export const accountAc= {
                 url=url_uyouRecharge+params.value;
                 break;
             case 'Withdrawals':
-                url=url_uyouWithdrawals+params.value;
+                url=url_uyouWithdrawals+1000;
                 break;
             default:
                 break;
@@ -115,12 +115,12 @@ export const accountAc= {
             async payload() {
                 const res = await cFetch(`${url}`, {method: 'GET'}, true);
                 const {code, data} = res;
+                console.log('后台获取的给富友的信息');
+                console.log(data);
                 if (code == 0) {
-                    console.log('后台获取的给富友的信息');
-                    console.log(data);
                     return data;
                 }else {
-                    throw res;
+                    return res;
                 }
 
             }

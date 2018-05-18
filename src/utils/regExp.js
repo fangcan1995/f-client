@@ -10,3 +10,8 @@ export const realnameRegExp = /(^([\u4E00-\uFA29]|[\uE7C7-\uE7F3]){2,7}$)/;     
 export const inviteCodeRegExp=/^(((0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8})|([A-Za-z0-9]{6}))$/i; //邀请码正则，可以为手机号或6位字母与数字组合
 export const idcodeRegExp=/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/ //身份证号码
 
+export const investAmountExp=/^\+?[1-9][0-9]*$/;  //投资金额
+
+export const amountExp=/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/; //金额
+
+
