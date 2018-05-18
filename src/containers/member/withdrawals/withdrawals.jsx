@@ -2,14 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Crumbs from '../../../components/crumbs/crumbs';
 import Tab from '../../../components/tab/tab';
-import './withdrawals.less';
-import CountDownButton from '../../../components/countDownButton/countDownButton';
-import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {memberAc} from '../../../actions/member';
-import {toMoney} from '../../../utils/famatData';
-import  {checkMoney,addCommas}  from '../../../utils/cost';
-import {Button} from 'antd';
+import {accountAc} from '../../../actions/account';
+import {toMoney,addCommas} from '../../../utils/famatData';
+import {checkMoney,  income} from '../../../utils/cost';
+import {formItemLayout, noop} from "../../../utils/formSetting";
+import { Form,Row,Input,Button,Select,Checkbox,Col,Alert,Icon,Collapse  } from 'antd';
+import {tradePasswordRegExp } from '../../../utils/regExp';
+import {hex_md5} from "../../../utils/md5";
+import './withdrawals.less';
+
+const Panel = Collapse.Panel;
+const createForm = Form.create;
+const FormItem = Form.Item;
+
 class Withdrawals extends React.Component{
     constructor(props) {
         super(props);
@@ -67,14 +73,24 @@ class Withdrawals extends React.Component{
         }
     }
     render(){
-        let {isPosting}=this.props.member;
-        let {openAccountStatus,amount,dummyResult}=this.props.member.accountsInfo;
-
-        if(dummyResult.code==='0'){
-            this.props.dispatch(memberAc.modifyState({dummyResult:''}));
+        let {isPosting,accountsInfo,postResult}=this.props.account;
+        //let {openAccountStatus,amount,dummyResult}=this.props.member.accountsInfo;
+        let {isCertification,isOpenAccount,bankName,bankNo,accountBalance}=accountsInfo;
+        /*if(dummyResult.code==='0'){
+            this.props.dispatch(accountAc.modifyState({dummyResult:''}));
             this.refs.amount.value='';
-            this.props.dispatch(memberAc.getInfo());
-        }
+            this.props.dispatch(accountAc.getInfo());
+        }*/
+        const { getFieldDecorator,getFieldValue } = this.props.form;
+        const newPasswordProps = getFieldDecorator('newPassword', {
+            validate: [{
+                rules: [
+                    { required: true, pattern: tradePasswordRegExp, message: '密码长度为6-16位，必须包含数字、字母、符号' }
+
+                ],
+                trigger: ['onBlur', 'onChange']
+            }]
+        });
         return (
             <div className="member__main withdrawals">
                 <Crumbs/>
@@ -83,75 +99,73 @@ class Withdrawals extends React.Component{
                         <div name="提现">
                             <div className="tab_content" style={{width:'500px'}}>
                                 {
-                                    (openAccountStatus===0)?
+                                    (isOpenAccount===`0`)?
                                         <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先
-                                            <Link to="/my-account/bank-card" style={{color: '#31aaf5'}}> 绑定银行卡！</Link>
+                                            <a to="/my-account/bank-card" style={{color: '#31aaf5'}}> 绑定银行卡！</a>
                                         </p>
                                         :
-                                        <div className="form__wrapper">
-                                            <dl className="form__bar">
-                                                <dt><label>可用余额</label></dt>
-                                                <dd><p><i>{toMoney(amount.availableBalance)}</i>元</p></dd>
-                                            </dl>
-                                            <dl className="form__bar">
-                                                <dt><label>提现金额</label></dt>
-                                                <dd>
-                                                    <input name="transAmt" id="transAmt" maxLength={20} type="text" className="textInput moneyInput" ref="amount"
-                                                           onChange={this.handleChange}
-                                                    />
-                                                    <i className="unit">元</i>
-                                                </dd>
-                                            </dl>
-                                            <div className="form__bar">
+                                        <Form layout="horizontal" onSubmit={this.handleSubmit} id='frm'>
+
+                                            <FormItem
+                                                { ...formItemLayout }
+                                                label="可用余额"
+                                            >
+                                                <span id="money" className="money">{addCommas(parseFloat(accountBalance))}</span>元
+                                            </FormItem>
+
+                                            <FormItem
+                                                { ...formItemLayout }
+                                                label="提现金额"
+                                            >
+                                                <input name="transAmt" id="transAmt" maxLength={20} type="text" className="textInput moneyInput" ref="amount"
+                                                       onChange={this.handleChange}
+                                                />
+                                                <i className="unit">元</i>
+
+                                            </FormItem>
+                                            <FormItem
+                                                { ...formItemLayout }
+                                                label="交易密码"
+                                            >
+                                                {
+                                                    newPasswordProps(
+                                                        <Input
+                                                            type="password"
+                                                            autoComplete="off"
+                                                            placeholder="设置6-16位的交易密码"
+                                                            onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
+                                                        />
+                                                    )
+                                                }
+                                            </FormItem>
+                                            <FormItem>
+                                                <p>
+                                                    <Checkbox onChange={this.onChange}>我已阅读并同意
+                                                        <a href="agreement_tzsb.html" target="_blank">《投资协议》</a></Checkbox>
+                                                </p>
+                                            </FormItem>
+                                            <FormItem>{postResult.message}
                                                 {(this.state.tips!='')?
-                                                <div className="errorMessages">
-                                                    {this.state.tips}
-                                                </div>:``
+                                                    <div className="errorMessages">
+                                                        {this.state.tips}
+                                                    </div>:``
                                                 }
-                                            </div>
-                                            {/*<dl className="form__bar">
-                                        <dt><label>交易密码</label></dt>
-                                        <dd>
-                                            <input name="password" id="password"   maxLength={20}  type="password" className="textInput" />
-                                            <span className="tips error"></span>
-                                        </dd>
-                                    </dl>
-                                    <dl className="form__bar">
-                                        <dt><label>验证码</label></dt>
-                                        <dd>
-                                            <input name="vCode" id="vCode"  type="text" className="textInput"  maxLength={8} style={{width:`175px`,marginRight:`10px`}} />
-                                            <CountDownButton
-                                                phoneNumber="13945441111"
-                                                disabled={false}
-                                                interval={20}
-
-                                            />
-                                            <span className="tips error phone_code"></span>
-                                        </dd>
-                                    </dl>
-                                    <dl className="form__bar">
-                                        <dt><label>手续费</label></dt>
-                                        <dd><p> <i id="money">0.00</i> 元</p></dd>
-                                    </dl>
-                                    <dl className="form__bar">
-                                        <dt><label>实际到账</label></dt>
-                                        <dd><p><i id="money">0.00</i> 元</p>
-                                        </dd>
-
-                                    </dl>*/}
-                                            <div className="form__bar">
-                                                {isPosting ?
-                                                    <Button type="primary" htmlType="submit" className='pop__large' disabled={true}>
-                                                        <Posting isShow={isPosting}/>
-                                                    </Button>
-                                                    :
-                                                    <Button type="primary" htmlType="submit" className="pop__large" disabled={this.state.disabled}
-                                                            onClick={this.withdrawals}>
-                                                        确认
-                                                    </Button>
+                                            </FormItem>
+                                            <FormItem className='center'>
+                                                {
+                                                    isPosting?
+                                                        <Button type="primary"  className="pop__large"  disabled={true}>
+                                                            <Posting isShow={isPosting}/>
+                                                        </Button>
+                                                        :
+                                                        <Button type="primary"  htmlType="submit" className="pop__large" >
+                                                            确定
+                                                        </Button>
                                                 }
-                                            </div>
-                                        </div>
+
+                                            </FormItem>
+                                        </Form>
+
                                 }
 
 
@@ -183,10 +197,12 @@ class Withdrawals extends React.Component{
 
 
 function mapStateToProps(state) {
-    const { auth,member } = state.toJS();
+    const { auth,account } = state.toJS();
     return {
         auth,
-        member
+        account
     };
 }
+
+Withdrawals = connect(mapStateToProps)(createForm()(Withdrawals));
 export default connect(mapStateToProps)(Withdrawals);

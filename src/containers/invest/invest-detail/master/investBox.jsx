@@ -15,9 +15,8 @@ import {InvestButton} from '../../invest-list/investComponents';
 import investDetailActions from "../../../../actions/invest-detail";
 import {formItemLayout} from "../../../../utils/formSetting";
 import BbhModal from "../../../../components/modal/bbh_modal";
-import { Button} from 'antd';
 import {modal_config} from "../../../../utils/modal_config";
-
+import { Button} from 'antd';
 class MasterInvestBox extends React.Component {
     constructor(props) {
         super(props);

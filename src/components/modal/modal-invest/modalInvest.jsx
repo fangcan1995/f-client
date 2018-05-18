@@ -8,7 +8,7 @@ import  investDetailActions  from '../../../actions/invest-detail';
 import {accountAc} from "../../../actions/account";
 import {addCommas, getTips, toMoney} from "../../../utils/famatData";
 
-import PostButton from "../../../components/form/post-button/post-button";
+//import PostButton from "../../../components/form/post-button/post-button";
 import {formItemLayout, noop} from "../../../utils/formSetting";
 import { Form,Row,Input,Button,Select,Checkbox,Col,Alert,Icon,Collapse  } from 'antd';
 import {tradePasswordRegExp } from '../../../utils/regExp';

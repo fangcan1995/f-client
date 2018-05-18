@@ -13,6 +13,7 @@ const url_withdrawals=`${urls}/accounts/operation?escrowCode=100100&type=3`; //�
 const url_tradePassword=`http://172.16.1.225:8060/uaa/oauth/tradePassword`; //修改交易密码
 const url_certification=`http://172.16.1.225:9090/members/auth`; //实名认证
 const url_uyouOpenAccountInfo=`http://172.16.1.252:9090/payment/fuiou/account`; //给富有的开户信息
+const url_uyouReOpenAccountInfo=`http://172.16.1.252:9090/payment/fuiou/card`; //给富有的换卡信息
 const url_uyouRecharge=`http://172.16.1.252:9090/payment/fuiou/deposit?transAmt=`; //给富有的充值信息
 const url_uyouWithdrawals=`http://172.16.1.252:9090/payAccount?aMount=`; //给富有的提现信息
 export const sendMemberVerifyCode = params => {
@@ -54,29 +55,37 @@ export const accountAc= {
                 const res = await cFetch(`${url_memberInfo}`,{method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
-                    console.log('后台返回的会员信息');
-                    console.log(res);
+                    console.log('后台返回的会员信息11111');
+                    //console.log(res);
                     let mock={
                         isCertification:'1',	//是否实名认证（0：未实名；1：已实名）
-                        isOpenAccount:'0',	//是否开户（0：未开户；1：已开户）
+                        isOpenAccount:'1',	//是否开户（0：未开户；1：已开户）
                         isRisk:'1',	//是否风险测评（0：否；1：是）
                         isSetTradepassword:'1',	//是否设置交易密码（0：未设置；1：已设置）
                         isNovice:'1',	//是否新手（0：否；1：是）
-                        treeName:'张三',	//真实姓名
+                        trueName:'张三',	//真实姓名
                         idNumber:'',	//身份证号
                         photo:'',	//头像
                         riskLevel:'',	//风险测评等级
                         surplusAmount:1000000,//剩余投资限额
+                        accountBalance:0,//账户余额
                         availableBalance:0,	//账户可用余额
+                        freezingAmount:0,  //冻结金额
+                        investAmount:0,  //散标资产
+                        yestEarns:0, //昨日收益
+                        totalEarns:0, //累计收益
                         bankName:'中国建设银行',	//开户行
                         bankNo:'4367********8523',	//银行卡号
                         memberRedInfo:{number: 1, amountSum: 1000},	//红包信息
-                        memberCoupon:{number: 1, amountSum: 0},	//加息券信息
+                        memberCoupon:{number: 5, amountSum: 3},	//加息券信息
+
                     };
                     //data=mock;
+                    console.log(mock);
+
                     return mock;
                 } else {
-                    throw res;
+                    throw mock;
                 }
             }
         }
@@ -88,6 +97,9 @@ export const accountAc= {
         switch (params.type){
             case 'OpenAccount':
                 url=url_uyouOpenAccountInfo;
+                break;
+            case 'ReOpenAccount':
+                url=url_uyouReOpenAccountInfo;
                 break;
             case 'reCharge':
                 url=url_uyouRecharge+params.value;
@@ -129,7 +141,7 @@ export const accountAc= {
             }
         }
     },
-    //假开户
+    //假开户,可以删除
     postOpenAccount: (pram) => {
         return {
             type: 'member/FETCH_POSTING',

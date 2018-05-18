@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { myRiskAssessAc} from '../../../../actions/member-settings';
 import {memberAc} from "../../../../actions/member";
 import './riskAssessApp.less';
-const RadioGroup = Radio.Group;
 
+const RadioGroup = Radio.Group;
 class riskQuestions extends React.Component {
     constructor(props){
         super(props);

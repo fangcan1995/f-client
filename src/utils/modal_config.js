@@ -9,6 +9,11 @@ export const modal_config={
         width: "620px",
         height: "400px"
     },
+    ModalReBindCard: {
+        title: "更换银行卡",
+        width: "620px",
+        height: "400px"
+    },
     ModalTradePassword: {
         title: "设置交易密码",
         width: "620px",

@@ -5,7 +5,7 @@ import { Route, Link } from 'react-router-dom';
 import { Avatar } from 'antd';
 import './member-sidebar.less';
 import MyAvatar from '../myAvatar/myAdatar';
-import  {memberAc}  from '../../actions/member'
+import {accountAc} from "../../actions/account";
 const ListItemLink = ({ to, ...rest }) => (
   <Route path={to} children={({ match }) => (
     <li className={match ? 'active' : ''}>
@@ -15,28 +15,33 @@ const ListItemLink = ({ to, ...rest }) => (
 )
 
 class MemberSidebar extends React.Component {
-    componentDidMount() {
-        if(this.props.auth.isAuthenticated) {
-            this.props.dispatch(memberAc.getInfo());
-        }
+    componentWillMount() {
+        console.log('执行了');
+        this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
     }
     render(){
-        let {member,auth}=this.props;
-        let {accountsInfo}=member;
-        //console.log('返回的会员信息');
-        //console.log(member);
+        let {account,auth}=this.props;
+        let {accountsInfo}=account;
+        let {photo,treeName,availableBalance,memberRedInfo,memberCoupon,postResult,isCertification,isOpenAccount,isRisk,riskLevel,isNovice}=accountsInfo;
+        console.log('返回的会员信息');
+        console.log(this.props);
         return (
             <main className="main member">
                 <div className="wrapper">
                     <div className="member__sidebar">
                         <div className="member__info">
                             <div className="info">
-                                <MyAvatar photo={member.accountsInfo.photo}/>
-                                <div className="username">{ member.accountsInfo.userName}</div>
+                                <MyAvatar photo={photo}/>
+                                <div className="username">
+                                    {
+                                    (treeName!='')? treeName
+                                        :auth.user.userName
+                                    }
+                                </div>
                                 <div className="step">
                                     <i className="iconfont icon-phone able1" onClick={()=>{this.props.history.push('/my-account/recharge')}}></i>
-                                    <i className={`iconfont icon-card able${accountsInfo.openAccountStatus}`} onClick={()=>{this.props.history.push('/my-account/bank-card')}}></i>
-                                    <i className={`iconfont icon-fxcp able${(!accountsInfo.riskStatus) || 0}`} onClick={()=>{this.props.history.push('/my-settings/my-riskAssess')}}></i>
+                                    <i className={`iconfont icon-card able${isOpenAccount || 0}`} onClick={()=>{this.props.history.push('/my-account/bank-card')}}></i>
+                                    <i className={`iconfont icon-fxcp able${isRisk || 0}`} onClick={()=>{this.props.history.push('/my-settings/my-riskAssess')}}></i>
                                 </div>
                             </div>
                             <div className="action">
@@ -94,10 +99,10 @@ class MemberSidebar extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { auth,member } = state.toJS();
+    const { auth,account } = state.toJS();
     return {
         auth,
-        member
+        account
     };
 }
 

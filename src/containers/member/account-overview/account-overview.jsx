@@ -15,18 +15,21 @@ import {BbhAlert} from '../../../components/bbhAlert/bbhAlert';
 class AccountOverview extends React.Component{
     componentDidMount() {
         //this.props.dispatch(memberAc.getInfo());
+        console.log('这也执行了');
         window.scrollTo(0,0);
         this.props.dispatch(memberAc.getMonth());
         this.props.dispatch(memberAc.getDay());
     }
     render(){
-        console.log('-------this.props-------');
-        console.log(this.props);
-        let {charts,accountsInfo}=this.props.member;
 
-        let {amount,redInfo,couponInfo}=accountsInfo;
-        console.log('数据');
-        console.log(accountsInfo);
+        let {member,account}=this.props;
+        console.log('账户信息');
+        console.log(account);
+        let {accountsInfo}=account;
+        let {accountBalance,availableBalance,yestEarns,totalEarns,memberRedInfo,memberCoupon}=accountsInfo;
+        let {charts}=member;
+        let {amount}=member.accountsInfo;
+
         return (
             <div className="member__main">
                 <Crumbs />
@@ -34,19 +37,24 @@ class AccountOverview extends React.Component{
                     <div className="master">
                         <div className="accountInfo">
                             <div className="infoLine">
-                                <div>账户余额: <span>{toMoney(amount.accountBalance)}</span>&nbsp;元<em>?<strong>包含您可用余额及投资冻结的金额，满标划转后统一扣除</strong></em></div>
-                                <div>可用余额: <span>{toMoney(amount.availableBalance)}</span>&nbsp;元</div>
+                                <div>账户余额: <span>{toMoney(accountBalance)}</span>&nbsp;元<em>?<strong>包含您可用余额及投资冻结的金额，满标划转后统一扣除</strong></em></div>
+                                <div>可用余额: <span>{toMoney(availableBalance)}</span>&nbsp;元</div>
                             </div>
                             <div className="infoLine">
-                                <div>昨日收益: <span>{toMoney(amount.freezingAmount)}</span>&nbsp;元</div>
-                                <div>累计收益: <span>{toMoney(amount.investAmount)}</span>&nbsp;元</div>
+                                <div>昨日收益: <span>{toMoney(yestEarns)}</span>&nbsp;元</div>
+                                <div>累计收益: <span>{toMoney(totalEarns)}</span>&nbsp;元</div>
                             </div>
                         </div>
                         <div className="accountRedbag">
                             <i className="iconfont icon-hongbao"></i>
                             <div className="numInfo">
                                 <div className="topM">可用红包</div>
-                                <div><span>{toNumber(redInfo.number)}</span>个</div>
+                                <div>
+                                    {
+                                        (accountsInfo===``)?`<span>toNumber(memberRedInfo.number)</span>个`
+                                        :``
+                                    }
+                                    </div>
                             </div>
                             <div className="accountControl">
                                 <Link to="/invest-list" className="topF">立即使用</Link>
@@ -57,7 +65,12 @@ class AccountOverview extends React.Component{
                             <i className="iconfont icon-icongao"></i>
                             <div className="numInfo">
                                 <div className="topM">加息券</div>
-                                <div><span>{toNumber(couponInfo.number)}</span>个</div>
+                                <div>
+                                    {
+                                        (accountsInfo===``)?`<span>toNumber(memberCoupon.number)</span>个`
+                                            :``
+                                    }
+                                </div>
                             </div>
                             <div className="accountControl">
                                 <Link to="/invest-list" className="topF">立即使用</Link>
@@ -73,7 +86,7 @@ class AccountOverview extends React.Component{
                                 <PieChart
                                     data={[
                                         {name:'散标资产',value:amount.investAmount,instruction: `${addCommas(amount.investAmount)}元` },
-                                        {name:'可用余额',value:amount.availableBalance,instruction: `${addCommas(amount.availableBalance)}元` },
+                                        {name:'可用余额',value:availableBalance,instruction: `${addCommas(availableBalance)}元` },
                                         {name:'冻结金额',value:amount.freezingAmount,instruction: `${addCommas(amount.freezingAmount)}元` },
                                     ]}
                                     style={{height: '300px', width: '930px'}}
@@ -117,9 +130,10 @@ class AccountOverview extends React.Component{
     }
 }
 function mapStateToProps(state) {
-    const { auth,member } = state.toJS();
+    const { auth,account,member } = state.toJS();
     return {
         auth,
+        account,
         member
     };
 }
