@@ -58,7 +58,7 @@ export const accountAc= {
                     console.log(res);
                     let mock={
                         isCertification:'1',	//是否实名认证（0：未实名；1：已实名）
-                        isOpenAccount:'1',	//是否开户（0：未开户；1：已开户）
+                        isOpenAccount:'0',	//是否开户（0：未开户；1：已开户）
                         isRisk:'1',	//是否风险测评（0：否；1：是）
                         isSetTradepassword:'1',	//是否设置交易密码（0：未设置；1：已设置）
                         isNovice:'1',	//是否新手（0：否；1：是）
@@ -67,7 +67,7 @@ export const accountAc= {
                         photo:'',	//头像
                         riskLevel:'',	//风险测评等级
                         surplusAmount:1000000,//剩余投资限额
-                        availableBalance:1000,	//账户可用余额
+                        availableBalance:0,	//账户可用余额
                         bankName:'中国建设银行',	//开户行
                         bankNo:'4367********8523',	//银行卡号
                         memberRedInfo:{number: 1, amountSum: 1000},	//红包信息

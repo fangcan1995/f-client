@@ -156,6 +156,19 @@ export function getTips(messageCode){
             code:`invest_201`,
             message:{code: 201, message: `非法操作`, allowGoOn: false}
         },
+        {
+            code:`pay_0000`,
+            message:{code: 0, message: `操作成功`, allowGoOn: false}
+        },
+        {
+            code:`pay_9999`,
+            message:{code: 101, message: `操作失败`, allowGoOn: false}
+        },
+        {
+            code:`pay_5343`,
+            message:{code: 102, message: `用户已开户`, allowGoOn: false}
+        },
+
     ];
     let index=errDicts.findIndex((x)=>
         x.code ==messageCode
