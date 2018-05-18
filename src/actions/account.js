@@ -68,8 +68,8 @@ export const accountAc= {
                         photo:'',	//头像
                         riskLevel:'',	//风险测评等级
                         surplusAmount:1000000,//剩余投资限额
-                        accountBalance:0,//账户余额
-                        availableBalance:0,	//账户可用余额
+                        accountBalance:100000,//账户余额
+                        availableBalance:1000,	//账户可用余额
                         freezingAmount:0,  //冻结金额
                         investAmount:0,  //散标资产
                         yestEarns:0, //昨日收益
@@ -92,7 +92,6 @@ export const accountAc= {
     },
     //获取给富有的信息
     getFuyouInfo:(params)=> {
-
         let url=``;
         switch (params.type){
             case 'OpenAccount':
@@ -113,13 +112,20 @@ export const accountAc= {
         return {
             type: 'member/account/UYOU_FETCH',
             async payload() {
-                const res = await cFetch(`${url}`, {method: 'GET'}, true);
-                const {code, data} = res;
+                let  res = await cFetch(`${url}`, {method: 'GET'}, true);
+               /* res={
+                    code:406,
+                    message:'富有报错'
+                }*/
+                let {code, data} = res;
                 console.log('后台获取的给富友的信息');
-                console.log(data);
+
                 if (code == 0) {
+                    console.log(data);
                     return data;
                 }else {
+                    console.log(res);
+
                     return res;
                 }
 

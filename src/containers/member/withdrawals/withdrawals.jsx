@@ -5,13 +5,14 @@ import Tab from '../../../components/tab/tab';
 import { connect } from 'react-redux';
 import {accountAc} from '../../../actions/account';
 import {toMoney,addCommas} from '../../../utils/famatData';
-import {checkMoney,  income} from '../../../utils/cost';
+import {checkMoney, income} from '../../../utils/cost';
 import {formItemLayout, noop} from "../../../utils/formSetting";
 import { Form,Row,Input,Button,Select,Checkbox,Col,Alert,Icon,Collapse  } from 'antd';
 import {tradePasswordRegExp,amountExp } from '../../../utils/regExp';
 import {hex_md5} from "../../../utils/md5";
 import './withdrawals.less';
 import investDetailActions from "../../../actions/invest-detail";
+import {Loading,NoRecord,Posting} from '../../../components/bbhAlert/bbhAlert';
 
 const Panel = Collapse.Panel;
 const createForm = Form.create;
@@ -81,11 +82,12 @@ class Withdrawals extends React.Component{
         this.props.dispatch(accountAc.withdrawals(value));
     }
     handleChange(event){
-        /*let result=checkMoney({
+        console.log(event);
+        let result=checkMoney({
             'value':event.target.value,
             'type':0,
             'min_v':1,
-            'max_v':this.props.member.accountsInfo.amount.availableBalance,
+            'max_v':this.props.account.accountsInfo.accountBalance,
             'label':'提现金额',
             'interval':1
         });
@@ -111,13 +113,14 @@ class Withdrawals extends React.Component{
                     tips: ``,
                     disabled:false
                 });
-        }*/
+        }
     }
     render(){
 
         //let {openAccountStatus,amount,dummyResult}=this.props.member.accountsInfo;
-        let {isPosting,accountsInfo,toOthersInfo,postResult}=this.props.account;
+        let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult}=this.props.account;
         let {isCertification,isOpenAccount,bankName,bankNo,accountBalance}=accountsInfo;
+        console.log()
         /*if(dummyResult.code==='0'){
             this.props.dispatch(accountAc.modifyState({dummyResult:''}));
             this.refs.amount.value='';
@@ -157,59 +160,43 @@ class Withdrawals extends React.Component{
                                             <a to="/my-account/bank-card" style={{color: '#31aaf5'}}> 绑定银行卡！</a>
                                         </p>
                                         :
-                                        <Form layout="horizontal"  id='frm'>
-                                            <FormItem
-                                                { ...formItemLayout }
-                                                label="可用余额"
-                                            >
-                                                <span id="money" className="money">{addCommas(parseFloat(accountBalance))}</span>元
-                                            </FormItem>
-
-                                            <FormItem
-                                                { ...formItemLayout }
-                                                label="提现金额"
-                                            >
-                                                <input name="transAmt" id="transAmt" maxLength={20} type="text" className="textInput moneyInput" ref="amount"
-                                                       onChange={this.handleChange}
-                                                />
-                                                <i className="unit">元</i>
-                                            </FormItem>
-                                            {/*<FormItem
-                                                { ...formItemLayout }
-                                                label="交易密码"
-                                            >
+                                        <div className="form__wrapper">
+                                            <dl className="form__bar">
+                                                <dt><label>可用余额:</label></dt>
+                                                <dd><i>{toMoney(accountsInfo.availableBalance)}</i>元</dd>
+                                            </dl>
+                                            <dl className="form__bar">
+                                                <dt><label>提现金额:</label></dt>
+                                                <dd>
+                                                    <input  maxLength={8} type="text" className="textInput moneyInput" ref="amount" onChange={this.handleChange}　/>
+                                                    <span className="unit">元</span>
+                                                    <a href="">银行卡充值上限说明</a>
+                                                </dd>
+                                            </dl>
+                                            <div className="form__bar">
                                                 {
-                                                    newPasswordProps(
-                                                        <Input
-                                                            type="password"
-                                                            autoComplete="off"
-                                                            placeholder="设置6-16位的交易密码"
-                                                            onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
-                                                        />
-                                                    )
+                                                    (toOthersInfo!=`` && toOthersInfo.code==406)? <div className="errorMessages">{toOthersInfo.message}</div>
+                                                        :``
                                                 }
-                                            </FormItem>*/}
-
-                                            <FormItem>
                                                 {(this.state.tips!='')?
                                                     <div className="errorMessages">
-                                                        {this.state.tips}{postResult.message}
+                                                        {this.state.tips}
                                                     </div>:``
                                                 }
-                                            </FormItem>
-                                            <FormItem className='center'>
-                                                {
-                                                    isPosting?
-                                                        <Button type="primary"  className="pop__large"  disabled={true}>
-                                                            <Posting isShow={isPosting}/>
-                                                        </Button>
-                                                        :
-                                                        <Button type="primary"   className="pop__large" onClick={()=>this.handleSubmit()}>
-                                                            确定
-                                                        </Button>
+                                            </div>
+                                            <div className="form__bar">
+                                                {isFetching ?
+                                                    <Button type="primary" htmlType="submit" className='pop__large' disabled={true}>
+                                                        <Posting isShow={isFetching}/>
+                                                    </Button>
+                                                    :
+                                                    <Button type="primary" htmlType="submit" className="pop__large"
+                                                            onClick={this.handleSubmit}
+                                                            disabled={this.state.disabled}>
+                                                        确认
+                                                    </Button>
                                                 }
-
-                                            </FormItem>
+                                            </div>
                                             <form name="FuiouCash" id="FuiouCash" method="post" action={toOthersInfo.url} >
                                                 mchnt_cd：<input type="text" name="mchnt_cd" value={toOthersInfo.mchnt_cd} /><br/>
                                                 mchnt_txn_ssn：<input type="text" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} /><br/>
@@ -218,11 +205,9 @@ class Withdrawals extends React.Component{
                                                 page_notify_url：<input type="text" name="page_notify_url" value={toOthersInfo.page_notify_url} /><br/>
                                                 back_notify_url：<input type="text" name="back_notify_url" value={toOthersInfo.back_notify_url}/><br/>
                                                 signature：<input type="text" name="signature" value={toOthersInfo.signature} /><br/>
-                                                <input type="submit" value="提交"/>
+
                                             </form>
-
-                                        </Form>
-
+                                        </div>
                                 }
 
 
