@@ -1,34 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import PieChart from '../../../components/charts/pie';
 import BarChart from '../../../components/charts/bar';
-import './account-overview.less';
 import Tab from '../../../components/tab/tab';
 import { connect } from 'react-redux';
-import  memberActions  from '../../../actions/member';
+import {accountAc} from '../../../actions/account';
 import  {memberAc}  from '../../../actions/member';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {toMoney,toNumber,addCommas} from '../../../utils/famatData';
 import Crumbs from '../../../components/crumbs/crumbs';
-import {BbhAlert} from '../../../components/bbhAlert/bbhAlert';
+import './account-overview.less';
+
 class AccountOverview extends React.Component{
     componentDidMount() {
-        //this.props.dispatch(memberAc.getInfo());
-        console.log('这也执行了');
         window.scrollTo(0,0);
-        this.props.dispatch(memberAc.getMonth());
-        this.props.dispatch(memberAc.getDay());
+        this.props.dispatch(accountAc.getAccountInfo());  //获取账户信息
+        this.props.dispatch(memberAc.getMonth());  //获取月收益统计数据
+        this.props.dispatch(memberAc.getDay()); //获取日收益统计数据
     }
     render(){
-
         let {member,account}=this.props;
-        console.log('账户信息');
-        console.log(account);
         let {accountsInfo}=account;
-        let {accountBalance,availableBalance,yestEarns,totalEarns,memberRedInfo,memberCoupon}=accountsInfo;
-        let {charts}=member;
+        let {accountBalance,availableBalance,yestEarns,totalEarns,memberRedInfo,memberCoupon,investAmount,freezingAmount}=accountsInfo;
         let {amount}=member.accountsInfo;
+        let {charts}=member;
 
         return (
             <div className="member__main">
@@ -49,12 +44,13 @@ class AccountOverview extends React.Component{
                             <i className="iconfont icon-hongbao"></i>
                             <div className="numInfo">
                                 <div className="topM">可用红包</div>
-                                <div>
                                     {
-                                        (accountsInfo===``)?`<span>toNumber(memberRedInfo.number)</span>个`
-                                        :``
+                                        (accountsInfo!=``)?
+                                            <div>
+                                                <span>{toNumber(memberRedInfo.number)}</span>个
+                                            </div>
+                                            :<div></div>
                                     }
-                                    </div>
                             </div>
                             <div className="accountControl">
                                 <Link to="/invest-list" className="topF">立即使用</Link>
@@ -65,12 +61,13 @@ class AccountOverview extends React.Component{
                             <i className="iconfont icon-icongao"></i>
                             <div className="numInfo">
                                 <div className="topM">加息券</div>
-                                <div>
                                     {
-                                        (accountsInfo===``)?`<span>toNumber(memberCoupon.number)</span>个`
-                                            :``
+                                        (accountsInfo!=``)?
+                                            <div>
+                                                <span>{toNumber(memberCoupon.number)}</span>个
+                                            </div>
+                                            :<div></div>
                                     }
-                                </div>
                             </div>
                             <div className="accountControl">
                                 <Link to="/invest-list" className="topF">立即使用</Link>
@@ -79,15 +76,15 @@ class AccountOverview extends React.Component{
                         </div>
                     </div>
                 </div>
-                {(amount==='')?``
+                {(accountsInfo==='')?``
                     :<div className="member__cbox pieChart">
                         <Tab>
                             <div name="账户总资产">
                                 <PieChart
                                     data={[
-                                        {name:'散标资产',value:amount.investAmount,instruction: `${addCommas(amount.investAmount)}元` },
+                                        {name:'散标资产',value:investAmount,instruction: `${addCommas(investAmount)}元` },
                                         {name:'可用余额',value:availableBalance,instruction: `${addCommas(availableBalance)}元` },
-                                        {name:'冻结金额',value:amount.freezingAmount,instruction: `${addCommas(amount.freezingAmount)}元` },
+                                        {name:'冻结金额',value:freezingAmount,instruction: `${addCommas(freezingAmount)}元` },
                                     ]}
                                     style={{height: '300px', width: '930px'}}
                                     totalTitle="资产总额"

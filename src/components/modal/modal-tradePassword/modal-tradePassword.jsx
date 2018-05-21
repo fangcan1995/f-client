@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form,Row,Input,Button,Checkbox,Col,Alert,Icon } from 'antd';
+import { Form,Row,Input,Button,Col } from 'antd';
 import { connect } from 'react-redux';
 import {accountAc,sendMemberVerifyCode,setMemberVerifyCodeCd} from "../../../actions/account";
-import {Loading,NoRecord,Posting,BbhAlert} from '../../../components/bbhAlert/bbhAlert';
+import {Posting,BbhAlert} from '../../../components/bbhAlert/bbhAlert';
 import {tradePasswordRegExp } from '../../../utils/regExp';
 import {formItemLayout,noop } from '../../../utils/formSetting';
 import {hex_md5} from "../../../utils/md5";
-//import { sendVerifyCode, setVerifyCodeCd } from '../../../actions/login';
 import "./modal-tradePassword.less"
-import parseJson2URL from "../../../utils/parseJson2URL";
+
 
 const createForm = Form.create;
 const FormItem = Form.Item;
@@ -22,7 +21,7 @@ class ModalTradePassword extends React.Component {
             errMessages:``,
             isReset:false
         }
-        //this.bindCard = this.bindCard.bind(this);
+
     }
     static propTypes = {
         form: PropTypes.object.isRequired,
@@ -50,9 +49,7 @@ class ModalTradePassword extends React.Component {
                 send_terminal:`web`,
                 trade_password:hex_md5(form.getFieldsValue().newPassword),
                 trade_password_code:form.getFieldsValue().verify_code,
-                trade_password_token:login.verifyCode.token
-
-
+                trade_password_token:account.verifyCode.token
             }
             dispatch(accountAc.setTradePassword(appInfo));
 
@@ -69,7 +66,10 @@ class ModalTradePassword extends React.Component {
                     this.verifyCodeInputRef.focus();
                     return res;
                 })
-                .then(() => this.startCd(180))
+                .then(
+                   // () => this.startCd(180)
+                    dispatch(setMemberVerifyCodeCd(180))
+                )
                 .catch(err => {
                     //if(err.code==406){
                         this.setState({
@@ -118,6 +118,14 @@ class ModalTradePassword extends React.Component {
         });
 
     }
+    /*componentDidUpdate() {
+        const { dispatch } = this.props;
+        let { verifyCode,verifyCodeCd}=this.props.account;
+        if(verifyCode!='' && verifyCodeCd>0 ){
+            console.log('开始道速');
+            this.startCd(verifyCodeCd);
+        }
+    }*/
     render(){
         let {onSuccess,onFail,attach}=this.props;
         let {isPosting,postResult,accountsInfo,verifyCodeCd}=this.props.account;
@@ -202,7 +210,7 @@ class ModalTradePassword extends React.Component {
                                     label="短信验证码"
                                     required
                                 >
-                                    <Row gutter={8}>
+                                    <Row gutter={12}>
                                         <Col span={14}>
                                             <FormItem
                                                 hasFeedback
@@ -229,7 +237,8 @@ class ModalTradePassword extends React.Component {
                                                 htmlType="button"
                                                 disabled={ !!verifyCodeCd }
                                                 onClick={ this.handleSendVerifyCodeBtnClick }
-                                            >{ verifyCodeCd || '获取验证码' }</Button>
+                                            >{ verifyCodeCd || '获取验证码' }
+                                            </Button>
                                         </Col>
                                     </Row>
                                 </FormItem>

@@ -51,7 +51,6 @@ class MyAuthInfo extends React.Component {
     };
     componentDidMount() {
         window.scrollTo(0,0);
-        //this.props.dispatch(myAuthInfoAc.getResult());
         this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
     }
     changeCard(){
@@ -66,12 +65,12 @@ class MyAuthInfo extends React.Component {
     render(){
         console.log('获取的数据');
         console.log(this.props);
-        let {dispatch}=this.props;
-        let {authInfo}=this.props.memberSettings;
-        let {info}=authInfo;
-        let {account,auth}=this.props;
-        let {isFetching,accountsInfo}=account;
-        let {postResult,isCertification,isOpenAccount,isSetTradepassword}=accountsInfo;
+        let {dispatch,account,auth}=this.props;
+        //let {authInfo}=this.props.memberSettings;
+        //let {info}=authInfo;
+        //let {account,auth}=this.props;
+        const {isFetching,accountsInfo}=account;
+        const {postResult,isCertification,isOpenAccount,isSetTradepassword,trueName,idNumber,bankNo}=accountsInfo;
         return(
             <div className="member__main">
                 <Crumbs/>
@@ -85,7 +84,7 @@ class MyAuthInfo extends React.Component {
                                     <tr>
                                         <th><i className="iconfont icon-user"></i>真实姓名</th>
                                         <td className="Result">已认证</td>
-                                        <td className="detail">{info.trueName}</td>
+                                        <td className="detail">{trueName}</td>
                                         <td className="operate">{/*不可更改*/}</td>
                                     </tr>
                                     : isCertification === '0' ?
@@ -110,7 +109,7 @@ class MyAuthInfo extends React.Component {
                                         <tr>
                                             <th><i className="iconfont icon-id"></i>实名认证</th>
                                             <td className="Result">已认证</td>
-                                            <td className="detail">{info.idNumber}</td>
+                                            <td className="detail">{idNumber}</td>
                                             <td className="operate">{/*不可更改*/}</td>
                                         </tr>
                                         : isCertification === '0' ?
@@ -126,7 +125,7 @@ class MyAuthInfo extends React.Component {
                                     <tr>
                                         <th><i className="iconfont no icon-card"></i>银行卡</th>
                                         <td className="Result">已开户</td>
-                                        <td className="detail">{info.bankNo}</td>
+                                        <td className="detail">{bankNo}</td>
                                         <td className="operate">
                                             {/*<a href="javascript:void(0);" onClick={this.changeCard}>更换</a>*/}
                                             {(isCertification==='1')?<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalBindCard`,true)}>开户</a>

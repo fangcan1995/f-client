@@ -54,6 +54,7 @@ export const memberAc= {
             }
         }
     },
+    //获取月收益统计数据
     getMonth: (params) => {
         return {
             type: 'member/FETCH_CHARTS',
@@ -82,6 +83,7 @@ export const memberAc= {
             }
         }
     },
+    //获取日收益统计数据
     getDay: (params) => {
         return {
             type: 'member/FETCH_CHARTS',
@@ -128,7 +130,6 @@ export const memberAc= {
             }
         }
     },
-
 
     //开户
     postOpenAccount: (pram) => {

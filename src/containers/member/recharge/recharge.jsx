@@ -29,7 +29,7 @@ class Recharge extends React.Component{
     }
 
     handleChange(event){
-        console.log('修改金额');
+        //console.log('修改金额');
         let result=checkMoney({
             'value':event.target.value,
             'type':0,
@@ -122,7 +122,7 @@ class Recharge extends React.Component{
                                                 <dd>
                                                     <input  maxLength={8} type="text" className="textInput moneyInput" ref="amount" onChange={this.handleChange}　/>
                                                     <span className="unit">元</span>
-                                                    <a href="">银行卡充值上限说明</a>
+                                                    {/*<a href="">银行卡充值上限说明</a>*/}
                                                 </dd>
                                             </dl>
 

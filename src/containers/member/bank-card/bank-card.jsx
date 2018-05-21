@@ -6,13 +6,14 @@ import Crumbs from '../../../components/crumbs/crumbs';
 import { connect } from 'react-redux';
 import {accountAc} from '../../../actions/account';
 import ModalAuth from '../../../components/modal/modal-auth/modal-auth';
-import { Modal,Button  } from 'antd';
+import { Modal,Button,Popconfirm  } from 'antd';
 import {modal_config} from "../../../utils/modal_config";
 import BbhModal from "../../../components/modal/bbh_modal";
 
-function callback(key) {
+
+/*function callback(key) {
     console.log(key);
-}
+}*/
 class BankCard extends React.Component{
     constructor(props) {
         super(props);
@@ -22,17 +23,42 @@ class BankCard extends React.Component{
             bbhModal:false,
             currentModule:``,
         }
+        this.confirm = this.confirm.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
     }
     componentDidMount() {
         window.scrollTo(0,0);
         this.props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息
         this.props.dispatch(accountAc.getFuyouInfo({type:'ReOpenAccount'})); //获取换卡需携带的信息
     }
+    //模态框开启关闭
+    toggleModal=(modal,visile)=>{
+        if(visile){
+            this.setState({
+                bbhModal:true,
+                currentModule: modal,
 
+            });
+        }else{
+            this.setState({
+                bbhModal:false,
+                currentModule: ``,
+                key:Math.random()
+            });
+        }
+    };
+    confirm() {
+        this.toggleModal(`ModalCertification`,true);
+    }
+    closeModal(status){
+        console.log('关闭弹框');
+        //this.props.dispatch(accountAc.getAccountInfo());  //成功重载数据,暂时注释掉
+        this.toggleModal('bbhModal',false);
+    }
     changeCard(){
-        //alert('更换银行卡,第三方暂不开发');
+
         let {toOthersInfo}=this.props.account;
-        console.log('切换状态');
+        //console.log('切换状态');
         console.log(toOthersInfo);
         document.getElementById('webReg').action=toOthersInfo.url;
         document.getElementById('webReg').submit();
@@ -75,12 +101,22 @@ class BankCard extends React.Component{
                                     (isOpenAccount === `0`) ?<div className="addCard">
                                             <p>为保证账户资金安全，请绑定本人的银行卡</p>
                                             <div className="grayCard">
-                                                <a href="javascript:void(0);" style={{color: '#31aaf5'}}
-                                                   onClick={() => this.toggleModal(`ModalBindCard`,true)}>
-                                                    <i className="iconfont add"></i>
-                                                    <p>绑定银行卡！</p>
-                                                </a>
+
+                                                {(isCertification==='1')?
+                                                    <a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalBindCard`,true)}>
+                                                        <i className="iconfont add"></i>
+                                                        <p>绑定银行卡！</p>
+                                                    </a>
+                                                    :<Popconfirm placement="top" title={`请您先完成实名认证`} onConfirm={this.confirm} okText="确定" cancelText="取消">
+                                                        <a href="javascript:void(0);" >
+                                                            <i className="iconfont add"></i>
+                                                            <p>绑定银行卡！</p>
+                                                        </a>
+                                                    </Popconfirm>
+                                                }
+
                                             </div>
+
                                         </div>
                                         :(isOpenAccount === `1`) ?
                                         <div className="editCard">
@@ -125,29 +161,7 @@ class BankCard extends React.Component{
 
                 </div>
 
-                <Modal
-                    title="开户"
-                    wrapClassName="vertical-center-modal"
-                    visible={this.state.modalAuth}
-                    width="520px"
-                    footer={null}
-                    destroyOnClose={true}
-                    onCancel={() => {
-                        this.toggleModal(`modalAuth`,false);
 
-                    }}
-                >
-
-                    <ModalAuth key={this.state.key} info={
-                        {
-                            callback:(obj)=>{
-                                this.toggleModal(`modalAuth`,false);
-                            }
-                        }
-                    }
-                    />
-                    }
-                </Modal>
                 {this.state.currentModule!=``?
                     <BbhModal
                         config={modal_config[this.state.currentModule]}
@@ -155,6 +169,7 @@ class BankCard extends React.Component{
                         closeFunc={()=>this.closeModal()}
                         moduleName={this.state.currentModule}
                     >
+
                     </BbhModal>
                     :``
                 }

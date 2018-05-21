@@ -6,17 +6,13 @@ import {income} from "../../../../utils/cost";
 import {addCommas, toMoney, toNumber} from "../../../../utils/famatData"
 import {  Link} from 'react-router-dom';
 import  {accountAc}  from '../../../../actions/account';
-/*import ModalSteps from '../../../../components/modal/modal-steps/modal-steps';
-import ModalTradePassword from '../../../../components/modal/modal-tradePassword/modal-tradePassword';
-import ModalBindCard from '../../../../components/modal/modal-bindCard/modal-bindCard';
-import ModalRiskAssess from '../../../../components/modal/modal-riskAssess/modal-riskAssess';
-import ModalInvestSteps from '../../../../components/modal/modal-invest-steps/modal-invest-steps';*/
 import {InvestButton} from '../../invest-list/investComponents';
 import investDetailActions from "../../../../actions/invest-detail";
 import {formItemLayout} from "../../../../utils/formSetting";
 import BbhModal from "../../../../components/modal/bbh_modal";
 import {modal_config} from "../../../../utils/modal_config";
 import { Button} from 'antd';
+
 class MasterInvestBox extends React.Component {
     constructor(props) {
         super(props);

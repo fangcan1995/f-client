@@ -26,7 +26,8 @@ const initialState = Immutable.fromJS({
         memberCoupon:'',	//加息券信息
     },*/
     toOthersInfo:``,  //调第三方接口携带的信息
-    verifyCode:``
+    verifyCode:``,
+    //verifyCodeCd:``   //倒计时起点
 
 });
 
@@ -41,8 +42,16 @@ export default createReducer(initialState, {
         postResult:``,
         isPosting:false,
         isOpenOthers:false,
-        toOthersInfo:``
+        toOthersInfo:``,
+        //verifyCodeCd:5,
     }),
+    /*//清除提交结果
+    ['member/account/CLEAR_VERIFYCODECD']:(state,action) => state.mergeDeep({
+        verifyCodeCd:0,
+        isPosting:false,
+        isOpenOthers:false,
+        toOthersInfo:``
+    }),*/
     //修改是否去了第三方的状态
     ['member/account/GOOUT_STATE']:(state,action) => state.mergeDeep({
         isOpenOthers:action.payload

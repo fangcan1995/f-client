@@ -4,6 +4,7 @@ import ModalTradePassword from '../modal/modal-tradePassword/modal-tradePassword
 import ModalBindCard from '../modal/modal-bindCard/modal-bindCard';
 import ModalRiskAssess from '../modal/modal-riskAssess/modal-riskAssess';
 import ModalInvestSteps from '../modal/modal-invest-steps/modal-invest-steps';
+import ModalCertification from '../modal/modal-certification/modal-certification';
 import { Modal } from 'antd';
 import './bbh_modal.less';
 

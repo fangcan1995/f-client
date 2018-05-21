@@ -6,13 +6,13 @@ import {urls,token} from './../utils/url';
 import parseJson2URL from "../utils/parseJson2URL";
 import {API_CONFIG} from "../config/api";
 
-const url_memberInfo=`${urls}/message/mail/page`; //获取会员信息
-const url_openAccount=`${urls}/accounts`; //假开户
-const url_recharge=`${urls}/accounts/operation?escrowCode=100100&type=1`; //充值
-const url_withdrawals=`${urls}/accounts/operation?escrowCode=100100&type=3`; //提现
-const url_tradePassword=`http://172.16.1.225:8060/uaa/oauth/tradePassword`; //修改交易密码
+const url_memberInfo=`${urls}/members/riskEvaluation`; //获取会员信息
+//const url_openAccount=`${urls}/accounts`; //假开户
+//const url_recharge=`${urls}/accounts/operation?escrowCode=100100&type=1`; //充值
+//const url_withdrawals=`${urls}/accounts/operation?escrowCode=100100&type=3`; //提现
+const url_tradePassword=`http://172.16.1.234:8060/uaa/oauth/trade/password`; //设置交易密码
 const url_certification=`http://172.16.1.225:9090/members/auth`; //实名认证
-const url_uyouOpenAccountInfo=`http://172.16.1.252:9090/payment/fuiou/account`; //给富有的开户信息
+const url_uyouOpenAccountInfo=`http://172.16.1.252:9090/payment/fuiou/account?returnType=`; //给富有的开户信息
 const url_uyouReOpenAccountInfo=`http://172.16.1.252:9090/payment/fuiou/card`; //给富有的换卡信息
 const url_uyouRecharge=`http://172.16.1.252:9090/payment/fuiou/deposit?transAmt=`; //给富有的充值信息
 const url_uyouWithdrawals=`http://172.16.1.252:9090/payment/fuiou/cash?transAmt=`; //给富有的提现信息
@@ -20,9 +20,9 @@ export const sendMemberVerifyCode = params => {
     return {
         type: 'member/SEND_VERIFY_CODE',
         async payload() {
+            //http://172.16.1.234:8060/uaa/code/sms/trade/password?username=13011111111&send_terminal=web
             const res = await cFetch('http://172.16.1.234:8060' + API_CONFIG.setTradePasswordVerifyCode + params, { credentials: 'include' }, false);
             const { code, data } = res;
-            //console.log(res);
             if ( code == 0 ) {
                 return data || {};
             } else {
@@ -61,7 +61,7 @@ export const accountAc= {
                         isCertification:'1',	//是否实名认证（0：未实名；1：已实名）
                         isOpenAccount:'1',	//是否开户（0：未开户；1：已开户）
                         isRisk:'1',	//是否风险测评（0：否；1：是）
-                        isSetTradepassword:'1',	//是否设置交易密码（0：未设置；1：已设置）
+                        isSetTradepassword:'0',	//是否设置交易密码（0：未设置；1：已设置）
                         isNovice:'1',	//是否新手（0：否；1：是）
                         trueName:'张三',	//真实姓名
                         idNumber:'',	//身份证号
@@ -76,7 +76,7 @@ export const accountAc= {
                         totalEarns:0, //累计收益
                         bankName:'中国建设银行',	//开户行
                         bankNo:'4367********8523',	//银行卡号
-                        memberRedInfo:{number: 1, amountSum: 1000},	//红包信息
+                        memberRedInfo:{number: 1, amountSum: 500},	//红包信息
                         memberCoupon:{number: 5, amountSum: 3},	//加息券信息
 
                     };
@@ -113,19 +113,10 @@ export const accountAc= {
             type: 'member/account/UYOU_FETCH',
             async payload() {
                 let  res = await cFetch(`${url}`, {method: 'GET'}, true);
-               /* res={
-                    code:406,
-                    message:'富有报错'
-                }*/
                 let {code, data} = res;
-                console.log('后台获取的给富友的信息');
-
                 if (code == 0) {
-                    console.log(data);
                     return data;
                 }else {
-                    console.log(res);
-
                     return res;
                 }
 
@@ -148,7 +139,7 @@ export const accountAc= {
         }
     },
     //假开户,可以删除
-    postOpenAccount: (pram) => {
+    /*postOpenAccount: (pram) => {
         return {
             type: 'member/FETCH_POSTING',
             async payload() {
@@ -174,7 +165,7 @@ export const accountAc= {
                 };
             }
         }
-    },
+    },*/
     //充值
     recharge: (pram) => {
         return {
@@ -234,17 +225,25 @@ export const accountAc= {
     },
     //设置交易密码
     setTradePassword: (params) => {
+        params=parseJson2URL(params);
         return {
             //type: 'member/account/CERTIFICATION_FETCH', //虚拟，测试用
             type: 'member/account/TRADEPASSWORD_FETCH',  //真实
             async payload() {
-                const res = await cFetch(`${url_certification}`, postContent(params), true); //虚拟，测试用
-                //const res = await cFetch(`${url_tradePassword}`, postContent(params), true); //真实
+                const res = await cFetch(`${url_tradePassword}?${params}`, postContent(``), true); //真实
+                /*const res = await cFetch(`${url_tradePassword}?${params}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: ``,
+                    },
+                    true);*/
                 //测试用
-                console.log('修改登录密码返回的结果');
+                console.log('设置密码返回的结果');
                 console.log(res);
-                res.code=0;
-                res.message='设置交易密码成功';
+                //res.code=0;
+                //res.message='设置交易密码成功';
                 //end
                 return formatPostResult(res);
 
@@ -268,6 +267,15 @@ export const accountAc= {
             }
         }
     },
+    /*//清空定时器
+    clearVerifyCodeCd: (prams) => {
+        return {
+            type: 'member/account/CLEAR_VERIFYCODECD',
+            payload() {
+                return prams
+            }
+        }
+    },*/
     // 切换打开第三方的状态
     change_goOutState: (prams) => {
         return {
