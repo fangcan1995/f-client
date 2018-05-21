@@ -56,12 +56,10 @@ class BankCard extends React.Component{
         this.toggleModal('bbhModal',false);
     }
     changeCard(){
-
         let {toOthersInfo}=this.props.account;
-        //console.log('切换状态');
         console.log(toOthersInfo);
-        document.getElementById('webReg').action=toOthersInfo.url;
-        document.getElementById('webReg').submit();
+        //document.getElementById('ChangeCard2').action=toOthersInfo.url;
+        document.getElementById('ChangeCard2').submit();
         this.props.dispatch(accountAc.change_goOutState(true));
         return false;
     }
@@ -138,7 +136,6 @@ class BankCard extends React.Component{
                                                                 :<Button type="primary" htmlType="submit" className="pop__large" onClick={()=>this.changeCard()}>更换银行卡</Button>
                                                         }
                                                     </form>
-
                                                 </div>
                                             </div>
                                         </div>

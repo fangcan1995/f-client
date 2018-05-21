@@ -59,7 +59,7 @@ export const accountAc= {
                     //console.log(res);
                     let mock={
                         isCertification:'1',	//是否实名认证（0：未实名；1：已实名）
-                        isOpenAccount:'1',	//是否开户（0：未开户；1：已开户）
+                        isOpenAccount:'0',	//是否开户（0：未开户；1：已开户）
                         isRisk:'1',	//是否风险测评（0：否；1：是）
                         isSetTradepassword:'0',	//是否设置交易密码（0：未设置；1：已设置）
                         isNovice:'1',	//是否新手（0：否；1：是）
@@ -104,7 +104,7 @@ export const accountAc= {
                 url=url_uyouRecharge+params.value;
                 break;
             case 'Withdrawals':
-                url=url_uyouWithdrawals+1000;
+                url=url_uyouWithdrawals+params.value;
                 break;
             default:
                 break;
@@ -166,7 +166,7 @@ export const accountAc= {
             }
         }
     },*/
-    //充值
+    /*//充值
     recharge: (pram) => {
         return {
             type: 'member/FETCH_POSTING',
@@ -179,12 +179,12 @@ export const accountAc= {
                         body: ``,
                     },
                     true);
-                /* if (res.code == 0) {
+                /!* if (res.code == 0) {
                      message.success('充值成功');
                      return {postResult: res};
                  } else {
                      throw res;
-                 }*/
+                 }*!/
                 console.log('充值提交后返回');
                 console.log(res);
                 let type=``;
@@ -199,9 +199,9 @@ export const accountAc= {
                 };
             }
         }
-    },
+    },*/
     //提现
-    withdrawals: (pram) => {
+    /*withdrawals: (pram) => {
         return {
             type: 'member/FETCH',
             async payload() {
@@ -213,16 +213,16 @@ export const accountAc= {
                         body: ``,
                     },
                     true);
-                /*if (res.code == 0) {
+                /!*if (res.code == 0) {
                     //message.success('提现成功');
                     return {postResult: res};
                 } else {
                     throw res;
-                }*/
+                }*!/
                 return {dummyResult: res};
             }
         }
-    },
+    },*/
     //设置交易密码
     setTradePassword: (params) => {
         params=parseJson2URL(params);
@@ -231,14 +231,6 @@ export const accountAc= {
             type: 'member/account/TRADEPASSWORD_FETCH',  //真实
             async payload() {
                 const res = await cFetch(`${url_tradePassword}?${params}`, postContent(``), true); //真实
-                /*const res = await cFetch(`${url_tradePassword}?${params}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: ``,
-                    },
-                    true);*/
                 //测试用
                 console.log('设置密码返回的结果');
                 console.log(res);
@@ -267,15 +259,6 @@ export const accountAc= {
             }
         }
     },
-    /*//清空定时器
-    clearVerifyCodeCd: (prams) => {
-        return {
-            type: 'member/account/CLEAR_VERIFYCODECD',
-            payload() {
-                return prams
-            }
-        }
-    },*/
     // 切换打开第三方的状态
     change_goOutState: (prams) => {
         return {

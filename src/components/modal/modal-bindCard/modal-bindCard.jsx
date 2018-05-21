@@ -59,7 +59,7 @@ class ModalBindCard extends React.Component {
                                 <input type="hidden" name="parent_bank_id" value={toOthersInfo.parent_bank_id} />
                                 <input type="hidden" name="bank_nm" value={toOthersInfo.bank_nm} />
                                 <input type="hidden" name="capAcntNo" value={toOthersInfo.capAcntNo} />
-                                <input type="hidden" name="page_notify_url" value={toOthersInfo.page_notify_url} />
+                                <input type="hidden" name="page_notify_url" value={`${toOthersInfo.page_notify_url}?url=`} />
                                 <input type="hidden" name="back_notify_url" value={toOthersInfo.back_notify_url} />
                                 <input type="hidden" name="signature" value={toOthersInfo.signature} />
                                 <input type="hidden" name="ver" value={toOthersInfo.ver} />

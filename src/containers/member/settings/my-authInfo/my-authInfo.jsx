@@ -4,12 +4,7 @@ import { connect } from 'react-redux';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import BbhModal from "../../../../components/modal/bbh_modal";
-import ModalCertification from '../../../../components/modal/modal-certification/modal-certification';
-import ModalTradePassword from '../../../../components/modal/modal-tradePassword/modal-tradePassword';
-import ModalLoginPassword from '../../../../components/modal/modal-loginPassword/modal-loginPassword';
-import ModalBindCard from '../../../../components/modal/modal-bindCard/modal-bindCard';
 import {modal_config} from "../../../../utils/modal_config";
-
 import { Popconfirm, message, Button } from 'antd';
 import './authInfo.less';
 import {myAuthInfoAc} from '../../../../actions/member-settings';
@@ -29,6 +24,7 @@ class MyAuthInfo extends React.Component {
         }
         this.confirm = this.confirm.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
+        this.changeCard= this.changeCard.bind(this);
     }
     confirm() {
         this.toggleModal(`ModalCertification`,true);
@@ -53,13 +49,33 @@ class MyAuthInfo extends React.Component {
         window.scrollTo(0,0);
         this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
     }
+
     changeCard(){
-        alert('去第三方,暂不开发');
+        this.props.dispatch(accountAc.getFuyouInfo({type:'ReOpenAccount'})); //获取换卡需携带的信息
+    }
+    componentDidUpdate() {
+        let {dispatch, account} = this.props;
+        let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
+        if(toOthersInfo.code===406  ){
+            /*this.setState({
+                disabled:false
+            });*/
+        }else if(toOthersInfo!=``){
+            document.getElementById('ChangeCard2').submit();
+            this.props.dispatch(accountAc.change_goOutState(true));
+        }
+
+
     }
     changePhone(){
         alert('去第三方,暂不开发');
     }
     callback(status){
+        this.toggleModal('bbhModal',false);
+    }
+    closeModal(status){
+        console.log('关闭弹框');
+        //this.props.dispatch(accountAc.getAccountInfo());  //成功重载数据,暂时注释掉
         this.toggleModal('bbhModal',false);
     }
     render(){
@@ -69,7 +85,7 @@ class MyAuthInfo extends React.Component {
         //let {authInfo}=this.props.memberSettings;
         //let {info}=authInfo;
         //let {account,auth}=this.props;
-        const {isFetching,accountsInfo}=account;
+        const {isFetching,accountsInfo,toOthersInfo}=account;
         const {postResult,isCertification,isOpenAccount,isSetTradepassword,trueName,idNumber,bankNo}=accountsInfo;
         return(
             <div className="member__main">
@@ -127,12 +143,7 @@ class MyAuthInfo extends React.Component {
                                         <td className="Result">已开户</td>
                                         <td className="detail">{bankNo}</td>
                                         <td className="operate">
-                                            {/*<a href="javascript:void(0);" onClick={this.changeCard}>更换</a>*/}
-                                            {(isCertification==='1')?<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalBindCard`,true)}>开户</a>
-                                                :<Popconfirm placement="top" title={`请您先完成实名认证`} onConfirm={this.confirm} okText="确定" cancelText="取消">
-                                                    <a href="javascript:void(0);">开户</a>
-                                                </Popconfirm>
-                                            }
+                                            <a href="javascript:void(0);" onClick={this.changeCard}>更换</a>
                                         </td>
                                     </tr>
                                     :isOpenAccount==='0'?
@@ -141,7 +152,11 @@ class MyAuthInfo extends React.Component {
                                         <td className="Result">未开户</td>
                                         <td className="detail"></td>
                                         <td className="operate">
-                                            <a href="javascript:void(0);" onClick={() => this.toggleModal(`modalAuth`,true)}>开户</a>
+                                            {(isCertification==='1')?<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalBindCard`,true)}>开户</a>
+                                                :<Popconfirm placement="top" title={`请您先完成实名认证`} onConfirm={this.confirm} okText="确定" cancelText="取消">
+                                                    <a href="javascript:void(0);" >开户</a>
+                                                </Popconfirm>
+                                            }
                                         </td>
                                     </tr>
                                         :``
@@ -153,7 +168,7 @@ class MyAuthInfo extends React.Component {
                                         <td className="operate">
                                             <a href="javascript:void(0);"
                                                onClick={
-                                                   () => this.toggleModal(`modalResetPassword`,true)
+                                                   () => this.toggleModal(`ModalLoginPassword`,true)
                                                }>
                                                 修改登录密码
                                             </a>
@@ -168,9 +183,9 @@ class MyAuthInfo extends React.Component {
                                         <td className="operate">
                                             <a href="javascript:void(0);"
                                                onClick={
-                                                   () => this.toggleModal(`modalResetPassword`,true)
+                                                   () => this.toggleModal(`ModalTradePassword`,true)
                                                }>
-                                                修改交易密码
+                                                重新设置交易密码
                                             </a>
                                         </td>
                                     </tr>
@@ -184,7 +199,7 @@ class MyAuthInfo extends React.Component {
                                         <td className="operate">
                                             <a href="javascript:void(0);"
                                                onClick={
-                                                   () => this.toggleModal(`modalResetPassword`,true)
+                                                   () => this.toggleModal(`ModalTradePassword`,true)
                                                }>
                                                 设置交易密码
                                             </a>
@@ -194,17 +209,32 @@ class MyAuthInfo extends React.Component {
                                 }
                                 </tbody>
                             </table>
+                            <form name="ChangeCard2" id="ChangeCard2" method="post" action={toOthersInfo.url}  >
+                                <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />
+                                <input type="hidden" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} />
+                                <input type="hidden" name="login_id" value={toOthersInfo.login_id} />
+                                <input type="hidden" name="page_notify_url" value={toOthersInfo.page_notify_url} />
+                                <input type="hidden" name="signature" value={toOthersInfo.signature} />
+                                {/*{
+                                    toOthersInfo==``?<Button type="primary" htmlType="submit" className="pop__large" disabled={true}>更换银行卡</Button>
+                                        :<Button type="primary" htmlType="submit" className="pop__large" onClick={()=>this.changeCard()}>更换银行卡</Button>
+                                }*/}
+                            </form>
                         </div>
                     </Tab>
 
                 </div>
 
+
                 {this.state.currentModule!=``?
-                    <BbhModal config={modal_config[this.state.currentModule]} visible={this.state.bbhModal} onCancel={()=>this.callback()}>
-                        {(this.state.currentModule === `ModalTradePassword`)?<ModalTradePassword onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} />:``}
-                        {(this.state.currentModule === `ModalBindCard`)?<ModalBindCard onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} />:``}
-                        {(this.state.currentModule === `ModalCertification`)?<ModalCertification onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} />:``}
-                        {(this.state.currentModule === `ModalLoginPassword`)?<ModalLoginPassword onSuccess={()=>{this.callback()}} onFail={()=>{this.callback()}} />:``}
+                    <BbhModal
+                        config={modal_config[this.state.currentModule]}
+                        visible={this.state.bbhModal}
+                        closeFunc={()=>this.closeModal()}
+                        moduleName={this.state.currentModule}
+                        repeat={true}
+                    >
+
                     </BbhModal>
                     :``
                 }

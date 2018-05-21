@@ -67,8 +67,8 @@ class ModalTradePassword extends React.Component {
                     return res;
                 })
                 .then(
-                   // () => this.startCd(180)
-                    dispatch(setMemberVerifyCodeCd(180))
+                    () => this.startCd(180)
+                    //dispatch(setMemberVerifyCodeCd(180))
                 )
                 .catch(err => {
                     //if(err.code==406){
@@ -127,7 +127,9 @@ class ModalTradePassword extends React.Component {
         }
     }*/
     render(){
-        let {onSuccess,onFail,attach}=this.props;
+        let {onSuccess,onFail,attach,repeat}=this.props;
+        console.log('当前页的上个月');
+        console.log(this.props);
         let {isPosting,postResult,accountsInfo,verifyCodeCd}=this.props.account;
         let {isCertification,isOpenAccount,isSetTradepassword}=accountsInfo;
         const { getFieldDecorator,getFieldValue } = this.props.form;
@@ -145,7 +147,8 @@ class ModalTradePassword extends React.Component {
                 trigger: ['onBlur', 'onChange']
             }]
         });
-        if(isSetTradepassword==='1'&& !this.state.isReset){
+
+        if(isSetTradepassword==='1' && !this.state.isReset && !repeat){
             if(this.state.isReset){
                 return ``
             }else{
@@ -166,7 +169,7 @@ class ModalTradePassword extends React.Component {
 
         }else{
             //未成功
-            if(postResult.type!=`success`){
+            if(postResult.type!=`success`  ){
                 return(
                     <div className="pop__password pop">
                         <div className="form__wrapper">

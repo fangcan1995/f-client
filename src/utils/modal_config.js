@@ -16,13 +16,13 @@ export const modal_config={
     },
     ModalTradePassword: {
         title: "设置交易密码",
-        width: "620px",
-        height: "400px"
+        width: "500px",
+        height: "300px"
     },
     ModalLoginPassword: {
         title: "修改登录密码",
-        width: "620px",
-        height: "400px"
+        width: "500px",
+        height: "300px"
     },
     ModalRiskAssess: {
         title: "用户风险承受能力测评",

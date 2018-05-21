@@ -68,7 +68,6 @@ class Recharge extends React.Component{
         this.setState({
             disabled:true
         });
-        //this.props.dispatch(memberAc.recharge(value));
         this.props.dispatch(accountAc.getFuyouInfo({type:'reCharge',value:value})); //获取充值需携带的信息
     }
     componentDidUpdate() {

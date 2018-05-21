@@ -1,6 +1,7 @@
 import React,{ Component } from "react";
 import ModalSteps from '../modal/modal-steps/modal-steps';
 import ModalTradePassword from '../modal/modal-tradePassword/modal-tradePassword';
+import ModalLoginPassword from '../modal/modal-loginPassword/modal-loginPassword';
 import ModalBindCard from '../modal/modal-bindCard/modal-bindCard';
 import ModalRiskAssess from '../modal/modal-riskAssess/modal-riskAssess';
 import ModalInvestSteps from '../modal/modal-invest-steps/modal-invest-steps';
@@ -23,9 +24,10 @@ export default class BbhModal extends Component{
         closeFunc();
     }
     render(){
-        let {config,visible,moduleName,investAmount}=this.props;
+        let {config,visible,moduleName,investAmount,repeat}=this.props;
         let {title,width,height}=config;
         let moduleContent=``;
+
         switch (moduleName) {
             case `ModalSteps`:
                 moduleContent=<ModalSteps key={this.state.key}  onSuccess={()=>{this.onCancel()}} />;
@@ -34,7 +36,10 @@ export default class BbhModal extends Component{
                 moduleContent=<ModalCertification key={this.state.key} onSuccess={()=>{this.onCancel()}} />;
                 break;
             case `ModalTradePassword`:
-                moduleContent=<ModalTradePassword key={this.state.key} onSuccess={()=>{this.onCancel()}} />;
+                moduleContent=<ModalTradePassword key={this.state.key} onSuccess={()=>{this.onCancel()}} repeat={repeat||false} />;
+                break;
+            case `ModalLoginPassword`:
+                moduleContent=<ModalLoginPassword key={this.state.key} onSuccess={()=>{this.onCancel()}} />;
                 break;
             case `ModalBindCard`:
                 moduleContent=<ModalBindCard key={this.state.key} onSuccess={()=>{this.onCancel()}} />;

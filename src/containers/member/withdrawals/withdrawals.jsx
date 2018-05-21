@@ -28,66 +28,35 @@ class Withdrawals extends React.Component{
         }
         this.withdrawals= this.withdrawals.bind(this);
         this.handleChange= this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-
     }
     componentDidMount() {
         //this.props.dispatch(memberAc.getInfo());
     }
-    handleSubmit = (e) => {
-       // e.preventDefault();
-        const { dispatch, form, } = this.props;
 
-
-        /*form.validateFields((errors) => {
-            if (errors) {
-                return false;
-            }
-
-            let appInfo={
-                //tradePassword:hex_md5(form.getFieldsValue().newPassword),
-                value:1000
-            }
-            console.log('即将提交的充值信息');
-            //this.props.dispatch(accountAc.withdrawals(value));
-        });*/
-
-        this.props.dispatch(accountAc.getFuyouInfo({type:'Withdrawals',transAmt:1000})); //获取提现需携带的信息
-        //3 下一步
-        //this.modalClose();
-
-    }
     componentDidUpdate() {
         let {dispatch, account} = this.props;
         let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
-
         if(toOthersInfo.code===406  ){
-            console.log('不能请求');
-
+            this.setState({
+                disabled:false
+            });
         }else if(toOthersInfo!=``){
-            console.log('富有信息是：');
-            console.log(toOthersInfo);
-            //document.getElementById('webReg').action=toOthersInfo.url;
-            console.log('可以自动提交了');
             document.getElementById('FuiouCash').submit();
-            //dispatch(investDetailActions.postInvest(appInfo,postResult.times));
-
         }
     }
     withdrawals(value){
         value=this.refs.amount.value;
         this.setState({
             disabled:true
-        }); //还原按钮不可点击
-        this.props.dispatch(accountAc.withdrawals(value));
+        });
+        this.props.dispatch(accountAc.getFuyouInfo({type:'Withdrawals',value:value})); //获取提现需携带的信息
     }
     handleChange(event){
-        console.log(event);
         let result=checkMoney({
             'value':event.target.value,
             'type':0,
             'min_v':1,
-            'max_v':this.props.account.accountsInfo.accountBalance,
+            'max_v':this.props.account.accountsInfo.availableBalance,
             'label':'提现金额',
             'interval':1
         });
@@ -116,37 +85,8 @@ class Withdrawals extends React.Component{
         }
     }
     render(){
-
-        //let {openAccountStatus,amount,dummyResult}=this.props.member.accountsInfo;
         let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult}=this.props.account;
-        let {isCertification,isOpenAccount,bankName,bankNo,accountBalance}=accountsInfo;
-        console.log()
-        /*if(dummyResult.code==='0'){
-            this.props.dispatch(accountAc.modifyState({dummyResult:''}));
-            this.refs.amount.value='';
-            this.props.dispatch(accountAc.getInfo());
-        }*/
-        const { getFieldDecorator,getFieldValue } = this.props.form;
-/*        const newPasswordProps = getFieldDecorator('newPassword', {
-            validate: [{
-                rules: [
-                    { required: true, pattern: tradePasswordRegExp, message: '密码长度为6-16位，必须包含数字、字母、符号' }
-
-                ],
-                trigger: ['onBlur', 'onChange']
-            }]
-        });*/
-        /*const usernameProps = getFieldDecorator('username', {
-            validate: [{
-                rules: [
-                    { required: true, pattern: amountExp, message: '请输入正确的金额' }
-                ],
-                trigger: 'onBlur'
-            }]
-        });*/
-        console.log('结果');
-        console.log(postResult);
-        console.log(toOthersInfo);
+        let {isOpenAccount,bankName,bankNo,accountBalance}=accountsInfo;
         return (
             <div className="member__main withdrawals">
                 <Crumbs/>
@@ -170,7 +110,7 @@ class Withdrawals extends React.Component{
                                                 <dd>
                                                     <input  maxLength={8} type="text" className="textInput moneyInput" ref="amount" onChange={this.handleChange}　/>
                                                     <span className="unit">元</span>
-                                                    <a href="">银行卡充值上限说明</a>
+                                                    {/*<a href="">银行卡充值上限说明</a>*/}
                                                 </dd>
                                             </dl>
                                             <div className="form__bar">
@@ -190,21 +130,21 @@ class Withdrawals extends React.Component{
                                                         <Posting isShow={isFetching}/>
                                                     </Button>
                                                     :
-                                                    <Button type="primary" htmlType="submit" className="pop__large"
-                                                            onClick={this.handleSubmit}
+                                                    <Button type="primary"  className="pop__large"
+                                                            onClick={this.withdrawals}
                                                             disabled={this.state.disabled}>
                                                         确认
                                                     </Button>
                                                 }
                                             </div>
                                             <form name="FuiouCash" id="FuiouCash" method="post" action={toOthersInfo.url} >
-                                                mchnt_cd：<input type="text" name="mchnt_cd" value={toOthersInfo.mchnt_cd} /><br/>
-                                                mchnt_txn_ssn：<input type="text" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} /><br/>
-                                                login_id：<input type="text" name="login_id" value={toOthersInfo.login_id} /><br/>
-                                                amt：<input type="text" name="amt" value={toOthersInfo.amt} /><br/>
-                                                page_notify_url：<input type="text" name="page_notify_url" value={toOthersInfo.page_notify_url} /><br/>
-                                                back_notify_url：<input type="text" name="back_notify_url" value={toOthersInfo.back_notify_url}/><br/>
-                                                signature：<input type="text" name="signature" value={toOthersInfo.signature} /><br/>
+                                                <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />
+                                                <input type="hidden" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} />
+                                                <input type="hidden" name="login_id" value={toOthersInfo.login_id} />
+                                                <input type="hidden" name="amt" value={toOthersInfo.amt} />
+                                                <input type="hidden" name="page_notify_url" value={toOthersInfo.page_notify_url} />
+                                                <input type="hidden" name="back_notify_url" value={toOthersInfo.back_notify_url}/>
+                                                <input type="hidden" name="signature" value={toOthersInfo.signature} />
 
                                             </form>
                                         </div>

@@ -9,6 +9,7 @@ import  {memberAc}  from '../../../actions/member';
 import { Link } from 'react-router-dom';
 import {toMoney,toNumber,addCommas} from '../../../utils/famatData';
 import Crumbs from '../../../components/crumbs/crumbs';
+import { Tooltip, message, Button } from 'antd';
 import './account-overview.less';
 
 class AccountOverview extends React.Component{
@@ -32,7 +33,11 @@ class AccountOverview extends React.Component{
                     <div className="master">
                         <div className="accountInfo">
                             <div className="infoLine">
-                                <div>账户余额: <span>{toMoney(accountBalance)}</span>&nbsp;元<em>?<strong>包含您可用余额及投资冻结的金额，满标划转后统一扣除</strong></em></div>
+                                <div>
+                                    <Tooltip placement="topLeft" title="包含您可用余额及投资冻结的金额，满标划转后统一扣除" arrowPointAtCenter>
+                                        <Button>账户余额</Button>
+                                    </Tooltip>
+                                    账户余额: <span>{toMoney(accountBalance)}</span>&nbsp;元<em>?<strong>包含您可用余额及投资冻结的金额，满标划转后统一扣除</strong></em></div>
                                 <div>可用余额: <span>{toMoney(availableBalance)}</span>&nbsp;元</div>
                             </div>
                             <div className="infoLine">

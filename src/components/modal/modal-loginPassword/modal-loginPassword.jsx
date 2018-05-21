@@ -7,7 +7,6 @@ import {Loading,NoRecord,Posting,BbhAlert} from '../../../components/bbhAlert/bb
 import {passwordRegExp } from '../../../utils/regExp';
 import {formItemLayout,noop } from '../../../utils/formSetting';
 import {hex_md5} from "../../../utils/md5";
-
 import "./modal-loginPassword.less"
 
 const createForm = Form.create;
@@ -95,7 +94,6 @@ class ModalLoginPassword extends React.Component {
                                     newPasswordProps(
                                         <Input
                                             type="password"
-                                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                             autoComplete="off"
                                             placeholder="设置6-16位的登录密码"
                                             onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
@@ -132,7 +130,6 @@ class ModalLoginPassword extends React.Component {
                                 }
                             </FormItem>
                         </Form>
-                        <button onClick={()=>onFail()}>下一步</button>
                     </div>
                 </div>
             )
