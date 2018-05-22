@@ -34,15 +34,18 @@ class AccountOverview extends React.Component{
                         <div className="accountInfo">
                             <div className="infoLine">
                                 <div>
-                                    <Tooltip placement="topLeft" title="包含您可用余额及投资冻结的金额，满标划转后统一扣除" arrowPointAtCenter>
-                                        <Button>账户余额</Button>
+                                    <Tooltip placement="topLeft"  title="包含您可用余额及投资冻结的金额，满标划转后统一扣除" arrowPointAtCenter overlayClassName='myTooltip'
+                                    >
+                                        <span style={{cursor:'default'}}>账户余额:</span>
                                     </Tooltip>
-                                    账户余额: <span>{toMoney(accountBalance)}</span>&nbsp;元<em>?<strong>包含您可用余额及投资冻结的金额，满标划转后统一扣除</strong></em></div>
-                                <div>可用余额: <span>{toMoney(availableBalance)}</span>&nbsp;元</div>
+                                    {/*账户余额: <span>{toMoney(accountBalance)}</span>&nbsp;元<em>?<strong>包含您可用余额及投资冻结的金额，满标划转后统一扣除</strong></em>*/}
+                                    <span className='money'>{toMoney(accountBalance)}</span>&nbsp;元
+                                </div>
+                                <div>可用余额: <span className='money'>{toMoney(availableBalance)}</span>&nbsp;元</div>
                             </div>
                             <div className="infoLine">
-                                <div>昨日收益: <span>{toMoney(yestEarns)}</span>&nbsp;元</div>
-                                <div>累计收益: <span>{toMoney(totalEarns)}</span>&nbsp;元</div>
+                                <div>昨日收益: <span className='money'>{toMoney(yestEarns)}</span>&nbsp;元</div>
+                                <div>累计收益: <span className='money'>{toMoney(totalEarns)}</span>&nbsp;元</div>
                             </div>
                         </div>
                         <div className="accountRedbag">

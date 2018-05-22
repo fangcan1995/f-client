@@ -48,17 +48,14 @@ class BankCard extends React.Component{
         }
     };
     confirm() {
-        this.toggleModal(`ModalCertification`,true);
+        this.toggleModal(`ModalSteps`,true);
     }
     closeModal(status){
-        console.log('关闭弹框');
         //this.props.dispatch(accountAc.getAccountInfo());  //成功重载数据,暂时注释掉
         this.toggleModal('bbhModal',false);
     }
     changeCard(){
         let {toOthersInfo}=this.props.account;
-        console.log(toOthersInfo);
-        //document.getElementById('ChangeCard2').action=toOthersInfo.url;
         document.getElementById('ChangeCard2').submit();
         this.props.dispatch(accountAc.change_goOutState(true));
         return false;
@@ -88,6 +85,8 @@ class BankCard extends React.Component{
             this.props.dispatch(accountAc.modifyState({postResult:''}));
             this.props.dispatch(accountAc.getInfo());
         }
+        console.log('------------------');
+        console.log(toOthersInfo);
         return (
             <div className="member__main">
                 <Crumbs />
@@ -125,6 +124,11 @@ class BankCard extends React.Component{
                                                     <p><strong>开户行</strong>{bankName}</p>
                                                 </div>
                                                 <div className="form__bar">
+                                                    {toOthersInfo.code==`406`?<div className="errorMessages">{toOthersInfo.message}</div>
+                                                        :``
+                                                    }
+                                                </div>
+                                                <div className="form__bar">
                                                     <form name="ChangeCard2" id="ChangeCard2" method="post" action={toOthersInfo.url} >
                                                         <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />
                                                         <input type="hidden" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} />
@@ -132,7 +136,7 @@ class BankCard extends React.Component{
                                                         <input type="hidden" name="page_notify_url" value={toOthersInfo.page_notify_url} />
                                                         <input type="hidden" name="signature" value={toOthersInfo.signature} />
                                                         {
-                                                            toOthersInfo==``?<Button type="primary" htmlType="submit" className="pop__large" disabled={true}>更换银行卡</Button>
+                                                            (toOthersInfo==`` || toOthersInfo.code==`406`)?<Button type="primary" htmlType="submit" className="pop__large" disabled={true}>更换银行卡</Button>
                                                                 :<Button type="primary" htmlType="submit" className="pop__large" onClick={()=>this.changeCard()}>更换银行卡</Button>
                                                         }
                                                     </form>
@@ -165,6 +169,8 @@ class BankCard extends React.Component{
                         visible={this.state.bbhModal}
                         closeFunc={()=>this.closeModal()}
                         moduleName={this.state.currentModule}
+                        stepslength={2}
+                        returnPage={`my-account_bank-card`}
                     >
 
                     </BbhModal>

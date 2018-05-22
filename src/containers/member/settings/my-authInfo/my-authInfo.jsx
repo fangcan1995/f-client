@@ -11,7 +11,11 @@ import {myAuthInfoAc} from '../../../../actions/member-settings';
 import {memberAc} from "../../../../actions/member";
 import  {accountAc}  from '../../../../actions/account';
 
-
+const success = () => {
+    const hide = message.loading('Action in progress..', 0);
+    // Dismiss manually and asynchronously
+    setTimeout(hide, 250000);
+};
 class MyAuthInfo extends React.Component {
     constructor(props) {
         super(props);
@@ -26,9 +30,7 @@ class MyAuthInfo extends React.Component {
         this.toggleModal = this.toggleModal.bind(this);
         this.changeCard= this.changeCard.bind(this);
     }
-    confirm() {
-        this.toggleModal(`ModalCertification`,true);
-    }
+
     //模态框开启关闭
     toggleModal=(modal,visile)=>{
         if(visile){
@@ -49,24 +51,46 @@ class MyAuthInfo extends React.Component {
         window.scrollTo(0,0);
         this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
     }
-
-    changeCard(){
-        this.props.dispatch(accountAc.getFuyouInfo({type:'ReOpenAccount'})); //获取换卡需携带的信息
+//开卡前询问是否实名认证
+    confirm() {
+        this.toggleModal(`ModalSteps`,true);
     }
-    componentDidUpdate() {
+    changeCard(){
+        let {dispatch, account} = this.props;
+        let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
+        //先获取换卡需携带的信息，正确的话提交表单
+        dispatch(accountAc.getFuyouInfo({type:'ReOpenAccount'}))
+            .then(
+                ()=>{
+
+                        if(toOthersInfo.code===406  ){
+                            /*this.setState({
+                                disabled:false
+                            });*/
+                            message.info('您已经提交了申请，请等待审核');
+                        }else if(toOthersInfo!=``){
+                            document.getElementById('ChangeCard2').submit();
+                            dispatch(accountAc.change_goOutState(true));
+                        }
+
+                }
+            )
+            .catch();
+    }
+    /*componentDidUpdate() {
         let {dispatch, account} = this.props;
         let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
         if(toOthersInfo.code===406  ){
-            /*this.setState({
+            /!*this.setState({
                 disabled:false
-            });*/
+            });*!/
         }else if(toOthersInfo!=``){
             document.getElementById('ChangeCard2').submit();
             this.props.dispatch(accountAc.change_goOutState(true));
         }
 
 
-    }
+    }*/
     changePhone(){
         alert('去第三方,暂不开发');
     }
@@ -74,23 +98,17 @@ class MyAuthInfo extends React.Component {
         this.toggleModal('bbhModal',false);
     }
     closeModal(status){
-        console.log('关闭弹框');
         //this.props.dispatch(accountAc.getAccountInfo());  //成功重载数据,暂时注释掉
         this.toggleModal('bbhModal',false);
     }
     render(){
-        console.log('获取的数据');
-        console.log(this.props);
         let {dispatch,account,auth}=this.props;
-        //let {authInfo}=this.props.memberSettings;
-        //let {info}=authInfo;
-        //let {account,auth}=this.props;
         const {isFetching,accountsInfo,toOthersInfo}=account;
         const {postResult,isCertification,isOpenAccount,isSetTradepassword,trueName,idNumber,bankNo}=accountsInfo;
         return(
             <div className="member__main">
                 <Crumbs/>
-
+                <Button onClick={success}>Display a loading indicator</Button>
                 <div className="member__cbox">
                     <Tab>
                         <div name="基本信息">
@@ -233,6 +251,8 @@ class MyAuthInfo extends React.Component {
                         closeFunc={()=>this.closeModal()}
                         moduleName={this.state.currentModule}
                         repeat={true}
+                        stepslength={2}
+                        returnPage={`my-settings_my-authInfo`}
                     >
 
                     </BbhModal>

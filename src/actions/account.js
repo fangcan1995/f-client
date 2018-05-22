@@ -12,10 +12,7 @@ const url_memberInfo=`${urls}/members/riskEvaluation`; //获取会员信息
 //const url_withdrawals=`${urls}/accounts/operation?escrowCode=100100&type=3`; //提现
 const url_tradePassword=`http://172.16.1.234:8060/uaa/oauth/trade/password`; //设置交易密码
 const url_certification=`http://172.16.1.225:9090/members/auth`; //实名认证
-const url_uyouOpenAccountInfo=`http://172.16.1.252:9090/payment/fuiou/account?returnType=`; //给富有的开户信息
-const url_uyouReOpenAccountInfo=`http://172.16.1.252:9090/payment/fuiou/card`; //给富有的换卡信息
-const url_uyouRecharge=`http://172.16.1.252:9090/payment/fuiou/deposit?transAmt=`; //给富有的充值信息
-const url_uyouWithdrawals=`http://172.16.1.252:9090/payment/fuiou/cash?transAmt=`; //给富有的提现信息
+
 export const sendMemberVerifyCode = params => {
     return {
         type: 'member/SEND_VERIFY_CODE',
@@ -59,9 +56,9 @@ export const accountAc= {
                     //console.log(res);
                     let mock={
                         isCertification:'1',	//是否实名认证（0：未实名；1：已实名）
-                        isOpenAccount:'0',	//是否开户（0：未开户；1：已开户）
+                        isOpenAccount:'1',	//是否开户（0：未开户；1：已开户）
                         isRisk:'1',	//是否风险测评（0：否；1：是）
-                        isSetTradepassword:'0',	//是否设置交易密码（0：未设置；1：已设置）
+                        isSetTradepassword:'1',	//是否设置交易密码（0：未设置；1：已设置）
                         isNovice:'1',	//是否新手（0：否；1：是）
                         trueName:'张三',	//真实姓名
                         idNumber:'',	//身份证号
@@ -93,18 +90,23 @@ export const accountAc= {
     //获取给富有的信息
     getFuyouInfo:(params)=> {
         let url=``;
+        const url_uyouOpenAccountInfo=`http://172.16.1.252:9090/payment/fuiou/account`; //给富有的开户信息
+        const url_uyouReOpenAccountInfo=`http://172.16.1.252:9090/payment/fuiou/card`; //给富有的换卡信息
+        const url_uyouRecharge=`http://172.16.1.252:9090/payment/fuiou/deposit`; //给富有的充值信息
+        const url_uyouWithdrawals=`http://172.16.1.252:9090/payment/fuiou/cash`; //给富有的提现信息
         switch (params.type){
             case 'OpenAccount':
-                url=url_uyouOpenAccountInfo;
+                url=url_uyouOpenAccountInfo+`?url=`+params.url; //开户
                 break;
             case 'ReOpenAccount':
-                url=url_uyouReOpenAccountInfo;
+                url=url_uyouReOpenAccountInfo+`?url=my-account_bank-card`;  //换卡
                 break;
             case 'reCharge':
-                url=url_uyouRecharge+params.value;
+                url=url_uyouRecharge+`?url=`+params.url+'&transAmt='+params.value;
+
                 break;
             case 'Withdrawals':
-                url=url_uyouWithdrawals+params.value;
+                url=url_uyouWithdrawals+`?url=`+params.url+'&transAmt='+params.value;
                 break;
             default:
                 break;
@@ -113,8 +115,11 @@ export const accountAc= {
             type: 'member/account/UYOU_FETCH',
             async payload() {
                 let  res = await cFetch(`${url}`, {method: 'GET'}, true);
+                console.log('///////////////////');
+                console.log(res);
                 let {code, data} = res;
                 if (code == 0) {
+
                     return data;
                 }else {
                     return res;

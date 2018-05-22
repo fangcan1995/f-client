@@ -28,6 +28,7 @@ const initialState = Immutable.fromJS({
     toOthersInfo:``,  //调第三方接口携带的信息
     verifyCode:``,
     //verifyCodeCd:``   //倒计时起点
+    othersType:`1`,
 
 });
 

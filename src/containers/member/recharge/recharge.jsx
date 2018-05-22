@@ -23,11 +23,13 @@ class Recharge extends React.Component{
         this.recharge= this.recharge.bind(this);
         this.handleChange= this.handleChange.bind(this);
     }
+    componentWillMount() {
+        this.props.dispatch(accountAc.clear());
+    }
     componentDidMount() {
         window.scrollTo(0,0);
-        //this.props.dispatch(memberAc.getInfo());
+        this.props.dispatch(accountAc.getAccountInfo());  //????
     }
-
     handleChange(event){
         //console.log('修改金额');
         let result=checkMoney({
@@ -64,13 +66,34 @@ class Recharge extends React.Component{
         }
     }
     recharge(value){
+        let {dispatch, account} = this.props;
+        let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
         value=this.refs.amount.value;
         this.setState({
             disabled:true
         });
-        this.props.dispatch(accountAc.getFuyouInfo({type:'reCharge',value:value})); //获取充值需携带的信息
+        dispatch(accountAc.getFuyouInfo({type:'reCharge',url:'my-account_recharge',value:value}))
+        //dispatch(accountAc.getFuyouInfo({type:'ReOpenAccount'}))
+
+            .then((res)=>{
+                console.log('给富有的')
+                toOthersInfo=res.value;
+                console.log(toOthersInfo);
+                if(toOthersInfo.code==406  ){
+                    this.setState({
+                        disabled:false
+                    });
+                }else if(toOthersInfo!=``){
+                    document.getElementById('webReg').submit();
+                }
+            })
+            .catch(()=>{
+                //没获取到
+            });
+
+
     }
-    componentDidUpdate() {
+    /*componentDidUpdate() {
         let {dispatch, account} = this.props;
         let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
 
@@ -81,7 +104,7 @@ class Recharge extends React.Component{
         }else if(toOthersInfo!=``){
             document.getElementById('webReg').submit();
         }
-    }
+    }*/
     render(){
         let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult}=this.props.account;
         let {isCertification,isOpenAccount,bankName,bankNo,availableBalance}=accountsInfo;

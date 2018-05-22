@@ -29,27 +29,39 @@ class Withdrawals extends React.Component{
         this.withdrawals= this.withdrawals.bind(this);
         this.handleChange= this.handleChange.bind(this);
     }
+    componentWillMount() {
+        this.props.dispatch(accountAc.clear());
+    }
     componentDidMount() {
-        //this.props.dispatch(memberAc.getInfo());
+        window.scrollTo(0,0);
+        this.props.dispatch(accountAc.getAccountInfo());
     }
 
-    componentDidUpdate() {
+    withdrawals(value){
         let {dispatch, account} = this.props;
         let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
-        if(toOthersInfo.code===406  ){
-            this.setState({
-                disabled:false
-            });
-        }else if(toOthersInfo!=``){
-            document.getElementById('FuiouCash').submit();
-        }
-    }
-    withdrawals(value){
         value=this.refs.amount.value;
         this.setState({
             disabled:true
         });
-        this.props.dispatch(accountAc.getFuyouInfo({type:'Withdrawals',value:value})); //获取提现需携带的信息
+        dispatch(accountAc.getFuyouInfo({type:'Withdrawals',url:'my-account_withdrawals',value:value}))
+        //dispatch(accountAc.getFuyouInfo({type:'ReOpenAccount'}))
+
+            .then((res)=>{
+                console.log('给富有的')
+                toOthersInfo=res.value;
+                console.log(toOthersInfo);
+                if(toOthersInfo.code==406  ){
+                    this.setState({
+                        disabled:false
+                    });
+                }else if(toOthersInfo!=``){
+                    document.getElementById('FuiouCash').submit();
+                }
+            })
+            .catch(()=>{
+                //没获取到
+            });
     }
     handleChange(event){
         let result=checkMoney({

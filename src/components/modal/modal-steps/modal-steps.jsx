@@ -2,7 +2,7 @@ import React from 'react';
 import ModalTradePassword from '../../../components/modal/modal-tradePassword/modal-tradePassword';
 import ModalCertification from '../../../components/modal/modal-certification/modal-certification';
 import ModalBindCard from '../../../components/modal/modal-bindCard/modal-bindCard';
-import { Steps } from 'antd';
+import { Steps,Icon } from 'antd';
 import { connect } from 'react-redux';
 import  {accountAc}  from '../../../actions/account';
 
@@ -42,7 +42,6 @@ class ModalSteps extends React.Component {
     }
 
     ck_certification_success(){
-        console.log('实名认证成功跳转下一步');
         let {dispatch}=this.props;
         dispatch(accountAc.dummyModifyAccount({isCertification:'1'}));  //虚拟
         dispatch(accountAc.clear());
@@ -66,29 +65,36 @@ class ModalSteps extends React.Component {
 
     render() {
 
-        let {account,auth}=this.props;
-
+        let {account,auth,stepslength}=this.props;
         let {accountsInfo,isPosting}=account;
-        console.log('账户信息');
-        console.log(account);
-        let {postResult}=accountsInfo;
-        const { current } = this.state;const steps = [{
-            title: '实名认证',
-            content:<ModalCertification onSuccess={() => {this.ck_certification_success();}}  />
-        }, {
-            title: '设置交易密码',
-            content: <ModalTradePassword
-                onSuccess={() => {this.ck_tradePassword_success();}}
-                attach={'steps'}
-            />
-        }, {
-            title: '绑定银行卡',
-            content: <ModalBindCard onSuccess={() => {this.ck_bindCard_success();}} />
-        }];
+        let {postResult,isCertification,isOpenAccount,isSetTradepassword}=accountsInfo;
+
+        const { current } = this.state;
+        let steps = [
+            {
+                title: '实名认证',
+                content:<ModalCertification onSuccess={() => {this.ck_certification_success();}}  />,
+                icon:<Icon type="idcard" />
+            },
+            {
+                title: '设置交易密码',
+                content: <ModalTradePassword onSuccess={() => {this.ck_tradePassword_success();}} attach={'steps'} />,
+                icon:<Icon type="lock" />
+            },
+            {
+                title: '绑定银行卡',
+                content: <ModalBindCard onSuccess={() => {this.ck_bindCard_success();}} />,
+                icon:<Icon type="credit-card" />
+            }
+        ];
+        if(isSetTradepassword==='1' || stepslength===2){
+            steps.splice(1, 1);
+        }
+
         return(
             <div  className="pop_steps">
                 <Steps  current={current}>
-                    {steps.map(item => <Step key={item.title} title={item.title} />)}
+                    {steps.map(item => <Step key={item.title} title={item.title} icon={item.icon}  />)}
                 </Steps>
                 <div className="steps-content">{steps[this.state.current].content}</div>
             </div>

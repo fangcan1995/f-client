@@ -24,13 +24,13 @@ export default class BbhModal extends Component{
         closeFunc();
     }
     render(){
-        let {config,visible,moduleName,investAmount,repeat}=this.props;
+        let {config,visible,moduleName,investAmount,repeat,stepslength,returnPage}=this.props;
         let {title,width,height}=config;
         let moduleContent=``;
 
         switch (moduleName) {
             case `ModalSteps`:
-                moduleContent=<ModalSteps key={this.state.key}  onSuccess={()=>{this.onCancel()}} />;
+                moduleContent=<ModalSteps key={this.state.key}  onSuccess={()=>{this.onCancel()}} stepslength={stepslength||3}  />;
                 break;
             case `ModalCertification`:
                 moduleContent=<ModalCertification key={this.state.key} onSuccess={()=>{this.onCancel()}} />;
@@ -42,7 +42,7 @@ export default class BbhModal extends Component{
                 moduleContent=<ModalLoginPassword key={this.state.key} onSuccess={()=>{this.onCancel()}} />;
                 break;
             case `ModalBindCard`:
-                moduleContent=<ModalBindCard key={this.state.key} onSuccess={()=>{this.onCancel()}} />;
+                moduleContent=<ModalBindCard key={this.state.key} onSuccess={()=>{this.onCancel()}} returnPage={returnPage||``} />;
                 break;
             case `ModalRiskAssess`:
                 moduleContent=<ModalRiskAssess key={this.state.key} onSuccess={()=>{this.onCancel()}} />;

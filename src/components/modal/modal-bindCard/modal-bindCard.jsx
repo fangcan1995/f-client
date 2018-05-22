@@ -14,15 +14,13 @@ class ModalBindCard extends React.Component {
     }
     componentDidMount () {
         //this.props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息
-        this.props.dispatch(accountAc.getFuyouInfo({type:'OpenAccount'})); //获取开户需携带的信息
+        let {onSuccess,returnPage}=this.props;
+        dispatch(accountAc.getFuyouInfo({type:'OpenAccount',url:returnPage})); //获取开户需携带的信息
     }
     //提交
     handleSubmit(event){
         //event.preventDefault();   //阻止提交
         let {toOthersInfo}=this.props.account;
-        console.log('切换状态');
-        console.log(toOthersInfo);
-        document.getElementById('webReg').action=toOthersInfo.url;
         document.getElementById('webReg').submit();
         this.props.dispatch(accountAc.change_goOutState(true));
         return false;
@@ -37,16 +35,17 @@ class ModalBindCard extends React.Component {
         onSuccess();
     }
     render(){
-        let {onSuccess,onFail}=this.props;
+        let {onSuccess,onFail,returnPage}=this.props;
         let {isPosting,toOthersInfo,postResult,isOpenOthers}=this.props.account;
         console.log('去富有开户携带的信息');
         console.log(toOthersInfo);
         if(postResult.type!=`success`){
             return(
                 <div className="pop__openOther">
-                    {(isOpenOthers )?<WaitThirdParty isShow={true} title='绑卡' callback={this.modalClose} />
+                    {/*<WaitThirdParty isShow={true} title='绑卡' callback={this.modalClose} />*/}
+                    {(isOpenOthers )?``
                         :<div className="form__wrapper">
-                            <form name="webReg" id="webReg" method="post"   target="_blank" >
+                            <form name="webReg" id="webReg" method="post" action={toOthersInfo.url}>
                                 <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />
                                 <input type="hidden" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} />
                                 <input type="hidden" name="user_id_from" value={toOthersInfo.user_id_from} />
@@ -59,7 +58,7 @@ class ModalBindCard extends React.Component {
                                 <input type="hidden" name="parent_bank_id" value={toOthersInfo.parent_bank_id} />
                                 <input type="hidden" name="bank_nm" value={toOthersInfo.bank_nm} />
                                 <input type="hidden" name="capAcntNo" value={toOthersInfo.capAcntNo} />
-                                <input type="hidden" name="page_notify_url" value={`${toOthersInfo.page_notify_url}?url=`} />
+                                <input type="hidden" name="page_notify_url" value={`${toOthersInfo.page_notify_url}`} />
                                 <input type="hidden" name="back_notify_url" value={toOthersInfo.back_notify_url} />
                                 <input type="hidden" name="signature" value={toOthersInfo.signature} />
                                 <input type="hidden" name="ver" value={toOthersInfo.ver} />

@@ -3,6 +3,28 @@
 
 .member__main {
 
+    .myTooltip{
+        background: #3b9ed9;
+        &.ant-tooltip{
+            &.ant-tooltip-placement-topLeft{
+                border: 1px solid #f04134;
+                .ant-tooltip-placement-topLeft{
+                    .ant-tooltip-arrow{
+                        border-top-color:#ebf1f5
+                    }
+                    .ant-tooltip-inner{
+                        color: #b8bfcc;
+                        background: #ebf1f5;
+                    }
+                }
+            }
+        }
+
+
+
+
+    }
+
     /* 右侧栏目开始 */
     /* 广告位开始 */
     .adver {
@@ -152,7 +174,7 @@
                 position: relative;
             }
 
-            span {
+            span.money {
                 font-size: 20px;
                 color: #ff721f;
             }

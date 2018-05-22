@@ -158,15 +158,19 @@ export function getTips(messageCode){
         },
         {
             code:`pay_0000`,
-            message:{code: 0, message: `操作成功`, allowGoOn: false}
+            message:{code: 0, message: `操作成功`, allowGoOn: true}
         },
         {
             code:`pay_9999`,
-            message:{code: 101, message: `操作失败`, allowGoOn: false}
+            message:{code: 9999, message: `操作失败`, allowGoOn: true}
+        },
+        {
+            code:`pay_9999_0`,
+            message:{code: 99990, message: `换卡申请失败`, allowGoOn: false}
         },
         {
             code:`pay_5343`,
-            message:{code: 102, message: `用户已开户`, allowGoOn: false}
+            message:{code: 102, message: `用户已开户`, allowGoOn: true}
         },
 
     ];

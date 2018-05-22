@@ -68,8 +68,9 @@ class ModalLoginPassword extends React.Component {
         });
         if(postResult.type!=`success`){
             return(
-                <div className="pop__password pop">
-                    <div className="form__wrapper">
+                <div className="pop__password">
+                    <div className="form__wrapper" hidden={true}>
+
                         <Form layout="horizontal" onSubmit={this.handleSubmit} id='frm'>
                             <FormItem
                                 { ...formItemLayout }
@@ -135,7 +136,7 @@ class ModalLoginPassword extends React.Component {
             )
         }else{
             return(
-                <div className="pop__password pop">
+                <div className="pop__password">
                     <BbhAlert
                         info={{message:postResult.message,description:postResult.description,type:postResult.type,
                             callback:()=>{

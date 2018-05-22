@@ -107,6 +107,7 @@ class ModalCertification extends React.Component {
                             </FormItem>
 
                         </Form>
+                        <button onClick={()=>this.modalClose()}>下一步</button>
                     </div>
                 </div>
             )

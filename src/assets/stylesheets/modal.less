@@ -43,6 +43,9 @@
 .pop{
 	padding: 0px 0px;
 
+
+
+
 	.form__wrapper{
       margin-top: 30px;
 		.ant-form-item{
@@ -54,6 +57,27 @@
 				font-size: 14px;
 				color: @text-color-help;
 			}
+		}
+		.ant-alert{
+			min-height: 150px;
+			padding: 30px 30px;
+			&.ant-alert-with-description{
+				.ant-alert-icon{
+					font-size: 56px;
+					left: calc(~"50% - 28px");
+				}
+			}
+			.ant-alert-description{
+				font-size: 14px;
+				text-align: center;
+
+			}
+			.ant-alert-message{
+				margin-top: 50px;
+				font-size: 24px;
+				text-align: center;
+			}
+
 		}
 	}
 	.pop__certification{
