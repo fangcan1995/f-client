@@ -123,7 +123,10 @@ class ModalInvest extends React.Component {
         onSuccess();
     }
     render() {
-        let {investAmount,account,onFail,onSuccess,dispatch}=this.props;
+        console.log('得到的数据');
+
+        let {value,account,onFail,onSuccess,dispatch}=this.props;
+        console.log(this.props);
         let {postResult,isPosting,redEnvelopes,rateCoupons}=this.props.investDetail;
         let {annualRate, loanExpiry} = this.props.investDetail.investInfo;
 
@@ -158,7 +161,7 @@ class ModalInvest extends React.Component {
                                 { ...formItemLayout }
                                 label="投资金额"
                             >
-                                <span id="money" className="money">{addCommas(parseFloat(investAmount))}</span>元
+                                <span id="money" className="money">{addCommas(parseFloat(value))}</span>元
                             </FormItem>
                             <FormItem
                                 { ...formItemLayout }
@@ -194,7 +197,7 @@ class ModalInvest extends React.Component {
                                 { ...formItemLayout }
                                 label="预期赚取"
                             >
-                                <span  className="money">{income(investAmount, annualRate, loanExpiry, 'm')}</span>元
+                                <span  className="money">{income(value, annualRate, loanExpiry, 'm')}</span>元
 
                                 {(i==-1)? `` : `+${toMoney(redEnvelopes[i].reAmount)}`}元
                             </FormItem>

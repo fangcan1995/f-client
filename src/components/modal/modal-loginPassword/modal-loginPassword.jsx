@@ -69,7 +69,7 @@ class ModalLoginPassword extends React.Component {
         if(postResult.type!=`success`){
             return(
                 <div className="pop__password">
-                    <div className="form__wrapper" hidden={true}>
+                    <div className="form__wrapper" >
 
                         <Form layout="horizontal" onSubmit={this.handleSubmit} id='frm'>
                             <FormItem

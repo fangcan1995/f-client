@@ -34,6 +34,11 @@ export const modal_config={
         width: "620px",
         height: "400px"
     },
+    ModalInvest: {
+        title: "投资",
+        width: "600px",
+        height: "400px"
+    },
     ModalCertification: {
         title: "实名认证",
         width: "500px",

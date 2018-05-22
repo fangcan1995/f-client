@@ -11,11 +11,7 @@ import {myAuthInfoAc} from '../../../../actions/member-settings';
 import {memberAc} from "../../../../actions/member";
 import  {accountAc}  from '../../../../actions/account';
 
-const success = () => {
-    const hide = message.loading('Action in progress..', 0);
-    // Dismiss manually and asynchronously
-    setTimeout(hide, 250000);
-};
+
 class MyAuthInfo extends React.Component {
     constructor(props) {
         super(props);
@@ -25,6 +21,7 @@ class MyAuthInfo extends React.Component {
             bbhModal:false,
             currentModule:``,
             key:Math.random(),
+            disabled:true,
         }
         this.confirm = this.confirm.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
@@ -56,18 +53,23 @@ class MyAuthInfo extends React.Component {
         this.toggleModal(`ModalSteps`,true);
     }
     changeCard(){
+        //const hide = message.loading('请稍后..', 0);
+        //setTimeout(hide, 3000);
         let {dispatch, account} = this.props;
         let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
         //先获取换卡需携带的信息，正确的话提交表单
-        dispatch(accountAc.getFuyouInfo({type:'ReOpenAccount'}))
+        dispatch(accountAc.getFuyouInfo({type:'ReOpenAccount',url:`my-settings_my-authInfo`}))
             .then(
-                ()=>{
-
-                        if(toOthersInfo.code===406  ){
-                            /*this.setState({
+                (res)=>{
+                    console.log('给富有的')
+                    toOthersInfo=res.value;
+                    console.log(toOthersInfo);
+                    //hide;
+                        if(toOthersInfo.code==406  ){
+                            this.setState({
                                 disabled:false
-                            });*/
-                            message.info('您已经提交了申请，请等待审核');
+                            });
+                            message.info(toOthersInfo.message);
                         }else if(toOthersInfo!=``){
                             document.getElementById('ChangeCard2').submit();
                             dispatch(accountAc.change_goOutState(true));
@@ -108,7 +110,7 @@ class MyAuthInfo extends React.Component {
         return(
             <div className="member__main">
                 <Crumbs/>
-                <Button onClick={success}>Display a loading indicator</Button>
+                {/*<Button onClick={success}>Display a loading indicator</Button>*/}
                 <div className="member__cbox">
                     <Tab>
                         <div name="基本信息">
@@ -161,7 +163,11 @@ class MyAuthInfo extends React.Component {
                                         <td className="Result">已开户</td>
                                         <td className="detail">{bankNo}</td>
                                         <td className="operate">
-                                            <a href="javascript:void(0);" onClick={this.changeCard}>更换</a>
+
+                                            {
+                                                this.state.disabled?<a href="javascript:void(0);" onClick={this.changeCard}>更换</a>
+                                                    :`更换`
+                                            }
                                         </td>
                                     </tr>
                                     :isOpenAccount==='0'?

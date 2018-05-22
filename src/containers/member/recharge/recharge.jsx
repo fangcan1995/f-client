@@ -93,18 +93,7 @@ class Recharge extends React.Component{
 
 
     }
-    /*componentDidUpdate() {
-        let {dispatch, account} = this.props;
-        let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
 
-        if(toOthersInfo.code===406  ){
-            this.setState({
-                disabled:false
-            });
-        }else if(toOthersInfo!=``){
-            document.getElementById('webReg').submit();
-        }
-    }*/
     render(){
         let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult}=this.props.account;
         let {isCertification,isOpenAccount,bankName,bankNo,availableBalance}=accountsInfo;

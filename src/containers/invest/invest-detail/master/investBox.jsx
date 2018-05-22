@@ -11,7 +11,7 @@ import investDetailActions from "../../../../actions/invest-detail";
 import {formItemLayout} from "../../../../utils/formSetting";
 import BbhModal from "../../../../components/modal/bbh_modal";
 import {modal_config} from "../../../../utils/modal_config";
-import { Button} from 'antd';
+import { Button,Popconfirm} from 'antd';
 
 class MasterInvestBox extends React.Component {
     constructor(props) {
@@ -31,7 +31,30 @@ class MasterInvestBox extends React.Component {
             this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
         }
     }
+    confirm(e) {
+        let {dispatch, account,investInfo} = this.props;
+        console.log('???');
+        console.log(investInfo);
+        let {accountsInfo}=account;
+        let {availableBalance}=accountsInfo;
+        let value=this.state.investAmount-availableBalance;
+        dispatch(accountAc.getFuyouInfo({type:'reCharge',url:'invest-detail_'+investInfo.id,value:value}))
+        //dispatch(accountAc.getFuyouInfo({type:'ReOpenAccount'}))
 
+            .then((res)=>{
+                console.log('给富有的')
+                let toOthersInfo=res.value;
+                console.log(toOthersInfo);
+                if(toOthersInfo.code==406  ){
+                    console.log('不能充值');
+                }else if(toOthersInfo!=``){
+                    document.getElementById('webReg').submit();
+                }
+            })
+            .catch(()=>{
+                //没获取到
+            });
+    }
     //模态框开启关闭
     toggleModal=(modal,visile,id)=>{
         //
@@ -54,7 +77,9 @@ class MasterInvestBox extends React.Component {
                 }else if(isRisk==='1'){
                     //测评结果中剩余的可投限额不小于投资金额(暂时用1000替代)
                     if(surplusAmount>=1000){
-                        currentModule=`ModalInvestSteps`;  //去投资
+                        //currentModule=`ModalInvestSteps`;  //去投资
+                        currentModule=`ModalInvest`;  //去投资
+
                     }else{
                         currentModule = `ModalRiskAssess`;   //去测评
                     }
@@ -83,7 +108,7 @@ class MasterInvestBox extends React.Component {
     }
     render(){
         let {account,auth,investInfo,type}=this.props;
-        let {isFetching,accountsInfo}=account;
+        let {isFetching,accountsInfo,toOthersInfo}=account;
         let {availableBalance,memberRedInfo,memberCoupon,postResult,isCertification,isOpenAccount,isRisk,riskLevel,isNovice}=accountsInfo;
 
         return(
@@ -116,7 +141,7 @@ class MasterInvestBox extends React.Component {
                                 }}>
                             </StepperInput>
                             <div className="tips__area">
-                                {this.state.tips!=''? <span className="tips error">{this.state.tips}</span>
+                                {this.state.tips!=''? <span className="errorMessages">{this.state.tips}</span>
                                     :''}
                             </div>
                             {(!auth.isAuthenticated)?
@@ -174,11 +199,24 @@ class MasterInvestBox extends React.Component {
                                         {
                                             (accountsInfo===``)?``
                                                 :(investInfo.noviceLoan=='1' && isNovice==='0')?<Button type="primary"  className="pop__wp100" disabled={true}>仅限新手</Button>
-                                                :<Button type="primary" onClick={() => this.toggleModal(`bbhModal`,true)} className="pop__wp100" disabled={isFetching}>立即投资</Button>
+                                                :(availableBalance<this.state.investAmount)?
+                                                    <Popconfirm placement="top" title={`您的帐户可用余额不足，是否充值`} onConfirm={()=>this.confirm()} okText="确定" cancelText="取消">
+                                                        <Button type="primary"  className="pop__wp100" disabled={isFetching}>立即投资</Button>
+                                                    </Popconfirm>
+                                                    :<Button type="primary" onClick={() => this.toggleModal(`bbhModal`,true)} className="pop__wp100" disabled={isFetching}>立即投资</Button>
 
                                         }
 
                                     </div>
+                                    <form name="webReg" id="webReg" method="post"  action={toOthersInfo.url}>
+                                        <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />
+                                        <input type="hidden" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} />
+                                        <input type="hidden" name="login_id" value={toOthersInfo.login_id} />
+                                        <input type="hidden" name="amt" value={toOthersInfo.amt} />
+                                        <input type="hidden" name="page_notify_url" value={toOthersInfo.page_notify_url} />
+                                        <input type="hidden" name="back_notify_url" value={toOthersInfo.back_notify_url} />
+                                        <input type="hidden" name="signature" value={toOthersInfo.signature} />
+                                    </form>
                                 </div>
                             }
                         </div>

@@ -6,6 +6,7 @@ import ModalBindCard from '../modal/modal-bindCard/modal-bindCard';
 import ModalRiskAssess from '../modal/modal-riskAssess/modal-riskAssess';
 import ModalInvestSteps from '../modal/modal-invest-steps/modal-invest-steps';
 import ModalCertification from '../modal/modal-certification/modal-certification';
+import ModalInvest from '../modal/modal-invest/modalInvest';
 import { Modal } from 'antd';
 import './bbh_modal.less';
 
@@ -50,7 +51,9 @@ export default class BbhModal extends Component{
             case `ModalInvestSteps`:
                 moduleContent=<ModalInvestSteps key={this.state.key} value={investAmount} onSuccess={()=>{this.onCancel()}} />;
                 break;
-
+            case `ModalInvest`:
+                moduleContent=<ModalInvest key={this.state.key} value={investAmount} onSuccess={()=>{this.onCancel()}} />;
+                break;
             default:
                 break
         }

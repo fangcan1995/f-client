@@ -83,10 +83,8 @@ class BankCard extends React.Component{
         let {isCertification,isOpenAccount,bankName,bankNo,trueName}=account.accountsInfo;
         if(postResult.code==='0'){
             this.props.dispatch(accountAc.modifyState({postResult:''}));
-            this.props.dispatch(accountAc.getInfo());
+            this.props.dispatch(accountAc.getAccountInfo());
         }
-        console.log('------------------');
-        console.log(toOthersInfo);
         return (
             <div className="member__main">
                 <Crumbs />

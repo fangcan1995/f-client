@@ -66,7 +66,7 @@ export const accountAc= {
                         riskLevel:'',	//风险测评等级
                         surplusAmount:1000000,//剩余投资限额
                         accountBalance:100000,//账户余额
-                        availableBalance:1000,	//账户可用余额
+                        availableBalance:2000,	//账户可用余额
                         freezingAmount:0,  //冻结金额
                         investAmount:0,  //散标资产
                         yestEarns:0, //昨日收益
