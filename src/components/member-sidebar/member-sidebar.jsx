@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Link } from 'react-router-dom';
-import { Avatar } from 'antd';
-import './member-sidebar.less';
-import MyAvatar from '../myAvatar/myAdatar';
 import {accountAc} from "../../actions/account";
+import { Tooltip,Popconfirm } from 'antd';
+import MyAvatar from '../myAvatar/myAdatar';
+import './member-sidebar.less';
 const ListItemLink = ({ to, ...rest }) => (
   <Route path={to} children={({ match }) => (
     <li className={match ? 'active' : ''}>
@@ -16,15 +15,18 @@ const ListItemLink = ({ to, ...rest }) => (
 
 class MemberSidebar extends React.Component {
     componentWillMount() {
-        console.log('执行了');
         this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
+    }
+    handle_confirmOpen() {
+        this.props.history.push('/my-settings/bank-card')
+    }
+    handle_confirmRisk() {
+        this.props.history.push('/my-settings/my-riskAssess')
     }
     render(){
         let {account,auth}=this.props;
         let {accountsInfo}=account;
         let {photo,treeName,availableBalance,memberRedInfo,memberCoupon,postResult,isCertification,isOpenAccount,isRisk,riskLevel,isNovice}=accountsInfo;
-        console.log('返回的会员信息');
-        console.log(this.props);
         return (
             <main className="main member">
                 <div className="wrapper">
@@ -39,9 +41,42 @@ class MemberSidebar extends React.Component {
                                     }
                                 </div>
                                 <div className="step">
-                                    <i className="iconfont icon-phone able1" onClick={()=>{this.props.history.push('/my-account/recharge')}}></i>
-                                    <i className={`iconfont icon-card able${isOpenAccount || 0}`} onClick={()=>{this.props.history.push('/my-account/bank-card')}}></i>
-                                    <i className={`iconfont icon-fxcp able${isRisk || 0}`} onClick={()=>{this.props.history.push('/my-settings/my-riskAssess')}}></i>
+                                    <Tooltip
+                                        placement="topLeft"
+                                        title="已绑定手机号"
+                                        arrowPointAtCenter overlayClassName='myTooltip'
+                                    >
+                                        <i className="iconfont icon-phone able1" ></i>
+                                    </Tooltip>
+                                    {(isOpenAccount===`1`)?
+                                        <Tooltip
+                                            placement="topLeft"
+                                            title="已开户"
+                                            arrowPointAtCenter overlayClassName='myTooltip'
+                                        >
+                                            <i className='iconfont icon-card able1' ></i>
+                                        </Tooltip>
+                                        :<Popconfirm placement="top" title={`未开户，是否开户`}  okText="确定" cancelText="取消" trigger='hover'
+                                                     onConfirm={this.handle_confirmOpen}
+
+                                        >
+                                            <i className='iconfont icon-card able0'></i>
+                                        </Popconfirm>
+                                    }
+                                    {(isRisk===`1`)?
+                                        <Tooltip
+                                            placement="topLeft"
+                                            title="已测评"
+                                            arrowPointAtCenter overlayClassName='myTooltip'
+
+                                        >
+                                            <i className='iconfont icon-fxcp able1' ></i>
+                                        </Tooltip>
+                                        :<Popconfirm placement="top" title={`未测评，是否测评`} onConfirm={this.handle_confirmRisk} okText="确定" cancelText="取消" trigger='hover'>
+                                            <i className='iconfont icon-fxcp able0'></i>
+                                        </Popconfirm>
+                                    }
+
                                 </div>
                             </div>
                             <div className="action">

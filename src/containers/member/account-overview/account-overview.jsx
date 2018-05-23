@@ -34,11 +34,13 @@ class AccountOverview extends React.Component{
                         <div className="accountInfo">
                             <div className="infoLine">
                                 <div>
-                                    <Tooltip placement="topLeft"  title="包含您可用余额及投资冻结的金额，满标划转后统一扣除" arrowPointAtCenter overlayClassName='myTooltip'
+                                    <Tooltip
+                                        placement="topLeft"
+                                        title="包含您可用余额及投资冻结的金额，满标划转后统一扣除"
+                                        arrowPointAtCenter overlayClassName='myTooltip'
                                     >
                                         <span style={{cursor:'default'}}>账户余额:</span>
                                     </Tooltip>
-                                    {/*账户余额: <span>{toMoney(accountBalance)}</span>&nbsp;元<em>?<strong>包含您可用余额及投资冻结的金额，满标划转后统一扣除</strong></em>*/}
                                     <span className='money'>{toMoney(accountBalance)}</span>&nbsp;元
                                 </div>
                                 <div>可用余额: <span className='money'>{toMoney(availableBalance)}</span>&nbsp;元</div>

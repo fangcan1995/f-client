@@ -21,7 +21,7 @@ class ModalBindCard extends React.Component {
         //event.preventDefault();   //阻止提交
         let {toOthersInfo}=this.props.account;
         document.getElementById('webReg').submit();
-        this.props.dispatch(accountAc.change_goOutState(true));
+        //this.props.dispatch(accountAc.change_goOutState(true));
         return false;
     }
     //回调
@@ -63,7 +63,7 @@ class ModalBindCard extends React.Component {
                                 <input type="hidden" name="ver" value={toOthersInfo.ver} />
                                 <div className='center'>
                                     {
-                                        toOthersInfo==``?<Button type="primary" htmlType="submit" className="pop__large" disabled={true}>去开户</Button>
+                                        toOthersInfo==``?<Button type="primary"  className="pop__large" disabled={true}>去开户</Button>
                                             :<Button type="primary" htmlType="submit" className="pop__large" onClick={()=>this.handleSubmit()}>去开户</Button>
                                     }
 
