@@ -7,8 +7,6 @@ import BbhModal from "../../../../components/modal/bbh_modal";
 import {modal_config} from "../../../../utils/modal_config";
 import { Popconfirm, message, Button } from 'antd';
 import './authInfo.less';
-import {myAuthInfoAc} from '../../../../actions/member-settings';
-import {memberAc} from "../../../../actions/member";
 import  {accountAc}  from '../../../../actions/account';
 
 
@@ -79,20 +77,7 @@ class MyAuthInfo extends React.Component {
             )
             .catch();
     }
-    /*componentDidUpdate() {
-        let {dispatch, account} = this.props;
-        let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
-        if(toOthersInfo.code===406  ){
-            /!*this.setState({
-                disabled:false
-            });*!/
-        }else if(toOthersInfo!=``){
-            document.getElementById('ChangeCard2').submit();
-            this.props.dispatch(accountAc.change_goOutState(true));
-        }
 
-
-    }*/
     changePhone(){
         alert('去第三方,暂不开发');
     }
@@ -270,10 +255,9 @@ class MyAuthInfo extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { auth,memberSettings,account } = state.toJS();
+    const { auth,account } = state.toJS();
     return {
         auth,
-        memberSettings,
         account
     };
 }
