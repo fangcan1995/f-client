@@ -14,10 +14,10 @@ import {
 
 
 import ReactEcharts from 'echarts-for-react';
-import {getEchartLine,getEchartBar} from '../../../assets/js/getEchart';
+import {getEchartLine,getEchartBar} from '../../../utils/getEchart';
 import PieChart from '../../../components/charts/pie';
 import BarChart from '../../../components/charts/bar';
-import {addCommas} from '../../../utils/cost';
+import {addCommas} from '../../../utils/famatData';
 
 
 
