@@ -1,6 +1,6 @@
 import React,{ Component } from "react";
 import ReactEcharts from 'echarts-for-react';
-import {getEchartPie} from '../../assets/js/getEchart';
+import {getEchartPie} from '../../utils/getEchart';
 import {toMoney,toNumber,addCommas} from '../../utils/famatData';
 import './pie.less';
 export default class PieChart extends Component{
