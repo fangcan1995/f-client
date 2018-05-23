@@ -1,35 +1,9 @@
 import cFetch from './../utils/cFetch';
-import cookie from 'js-cookie';
 import {formatPostResult} from '../utils/famatData';
 import {postContent} from '../utils/formSetting';
-import {urls,token} from './../utils/url';
 import parseJson2URL from "../utils/parseJson2URL";
 import {API_CONFIG} from "../config/api";
 
-const url_memberInfo=`${urls}/members/riskEvaluation`; //获取会员信息
-const url_tradePassword=`http://172.16.1.234:8060/uaa/oauth/trade/password`; //设置交易密码
-const url_certification=`http://172.16.1.225:9090/members/auth`; //实名认证
-
-export const sendMemberVerifyCode = params => {
-    return {
-        type: 'member/SEND_VERIFY_CODE',
-        async payload() {
-            const res = await cFetch('http://172.16.1.234:8060' + API_CONFIG.setTradePasswordVerifyCode + params, { credentials: 'include' }, false);
-            const { code, data } = res;
-            if ( code == 0 ) {
-                return data || {};
-            } else {
-                throw res;
-            }
-        }
-    }
-}
-export const setMemberVerifyCodeCd = cd => {
-    return {
-        type: 'member/SET_VERIFY_CODE_CD',
-        payload: cd,
-    }
-}
 export const accountAc= {
     //虚拟流程，静态修改账户信息
     dummyModifyAccount:(params)=>{
@@ -50,7 +24,7 @@ export const accountAc= {
                 if (code == 0) {
                     //console.log('后台返回的会员基础信息');
                     //console.log(res);
-                    let mock={
+                    /*let mock={
                         isCertification:'1',	//是否实名认证（0：未实名；1：已实名）
                         isOpenAccount:'1',	//是否开户（0：未开户；1：已开户）
                         isRisk:'1',	//是否风险测评（0：否；1：是）
@@ -72,11 +46,10 @@ export const accountAc= {
                         memberRedInfo:{number: 1, amountSum: 500},	//红包信息
                         memberCoupon:{number: 5, amountSum: 3},	//加息券信息
 
-                    };
+                    };*/
                     //data=mock;
-                    console.log(mock);
 
-                    return mock;
+                    return data;
                 } else {
                     throw mock;
                 }
@@ -128,7 +101,7 @@ export const accountAc= {
         return {
             type: 'member/account/CERTIFICATION_FETCH',
             async payload() {
-                const res = await cFetch(`${url_certification}`, postContent(params), true);
+                const res = await cFetch(API_CONFIG.baseUri+API_CONFIG.setCertification, postContent(params), true);
                 //测试用
                 console.log('实名认证返回的结果');
                 console.log(res);
@@ -144,12 +117,12 @@ export const accountAc= {
         return {
             type: 'member/account/TRADEPASSWORD_FETCH',  //真实
             async payload() {
-                const res = await cFetch(`${url_tradePassword}?${params}`, postContent(``), true); //真实
+                const res = await cFetch(API_CONFIG.baseUri+API_CONFIG.setTradePassword+`?${params}`, postContent(``), true); //真实
                 return formatPostResult(res);
-
             }
         }
     },
+
     modifyState: (prams) => {
         return {
             type: 'member/MODIFY_STATE',
@@ -176,5 +149,25 @@ export const accountAc= {
             }
         }
     },
+}
+export const sendMemberVerifyCode = params => {
+    return {
+        type: 'member/SEND_VERIFY_CODE',
+        async payload() {
+            const res = await cFetch(API_CONFIG.baseUri + API_CONFIG.setTradePasswordVerifyCode + params, { credentials: 'include' }, false);
+            const { code, data } = res;
+            if ( code == 0 ) {
+                return data || {};
+            } else {
+                throw res;
+            }
+        }
+    }
+}
+export const setMemberVerifyCodeCd = cd => {
+    return {
+        type: 'member/SET_VERIFY_CODE_CD',
+        payload: cd,
+    }
 }
 

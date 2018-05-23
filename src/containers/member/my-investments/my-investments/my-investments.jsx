@@ -180,9 +180,9 @@ class MyInvestments extends React.Component{
                                                     myList.list.map((l, i) => (
                                                         (status === 1) ? (
                                                             <tr key={`row-${i}`}>
-                                                                <td><p><a href={`/invest-list/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
                                                                 <td>{l.proMoney}</td>
-                                                                <td>{l.loanExpiry}</td>
+                                                                <td>{l.loanExpiry}个月</td>
                                                                 <td>{l.loanRefundWay}</td>
                                                                 <td>{l.proMoneyEnd}</td>
                                                                 <td>{l.inveCreateTime}</td>
@@ -190,7 +190,7 @@ class MyInvestments extends React.Component{
                                                             </tr>
                                                         ) : ((status === 2) ? (
                                                             <tr key={`row-${i}`}>
-                                                                <td><p><a href={`/invest-list/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
                                                                 <td>{l.proMoney}</td>
                                                                 <td>{l.loanExpiry}个月</td>
                                                                 <td>{l.proMoneyEnd}</td>
@@ -205,7 +205,7 @@ class MyInvestments extends React.Component{
                                                             </tr>
                                                         ) : ((status === 3) ? (
                                                             <tr key={`row-${i}`}>
-                                                                <td><p><a href={`/invest-list/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
                                                                 <td>{l.proMoney}</td>
                                                                 <td>{l.loanExpiry}</td>
                                                                 <td>{l.proMoneyEnd}</td>
@@ -220,7 +220,7 @@ class MyInvestments extends React.Component{
                                                         ) : ((status === 4) ? (
                                                             <tr key={`row-${i}`}>
                                                                 <td>--</td>
-                                                                <td><p><a href={`/invest-list/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
                                                                 <td>{l.proMoneyEnd}</td>
                                                                 <td>{l.transAmt}</td>
                                                                 <td>{l.transFee}</td>
@@ -230,7 +230,7 @@ class MyInvestments extends React.Component{
                                                         ) : ((status === 5) ? (
                                                             <tr key={`row-${i}`}>
                                                                 <td>{l.transNo}</td>
-                                                                <td><p><a href={`/invest-list/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
                                                                 <td>{l.transAmt}</td>
                                                                 <td>{l.transFinanced}</td>
                                                                 <td>{l.transSchedule}</td>
@@ -242,7 +242,7 @@ class MyInvestments extends React.Component{
                                                         ) : ((status === 6) ? (
                                                             <tr key={`row-${i}`}>
                                                                 <td>{l.transNo}</td>
-                                                                <td><p><a href={`/invest-list/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
                                                                 <td>{l.transAmt}</td>
                                                                 <td>{l.transferDate}</td>
                                                                 <td>

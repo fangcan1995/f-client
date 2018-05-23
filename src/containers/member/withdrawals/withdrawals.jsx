@@ -137,9 +137,9 @@ class Withdrawals extends React.Component{
                                                 }
                                             </div>
                                             <div className="form__bar">
-                                                {isFetching ?
+                                                {isPosting ?
                                                     <Button type="primary" htmlType="submit" className='pop__large' disabled={true}>
-                                                        <Posting isShow={isFetching}/>
+                                                        <Posting isShow={isPosting}/>
                                                     </Button>
                                                     :
                                                     <Button type="primary"  className="pop__large"
@@ -157,7 +157,6 @@ class Withdrawals extends React.Component{
                                                 <input type="hidden" name="page_notify_url" value={toOthersInfo.page_notify_url} />
                                                 <input type="hidden" name="back_notify_url" value={toOthersInfo.back_notify_url}/>
                                                 <input type="hidden" name="signature" value={toOthersInfo.signature} />
-
                                             </form>
                                         </div>
                                 }

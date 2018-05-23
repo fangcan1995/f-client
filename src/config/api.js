@@ -24,8 +24,9 @@ export const API_CONFIG = {
     forgetVerifyCode: 'uaa/code/sms/forget/password',
     setTradePasswordVerifyCode:  '/uaa/code/sms/trade/password', //设置交易密码的短信接口
 
-    getMemberInfo:`members/riskEvaluation`, //获取会员帐户基础信息
-    //实名认证
+    getMemberInfo:`accounts/my/simpleInfo`, //获取会员帐户基础信息
+    setCertification:`members/auth`,//实名认证
+    setTradePassword:`uaa/oauth/trade/password`, //设置交易密码
     getFuiou:`http://172.16.1.252:9090/payment/fuiou/account`, //给富有的开户信息
     //提现
     //充值
@@ -33,3 +34,5 @@ export const API_CONFIG = {
 
 
 };
+const url_tradePassword=`http://172.16.1.234:8060/uaa/oauth/trade/password`; //设置交易密码
+const url_certification=`http://172.16.1.225:9090/members/auth`; //实名认证

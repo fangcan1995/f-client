@@ -73,8 +73,6 @@ class Recharge extends React.Component{
             disabled:true
         });
         dispatch(accountAc.getFuyouInfo({type:'reCharge',url:'my-account_recharge',value:value}))
-        //dispatch(accountAc.getFuyouInfo({type:'ReOpenAccount'}))
-
             .then((res)=>{
                 console.log('给富有的')
                 toOthersInfo=res.value;
@@ -152,9 +150,9 @@ class Recharge extends React.Component{
                                                 }
                                             </div>
                                             <div className="form__bar">
-                                                {isFetching ?
+                                                {isPosting ?
                                                     <Button type="primary" htmlType="submit" className='pop__large' disabled={true}>
-                                                        <Posting isShow={isFetching}/>
+                                                        <Posting isShow={isPosting}/>
                                                     </Button>
                                                     :
                                                     <Button type="primary" htmlType="submit" className="pop__large"

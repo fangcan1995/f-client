@@ -131,7 +131,7 @@ class MyLoans extends React.Component {
                                                         </tr>
                                                     ) : ((status === 2) ? (
                                                         <tr key={`row-${i}`}>
-                                                            <td><p><a href={`/invest-list/${l.projectId}`} target="_blank">{l.name}</a></p></td>
+                                                            <td><p><a href={`/invest-detail/${l.projectId}`} target="_blank">{l.name}</a></p></td>
                                                             <td>{l.money}</td>
                                                             <td>{l.loanExpiry}个月</td>
                                                             <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
@@ -142,7 +142,7 @@ class MyLoans extends React.Component {
                                                         </tr>
                                                     ) : ((status === 3) ? (
                                                         <tr key={`row-${i}`}>
-                                                            <td><p><a href={`/invest-list/${l.projectId}`} target="_blank">{l.name}</a></p></td>
+                                                            <td><p><a href={`/invest-detail/${l.projectId}`} target="_blank">{l.name}</a></p></td>
                                                             <td>{l.money}</td>
                                                             <td>{l.loanExpiry}个月</td>
                                                             <td>{moment(l.transferTtime).format('YYYY-MM-DD')}</td>
@@ -160,7 +160,7 @@ class MyLoans extends React.Component {
                                                         </tr>
                                                     ) : ((status === 4) ? (
                                                         <tr key={`row-${i}`}>
-                                                            <td><p><a href={`/invest-list/${l.projectId}`} target="_blank">{l.name}</a></p></td>
+                                                            <td><p><a href={`/invest-detail/${l.projectId}`} target="_blank">{l.name}</a></p></td>
                                                             <td>{l.money}</td>
                                                             <td>{l.loanExpiry}个月</td>
                                                             <td>{moment(l.transferTtime).format('YYYY-MM-DD')}</td>

@@ -62,7 +62,7 @@ class Receiving extends React.Component{
                                         {
                                             myList.list.map((l, i) => (
                                                 <dl key={`row-${i}`}>
-                                                    <dt><p><a href="#">{l.proName}</a></p><strong>{l.proStatus}</strong>
+                                                    <dt><p><a href={`/invest-detail/${l.proId}`}>{l.proName}</a></p><strong>{l.proStatus}</strong>
                                                     </dt>
                                                     <dd>投资金额：{l.proMoneyEnd}元</dd>
                                                     <dd>投资日期：{moment(l.inveCreateTime).format('YYYY-MM-DD')}</dd>

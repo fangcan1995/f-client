@@ -204,7 +204,7 @@ class RepaymentPlans extends React.Component{
                                             <tbody>
                                             {myList.list.map((l, i) => (
                                                 <tr key={`row-${i}`}>
-                                                    <td><p><a href={`/invest-list/${l.projectId}`} target="_blank">{l.name}</a></p></td>
+                                                    <td><p><a href={`/invest-detail/${l.projectId}`} target="_blank">{l.name}</a></p></td>
                                                     <td>{moment(l.shdRpmtDate).format('YYYY-MM-DD')}{/*应还日期*/}</td>
                                                     <td>{l.rpmtIssue}{/*还款期数*/}</td>
                                                     <td>{l.rpmtCapital}{/*应还本金*/}</td>
