@@ -53,17 +53,12 @@ class TransactionRecord extends Component{
         filter_new.startTime=dateString[0];
         filter_new.endTime=dateString[1];
         this.props.dispatch(transactionRecordAc.modifyState({filter:filter_new,data:``}));
-        filter_new.startTime=dateString[0]+' 00:00:00';
-        filter_new.endTime=dateString[1]+' 23:59:59';
         filter_new.pageNum=1;
         dispatch(transactionRecordAc.getData(filter_new));    //获取数据
     }
     render(){
-
         let {transactionRecord,dispatch} = this.props;
         let {filter,data,isFetching}=transactionRecord;
-        console.log('获取的数据');
-        console.log(data);
         return (
             <div className="member__main" id="area">
                 <Crumbs/>

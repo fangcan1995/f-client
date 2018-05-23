@@ -96,8 +96,7 @@ class MasterInvestBox extends React.Component {
 
     };
     closeModal(status){
-        console.log('关闭弹框');
-        //this.props.dispatch(accountAc.getAccountInfo());  //成功重载数据,暂时注释掉
+        this.props.dispatch(accountAc.getAccountInfo());  //成功重载数据,暂时注释掉
         this.toggleModal('bbhModal',false);
     }
     render(){
@@ -178,7 +177,7 @@ class MasterInvestBox extends React.Component {
                                         </li>
                                         <li>
                                             <strong>可用加息券：</strong>
-                                            {(accountsInfo!=``)? `${toMoney(memberRedInfo.number)} ` : ``} 张
+                                            {(accountsInfo!=``)? `${memberRedInfo.number} ` : ``} 张
                                         </li>
                                         <li>
                                             <strong>预期可赚取：</strong>

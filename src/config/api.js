@@ -32,6 +32,8 @@ export const API_CONFIG = {
     //充值
     //重新绑卡
 
+    uploadPhoto:`members/photo`, //上传头像
+
 
 };
 const url_tradePassword=`http://172.16.1.234:8060/uaa/oauth/trade/password`; //设置交易密码

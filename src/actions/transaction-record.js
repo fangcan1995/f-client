@@ -10,11 +10,16 @@ export const transactionRecordAc={
         return {
             type: 'transaction-record/FETCH',
             async payload() {
-                console.log('查询参数是：');
-                console.log(params);
                 for(var name in params){
                     if(params[name]===``){
                         delete params[name];
+                    }else{
+                        if(name==`startTime`) {
+                            params[name] += ' 00:00:00'
+                        }
+                        if(name==`endTime`) {
+                            params[name] += ' 23:59:59'
+                        }
                     }
                 }
                 params = parseJson2URL(params);

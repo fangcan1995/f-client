@@ -48,7 +48,7 @@ export const accountAc= {
 
                     };*/
                     //data=mock;
-
+                    data.isNovice='1';
                     return data;
                 } else {
                     throw mock;
