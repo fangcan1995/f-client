@@ -138,105 +138,13 @@ export const accountAc= {
             }
         }
     },
-    //假开户,可以删除
-    /*postOpenAccount: (pram) => {
-        return {
-            type: 'member/FETCH_POSTING',
-            async payload() {
-                pram=parseJson2URL(pram);
-                const res = await cFetch(`${url_openAccount}?custId=123&escrowCode=100100&accountBalance=0&freezingAmount=0&availableBalance=0&${pram}`,
-                    {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: ``,
-                    },
-                    true);
-                let type=``;
-                (res.code == 0)?type='success':type='error';
-                console.log('提交开户返回的结果');
-                console.log(res);
-                return {
-                    dummyResult: {
-                        code:res.code,
-                        type:type,
-                        message:res.message,
-                        description:res.data||``,
-                    }
-                };
-            }
-        }
-    },*/
-    /*//充值
-    recharge: (pram) => {
-        return {
-            type: 'member/FETCH_POSTING',
-            async payload() {
-                const res = await cFetch(`${url_recharge}&amount=`+pram, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: ``,
-                    },
-                    true);
-                /!* if (res.code == 0) {
-                     message.success('充值成功');
-                     return {postResult: res};
-                 } else {
-                     throw res;
-                 }*!/
-                console.log('充值提交后返回');
-                console.log(res);
-                let type=``;
-                (res.code == 0)?type='success':type='error';
-                return {
-                    dummyResult: {
-                        code:res.code,
-                        type:type,
-                        message:res.message,
-                        description:res.data,
-                    }
-                };
-            }
-        }
-    },*/
-    //提现
-    /*withdrawals: (pram) => {
-        return {
-            type: 'member/FETCH',
-            async payload() {
-                const res = await cFetch(`${url_withdrawals}&amount=`+pram, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: ``,
-                    },
-                    true);
-                /!*if (res.code == 0) {
-                    //message.success('提现成功');
-                    return {postResult: res};
-                } else {
-                    throw res;
-                }*!/
-                return {dummyResult: res};
-            }
-        }
-    },*/
     //设置交易密码
     setTradePassword: (params) => {
         params=parseJson2URL(params);
         return {
-            //type: 'member/account/CERTIFICATION_FETCH', //虚拟，测试用
             type: 'member/account/TRADEPASSWORD_FETCH',  //真实
             async payload() {
                 const res = await cFetch(`${url_tradePassword}?${params}`, postContent(``), true); //真实
-                //测试用
-                console.log('设置密码返回的结果');
-                console.log(res);
-                //res.code=0;
-                //res.message='设置交易密码成功';
-                //end
                 return formatPostResult(res);
 
             }

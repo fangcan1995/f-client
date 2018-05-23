@@ -5,6 +5,7 @@ import {accountAc} from "../../actions/account";
 import { Tooltip,Popconfirm } from 'antd';
 import MyAvatar from '../myAvatar/myAdatar';
 import './member-sidebar.less';
+
 const ListItemLink = ({ to, ...rest }) => (
   <Route path={to} children={({ match }) => (
     <li className={match ? 'active' : ''}>
@@ -13,7 +14,7 @@ const ListItemLink = ({ to, ...rest }) => (
   )}/>
 )
 
-class MemberSidebar extends React.Component {
+class MemberSidebar extends Component {
     componentWillMount() {
         this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
     }
@@ -24,9 +25,9 @@ class MemberSidebar extends React.Component {
         this.props.history.push('/my-settings/my-riskAssess')
     }
     render(){
-        let {account,auth}=this.props;
-        let {accountsInfo}=account;
-        let {photo,treeName,availableBalance,memberRedInfo,memberCoupon,postResult,isCertification,isOpenAccount,isRisk,riskLevel,isNovice}=accountsInfo;
+        const {account,auth}=this.props;
+        const {accountsInfo}=account;
+        const {photo,treeName,isOpenAccount,isRisk}=accountsInfo;
         return (
             <main className="main member">
                 <div className="wrapper">

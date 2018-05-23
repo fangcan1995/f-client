@@ -33,18 +33,12 @@ class MasterInvestBox extends React.Component {
     }
     confirm(e) {
         let {dispatch, account,investInfo} = this.props;
-        console.log('???');
-        console.log(investInfo);
         let {accountsInfo}=account;
         let {availableBalance}=accountsInfo;
         let value=this.state.investAmount-availableBalance;
         dispatch(accountAc.getFuyouInfo({type:'reCharge',url:'invest-detail_'+investInfo.id,value:value}))
-        //dispatch(accountAc.getFuyouInfo({type:'ReOpenAccount'}))
-
             .then((res)=>{
-                console.log('给富有的')
                 let toOthersInfo=res.value;
-                console.log(toOthersInfo);
                 if(toOthersInfo.code==406  ){
                     console.log('不能充值');
                 }else if(toOthersInfo!=``){

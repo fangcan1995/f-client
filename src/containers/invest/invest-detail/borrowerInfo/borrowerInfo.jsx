@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import {addCommas, toMoney, toNumber,cardGetAge,cardGetSex} from "../../../../utils/famatData"
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
     export default ({loanInfo,isFetching,...rest}) => {
-
         let {projectInfoBaseInfoDto,loanCreditCountDto,projectInfoLoanInfoDto,mortgageCarHis,mortgageHouseHis,filesList}=loanInfo;
         return (
             <ul className="m-intro">

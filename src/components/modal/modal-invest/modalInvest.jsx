@@ -152,6 +152,13 @@ class ModalInvest extends React.Component {
         if(postResult.type!=`success`) {
             return (
                 <div className="pop__invest">
+                    {/*<BbhAlert
+                        info={{message:'chenggong',description:'投资成功',type:'success',
+                            callback:()=>{
+                                this.modalClose()
+                            }
+                        }}
+                    />*/}
                     <div className="form__wrapper" id="area" >
 
                         <Form layout="horizontal" onSubmit={this.handleSubmit} id='frm'>
@@ -218,7 +225,7 @@ class ModalInvest extends React.Component {
                             <FormItem>
                                 <p>
                                     <Checkbox onChange={this.onChange}>我已阅读并同意
-                                        <a href="agreement_tzsb.html" target="_blank">《投资协议》</a></Checkbox>
+                                        <a href="/subject_3/2" target="_blank">《投资协议》</a></Checkbox>
                                 </p>
                             </FormItem>
                             <FormItem>{postResult.message}

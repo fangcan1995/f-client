@@ -27,6 +27,9 @@ let investDetailActions = {
             const res = await cFetch(`${url_invest_projects_loan}/${id}` , {method: 'GET'}, false);
             const {code, data} = res;
             if (code == 0) {
+                console.log('标的信息');
+                console.log(data);
+                data.surplusAmount=1800;
                 return data;
             } else {
                 throw res;
