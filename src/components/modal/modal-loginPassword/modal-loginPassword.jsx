@@ -7,7 +7,7 @@ import {Loading,NoRecord,Posting,BbhAlert} from '../../../components/bbhAlert/bb
 import {passwordRegExp } from '../../../utils/regExp';
 import {formItemLayout,noop } from '../../../utils/formSetting';
 import {hex_md5} from "../../../utils/md5";
-import "./modal-loginPassword.less"
+
 
 const createForm = Form.create;
 const FormItem = Form.Item;

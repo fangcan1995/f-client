@@ -4,7 +4,6 @@ import { Button} from 'antd';
 import { connect } from 'react-redux';
 import {accountAc} from "../../../actions/account";
 import {Loading,NoRecord,Posting,BbhAlert,WaitThirdParty} from '../../../components/bbhAlert/bbhAlert';
-import "./modal-bindCard.less";
 
 class ModalBindCard extends React.Component {
     constructor(props) {

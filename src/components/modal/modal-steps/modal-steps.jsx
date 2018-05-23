@@ -6,7 +6,6 @@ import { Steps,Icon } from 'antd';
 import { connect } from 'react-redux';
 import  {accountAc}  from '../../../actions/account';
 
-import './modal-steps.less'
 
 const Step = Steps.Step;
 

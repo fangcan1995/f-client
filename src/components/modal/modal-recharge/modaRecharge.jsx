@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {addCommas} from "../../../utils/famatData";
 import { Button } from 'antd';
-import './modaRecharge.less'
 import { connect } from 'react-redux';
 import {accountAc} from "../../../actions/account";
 import {Loading,NoRecord,Posting,BbhAlert,WaitThirdParty} from '../../../components/bbhAlert/bbhAlert';
+
 class ModalRecharge extends React.Component {
     constructor(props) {
         super(props);

@@ -1,12 +1,11 @@
 import React from 'react';
-
 import { connect } from 'react-redux';
 import {myRiskAssessAc} from '../../../actions/member-settings';
 import { Radio,Button } from 'antd';
 import {BbhAlert} from '../../../components/bbhAlert/bbhAlert';
 import {Loading,NoRecord,Posting} from '../../../components/bbhAlert/bbhAlert';
 import {accountAc} from "../../../actions/account";
-import './modal-riskAssess.less';
+
 const RadioGroup = Radio.Group;
 class ModalRiskAssess extends React.Component {
     constructor(props){

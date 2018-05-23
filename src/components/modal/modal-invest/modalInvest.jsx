@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import  {poundage,checkMoney,income}  from '../../../utils/cost';
-import './modalInvest.less';
 import {BbhAlert,Posting} from '../../../components/bbhAlert/bbhAlert';
 import { connect } from 'react-redux';
 import  investDetailActions  from '../../../actions/invest-detail';
