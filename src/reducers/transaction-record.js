@@ -3,10 +3,11 @@ import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
     filter:{
-        trade_type:``,              //交易类型
-        trade_result:``,            //交易结果
-        dateStart:``,            //开始时间
-        dateEnd:``,            //结束时间
+        payType:``,              //交易类型
+        transState:``,            //交易结果
+        startTime:``,            //开始时间
+        endTime:``,            //结束时间
+        sortBy:`-createTime`,
     },
     data:``,                     //数据
     isFetching:false,

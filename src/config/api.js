@@ -1,34 +1,35 @@
-let host;
-
-/*if(process.env.NODE_ENV == "test"){
-  host = "http://localhost:4000";
-}else{
-  host = location.origin;
-}*/
-
-//host = 'http://172.16.7.4:8020';
 import {urls,urls_auth,token} from './../utils/url';
-host = urls_auth;
-
-
-
+/*
+2018-05-23 lily 修改
+*/
+const host = urls_auth;
 const baseUri = host + '/';
+
 export const API_CONFIG = {
-  host: host,
-  baseUri: baseUri,
-  
-  auth: 'uaa/login',
-  logout: 'uaa/oauth/logout',
-  user: 'uaa/oauth/member/info',
+    host: host,
+    baseUri: baseUri,
+    hostWeb:urls+ '/',
 
-  imageCode: 'uaa/code/image',
-  loginVerifyCode: 'uaa/code/sms/login',
+    auth: 'uaa/login',
+    logout: 'uaa/oauth/logout',
+    user: 'uaa/oauth/member/info',
 
-  checkUserExist: 'uaa/register/check/mobile',
-  signup: 'uaa/register',
-  forgetSignup:'uaa/oauth/forget/password',
-  signupVerifyCode: 'uaa/code/sms/register',
-  forgetVerifyCode: 'uaa/code/sms/forget/password',
-    setTradePasswordVerifyCode:  '/uaa/code/sms/trade/password', //设置交易密码
+    imageCode: 'uaa/code/image',
+    loginVerifyCode: 'uaa/code/sms/login',
+
+    checkUserExist: 'uaa/register/check/mobile',
+    signup: 'uaa/register',
+    forgetSignup:'uaa/oauth/forget/password',
+    signupVerifyCode: 'uaa/code/sms/register',
+    forgetVerifyCode: 'uaa/code/sms/forget/password',
+    setTradePasswordVerifyCode:  '/uaa/code/sms/trade/password', //设置交易密码的短信接口
+
+    getMemberInfo:`members/riskEvaluation`, //获取会员帐户基础信息
+    //实名认证
+    getFuiou:`http://172.16.1.252:9090/payment/fuiou/account`, //给富有的开户信息
+    //提现
+    //充值
+    //重新绑卡
+
 
 };

@@ -7,9 +7,6 @@ import parseJson2URL from "../utils/parseJson2URL";
 import {API_CONFIG} from "../config/api";
 
 const url_memberInfo=`${urls}/members/riskEvaluation`; //获取会员信息
-//const url_openAccount=`${urls}/accounts`; //假开户
-//const url_recharge=`${urls}/accounts/operation?escrowCode=100100&type=1`; //充值
-//const url_withdrawals=`${urls}/accounts/operation?escrowCode=100100&type=3`; //提现
 const url_tradePassword=`http://172.16.1.234:8060/uaa/oauth/trade/password`; //设置交易密码
 const url_certification=`http://172.16.1.225:9090/members/auth`; //实名认证
 
@@ -17,7 +14,6 @@ export const sendMemberVerifyCode = params => {
     return {
         type: 'member/SEND_VERIFY_CODE',
         async payload() {
-            //http://172.16.1.234:8060/uaa/code/sms/trade/password?username=13011111111&send_terminal=web
             const res = await cFetch('http://172.16.1.234:8060' + API_CONFIG.setTradePasswordVerifyCode + params, { credentials: 'include' }, false);
             const { code, data } = res;
             if ( code == 0 ) {
@@ -49,7 +45,7 @@ export const accountAc= {
         return {
             type: 'member/account/FETCH',
             async payload() {
-                const res = await cFetch(`${url_memberInfo}`,{method: 'GET'}, true);
+                const res = await cFetch(API_CONFIG.hostWeb+API_CONFIG.getMemberInfo,{method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
                     console.log('后台返回的会员信息11111');
@@ -115,8 +111,7 @@ export const accountAc= {
             type: 'member/account/UYOU_FETCH',
             async payload() {
                 let  res = await cFetch(`${url}`, {method: 'GET'}, true);
-                console.log('///////////////////');
-                console.log(res);
+                
                 let {code, data} = res;
                 if (code == 0) {
 
