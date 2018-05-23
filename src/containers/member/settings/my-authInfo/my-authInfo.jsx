@@ -6,16 +6,13 @@ import Tab from '../../../../components/tab/tab';
 import BbhModal from "../../../../components/modal/bbh_modal";
 import {modal_config} from "../../../../utils/modal_config";
 import { Popconfirm, message, Button } from 'antd';
-import './authInfo.less';
 import  {accountAc}  from '../../../../actions/account';
-
+import './authInfo.less';
 
 class MyAuthInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            //modalResetPassword:false,
-            //modalAuth:false,
             bbhModal:false,
             currentModule:``,
             key:Math.random(),
@@ -46,33 +43,27 @@ class MyAuthInfo extends React.Component {
         window.scrollTo(0,0);
         this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
     }
-//开卡前询问是否实名认证
+    //开卡前询问是否实名认证
     confirm() {
         this.toggleModal(`ModalSteps`,true);
     }
     changeCard(){
-        //const hide = message.loading('请稍后..', 0);
-        //setTimeout(hide, 3000);
         let {dispatch, account} = this.props;
         let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
         //先获取换卡需携带的信息，正确的话提交表单
         dispatch(accountAc.getFuyouInfo({type:'ReOpenAccount',url:`my-settings_my-authInfo`}))
             .then(
                 (res)=>{
-                    console.log('给富有的')
                     toOthersInfo=res.value;
-                    console.log(toOthersInfo);
-                    //hide;
-                        if(toOthersInfo.code==406  ){
-                            this.setState({
-                                disabled:false
-                            });
-                            message.info(toOthersInfo.message);
-                        }else if(toOthersInfo!=``){
-                            document.getElementById('ChangeCard2').submit();
-                            dispatch(accountAc.change_goOutState(true));
-                        }
-
+                    if(toOthersInfo.code==406  ){
+                        this.setState({
+                            disabled:false
+                        });
+                        message.info(toOthersInfo.message);
+                    }else if(toOthersInfo!=``){
+                        document.getElementById('ChangeCard2').submit();
+                        dispatch(accountAc.change_goOutState(true));
+                    }
                 }
             )
             .catch();
@@ -117,14 +108,12 @@ class MyAuthInfo extends React.Component {
                                     </tr>
                                         :``
                                 }
-
                                     <tr>
                                         <th><i className="iconfont icon-phone"></i>手机号</th>
                                         <td className="Result">已设置</td>
                                         <td className="detail">{auth.user.userName}</td>
                                         <td className="operate">{/*<a href="javascript:void(0);" onClick={this.changePhone}>更改</a>*/}</td>
                                     </tr>
-
                                 {
                                     isCertification==='1'?
                                         <tr>
@@ -224,17 +213,11 @@ class MyAuthInfo extends React.Component {
                                 <input type="hidden" name="login_id" value={toOthersInfo.login_id} />
                                 <input type="hidden" name="page_notify_url" value={toOthersInfo.page_notify_url} />
                                 <input type="hidden" name="signature" value={toOthersInfo.signature} />
-                                {/*{
-                                    toOthersInfo==``?<Button type="primary" htmlType="submit" className="pop__large" disabled={true}>更换银行卡</Button>
-                                        :<Button type="primary" htmlType="submit" className="pop__large" onClick={()=>this.changeCard()}>更换银行卡</Button>
-                                }*/}
                             </form>
                         </div>
                     </Tab>
 
                 </div>
-
-
                 {this.state.currentModule!=``?
                     <BbhModal
                         config={modal_config[this.state.currentModule]}

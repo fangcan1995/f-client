@@ -35,7 +35,7 @@ class ModalLoginPassword extends React.Component {
             }
             console.log('提交后台的数据是');
             console.log(appInfo);
-            dispatch(memberAc.setTradePassword(appInfo));
+            dispatch(memberAc.setLoginPassword(appInfo));
 
         });
     }
