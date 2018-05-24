@@ -124,7 +124,7 @@ class MyLoans extends React.Component {
                                                             <td>{l.name}</td>
                                                             <td>{l.projectTypeName}</td>
                                                             <td>{l.money}</td>
-                                                            <td>{l.annualRate}%</td>
+                                                            <td>--</td>
                                                             <td>{l.loanExpiry}个月</td>
                                                             <td>{l.refundWayName}</td>
                                                             <td>{moment(l.applyTime).format('YYYY-MM-DD')}</td>

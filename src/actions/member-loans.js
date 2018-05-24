@@ -1,20 +1,21 @@
 import cFetch from './../utils/cFetch';
-import cookie from 'js-cookie';
 import parseJson2URL from './../utils/parseJson2URL';
 import {urls,token} from '../utils/url'
 import { API_CONFIG } from './../config/api';
 import readBlobAsDataURL from '../utils/readBlobAsDataURL';
 import {toMoney,toNumber,addCommas} from '../utils/famatData';
 
-const url_loansCharts=`${urls}/members/loans/statistics`; //统计图数据
-const url_loansList=`${urls}/members/loans`;//获取借款列表
-const url_repaymentsAll=`${urls}/members/loans/repayments/all/`;//项目提前还款时获取详情
-const url_postRepaymentsAll=`http://172.16.4.5:8084/test.php`;//项目提前还款申请
-const url_repaymentsCharts=`${urls}/members/loans/repayments/statistics`; //统计图数据
-const url_repaymentsList=`${urls}/members/loans/repayments`;//获取借款列表
-const url_proList=`${urls}/members/loans/proName`;//获取还款中和已完结的项目列表
-const url_repayment=`${urls}/members/loans/repayments/`;//还款时获取详情
-const url_postRepayment=`${urls}/test.php`;//还款申请
+const url_loansCharts=API_CONFIG.hostWeb+API_CONFIG.getMyLoansCharts; //统计图数据
+const url_loansList=API_CONFIG.hostWeb+API_CONFIG.getMyLoansList;//获取借款列表
+const url_repaymentsAll=API_CONFIG.hostWeb+API_CONFIG.getMyRepaymentsAll;//项目提前还款时获取详情
+const url_postRepaymentsAll=API_CONFIG.hostWeb+API_CONFIG.postRepaymentsAll;//项目提前还款申请
+const url_repaymentsCharts=API_CONFIG.hostWeb+API_CONFIG.getMyRepaymentsCharts; //统计图数据
+const url_repaymentsList=API_CONFIG.hostWeb+API_CONFIG.getMyRepaymentsList;//获取借款列表
+const url_proList=API_CONFIG.hostWeb+API_CONFIG.getProList;//获取还款中和已完结的项目列表
+const url_repayment=API_CONFIG.hostWeb+API_CONFIG.getRepaymentInfo;//还款时获取详情
+const url_postRepayment=API_CONFIG.hostWeb+API_CONFIG.postRepaymentApp;//还款申请
+
+
 export const getImageCode = () => {
     return {
         type: 'myLoans/GET_IMAGE_CODE',

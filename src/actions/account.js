@@ -8,6 +8,7 @@ const url_uyouOpenAccountInfo=API_CONFIG.hostWeb+API_CONFIG.getFuiouOpenAccountI
 const url_uyouReOpenAccountInfo=API_CONFIG.hostWeb+API_CONFIG.getFuiouChangeCard; //给富有的换卡信息
 const url_uyouRecharge=API_CONFIG.hostWeb+API_CONFIG.getFuiouRecharge; //给富有的充值信息
 const url_uyouWithdrawals=API_CONFIG.hostWeb+API_CONFIG.getFuiouWithdrawals; //给富有的提现信息
+const url_setCertification=API_CONFIG.hostWeb+API_CONFIG.setCertification
 
 export const accountAc= {
     //虚拟流程，静态修改账户信息
@@ -53,11 +54,7 @@ export const accountAc= {
 
                     };*/
                     //data=mock;
-                    data.isCertification='1',	//是否实名认证（0：未实名；1：已实名）
-                        data.isOpenAccount='1',	//是否开户（0：未开户；1：已开户）
-                    data.surplusAmount=1000000;
-                    data.availableBalance=20000;	//账户可用余额
-                    data.isNovice='1';
+
                     return data;
                 } else {
                     throw data;
@@ -104,10 +101,13 @@ export const accountAc= {
     },
     //实名认证
     certification: (params) => {
+        console.log('实名认证提交的信息');
+        console.log(postContent(params));
         return {
             type: 'member/account/CERTIFICATION_FETCH',
             async payload() {
-                const res = await cFetch(API_CONFIG.baseUri+API_CONFIG.setCertification, postContent(params), true);
+                const res = await cFetch(url_setCertification, postContent(params), true);
+
                 //测试用
                 console.log('实名认证返回的结果');
                 console.log(res);

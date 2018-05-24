@@ -196,7 +196,9 @@ class MasterInvestBox extends Component {
                                         {
                                             (accountsInfo===``)?``
                                                 :(investInfo.noviceLoan=='1' && isNovice==='0')?<Button type="primary"  className="pop__wp100" disabled={true}>仅限新手</Button>
-                                                :(availableBalance<this.state.investAmount)?
+                                                :<Button type="primary" onClick={() => this.toggleModal(`bbhModal`,true)} className="pop__wp100" disabled={isFetching || this.state.code!=100}>立即投资</Button>
+
+                                                /*(availableBalance<this.state.investAmount)?
                                                     <Popconfirm placement="top" title={`您的帐户可用余额不足，是否充值`} onConfirm={()=>this.handle_confirmRechange()} okText="确定" cancelText="取消">
                                                         <Button type="primary"  className="pop__wp100" disabled={isFetching}>立即投资</Button>
                                                     </Popconfirm>
@@ -204,7 +206,7 @@ class MasterInvestBox extends Component {
                                                         <Popconfirm placement="top" title={`根据您的风险测评等级不支持本次出借，重新测评？`} onConfirm={this.handle_confirmRisk} okText="确定" cancelText="取消">
                                                             <Button type="primary"  className="pop__wp100" disabled={isFetching}>立即投资</Button>
                                                         </Popconfirm>
-                                                        :<Button type="primary" onClick={() => this.toggleModal(`bbhModal`,true)} className="pop__wp100" disabled={isFetching || this.state.code!=100}>立即投资</Button>
+                                                        :<Button type="primary" onClick={() => this.toggleModal(`bbhModal`,true)} className="pop__wp100" disabled={isFetching || this.state.code!=100}>立即投资</Button>*/
 
                                         }
 

@@ -8,6 +8,7 @@ import {modal_config} from "../../../../utils/modal_config";
 import { Popconfirm, message, Button } from 'antd';
 import  {accountAc}  from '../../../../actions/account';
 import './authInfo.less';
+import investDetailActions from "../../../../actions/invest-detail";
 
 class MyAuthInfo extends React.Component {
     constructor(props) {
@@ -73,10 +74,12 @@ class MyAuthInfo extends React.Component {
         alert('去第三方,暂不开发');
     }
     callback(status){
+        this.props.dispatch(accountAc.clear()); //清空结果
         this.toggleModal('bbhModal',false);
     }
     closeModal(status){
-        //this.props.dispatch(accountAc.getAccountInfo());  //成功重载数据,暂时注释掉
+        this.props.dispatch(accountAc.getAccountInfo());  //成功重载数据,暂时注释掉
+        this.props.dispatch(accountAc.clear()); //清空结果
         this.toggleModal('bbhModal',false);
     }
     render(){
@@ -227,6 +230,7 @@ class MyAuthInfo extends React.Component {
                         repeat={true}
                         stepslength={2}
                         returnPage={`my-settings_my-authInfo`}
+                        key={this.state.key}
                     >
 
                     </BbhModal>
