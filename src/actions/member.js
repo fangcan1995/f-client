@@ -5,7 +5,7 @@ import {API_CONFIG} from "../config/api";
 const url_incomeMonth=API_CONFIG.hostWeb+API_CONFIG.getIncomeMonth; //获取月收益统计
 const url_incomeDay=API_CONFIG.hostWeb+API_CONFIG.getIncomeDay; //获取日收益统计
 const url_loginPassword=API_CONFIG.baseUri+API_CONFIG.setLoginPassword ; //修改登录密码
-const url_transaction_record=API_CONFIG.baseUri+API_CONFIG.getTradeRecord;  //交易记录
+const url_transaction_record=API_CONFIG.hostWeb+API_CONFIG.getTradeRecord;  //交易记录
 
 export const memberAc= {
     //获取月收益统计数据

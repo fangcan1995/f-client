@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PieChart from '../../../../components/charts/pie';
-import {addCommas} from '../../../../utils/cost';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
@@ -14,6 +13,7 @@ import actionsMyInvestments from '../../../../actions/member-investments';
 import {memberInvestAc} from "../../../../actions/member-investments";
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import './investments.less';
+
 class MyInvestments extends React.Component{
     constructor(props) {
         super(props);

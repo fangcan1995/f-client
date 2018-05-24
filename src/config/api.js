@@ -60,6 +60,15 @@ export const API_CONFIG = {
     getMyRedEnvelopes:`members/memberRedEnvelopes`, //获取红包
     getMyRateCoupons:`members/memberRateCoupons`, //获取加息券
 
+    getMyInvestCharts:`members/invest/statistics`, //我的投资统计图数据
+    getMyInvestList:`members/investments`, //我的投资统计图数据
+    getMyPlanList:`members/investments/receiving/`, //获取回款记录
+    postTransferApp:``, //转让申请
+    getMyTransferInfo:`members/investments/transfer/`, //获取债转详情
+
+    getMyReceivingCharts:`members/investments/receiving/statistics`, //回款统计
+    getMyReceivingList:`members/investments/receiving`, //回款列表
+
 
 
 

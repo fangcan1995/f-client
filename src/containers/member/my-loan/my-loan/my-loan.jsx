@@ -12,6 +12,7 @@ import  {memberLoansAc}  from '../../../../actions/member-loans';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import moment from "moment";
 import './my-loan.less';
+
 class MyLoans extends React.Component {
     componentDidMount () {
         window.scrollTo(0,0);

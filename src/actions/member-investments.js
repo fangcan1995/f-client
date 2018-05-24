@@ -3,17 +3,16 @@ import cookie from 'js-cookie';
 import {toMoney,toNumber,addCommas} from '../utils/famatData';
 import parseJson2URL from './../utils/parseJson2URL';
 import {urls,token} from './../utils/url';
+import {API_CONFIG} from "../config/api";
 
+const url_investCharts=API_CONFIG.hostWeb+API_CONFIG.getMyInvestCharts; //统计图数据
+const url_investList=API_CONFIG.hostWeb+API_CONFIG.getMyInvestList;//获取投资列表
+const url_planList=API_CONFIG.hostWeb+API_CONFIG.getMyPlanList;  //获取回款记录
+const url_postTransferApp=API_CONFIG.hostWeb+API_CONFIG.postTransferApp;//转让申请
+const url_getTransfer=API_CONFIG.hostWeb+API_CONFIG.getMyTransferInfo; //获取债转详情
 
-const url_investCharts=`${urls}/members/invest/statistics`; //统计图数据
-const url_investList=`${urls}/members/investments`;//获取投资列表
-const url_planList=`${urls}/members/investments/receiving/`  //获取回款记录
-const url_postTransferApp=`http://172.16.4.5:8084/test.php`;//转让申请
-const url_getTransfer=`${urls}/members/investments/transfer/`; //获取债转详情
-
-
-const url_receivingCharts=`${urls}/members/investments/receiving/statistics`;//回款统计
-const url_receivingList=`${urls}/members/investments/receiving`;//回款列表
+const url_receivingCharts=API_CONFIG.hostWeb+API_CONFIG.getMyReceivingCharts;//回款统计
+const url_receivingList=API_CONFIG.hostWeb+API_CONFIG.getMyReceivingList;//回款列表
 
 export const memberInvestAc={
     getPie: () => {
@@ -22,7 +21,6 @@ export const memberInvestAc={
             async payload() {
                 const res = await cFetch(`${url_investCharts}` , {method: 'GET'}, true);
                 const {code, data} = res;
-                //console.log(data);
                 if (code == 0) {
                     let {totalInvestmentDto,accumulatedIncomeDto}=data;
                     let charts={
@@ -179,8 +177,6 @@ export const memberReceivingAc={
                 params = parseJson2URL(params);
                 const res = await cFetch(`${url_receivingList}?`+params,{method: 'GET'}, true);
                 const {code, data} = res;
-                console.log('发回的数据');
-                console.log(data);
                 if (code == 0) {
                     return {
                         myList:data,
