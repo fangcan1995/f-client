@@ -185,7 +185,7 @@ class MyInvestments extends React.Component{
                                                                 <td>{l.loanExpiry}个月</td>
                                                                 <td>{l.loanRefundWay}</td>
                                                                 <td>{l.proMoneyEnd}</td>
-                                                                <td>{l.inveCreateTime}</td>
+                                                                <td>{moment(l.inveCreateTime).format('YYYY-MM-DD')}</td>
                                                                 <td>{l.proMoneyPercent}%</td>
                                                             </tr>
                                                         ) : ((status === 2) ? (
@@ -194,9 +194,9 @@ class MyInvestments extends React.Component{
                                                                 <td>{l.proMoney}</td>
                                                                 <td>{l.loanExpiry}个月</td>
                                                                 <td>{l.proMoneyEnd}</td>
-                                                                <td>{l.inveCreateTime}</td>
-                                                                <td>{l.earnShdEarnDate}</td>
-                                                                <td>{l.earnShdEarnAmou}</td>
+                                                                <td>{moment(l.inveCreateTime).format('YYYY-MM-DD')}</td>
+                                                                <td>{moment(l.earnNextShdEarnDate).format('YYYY-MM-DD')}</td>
+                                                                <td>{l.earnNextShdEarnAmou}</td>
                                                                 <td>
                                                                     <a onClick={() => this.toggleModal('modalPlan', true, l.investId)}>回款计划</a>
                                                                     <a onClick={() => this.toggleModal('modalTransfer', true, l.investId)}>债权转让</a>
@@ -207,11 +207,11 @@ class MyInvestments extends React.Component{
                                                             <tr key={`row-${i}`}>
                                                                 <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
                                                                 <td>{l.proMoney}</td>
-                                                                <td>{l.loanExpiry}</td>
+                                                                <td>{l.loanExpiry}个月</td>
                                                                 <td>{l.proMoneyEnd}</td>
-                                                                <td>{l.inveCreateTime}</td>
+                                                                <td>{moment(l.inveCreateTime).format('YYYY-MM-DD')}</td>
                                                                 <td>{l.earnRemittancAmou}</td>
-                                                                <td>{l.earnRealEarnDate}</td>
+                                                                <td>{moment(l.earnRealEarnDate).format('YYYY-MM-DD')}</td>
                                                                 <td>
                                                                     <a onClick={() => this.toggleModal('modalPlan', true, l.investId)}>回款计划</a>
                                                                     <a href="">投资合同</a>
@@ -219,12 +219,12 @@ class MyInvestments extends React.Component{
                                                             </tr>
                                                         ) : ((status === 4) ? (
                                                             <tr key={`row-${i}`}>
-                                                                <td>--</td>
+                                                                <td>{l.transNo}</td>
                                                                 <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
                                                                 <td>{l.proMoneyEnd}</td>
                                                                 <td>{l.transAmt}</td>
                                                                 <td>{l.transFee}</td>
-                                                                <td>{l.transApplyTime}</td>
+                                                                <td>{moment(l.transApplyTime).format('YYYY-MM-DD')}</td>
                                                                 <td>{l.transStatus}</td>
                                                             </tr>
                                                         ) : ((status === 5) ? (
@@ -233,8 +233,8 @@ class MyInvestments extends React.Component{
                                                                 <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
                                                                 <td>{l.transAmt}</td>
                                                                 <td>{l.transFinanced}</td>
-                                                                <td>{l.transSchedule}</td>
-                                                                <td>{l.transPutDate}</td>
+                                                                <td>{l.transSchedule}%</td>
+                                                                <td>{moment(l.transPutDate).format('YYYY-MM-DD')}</td>
                                                                 <td>
                                                                     {l.transStatus}
                                                                 </td>
@@ -244,7 +244,7 @@ class MyInvestments extends React.Component{
                                                                 <td>{l.transNo}</td>
                                                                 <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
                                                                 <td>{l.transAmt}</td>
-                                                                <td>{l.transferDate}</td>
+                                                                <td>{moment(l.transferDate).format('YYYY-MM-DD')}</td>
                                                                 <td>
                                                                     <a href="">投资合同</a>
                                                                 </td>
