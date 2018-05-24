@@ -6,7 +6,7 @@ import Pagination from '../../../../components/pagination/pagination';
 import './rateCoupons.less';
 import moment from "moment";
 import { connect } from 'react-redux';
-import {myRateCouponsAc} from '../../../../actions/rateCoupons';
+import {myRateCouponsAc} from '../../../../actions/member-reward';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 
 class MyRateCoupons extends React.Component{

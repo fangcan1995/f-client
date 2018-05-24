@@ -5,6 +5,7 @@ import {API_CONFIG} from "../config/api";
 const url_incomeMonth=API_CONFIG.hostWeb+API_CONFIG.getIncomeMonth; //获取月收益统计
 const url_incomeDay=API_CONFIG.hostWeb+API_CONFIG.getIncomeDay; //获取日收益统计
 const url_loginPassword=API_CONFIG.baseUri+API_CONFIG.setLoginPassword ; //修改登录密码
+const url_transaction_record=API_CONFIG.baseUri+API_CONFIG.getTradeRecord;  //交易记录
 
 export const memberAc= {
     //获取月收益统计数据
@@ -104,6 +105,44 @@ export const memberAc= {
     clear: (prams) => {
         return {
             type: 'member/CLEAR',
+            payload() {
+                return prams
+            }
+        }
+    },
+}
+
+export const transactionRecordAc={
+    getData: (params) => {
+        return {
+            type: 'transaction-record/FETCH',
+            async payload() {
+                for(var name in params){
+                    if(params[name]===``){
+                        delete params[name];
+                    }else{
+                        if(name==`startTime`) {
+                            params[name] += ' 00:00:00'
+                        }
+                        if(name==`endTime`) {
+                            params[name] += ' 23:59:59'
+                        }
+                    }
+                }
+                params = parseJson2URL(params);
+                const res = await cFetch(`${url_transaction_record}&`+params,{method: 'GET'}, true);
+                const {code, data} = res;
+                if (code == 0) {
+                    return data;
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
+    modifyState: (prams) => {
+        return {
+            type: 'transaction-record/MODIFY_STATE',
             payload() {
                 return prams
             }

@@ -5,7 +5,7 @@ import Pagination from '../../../components/pagination/pagination';
 import {Loading,NoRecord} from '../../../components/bbhAlert/bbhAlert';
 import { Select,DatePicker } from 'antd';
 import { connect } from 'react-redux';
-import {transactionRecordAc} from "../../../actions/transaction-record";
+import {transactionRecordAc} from "../../../actions/member";
 import {addCommas, toMoney} from "../../../utils/famatData";
 
 const { RangePicker } = DatePicker;
@@ -129,7 +129,7 @@ class TransactionRecord extends Component{
                                         :
                                         data.total>0 ?
                                             <div className="table__wrapper">
-                                                <table className={`tableList table${filter.trade_type}`}>
+                                                <table className='tableList trade-record'>
                                                     <thead>
                                                     <tr>
                                                         <th>交易时间</th>

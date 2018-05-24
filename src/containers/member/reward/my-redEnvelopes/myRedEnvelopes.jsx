@@ -6,7 +6,7 @@ import Pagination from '../../../../components/pagination/pagination';
 import './redEnvelopes.less';
 import moment from "moment";
 import { connect } from 'react-redux';
-import {redEnvelopesAc} from '../../../../actions/redEnvelopes';
+import {redEnvelopesAc} from '../../../../actions/member-reward';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 
 class MyRedEnvelopes extends React.Component {

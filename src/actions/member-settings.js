@@ -1,22 +1,19 @@
 import cFetch from './../utils/cFetch';
-
 import parseJson2URL from './../utils/parseJson2URL';
 import {urls,urls_auth,token} from './../utils/url';
 import {formatPostResult} from "../utils/famatData";
 import {postContent,putContent} from "../utils/formSetting";
+import {API_CONFIG} from "../config/api";
+
+const url_getMList=API_CONFIG.hostWeb+API_CONFIG.getMessageList;  //获取消息列表
+const url_setRead=API_CONFIG.hostWeb+API_CONFIG.setMessageRead; //设为已读
+const url_delete=API_CONFIG.hostWeb+API_CONFIG.deleteMessage; //删除消息
+
+const url_getResult=API_CONFIG.hostWeb+API_CONFIG.getRiskResult;  //获取风险测评结果
+const url_getRList=API_CONFIG.hostWeb+API_CONFIG.getRiskList;  //获取风险测评题目
+export const url_putRList=API_CONFIG.hostWeb+API_CONFIG.putRisk;  //提交测评结果
 
 
-const url_getMList=`${urls}/message/mail/page`;  //获取消息列表
-const url_setRead=`${urls}/message/mail/read`; //设为已读
-const url_delete=`${urls}/message/mail`; //删除消息
-
-const url_getResult=`${urls}/members/riskEvaluation/result`;  //获取风险测评结果
-const url_getRList=`${urls}/members/riskEvaluation`;  //获取风险测评题目
-export const url_putRList=`${urls}/members/riskEvaluation`;  //提交测评结果
-
-const url_getAuthInfo=`${urls}/members/certification`; //获取个人信息
-const url_password=`${urls_auth}/uaa/oauth/password`; //修改登录密码
-const url_postPhone=`${urls}/members/photo`;  //修改头像
 export const myMessagesAc= {
     getMessagesList: (params) => {
         return {
@@ -157,29 +154,6 @@ export const myRiskAssessAc={
             }
         }
     },
-    /*//投资页用
-    putRiskAssess_invest: (pram,dispatch) => {
-        pram=JSON.stringify(pram);
-        return {
-            type: 'mySettings/riskAssess/FETCH',
-            async payload() {
-                const res = await cFetch(`${url_putRList}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: pram,
-                    },
-                    true);
-                if (res.code == 0) {
-                    //message.success('测评成功');
-                    return {postResult: res};
-                } else {
-                    throw res;
-                }
-            }
-        }
-    },*/
     toggle: (prams) => {
         return {
             type: 'mySettings/riskAssess/TOGGLE',
@@ -205,92 +179,3 @@ export const myRiskAssessAc={
         }
     },
 }
-export const myAuthInfoAc={
-    getResult: () => {
-        return {
-            type: 'mySettings/authInfo/FETCH',
-            async payload() {
-                const res = await cFetch(`${url_getAuthInfo}`, {method: 'GET'}, true);
-                const {code, data} = res;
-                /*console.log('***************');
-                console.log(url_getResult);
-                console.log(data);*/
-
-                if (code == 0) {
-                    return {info:data};
-                } else {
-                    throw res;
-                }
-            }
-        }
-    },
-    postPassword: (pram,dispatch) => {
-        console.log('提交给后台的参数是：');
-        pram=parseJson2URL(pram);
-        console.log(pram);
-        return {
-            type: 'mySettings/password/FETCH',
-            async payload() {
-                const res = await cFetch(`${url_password}?${pram}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: ``,
-                    },
-                    true);
-                /*if (res.code == 0) {
-                    message.success(res.message);
-                    return {postResult: res};
-                } else {
-                    message.error(res.message);
-                    throw res;
-                }*/
-                let type=``;
-                (res.code == 0)?type='success':type='error';
-                console.log('修改密码返回的结果');
-                console.log(res);
-                return {
-                    postResult: {
-                        code:res.code,
-                        type:type,
-                        message:res.message||``,
-                        description:res.data||``,
-                    }
-                };
-            }
-        }
-    },
-    postPhone: (pram,dispatch) => {
-        pram=JSON.stringify(pram)
-        return {
-            type: 'mySettings/authInfo/FETCH',
-            async payload() {
-                const res = await cFetch(`${url_password}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: pram,
-                    },
-                    true);
-                if (res.code == 0) {
-                    return {postResult: res};
-                } else {
-                    throw res;
-                }
-            }
-        }
-    },
-    modifyState: (prams) => {
-        return {
-            type: 'mySettings/authInfo/MODIFY_STATE',
-            payload() {
-                return prams
-            }
-        }
-    },
-
-}
-
-

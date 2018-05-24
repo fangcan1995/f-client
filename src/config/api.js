@@ -48,6 +48,18 @@ export const API_CONFIG = {
     getIncomeDay:`accounts/income/day`,//获取日收益统计
     setLoginPassword:`uaa/oauth/password`,//修改登录密码
 
+    getTradeRecord:`payment/fuiou/tradeRecords`,//获取交易记录
+    getMessageList:`message/mail/page`,  //获取消息列表
+    setMessageRead:`message/mail/read`, //设为已读
+    deleteMessage:`message/mail`, //删除消息
+
+    getRiskResult:`members/riskEvaluation/result`,  //获取风险测评结果
+    getRiskList:`members/riskEvaluation`,  //获取风险测评题目
+    putRisk:`members/riskEvaluation`,  //提交测评结果
+
+    getMyRedEnvelopes:`members/memberRedEnvelopes`, //获取红包
+    getMyRateCoupons:`members/memberRateCoupons`, //获取加息券
+
 
 
 

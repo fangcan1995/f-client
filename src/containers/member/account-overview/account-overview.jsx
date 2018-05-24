@@ -107,9 +107,9 @@ class AccountOverview extends React.Component{
                             <div name="账户总资产">
                                 <PieChart
                                     data={[
-                                        {name:'散标资产',value:investAmount,instruction: `${addCommas(investAmount)}` },
-                                        {name:'可用余额',value:availableBalance,instruction: `${addCommas(availableBalance)}` },
-                                        {name:'冻结金额',value:freezingAmount,instruction: `${addCommas(freezingAmount)}` },
+                                        {name:'散标资产',value:investAmount,instruction: `${addCommas(investAmount)}元` },
+                                        {name:'可用余额',value:availableBalance,instruction: `${addCommas(availableBalance)}元` },
+                                        {name:'冻结金额',value:freezingAmount,instruction: `${addCommas(freezingAmount)}元` },
                                     ]}
                                     unit={`元`}
                                     style={{height: '300px', width: '930px'}}

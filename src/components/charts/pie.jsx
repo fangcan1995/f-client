@@ -55,7 +55,6 @@ export default class PieChart extends Component{
                                         <i style={{backgroundColor:`${color[rowIndex]}`}}></i>
                                         <strong>{item.name}:</strong>
                                         <span className='money'>{item.instruction}</span>
-                                        {unit}
                                     </li>
                                 ))
                             }

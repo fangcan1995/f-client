@@ -4,10 +4,10 @@ import {postContent} from '../utils/formSetting';
 import parseJson2URL from "../utils/parseJson2URL";
 import {API_CONFIG} from "../config/api";
 
-const url_uyouOpenAccountInfo='http://172.16.1.252:9090'+API_CONFIG.getFuiouOpenAccountInfo; //给富有的开户信息
-const url_uyouReOpenAccountInfo='http://172.16.1.252:9090'+API_CONFIG.getFuiouChangeCard; //给富有的换卡信息
-const url_uyouRecharge='http://172.16.1.252:9090'+API_CONFIG.getFuiouRecharge; //给富有的充值信息
-const url_uyouWithdrawals='http://172.16.1.252:9090'+API_CONFIG.getFuiouWithdrawals; //给富有的提现信息
+const url_uyouOpenAccountInfo='http://172.16.1.252:9090/'+API_CONFIG.getFuiouOpenAccountInfo; //给富有的开户信息
+const url_uyouReOpenAccountInfo='http://172.16.1.252:9090/'+API_CONFIG.getFuiouChangeCard; //给富有的换卡信息
+const url_uyouRecharge='http://172.16.1.252:9090/'+API_CONFIG.getFuiouRecharge; //给富有的充值信息
+const url_uyouWithdrawals='http://172.16.1.252:9090/'+API_CONFIG.getFuiouWithdrawals; //给富有的提现信息
 
 export const accountAc= {
     //虚拟流程，静态修改账户信息

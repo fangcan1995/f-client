@@ -42,16 +42,16 @@ export const memberLoansAc={
                     let charts={
                         totalLoan:{
                             data:[
-                                {name:'申请中',value:totalLoanDto.loaningMoney,instruction:`${addCommas(totalLoanDto.loaningMoney)}元`  },
-                                {name:'招标中',value:totalLoanDto.investingMoney,instruction:`${addCommas(totalLoanDto.investingMoney)}元`},
-                                {name:'还款中',value:totalLoanDto.repayingMoney,instruction:`${addCommas(totalLoanDto.repayingMoney)}元`},
-                                {name:'已结清',value:totalLoanDto.settleMoney,instruction:`${addCommas(totalLoanDto.settleMoney)}元`}
+                                {name:'申请中',value:totalLoanDto.loaningMoney,instruction:`${addCommas(totalLoanDto.loaningMoney)}`  },
+                                {name:'招标中',value:totalLoanDto.investingMoney,instruction:`${addCommas(totalLoanDto.investingMoney)}`},
+                                {name:'还款中',value:totalLoanDto.repayingMoney,instruction:`${addCommas(totalLoanDto.repayingMoney)}`},
+                                {name:'已结清',value:totalLoanDto.settleMoney,instruction:`${addCommas(totalLoanDto.settleMoney)}`}
                             ]
                         },
                         accumulatedInterest:{
                             data:[
-                                {name:'还款中',value:accumulatedInterestDto.repayingIint,instruction:`${addCommas(accumulatedInterestDto.repayingIint)}元`  },
-                                {name:'已结清',value:accumulatedInterestDto.settleIint,instruction:`${addCommas(accumulatedInterestDto.settleIint)}元`  },
+                                {name:'还款中',value:accumulatedInterestDto.repayingIint,instruction:`${addCommas(accumulatedInterestDto.repayingIint)}`  },
+                                {name:'已结清',value:accumulatedInterestDto.settleIint,instruction:`${addCommas(accumulatedInterestDto.settleIint)}`  },
                             ]
                         },
                     };
@@ -142,27 +142,27 @@ export const repaymentsAc={
                     let charts={
                         repayments:{
                             data:[
-                                {name:'逾期未还',value:allRepaymentDto.overdueNoRepay[1],instruction:`${allRepaymentDto.overdueNoRepay[0]}笔 ${addCommas(allRepaymentDto.overdueNoRepay[1])}元`  },
-                                {name:'待还款',value:allRepaymentDto.repayments[1],instruction:`${allRepaymentDto.repayments[0]}笔 ${addCommas(allRepaymentDto.repayments[1])}元`},
-                                {name:'逾期已还',value:allRepaymentDto.overdueRepay[1],instruction:`${allRepaymentDto.overdueRepay[0]}笔 ${addCommas(allRepaymentDto.overdueRepay[1])}元`},
-                                {name:'已提前还款',value:allRepaymentDto.advanceRepay[1],instruction:`${allRepaymentDto.advanceRepay[0]}笔 ${addCommas(allRepaymentDto.advanceRepay[1])}元`},
-                                {name:'已正常还款',value:allRepaymentDto.normalRepay[1],instruction:`${allRepaymentDto.normalRepay[0]}笔 ${addCommas(allRepaymentDto.normalRepay[1])}元`}
+                                {name:'逾期未还',value:allRepaymentDto.overdueNoRepay[1],instruction:` ${allRepaymentDto.overdueNoRepay[0]}笔 ${addCommas(allRepaymentDto.overdueNoRepay[1])}元`  },
+                                {name:'待还款',value:allRepaymentDto.repayments[1],instruction:` ${allRepaymentDto.repayments[0]}笔 ${addCommas(allRepaymentDto.repayments[1])}元`},
+                                {name:'逾期已还',value:allRepaymentDto.overdueRepay[1],instruction:` ${allRepaymentDto.overdueRepay[0]}笔 ${addCommas(allRepaymentDto.overdueRepay[1])}元`},
+                                {name:'已提前还款',value:allRepaymentDto.advanceRepay[1],instruction:` ${allRepaymentDto.advanceRepay[0]}笔 ${addCommas(allRepaymentDto.advanceRepay[1])}元`},
+                                {name:'已正常还款',value:allRepaymentDto.normalRepay[1],instruction:` ${allRepaymentDto.normalRepay[0]}笔 ${addCommas(allRepaymentDto.normalRepay[1])}元`}
                             ]
                         },
                         todoDto:{
                             data:[
-                                {name:'未还本金',value:todoRepaymentsDto.todoCapital,instruction:`${addCommas(todoRepaymentsDto.todoCapital)}元`  },
-                                {name:'未还利息',value:todoRepaymentsDto.todoIint,instruction:`${addCommas(todoRepaymentsDto.todoIint)}元`  },
-                                {name:'未还罚息',value:todoRepaymentsDto.todoLateIint,instruction:`${addCommas(todoRepaymentsDto.todoLateIint)}元`  },
-                                {name:'未还罚金',value:todoRepaymentsDto.todoLateFine,instruction:`${addCommas(todoRepaymentsDto.todoLateFine)}元`  },
+                                {name:'未还本金',value:todoRepaymentsDto.todoCapital,instruction:` ${addCommas(todoRepaymentsDto.todoCapital)}元`  },
+                                {name:'未还利息',value:todoRepaymentsDto.todoIint,instruction:` ${addCommas(todoRepaymentsDto.todoIint)}元`  },
+                                {name:'未还罚息',value:todoRepaymentsDto.todoLateIint,instruction:` ${addCommas(todoRepaymentsDto.todoLateIint)}元`  },
+                                {name:'未还罚金',value:todoRepaymentsDto.todoLateFine,instruction:` ${addCommas(todoRepaymentsDto.todoLateFine)}元`  },
                             ]
                         },
                         doneDto:{
                             data:[
-                                {name:'已还本金',value:doneRepaymentsDto.doneCapital,instruction:`${addCommas(doneRepaymentsDto.doneCapital)}元`  },
-                                {name:'已还利息',value:doneRepaymentsDto.doneIint,instruction:`${addCommas(doneRepaymentsDto.doneIint)}元`  },
-                                {name:'已还罚息',value:doneRepaymentsDto.doneLateIint,instruction:`${addCommas(doneRepaymentsDto.doneLateIint)}元`  },
-                                {name:'已还罚金',value:doneRepaymentsDto.doneLateFine,instruction:`${addCommas(doneRepaymentsDto.doneLateFine)}元`  },
+                                {name:'已还本金',value:doneRepaymentsDto.doneCapital,instruction:` ${addCommas(doneRepaymentsDto.doneCapital)}元`  },
+                                {name:'已还利息',value:doneRepaymentsDto.doneIint,instruction:` ${addCommas(doneRepaymentsDto.doneIint)}元`  },
+                                {name:'已还罚息',value:doneRepaymentsDto.doneLateIint,instruction:` ${addCommas(doneRepaymentsDto.doneLateIint)}元`  },
+                                {name:'已还罚金',value:doneRepaymentsDto.doneLateFine,instruction:` ${addCommas(doneRepaymentsDto.doneLateFine)}元`  },
                             ]
                         },
                     };
