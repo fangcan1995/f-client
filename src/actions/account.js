@@ -4,6 +4,11 @@ import {postContent} from '../utils/formSetting';
 import parseJson2URL from "../utils/parseJson2URL";
 import {API_CONFIG} from "../config/api";
 
+const url_uyouOpenAccountInfo='http://172.16.1.252:9090'+API_CONFIG.getFuiouOpenAccountInfo; //给富有的开户信息
+const url_uyouReOpenAccountInfo='http://172.16.1.252:9090'+API_CONFIG.getFuiouChangeCard; //给富有的换卡信息
+const url_uyouRecharge='http://172.16.1.252:9090'+API_CONFIG.getFuiouRecharge; //给富有的充值信息
+const url_uyouWithdrawals='http://172.16.1.252:9090'+API_CONFIG.getFuiouWithdrawals; //给富有的提现信息
+
 export const accountAc= {
     //虚拟流程，静态修改账户信息
     dummyModifyAccount:(params)=>{
@@ -22,8 +27,8 @@ export const accountAc= {
                 const res = await cFetch(API_CONFIG.hostWeb+API_CONFIG.getMemberInfo,{method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
-                    //console.log('后台返回的会员基础信息');
-                    //console.log(res);
+                    console.log('后台返回的会员基础信息');
+                    console.log(res);
                     /*let mock={
                         isCertification:'1',	//是否实名认证（0：未实名；1：已实名）
                         isOpenAccount:'1',	//是否开户（0：未开户；1：已开户）
@@ -48,10 +53,12 @@ export const accountAc= {
 
                     };*/
                     //data=mock;
+                    data.surplusAmount=1000000;
+                    data.availableBalance=20000;	//账户可用余额
                     data.isNovice='1';
                     return data;
                 } else {
-                    throw mock;
+                    throw data;
                 }
             }
         }
@@ -59,10 +66,7 @@ export const accountAc= {
     //获取给富有的信息
     getFuyouInfo:(params)=> {
         let url=``;
-        const url_uyouOpenAccountInfo=`http://172.16.1.252:9090/payment/fuiou/account`; //给富有的开户信息
-        const url_uyouReOpenAccountInfo=`http://172.16.1.252:9090/payment/fuiou/card`; //给富有的换卡信息
-        const url_uyouRecharge=`http://172.16.1.252:9090/payment/fuiou/deposit`; //给富有的充值信息
-        const url_uyouWithdrawals=`http://172.16.1.252:9090/payment/fuiou/cash`; //给富有的提现信息
+
         switch (params.type){
             case 'OpenAccount':
                 url=url_uyouOpenAccountInfo+`?url=`+params.url; //开户

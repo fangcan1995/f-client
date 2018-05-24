@@ -1,21 +1,22 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import StepperInput from '../../../../components/stepperInput/stepperInput';
 import {income} from "../../../../utils/cost";
 import {addCommas, toMoney, toNumber} from "../../../../utils/famatData"
-import {  Link} from 'react-router-dom';
+import {  withRouter,Link} from 'react-router-dom';
 import  {accountAc}  from '../../../../actions/account';
 import {InvestButton} from '../../invest-list/investComponents';
 import investDetailActions from "../../../../actions/invest-detail";
-import {formItemLayout} from "../../../../utils/formSetting";
 import BbhModal from "../../../../components/modal/bbh_modal";
 import {modal_config} from "../../../../utils/modal_config";
 import { Button,Popconfirm} from 'antd';
 
-class MasterInvestBox extends React.Component {
+
+class MasterInvestBox extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             member:{},
             investAmount:props.investInfo.min,
@@ -31,7 +32,7 @@ class MasterInvestBox extends React.Component {
             this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
         }
     }
-    confirm(e) {
+    handle_confirmRechange() {
         let {dispatch, account,investInfo} = this.props;
         let {accountsInfo}=account;
         let {availableBalance}=accountsInfo;
@@ -48,6 +49,9 @@ class MasterInvestBox extends React.Component {
             .catch(()=>{
                 //没获取到
             });
+    }
+    handle_confirmRisk(){
+        window.location='/my-settings/my-riskAssess';
     }
     //模态框开启关闭
     toggleModal=(modal,visile,id)=>{
@@ -102,7 +106,7 @@ class MasterInvestBox extends React.Component {
     render(){
         let {account,auth,investInfo,type}=this.props;
         let {isFetching,accountsInfo,toOthersInfo}=account;
-        let {availableBalance,memberRedInfo,memberCoupon,postResult,isCertification,isOpenAccount,isRisk,riskLevel,isNovice}=accountsInfo;
+        let {availableBalance,memberRedInfo,memberCoupon,postResult,isCertification,isOpenAccount,isRisk,riskLevel,isNovice,surplusAmount}=accountsInfo;
 
         return(
             <div className="form_area">
@@ -193,10 +197,14 @@ class MasterInvestBox extends React.Component {
                                             (accountsInfo===``)?``
                                                 :(investInfo.noviceLoan=='1' && isNovice==='0')?<Button type="primary"  className="pop__wp100" disabled={true}>仅限新手</Button>
                                                 :(availableBalance<this.state.investAmount)?
-                                                    <Popconfirm placement="top" title={`您的帐户可用余额不足，是否充值`} onConfirm={()=>this.confirm()} okText="确定" cancelText="取消">
+                                                    <Popconfirm placement="top" title={`您的帐户可用余额不足，是否充值`} onConfirm={()=>this.handle_confirmRechange()} okText="确定" cancelText="取消">
                                                         <Button type="primary"  className="pop__wp100" disabled={isFetching}>立即投资</Button>
                                                     </Popconfirm>
-                                                    :<Button type="primary" onClick={() => this.toggleModal(`bbhModal`,true)} className="pop__wp100" disabled={isFetching}>立即投资</Button>
+                                                    :(this.state.investAmount>surplusAmount)?
+                                                        <Popconfirm placement="top" title={`根据您的风险测评等级不支持本次出借，重新测评？`} onConfirm={this.handle_confirmRisk} okText="确定" cancelText="取消">
+                                                            <Button type="primary"  className="pop__wp100" disabled={isFetching}>立即投资</Button>
+                                                        </Popconfirm>
+                                                        :<Button type="primary" onClick={() => this.toggleModal(`bbhModal`,true)} className="pop__wp100" disabled={isFetching}>立即投资</Button>
 
                                         }
 

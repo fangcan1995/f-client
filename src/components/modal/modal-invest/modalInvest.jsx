@@ -1,13 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import  {poundage,checkMoney,income}  from '../../../utils/cost';
+import  {checkMoney,income}  from '../../../utils/cost';
 import {BbhAlert,Posting} from '../../../components/bbhAlert/bbhAlert';
 import { connect } from 'react-redux';
 import  investDetailActions  from '../../../actions/invest-detail';
 import {accountAc} from "../../../actions/account";
 import {addCommas, getTips, toMoney} from "../../../utils/famatData";
-
-//import PostButton from "../../../components/form/post-button/post-button";
 import {formItemLayout, noop} from "../../../utils/formSetting";
 import { Form,Row,Input,Button,Select,Checkbox,Col,Alert,Icon,Collapse  } from 'antd';
 import {tradePasswordRegExp } from '../../../utils/regExp';
@@ -18,9 +15,7 @@ const Panel = Collapse.Panel;
 const createForm = Form.create;
 const FormItem = Form.Item;
 
-function callback(key) {
-    console.log(key);
-}
+
 let appInfo={};
 class ModalInvest extends React.Component {
     constructor(props) {
@@ -31,23 +26,22 @@ class ModalInvest extends React.Component {
         this.state = {
             tips: '',  //错误提示
             isRead: false,
-            //num:0,
         }
     }
 
     componentDidMount () {
         let {auth,investDetail,dispatch}=this.props;
         let {id,annualRate,loanExpiry}=investDetail.investInfo;
+        dispatch(investDetailActions.statePostResultModify(``)); //清空结果
         if(auth.isAuthenticated){
-            dispatch(investDetailActions.getRedEnvelopes(id));
-            dispatch(investDetailActions.getRateCoupons(id));
+            dispatch(investDetailActions.getAvailableRewards(id));
         }
     }
     componentDidUpdate() {
         let {dispatch, investDetail} = this.props;
-        let {postResult,isPosting,redEnvelopes,rateCoupons}=this.props.investDetail;
+        let {postResult,isPosting,availableRewards}=this.props.investDetail;
         if(postResult.userCode===101 && postResult.times<5 && !isPosting){
-            console.log('在这里发第'+(postResult.times+1)+'次请求');
+            //console.log('在这里发第'+(postResult.times+1)+'次请求');
             dispatch(investDetailActions.postInvest(appInfo,postResult.times));
         }
     }
@@ -63,21 +57,22 @@ class ModalInvest extends React.Component {
     }
     onChangeReward(e) {
         let {dispatch,investDetail}=this.props;
-        let {redEnvelopes}=investDetail;
-        let index=redEnvelopes.findIndex((x)=>
+        let {availableRewards}=investDetail;
+        let index=availableRewards.findIndex((x)=>
             x.id ==parseInt(e.target.value)
         );
-        for(let index of redEnvelopes.keys()){
-            redEnvelopes[index].default=false;
+        for(let index of availableRewards.keys()){
+            availableRewards[index].default=false;
         }
-        redEnvelopes[index].default=true;
+        availableRewards[index].default=true;
 
-        dispatch(investDetailActions.changeReward(redEnvelopes.splice(0)));
+        dispatch(investDetailActions.changeReward(availableRewards.splice(0)));
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        const { dispatch, form,investAmount,investDetail } = this.props;
-        let {redEnvelopes}=investDetail;
+        const { dispatch, form,value,investDetail } = this.props;
+        console.log(this.props);
+        let {availableRewards}=investDetail;
         let {id}=investDetail.investInfo;
         form.validateFields((errors) => {
             if (errors) {
@@ -90,19 +85,23 @@ class ModalInvest extends React.Component {
                 });
                 return false;
             }
-            let index=redEnvelopes.findIndex((x)=>
+            let index=availableRewards.findIndex((x)=>
                 x.default ==true
             );
             appInfo={
                 tradePassword:hex_md5(form.getFieldsValue().newPassword),
                 projectId:id,
-                investAmt:investAmount,
+                investAmt:value,
                 ifTransfer:false,
                 investWay:1,
                 transfer:false,
-                rewardId:redEnvelopes[index].id , //奖励id
-                rewardType:redEnvelopes[index].type , //奖励类型
             }
+            if(index!=-1){
+                appInfo.rewardId=availableRewards[index].id ; //奖励id
+                appInfo.rewardType=availableRewards[index].type ; //奖励类型
+            }
+            console.log('提交的投资申请');
+            console.log(appInfo);
             dispatch(investDetailActions.postInvest(appInfo,0));
 
         });
@@ -110,23 +109,18 @@ class ModalInvest extends React.Component {
         //this.modalClose();
     }
     modalClose(){
-        //清空
-        let {investAmount,account,onFail,onSuccess,dispatch}=this.props;
-        /*let {postResult}=this.props.investDetail;
+        const {onSuccess,dispatch,investDetail}=this.props;
+        const {postResult}=investDetail;
         if(postResult.code==0){
             dispatch(accountAc.getAccountInfo());  //成功重新获取新户信息
             dispatch(investDetailActions.getInvestRecords(this.props.id));//成功重新获取投资记录
             dispatch(investDetailActions.getInvestInfo(this.props.id)); //成功重新获取标的信息
         }
-        dispatch(investDetailActions.statePostResultModify(``));*/
         onSuccess();
     }
     render() {
-        console.log('得到的数据');
-
         let {value,account,onFail,onSuccess,dispatch}=this.props;
-        console.log(this.props);
-        let {postResult,isPosting,redEnvelopes,rateCoupons}=this.props.investDetail;
+        let {postResult,isPosting,availableRewards}=this.props.investDetail;
         let {annualRate, loanExpiry} = this.props.investDetail.investInfo;
 
         let allowInvest=false;
@@ -134,8 +128,8 @@ class ModalInvest extends React.Component {
             allowInvest=true
         }
         let i=-1;
-        if(redEnvelopes!=``){
-            i=redEnvelopes.findIndex(
+        if(availableRewards!=``){
+            i=availableRewards.findIndex(
                 (x)=>x.default==true
             );
         }
@@ -152,17 +146,8 @@ class ModalInvest extends React.Component {
         if(postResult.type!=`success`) {
             return (
                 <div className="pop__invest">
-                    {/*<BbhAlert
-                        info={{message:'chenggong',description:'投资成功',type:'success',
-                            callback:()=>{
-                                this.modalClose()
-                            }
-                        }}
-                    />*/}
                     <div className="form__wrapper" id="area" >
-
                         <Form layout="horizontal" onSubmit={this.handleSubmit} id='frm'>
-
                             <FormItem
                                 { ...formItemLayout }
                                 label="投资金额"
@@ -174,15 +159,15 @@ class ModalInvest extends React.Component {
                                 label="使用奖励"
                             >
 
-                                {(redEnvelopes==='')?``
-                                    :(redEnvelopes.length>0?
-                                        <Collapse  onChange={callback} bordered={false}>
+                                {(availableRewards==='')?``
+                                    :(availableRewards.length>0?
+                                        <Collapse bordered={false}>
 
-                                            <Panel header={(i==-1)? `` :redEnvelopes[i].title } key="1" >
+                                            <Panel header={(i==-1)? `` :availableRewards[i].title } key="1" >
                                                 <div className="rewardList">
 
                                                 {
-                                                    redEnvelopes.map((item, index) => (
+                                                    availableRewards.map((item, index) => (
                                                         <ul key={`row-${index}`} >
                                                             <li><Checkbox onChange={this.onChangeReward} value={`${item.id}`} checked={item.default}></Checkbox></li>
                                                             <li>{item.title}</li>
@@ -205,7 +190,7 @@ class ModalInvest extends React.Component {
                             >
                                 <span  className="money">{income(value, annualRate, loanExpiry, 'm')}</span>元
 
-                                {(i==-1)? `` : `+${toMoney(redEnvelopes[i].reAmount)}`}元
+                                {(i==-1)? `` : `+${toMoney(availableRewards[i].reAmount)}元`}
                             </FormItem>
                             <FormItem
                                 { ...formItemLayout }
@@ -228,11 +213,17 @@ class ModalInvest extends React.Component {
                                         <a href="/subject_3/2" target="_blank">《投资协议》</a></Checkbox>
                                 </p>
                             </FormItem>
-                            <FormItem>{postResult.message}
+                            <FormItem>
+
+                                {(postResult!='')?
+                                    <p className="errorMessages">
+                                        {postResult.message}
+                                    </p>:``
+                                }
                                 {(this.state.tips!='')?
-                                    <div className="errorMessages">
+                                    <p className="errorMessages">
                                         {this.state.tips}
-                                    </div>:``
+                                    </p>:``
                                 }
                             </FormItem>
                             <FormItem className='center'>
@@ -249,27 +240,6 @@ class ModalInvest extends React.Component {
 
                             </FormItem>
                         </Form>
-
-
-                        {/*<div className="form__bar">
-                            {(this.state.tips!='')?
-                                <div className="errorMessages">
-                                    {this.state.tips}
-                                </div>:``
-                            }
-                        </div>
-                        <div className="form__bar">
-                            {
-                                isPosting?
-                                    <Button type="primary" style={{width:'100%'}} className='btn' disabled={true}>
-                                        <Posting isShow={isPosting}/>
-                                    </Button>
-                                    :<Button type="primary"   onClick={this.handleSubmit} style={{width:'100%'}} className='btn'>
-                                        确定
-                                    </Button>
-                            }
-
-                        </div>*/}
                     </div>
                 </div>
             );

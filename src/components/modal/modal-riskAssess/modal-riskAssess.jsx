@@ -115,7 +115,7 @@ class ModalRiskAssess extends React.Component {
             }else if(isRisk==='1' && surplusAmount<1000){
                 return(
                     <div className="pop__riskAssess">
-                        <div className="form__wrapper">
+                        {/*<div className="form__wrapper">
                             <div className='center'>
                                 <div className='result_tips'>
                                     <h3>根据您风险测评的结果，您不能在本平台进行投资</h3>
@@ -126,7 +126,7 @@ class ModalRiskAssess extends React.Component {
                                 <Button type="primary" htmlType="submit" className="pop__large" onClick={()=> this.getQuestions()}>重新测评</Button>
                                 <Button type="primary" htmlType="submit" className="pop__large" onClick={()=> onFail()}>关闭</Button>
                             </div>
-                        </div>
+                        </div>*/}
                     </div>
                 )
             }else{

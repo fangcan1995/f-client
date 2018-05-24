@@ -27,14 +27,25 @@ export const API_CONFIG = {
     getMemberInfo:`accounts/my/simpleInfo`, //获取会员帐户基础信息
     setCertification:`members/auth`,//实名认证
     setTradePassword:`uaa/oauth/trade/password`, //设置交易密码
-    getFuiou:`http://172.16.1.252:9090/payment/fuiou/account`, //给富有的开户信息
-    //提现
-    //充值
-    //重新绑卡
+    getFuiouOpenAccountInfo:`payment/fuiou/account`, //给富有的开户信息
+    getFuiouRecharge:`payment/fuiou/deposit`, //给富有的充值信息
+    getFuiouWithdrawals:`payment/fuiou/cash`, //给富有的提现信息
+    getFuiouChangeCard:`payment/fuiou/card`, //给富有的换卡信息
+
 
     uploadPhoto:`members/photo`, //上传头像
 
+    getProjectsLoan:`invest/projects/loan`, //投资信息
+    getTransferLoan:`invest/transfer/loan`, //债转投资信息
+    getProjectsInfo:`invest/projects/info`  ,//标的详情
+    getProjectsRecord:`invest/projects/record` ,//获取散标投资记录
+    getTransferRecord: `invest/transfer/record`,//获取转让标投资记录
+    getRpmtplanPage:`invest/rpmtplan/page` ,//获取还款记录
+    getAvailableRewards: `members/memberRedEnvelopes/list`, //获取特定标的可用奖励列表
+    postInvestApp:`invest/invest` ,//提交投资申请
+
 
 };
-const url_tradePassword=`http://172.16.1.234:8060/uaa/oauth/trade/password`; //设置交易密码
-const url_certification=`http://172.16.1.225:9090/members/auth`; //实名认证
+
+
+

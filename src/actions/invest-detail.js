@@ -1,24 +1,18 @@
 import cFetch from './../utils/cFetch';
-import cookie from 'js-cookie';
-import {addCommas,checkMoney} from '../utils/cost';
-import {urls,token} from './../utils/url';
-import {url_putRList} from './member-settings';
-import parseJson2URL from "../utils/parseJson2URL";
-import {formatPostResult,getTips} from '../utils/famatData';
+import {getTips} from '../utils/famatData';
 import {postContent} from '../utils/formSetting';
+import {API_CONFIG} from "../config/api";
 
-const url_invest_projects_loan=`${urls}/invest/projects/loan`; //投资信息
-const url_invest_transfer_loan=`${urls}/invest/transfer/loan` //债转投资信息
-const url_projects_info=`${urls}/invest/projects/info`  ;//标的详情
-const url_projects_record=`${urls}/invest/projects/record`;   //获取散标投资记录
-const url_transfer_record=`${urls}/invest/transfer/record`;//获取转让标投资记录
-const url_rpmtplan_page=`${urls}/invest/rpmtplan/page`;//获取还款记录
-const url_redEnvelopes=`${urls}/members/memberRedEnvelopes/list`; //获取特定标的可用红包列表
-const url_RateCoupons=`${urls}/members/memberRateCoupons/list`; //获取特定标的可用加息券列表
-const url_postInvest=`${urls}/invest/invest`; //提交投资申请
+const url_invest_projects_loan=API_CONFIG.hostWeb+API_CONFIG.getProjectsLoan; //投资信息
+const url_invest_transfer_loan=API_CONFIG.hostWeb+API_CONFIG.getTransferLoan; //债转投资信息
+const url_projects_info=API_CONFIG.hostWeb+API_CONFIG.getProjectsInfo  ;//标的详情
+const url_projects_record=API_CONFIG.hostWeb+API_CONFIG.getProjectsRecord;   //获取散标投资记录
+const url_transfer_record=API_CONFIG.hostWeb+API_CONFIG.getTransferRecord;//获取转让标投资记录
+const url_rpmtplan_page=API_CONFIG.hostWeb+API_CONFIG.getRpmtplanPage;//获取还款记录
+const url_availableRewards=API_CONFIG.hostWeb+API_CONFIG.getAvailableRewards; //获取特定标的可用红包列表
+const url_postInvest=API_CONFIG.hostWeb+API_CONFIG.postInvestApp; //提交投资申请
 
 let investDetailActions = {
-
     //投资信息
     getInvestInfo: (id) => {
     return {
@@ -27,8 +21,6 @@ let investDetailActions = {
             const res = await cFetch(`${url_invest_projects_loan}/${id}` , {method: 'GET'}, false);
             const {code, data} = res;
             if (code == 0) {
-                console.log('标的信息');
-                console.log(data);
                 data.surplusAmount=1800;
                 return data;
             } else {
@@ -119,15 +111,15 @@ let investDetailActions = {
         }
     },
 
-    //获取可用红包
-    getRedEnvelopes: (id) => {
+    //获取可用奖励
+    getAvailableRewards:(id)=>{
         return {
-            type: 'investDetail/redEnvelopes/FETCH',
+            type: 'investDetail/availableRewards/FETCH',
             async payload() {
-                const res = await cFetch(`${url_redEnvelopes}?projectId=${id}` , {method: 'GET'}, true);
+                const res = await cFetch(`${url_availableRewards}?projectId=${id}` , {method: 'GET'}, true);
                 let {code, data} = res;
                 if (code == 0) {
-                    console.log('可用红包');
+                    console.log('可用奖励');
                     console.log(data);
                     //假数据
                     data=[
@@ -188,35 +180,17 @@ let investDetailActions = {
         }
     },
 
-    //获取可用加息券
-    getRateCoupons: (id) => {
-        return {
-            type: 'investDetail/rateCoupons/FETCH',
-            async payload() {
-                const res = await cFetch(`${url_RateCoupons}?projectId=${id}` , {method: 'GET'}, true);
-                const {code, data} = res;
-                if (code == 0) {
-                    console.log('可用加息券');
-                    console.log(data);
-                    return data;
-                } else {
-                    throw res;
-                }
-            }
-        }
-    },
 
     //提交投资申请
     postInvest:(params,times)  => {
         return {
             type: 'investDetail/invest/POST',
             async payload() {
-                //params = parseJson2URL(params);
+
                 const res = await cFetch(`${url_postInvest}`, postContent(params), true);
                 //测试用
-
                 console.log('返回第'+(times+1)+'次请求的结果');
-                //res.message='invest_101';
+                res.message='invest_101';
                 let messageCode=res.message;
                 //end
                 let type=``;
@@ -252,7 +226,7 @@ let investDetailActions = {
     }),
     //修改可用奖励
     changeReward: json => ({
-        type: 'investDetail/redEnvelopes/CHANGE_DEFAULT',
+        type: 'investDetail/availableRewards/CHANGE_DEFAULT',
         payload: json
     }),
 
