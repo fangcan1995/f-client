@@ -144,7 +144,11 @@ class TransactionRecord extends Component{
                                                             <tr key={`row-${rowIndex}`}>
                                                                 <td>{item.createTime}</td>
                                                                 <td>{item.payType}</td>
-                                                                <td>{toMoney(item.transAmt)}</td>
+                                                                <td>
+                                                                    {(item.amountState==1)?`+`:``}
+                                                                    {(item.amountState==2)?`-`:``}
+                                                                    {toMoney(item.transAmt)}
+                                                                    </td>
                                                                 <td>{item.transState}</td>
                                                             </tr>
                                                         ))}

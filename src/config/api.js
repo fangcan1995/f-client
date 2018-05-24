@@ -24,19 +24,8 @@ export const API_CONFIG = {
     forgetVerifyCode: 'uaa/code/sms/forget/password',
     setTradePasswordVerifyCode:  '/uaa/code/sms/trade/password', //设置交易密码的短信接口
 
-    getMemberInfo:`accounts/my/simpleInfo`, //获取会员帐户基础信息
-    setCertification:`members/auth`,//实名认证
-    setTradePassword:`uaa/oauth/trade/password`, //设置交易密码
-    getFuiouOpenAccountInfo:`payment/fuiou/account`, //给富有的开户信息
-    getFuiouRecharge:`payment/fuiou/deposit`, //给富有的充值信息
-    getFuiouWithdrawals:`payment/fuiou/cash`, //给富有的提现信息
-    getFuiouChangeCard:`payment/fuiou/card`, //给富有的换卡信息
-
     getSbList:`invest/projects/loan/page`, //获取散标列表
     getTransferlist:`invest/transfer/loan/page`, //获取债转标列表
-
-
-    uploadPhoto:`members/photo`, //上传头像
 
     getProjectsLoan:`invest/projects/loan`, //投资信息
     getTransferLoan:`invest/transfer/loan`, //债转投资信息
@@ -46,6 +35,20 @@ export const API_CONFIG = {
     getRpmtplanPage:`invest/rpmtplan/page` ,//获取还款记录
     getAvailableRewards: `members/memberRedEnvelopes/list`, //获取特定标的可用奖励列表
     postInvestApp:`invest/invest` ,//提交投资申请
+
+    getMemberInfo:`accounts/my/simpleInfo`, //获取会员帐户基础信息
+    setCertification:`members/auth`,//实名认证
+    setTradePassword:`uaa/oauth/trade/password`, //设置交易密码
+    getFuiouOpenAccountInfo:`payment/fuiou/account`, //给富有的开户信息
+    getFuiouRecharge:`payment/fuiou/deposit`, //给富有的充值信息
+    getFuiouWithdrawals:`payment/fuiou/cash`, //给富有的提现信息
+    getFuiouChangeCard:`payment/fuiou/card`, //给富有的换卡信息
+    uploadPhoto:`members/photo`, //上传头像
+    getIncomeMonth:`accounts/income/month`,//获取月收益统计
+    getIncomeDay:`accounts/income/day`,//获取日收益统计
+    setLoginPassword:`uaa/oauth/password`,//修改登录密码
+
+
 
 
 };

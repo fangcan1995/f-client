@@ -9,7 +9,8 @@ export default class PieChart extends Component{
     }
     render(){
         let {data,style,showLegend,totalTitle,color,showUserLegend,unit,labelLine}=this.props;
-        console.log(this.props);
+        console.log('数据是')
+        console.log(data);
         if(!color){
             color=['#79b9e8', '#f69494','#72c59e','#f6ba7b','#8b9dbc'];
         }
@@ -46,11 +47,16 @@ export default class PieChart extends Component{
             <div className="peiChart">
                 {showUserLegend?
                     <div className="pei__legend">
-                        <h3 className="pei__title"><strong>{totalTitle}</strong><br/>{addCommas(total)}{unit}</h3>
+                        <h3 className="pei__title"><strong>{totalTitle}</strong><br/><span className='money'>{addCommas(total)}</span>{unit}</h3>
                         <ul>
                             {
                                 data.map((item, rowIndex) => (
-                                    <li key={`row-${rowIndex}`}><i style={{backgroundColor:`${color[rowIndex]}`}}></i><strong>{item.name}:</strong>{item.instruction}</li>
+                                    <li key={`row-${rowIndex}`}>
+                                        <i style={{backgroundColor:`${color[rowIndex]}`}}></i>
+                                        <strong>{item.name}:</strong>
+                                        <span className='money'>{item.instruction}</span>
+                                        {unit}
+                                    </li>
                                 ))
                             }
                         </ul>
