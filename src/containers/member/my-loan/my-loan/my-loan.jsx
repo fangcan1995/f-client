@@ -120,8 +120,8 @@ class MyLoans extends React.Component {
                                             myList.list.map((l, i) => (
                                                     (status === 1) ? (
                                                         <tr key={`row-${i}`}>
-                                                            <td>--</td>
                                                             <td>{l.name}</td>
+                                                            <td>{l.projectTypeName}</td>
                                                             <td>{l.money}</td>
                                                             <td>{l.annualRate}%</td>
                                                             <td>{l.loanExpiry}个月</td>
