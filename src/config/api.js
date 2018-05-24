@@ -32,6 +32,9 @@ export const API_CONFIG = {
     getFuiouWithdrawals:`payment/fuiou/cash`, //给富有的提现信息
     getFuiouChangeCard:`payment/fuiou/card`, //给富有的换卡信息
 
+    getSbList:`invest/projects/loan/page`, //获取散标列表
+    getTransferlist:`invest/transfer/loan/page`, //获取债转标列表
+
 
     uploadPhoto:`members/photo`, //上传头像
 
