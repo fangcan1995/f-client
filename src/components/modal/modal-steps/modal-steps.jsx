@@ -91,10 +91,15 @@ class ModalSteps extends React.Component {
         }
 
         return(
-            <div  className="pop_steps">
-                <Steps  current={current}>
-                    {steps.map(item => <Step key={item.title} title={item.title} icon={item.icon}  />)}
-                </Steps>
+            <div  className="pop_steps" >
+                {(isSetTradepassword==='1' || stepslength===2)?
+                    <Steps  current={current} style={{width:`70%`,margin:`0 auto`}}>
+                        {steps.map(item => <Step key={item.title} title={item.title} icon={item.icon}  />)}
+                    </Steps>
+                    :<Steps  current={current} >
+                        {steps.map(item => <Step key={item.title} title={item.title} icon={item.icon}  />)}
+                    </Steps>
+                }
                 <div className="steps-content">{steps[this.state.current].content}</div>
             </div>
         )

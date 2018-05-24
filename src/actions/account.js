@@ -53,6 +53,8 @@ export const accountAc= {
 
                     };*/
                     //data=mock;
+                    data.isCertification='0',	//是否实名认证（0：未实名；1：已实名）
+                        data.isOpenAccount='0',	//是否开户（0：未开户；1：已开户）
                     data.surplusAmount=1000000;
                     data.availableBalance=20000;	//账户可用余额
                     data.isNovice='1';
