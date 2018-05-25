@@ -185,7 +185,7 @@ class MyInvestments extends React.Component{
                                                                 <td>{l.loanExpiry}个月</td>
                                                                 <td>{l.loanRefundWay}</td>
                                                                 <td>{l.proMoneyEnd}</td>
-                                                                <td>{moment(l.inveCreateTime).format('YYYY-MM-DD')}</td>
+                                                                <td>{l.inveCreateTime ? moment(l.inveCreateTime).format('YYYY-MM-DD') : ''}</td>
                                                                 <td>{l.proMoneyPercent}%</td>
                                                             </tr>
                                                         ) : ((status === 2) ? (
@@ -194,8 +194,8 @@ class MyInvestments extends React.Component{
                                                                 <td>{l.proMoney}</td>
                                                                 <td>{l.loanExpiry}个月</td>
                                                                 <td>{l.proMoneyEnd}</td>
-                                                                <td>{moment(l.inveCreateTime).format('YYYY-MM-DD')}</td>
-                                                                <td>{moment(l.earnNextShdEarnDate).format('YYYY-MM-DD')}</td>
+                                                                <td>{l.inveCreateTime ? moment(l.inveCreateTime).format('YYYY-MM-DD') : ''}</td>
+                                                                <td>{l.earnNextShdEarnDate ? moment(l.earnNextShdEarnDate).format('YYYY-MM-DD') : ''}</td>
                                                                 <td>{l.earnNextShdEarnAmou}</td>
                                                                 <td>
                                                                     <a onClick={() => this.toggleModal('modalPlan', true, l.investId)}>回款计划</a>
@@ -209,9 +209,9 @@ class MyInvestments extends React.Component{
                                                                 <td>{l.proMoney}</td>
                                                                 <td>{l.loanExpiry}个月</td>
                                                                 <td>{l.proMoneyEnd}</td>
-                                                                <td>{moment(l.inveCreateTime).format('YYYY-MM-DD')}</td>
+                                                                <td>{l.inveCreateTime ? moment(l.inveCreateTime).format('YYYY-MM-DD') : ''}</td>
                                                                 <td>{l.earnRemittancAmou}</td>
-                                                                <td>{moment(l.earnRealEarnDate).format('YYYY-MM-DD')}</td>
+                                                                <td>{l.earnRealEarnDate ? moment(l.earnRealEarnDate).format('YYYY-MM-DD') : ''}</td>
                                                                 <td>
                                                                     <a onClick={() => this.toggleModal('modalPlan', true, l.investId)}>回款计划</a>
                                                                     <a href="">投资合同</a>
@@ -224,7 +224,7 @@ class MyInvestments extends React.Component{
                                                                 <td>{l.proMoneyEnd}</td>
                                                                 <td>{l.transAmt}</td>
                                                                 <td>{l.transFee}</td>
-                                                                <td>{moment(l.transApplyTime).format('YYYY-MM-DD')}</td>
+                                                                <td>{l.transApplyTime ? moment(l.transApplyTime).format('YYYY-MM-DD') : ''}</td>
                                                                 <td>{l.transStatus}</td>
                                                             </tr>
                                                         ) : ((status === 5) ? (
@@ -234,7 +234,7 @@ class MyInvestments extends React.Component{
                                                                 <td>{l.transAmt}</td>
                                                                 <td>{l.transFinanced}</td>
                                                                 <td>{l.transSchedule}%</td>
-                                                                <td>{moment(l.transPutDate).format('YYYY-MM-DD')}</td>
+                                                                <td>{l.transPutDate ? moment(l.transPutDate).format('YYYY-MM-DD') : ''}</td>
                                                                 <td>
                                                                     {l.transStatus}
                                                                 </td>
@@ -244,7 +244,7 @@ class MyInvestments extends React.Component{
                                                                 <td>{l.transNo}</td>
                                                                 <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
                                                                 <td>{l.transAmt}</td>
-                                                                <td>{moment(l.transferDate).format('YYYY-MM-DD')}</td>
+                                                                <td>{l.transferDate ? moment(l.transferDate).format('YYYY-MM-DD') : ''}</td>
                                                                 <td>
                                                                     <a href="">投资合同</a>
                                                                 </td>

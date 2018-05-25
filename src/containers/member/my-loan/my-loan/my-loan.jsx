@@ -124,10 +124,10 @@ class MyLoans extends React.Component {
                                                             <td>{l.name}</td>
                                                             <td>{l.projectTypeName}</td>
                                                             <td>{l.money}</td>
-                                                            <td>--</td>
+                                                            <td>{l.annualRate}%</td>
                                                             <td>{l.loanExpiry}个月</td>
                                                             <td>{l.refundWayName}</td>
-                                                            <td>{moment(l.applyTime).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.applyTime ? moment(l.applyTime).format('YYYY-MM-DD') : ''}</td>
                                                             <td>申请中</td>
                                                         </tr>
                                                     ) : ((status === 2) ? (
@@ -135,10 +135,10 @@ class MyLoans extends React.Component {
                                                             <td><p><a href={`/invest-detail/${l.projectId}`} target="_blank">{l.name}</a></p></td>
                                                             <td>{l.money}</td>
                                                             <td>{l.loanExpiry}个月</td>
-                                                            <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.putTime ? moment(l.putTime).format('YYYY-MM-DD') : ''}</td>
                                                             <td>{l.moneyEnd}</td>
                                                             <td>{l.investProgress}%</td>
-                                                            <td>{moment(l.endDate).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.endDate ? moment(l.endDate).format('YYYY-MM-DD') : ''}</td>
                                                             <td>招标中</td>
                                                         </tr>
                                                     ) : ((status === 3) ? (
@@ -146,8 +146,8 @@ class MyLoans extends React.Component {
                                                             <td><p><a href={`/invest-detail/${l.projectId}`} target="_blank">{l.name}</a></p></td>
                                                             <td>{l.money}</td>
                                                             <td>{l.loanExpiry}个月</td>
-                                                            <td>{moment(l.transferTtime).format('YYYY-MM-DD')}</td>
-                                                            <td>{moment(l.shdRpmtDate).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.transferTime ? moment(l.transferTime).format('YYYY-MM-DD') : ''}</td>
+                                                            <td>{l.shdRpmtDate ? moment(l.shdRpmtDate).format('YYYY-MM-DD') : ''}</td>
                                                             <td>{l.shdRpmtMoney}</td>
                                                             <td>
                                                                 {
@@ -164,12 +164,12 @@ class MyLoans extends React.Component {
                                                             <td><p><a href={`/invest-detail/${l.projectId}`} target="_blank">{l.name}</a></p></td>
                                                             <td>{l.money}</td>
                                                             <td>{l.loanExpiry}个月</td>
-                                                            <td>{moment(l.transferTtime).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.transferTime ? moment(l.transferTime).format('YYYY-MM-DD') : ''}</td>
                                                             <td>{l.rpmtCapital}</td>
                                                             <td>{l.rpmtIint}</td>
                                                             <td>{l.lateFine}</td>
                                                             <td>{l.lateIint}</td>
-                                                            <td>{moment(l.settleTime).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.settleTime ? moment(l.settleTime).format('YYYY-MM-DD') : ''}</td>
                                                             <td><a href="">借款合同</a></td>
                                                         </tr>
                                                     ) : (''))))

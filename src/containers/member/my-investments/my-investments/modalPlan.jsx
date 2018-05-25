@@ -34,7 +34,7 @@ class ModalPlan extends React.Component {
                                 {(planList.length>0)?
                                     planList.map((l, i) => (
                                         <tr key={`row-${i}`}>
-                                            <td>{moment(l.earnShdEarnDate).format('YYYY-MM-DD')}</td>
+                                            <td>{l.earnShdEarnDate ? moment(l.earnShdEarnDate).format('YYYY-MM-DD') : ''}</td>
                                             <td>{l.earnIssue}</td>
                                             <td>{l.earnIint2}</td>
                                             <td>{l.earnCapital}</td>

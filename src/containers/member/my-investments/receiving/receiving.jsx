@@ -65,10 +65,10 @@ class Receiving extends React.Component{
                                                     <dt><p><a href={`/invest-detail/${l.proId}`}>{l.proName}</a></p><strong>{l.proStatus}</strong>
                                                     </dt>
                                                     <dd>投资金额：{l.proMoneyEnd}元</dd>
-                                                    <dd>投资日期：{moment(l.inveCreateTime).format('YYYY-MM-DD')}</dd>
+                                                    <dd>投资日期：{l.inveCreateTime ? moment(l.inveCreateTime).format('YYYY-MM-DD') : ''}</dd>
                                                     <dd>收益率：{l.proAnnualRate}%</dd>
-                                                    <dd>下期回款日：{l.earnShdEarnDate}</dd>
-                                                    <dd>结清日期：{l.earnRealEarnDate}</dd>
+                                                    <dd>下期回款日：{l.earnShdEarnDate ? moment(l.earnShdEarnDate).format('YYYY-MM-DD') : ''}</dd>
+                                                    <dd>结清日期：{l.earnRealEarnDate ? moment(l.earnRealEarnDate).format('YYYY-MM-DD') : ''}</dd>
                                                     <dd>奖励金额：{l.rewardAmount}元</dd>
                                                     <dd>预估收益：{l.earnIncome}元</dd>
                                                     <dd>已回本金：{l.earnTotalCapital}元</dd>
