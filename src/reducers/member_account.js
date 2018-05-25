@@ -6,7 +6,6 @@ const initialState = Immutable.fromJS({
     isPosting:false,
     isOpenOthers:false,
     postResult:``,
-    verifyCodeCd:``,
     accountsInfo:``,
     /*accountsInfo:{
         isCertification:'',	//是否实名认证（0：未实名；1：已实名）

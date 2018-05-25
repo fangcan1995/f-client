@@ -170,10 +170,5 @@ export const sendMemberVerifyCode = params => {
         }
     }
 }
-export const setMemberVerifyCodeCd = cd => {
-    return {
-        type: 'member/SET_VERIFY_CODE_CD',
-        payload: cd,
-    }
-}
+
 

@@ -122,7 +122,7 @@ let investDetailActions = {
                     console.log('可用奖励');
                     console.log(data);
                     //假数据
-                    data=[
+                    /*data=[
                         {
                             id:`1001`,  //编号
                             type:`1`,   //类型 1 投资红包 2加息券
@@ -171,7 +171,7 @@ let investDetailActions = {
                             validity:'2018年8月1日-2018年8月30日', //有效期
                             default:false,
                         },
-                    ]
+                    ]*/
                     return data;
                 } else {
                     throw res;
@@ -190,14 +190,15 @@ let investDetailActions = {
                 const res = await cFetch(`${url_postInvest}`, postContent(params), true);
                 //测试用
                 console.log('返回第'+(times+1)+'次请求的结果');
-                res.message='invest_101';
+                /*res.message='invest_101';
                 let messageCode=res.message;
                 //end
                 let type=``;
                 (res.code == 0)?type='success':type='error';
                 if((times+1)===5){
                     messageCode='invest_102';
-                }
+                }*/
+                let messageCode=res.message;
                 return {
                     code:res.code,
                     type:type,

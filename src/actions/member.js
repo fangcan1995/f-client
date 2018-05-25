@@ -130,7 +130,7 @@ export const transactionRecordAc={
                     }
                 }
                 params = parseJson2URL(params);
-                const res = await cFetch(`${url_transaction_record}&`+params,{method: 'GET'}, true);
+                const res = await cFetch(`${url_transaction_record}?`+params,{method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
                     return data;

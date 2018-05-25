@@ -2,22 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form,Row,Input,Button,Col } from 'antd';
 import { connect } from 'react-redux';
-import {accountAc,sendMemberVerifyCode,setMemberVerifyCodeCd} from "../../../actions/account";
+import {accountAc,sendMemberVerifyCode} from "../../../actions/account";
 import {Posting,BbhAlert} from '../../../components/bbhAlert/bbhAlert';
 import {tradePasswordRegExp } from '../../../utils/regExp';
-import {formItemLayout,noop } from '../../../utils/formSetting';
+import {formItemLayout,noop,countDownTime } from '../../../utils/formSetting';
 import {hex_md5} from "../../../utils/md5";
 import "./modal-tradePassword.less"
+import {memberAc} from "../../../actions/member";
 
 
 const createForm = Form.create;
 const FormItem = Form.Item;
+
 
 class ModalTradePassword extends React.Component {
     constructor(props) {
         super(props);
         this.verifyCodeInputRef;
         this.state = {
+            verifyCodeCd:countDownTime+1,
             errMessages:``,
             isReset:false
         }
@@ -36,6 +39,10 @@ class ModalTradePassword extends React.Component {
             callback();
         }
     }
+    componentWillMount () {
+        this.props.dispatch(accountAc.clear());
+        console.log('重载了');
+    }
     //提交
     handleSubmit = (e) => {
         e.preventDefault();
@@ -52,7 +59,7 @@ class ModalTradePassword extends React.Component {
                 trade_password_token:account.verifyCode.token
             }
             dispatch(accountAc.setTradePassword(appInfo));
-
+            //停止计数器
         });
     }
     handleSendVerifyCodeBtnClick = e => {
@@ -67,36 +74,36 @@ class ModalTradePassword extends React.Component {
                     return res;
                 })
                 .then(
-                    () => this.startCd(180)
-                    //dispatch(setMemberVerifyCodeCd(180))
+                    () => this.startCd()
                 )
                 .catch(err => {
-                    //if(err.code==406){
+
                         this.setState({
                             errMessages:err.message
                         });
-                    //}
+
                 });
         });
     }
-    startCd = (secs) => new Promise((resolve, reject) => {
+    startCd = () => new Promise((resolve, reject) => {
         let timer = null;
-        const { dispatch } = this.props;
-
         const cd = () => {
-            if ( secs < 0 ) {
+            if(this.state.verifyCodeCd>0){
+                this.setState({
+                    verifyCodeCd:this.state.verifyCodeCd-1,
+                },()=>{
+                    timer = setTimeout(cd, 1000)
+                });
+            }else{
                 timer && clearTimeout(timer), timer = null;
-                secs = 0;
-                resolve(secs);
-            } else {
-                dispatch(setMemberVerifyCodeCd(secs));//读秒
-                secs -= 1;
-                timer = setTimeout(cd, 1000)
+                this.setState({
+                    verifyCodeCd:countDownTime+1,
+                })
             }
-
         }
         cd();
     })
+
     //重新设置交易密码
     reset(){
         this.setState({
@@ -108,30 +115,16 @@ class ModalTradePassword extends React.Component {
         this.setState({
             isReset:true,
         },()=>{
-            console.log('点击成功提示页面中的确定-回调');
-            console.log(this.props);
             let {onSuccess,dispatch}=this.props;
-            dispatch(accountAc.dummyModifyAccount({isSetTradepassword:'1'}));  //虚拟
-            //dispatch(accountAc.getAccountInfo());  //真实
-            dispatch(accountAc.clear());
+            dispatch(accountAc.getAccountInfo());  //真实
             onSuccess();
         });
 
     }
-    /*componentDidUpdate() {
-        const { dispatch } = this.props;
-        let { verifyCode,verifyCodeCd}=this.props.account;
-        if(verifyCode!='' && verifyCodeCd>0 ){
-            console.log('开始道速');
-            this.startCd(verifyCodeCd);
-        }
-    }*/
     render(){
         let {onSuccess,onFail,attach,repeat}=this.props;
-        console.log('当前页的上个月');
-        console.log(this.props);
-        let {isPosting,postResult,accountsInfo,verifyCodeCd}=this.props.account;
-        let {isCertification,isOpenAccount,isSetTradepassword}=accountsInfo;
+        let {isPosting,postResult,accountsInfo}=this.props.account;
+        let {isSetTradepassword}=accountsInfo;
         const { getFieldDecorator,getFieldValue } = this.props.form;
         const verifyCodeProps = getFieldDecorator('verify_code', {
             rules: [
@@ -238,9 +231,13 @@ class ModalTradePassword extends React.Component {
                                                 size="large"
                                                 type="dashed"
                                                 htmlType="button"
-                                                disabled={ !!verifyCodeCd }
+                                                disabled={ !!(this.state.verifyCodeCd<=countDownTime) }
                                                 onClick={ this.handleSendVerifyCodeBtnClick }
-                                            >{ verifyCodeCd || '获取验证码' }
+                                            >
+                                                {
+                                                    (this.state.verifyCodeCd<=countDownTime)? this.state.verifyCodeCd
+                                                        :'获取验证码'
+                                                }
                                             </Button>
                                         </Col>
                                     </Row>

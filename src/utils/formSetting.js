@@ -36,6 +36,6 @@ export function putContent (params){
         body : JSON.stringify(params),
     }
 }
-
-
+//倒计时时间间隔
+export const countDownTime=180;
 
