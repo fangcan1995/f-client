@@ -85,7 +85,7 @@ class MyAuthInfo extends React.Component {
     render(){
         let {dispatch,account,auth}=this.props;
         const {isFetching,accountsInfo,toOthersInfo}=account;
-        const {postResult,isCertification,isOpenAccount,isSetTradepassword,trueName,idNumber,bankNo}=accountsInfo;
+        const {postResult,isCertification,isPhoneNumber,isOpenAccount,isSetTradepassword,trueName,phoneNumber,idNumber,bankNo}=accountsInfo;
         return(
             <div className="member__main">
                 <Crumbs/>
@@ -110,12 +110,12 @@ class MyAuthInfo extends React.Component {
                                                     <td className="operate"><a href="javascript:void(0);"  onClick={() => this.toggleModal(`ModalCertification`,true)}>认证</a></td>
                                                 </tr>
                                             }
-                                            <tr>
-                                                <th><i className="iconfont icon-phone"></i>手机号</th>
-                                                <td className="Result">已设置</td>
-                                                <td className="detail">{auth.user.userName}</td>
-                                                <td className="operate">{/*<a href="javascript:void(0);" onClick={this.changePhone}>更改</a>*/}</td>
-                                            </tr>
+                                                <tr>
+                                                    <th><i className="iconfont icon-phone"></i>手机号</th>
+                                                    <td className="Result">已设置</td>
+                                                    <td className="detail">{phoneNumber}</td>
+                                                    <td className="operate">{/*<a href="javascript:void(0);" onClick={this.changePhone}>更改</a>*/}</td>
+                                                </tr>
                                             {
                                                 isCertification === '1' ?
                                                     <tr>
