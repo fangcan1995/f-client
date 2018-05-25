@@ -99,13 +99,18 @@ class ModalRiskAssess extends React.Component {
             if(isRisk==='0'){
                 return(
                     <div className="pop__riskAssess">
-                        <div className="form__wrapper">
-                            <div className='center'>
-                                <div className='result_tips'>
-                                    <h3>风险承受能力测评</h3>
-                                    <p>按照网贷行业相关监管规定，出借人在网贷平台需要进行风险能力评估，*******************************************************</p>
-                                </div>
-                            </div>
+                        <div className="riskAssess__tips">
+                            <dl>
+                                <dt>风险承受能力测评</dt>
+                                <dd>
+                                    <div className='center'>
+                                        <img src={require('../../../assets/images/myAccount/risk.png')} />
+                                    </div>
+                                </dd>
+                                <dd>
+                                    <p>尊敬的投资人，按照网贷行业相关监管规定，投资人在网贷平台需要进行风险承受能力评估，以便更有效地为您提供投资建议。烦请认真作答，您的测评结果将会最终决定您在平台可投资的产品范围。预计仅花费您少许的时间，感谢您的参与！ </p>
+                                </dd>
+                            </dl>
                             <div className='center'>
                                 <Button type="primary" htmlType="submit" className="pop__large" onClick={()=> this.getQuestions()}>立即测评</Button>
                             </div>

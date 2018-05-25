@@ -31,13 +31,13 @@ export default class BbhModal extends Component{
 
         switch (moduleName) {
             case `ModalSteps`:
-                moduleContent=<ModalSteps key={this.state.key}  onSuccess={()=>{this.onCancel()}} stepslength={stepslength||3}  />;
+                moduleContent=<ModalSteps key={this.state.key}  onSuccess={()=>{this.onCancel()}} stepslength={stepslength||3} returnPage={returnPage||``} />;
                 break;
             case `ModalCertification`:
                 moduleContent=<ModalCertification key={this.state.key} onSuccess={()=>{this.onCancel()}} />;
                 break;
             case `ModalTradePassword`:
-                moduleContent=<ModalTradePassword key={this.state.key} onSuccess={()=>{this.onCancel()}} repeat={repeat||false} />;
+                moduleContent=<ModalTradePassword key={this.state.key} onSuccess={()=>{this.onCancel()}}  />;
                 break;
             case `ModalLoginPassword`:
                 moduleContent=<ModalLoginPassword key={this.state.key} onSuccess={()=>{this.onCancel()}} />;

@@ -54,7 +54,9 @@ export const accountAc= {
 
                     };*/
                     //data=mock;
-
+                    /*if(data.trueName==`测试三`){
+                        data.isSetTradepassword='0'
+                    }*/
                     return data;
                 } else {
                     throw data;

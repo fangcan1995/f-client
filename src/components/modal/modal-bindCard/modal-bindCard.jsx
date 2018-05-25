@@ -13,7 +13,11 @@ class ModalBindCard extends React.Component {
     }
     componentDidMount () {
         //this.props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息
+
         let {returnPage,dispatch}=this.props;
+        console.log('回调的页面是');
+        console.log(returnPage);
+        console.log('-----')
         dispatch(accountAc.getFuyouInfo({type:'OpenAccount',url:returnPage})); //获取开户需携带的信息
     }
     //提交
@@ -28,21 +32,20 @@ class ModalBindCard extends React.Component {
     modalClose(){
         console.log('绑卡成功回调');
         let {onSuccess,dispatch}=this.props;
-        //this.props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息,暂时注释掉
-        dispatch(accountAc.dummyModifyAccount({isOpenAccount:'1'}));  //虚拟
+        this.props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息,暂时注释掉
+        //dispatch(accountAc.dummyModifyAccount({isOpenAccount:'1'}));  //虚拟
         dispatch(accountAc.clear());
         onSuccess();
     }
     render(){
         let {onSuccess,onFail,returnPage}=this.props;
         let {isPosting,toOthersInfo,postResult,isOpenOthers}=this.props.account;
-        console.log('去富有开户携带的信息');
-        console.log(toOthersInfo);
+
         if(postResult.type!=`success`){
             return(
                 <div className="pop__openOther">
                     {/*<WaitThirdParty isShow={true} title='绑卡' callback={this.modalClose} />*/}
-                    {(isOpenOthers )?``
+                    {(toOthersInfo==`` )?``
                         :<div className="form__wrapper">
                             <form name="webReg" id="webReg" method="post" action={toOthersInfo.url}>
                                 <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />

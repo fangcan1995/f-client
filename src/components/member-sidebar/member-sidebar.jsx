@@ -27,7 +27,7 @@ class MemberSidebar extends Component {
     render(){
         const {account,auth}=this.props;
         const {accountsInfo}=account;
-        const {photo,treeName,isOpenAccount,isRisk}=accountsInfo;
+        const {photo,trueName,isOpenAccount,isRisk}=accountsInfo;
         return (
             <main className="main member">
                 <div className="wrapper">
@@ -37,7 +37,7 @@ class MemberSidebar extends Component {
                                 <MyAvatar photo={photo}/>
                                 <div className="username">
                                     {
-                                    (treeName!='')? treeName
+                                    (trueName!='')? trueName
                                         :auth.user.userName
                                     }
                                 </div>
