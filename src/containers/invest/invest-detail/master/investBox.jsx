@@ -56,7 +56,7 @@ class MasterInvestBox extends Component {
     //模态框开启关闭
     toggleModal=(modal,visile,id)=>{
         //
-        let {isCertification,isOpenAccount,isSetTradepassword,isRisk,riskLevel,surplusAmount}=this.props.account.accountsInfo;
+        let {isCertification,isOpenAccount,isSetTradepassword,isRisk,riskLevel,surplusAmount,availableBalance}=this.props.account.accountsInfo;
         let currentModule=``;
         if(isCertification===`0`) {
             currentModule = `ModalSteps`;   //没有实名认证
@@ -76,7 +76,11 @@ class MasterInvestBox extends Component {
                     //测评结果中剩余的可投限额不小于投资金额(暂时用1000替代)
                     if(surplusAmount>=1000){
                         //currentModule=`ModalInvestSteps`;  //去投资
-                        currentModule=`ModalInvest`;  //去投资
+                        if(availableBalance<this.state.investAmount){
+                            currentModule=`ModalRecharge`//去充值
+                        }else{
+                            currentModule=`ModalInvest`;  //去投资
+                        }
 
                     }else{
                         currentModule = `ModalRiskAssess`;   //去测评
@@ -100,7 +104,9 @@ class MasterInvestBox extends Component {
 
     };
     closeModal(status){
-        this.props.dispatch(accountAc.getAccountInfo());  //成功重载数据,暂时注释掉
+        const {investInfo,dispatch}=this.props;
+        dispatch(accountAc.getAccountInfo());  //成功重载数据
+        dispatch(investDetailActions.getInvestRecords(investInfo.id));//投资记录
         this.toggleModal('bbhModal',false);
     }
     render(){

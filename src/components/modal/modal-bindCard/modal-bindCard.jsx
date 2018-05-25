@@ -15,9 +15,6 @@ class ModalBindCard extends React.Component {
         //this.props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息
 
         let {returnPage,dispatch}=this.props;
-        console.log('回调的页面是');
-        console.log(returnPage);
-        console.log('-----')
         dispatch(accountAc.getFuyouInfo({type:'OpenAccount',url:returnPage})); //获取开户需携带的信息
     }
     //提交

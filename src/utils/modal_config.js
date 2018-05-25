@@ -9,6 +9,11 @@ export const modal_config={
         width: "620px",
         height: "400px"
     },
+    ModalRecharge:{
+        title: "充值",
+        width: "500px",
+        height: "300px"
+    },
     ModalReBindCard: {
         title: "更换银行卡",
         width: "620px",

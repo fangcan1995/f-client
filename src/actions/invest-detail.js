@@ -21,7 +21,7 @@ let investDetailActions = {
             const res = await cFetch(`${url_invest_projects_loan}/${id}` , {method: 'GET'}, false);
             const {code, data} = res;
             if (code == 0) {
-                //data.surplusAmount=2230;
+                //data.surplusAmount=230;
                 return data;
             } else {
                 throw res;
@@ -198,7 +198,9 @@ let investDetailActions = {
                 if((times+1)===5){
                     messageCode='invest_102';
                 }*/
+                let type=``;
                 let messageCode=res.message;
+                (res.code == 0)?type='success':type='error';
                 return {
                     code:res.code,
                     type:type,

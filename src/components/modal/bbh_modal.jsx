@@ -7,8 +7,12 @@ import ModalRiskAssess from '../modal/modal-riskAssess/modal-riskAssess';
 import ModalInvestSteps from '../modal/modal-invest-steps/modal-invest-steps';
 import ModalCertification from '../modal/modal-certification/modal-certification';
 import ModalInvest from '../modal/modal-invest/modalInvest';
+import ModalRecharge from '../modal/modal-recharge/modaRecharge';
+
 import { Modal } from 'antd';
 import './bbh_modal.less';
+import {accountAc} from "../../actions/account";
+import investDetailActions from "../../actions/invest-detail";
 
 export default class BbhModal extends Component{
     constructor(props) {
@@ -18,10 +22,15 @@ export default class BbhModal extends Component{
         }
     }
     onCancel(){
-        let {closeFunc}=this.props;
+        let {closeFunc,dispatch}=this.props;
         this.setState({
             key:Math.random(),
         })
+        console.log('在这重新载入数据');
+        console.log(this.props)
+        /*dispatch(accountAc.getAccountInfo());  //成功重新获取新户信息
+        dispatch(investDetailActions.getInvestRecords(this.props.id));//成功重新获取投资记录
+        dispatch(investDetailActions.getInvestInfo(this.props.id)); //成功重新获取标的信息*/
         closeFunc();
     }
     render(){
@@ -44,6 +53,9 @@ export default class BbhModal extends Component{
                 break;
             case `ModalBindCard`:
                 moduleContent=<ModalBindCard key={this.state.key} onSuccess={()=>{this.onCancel()}} returnPage={returnPage||``} />;
+                break;
+            case `ModalRecharge`:
+                moduleContent=<ModalRecharge key={this.state.key} onSuccess={()=>{this.onCancel()}} value={investAmount} returnPage={returnPage||``} />;
                 break;
             case `ModalRiskAssess`:
                 moduleContent=<ModalRiskAssess key={this.state.key} onSuccess={()=>{this.onCancel()}} />;

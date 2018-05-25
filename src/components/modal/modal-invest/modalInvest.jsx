@@ -32,9 +32,10 @@ class ModalInvest extends React.Component {
     componentDidMount () {
         let {auth,investDetail,dispatch}=this.props;
         let {id,annualRate,loanExpiry}=investDetail.investInfo;
-        dispatch(investDetailActions.statePostResultModify(``)); //清空结果
+        dispatch(investDetailActions.getAvailableRewards(id));
+        //dispatch(investDetailActions.statePostResultModify(``)); //清空结果
         if(auth.isAuthenticated){
-            dispatch(investDetailActions.getAvailableRewards(id));
+
         }
     }
     componentDidUpdate() {
@@ -100,8 +101,8 @@ class ModalInvest extends React.Component {
                 appInfo.rewardId=availableRewards[index].id ; //奖励id
                 appInfo.rewardType=availableRewards[index].type ; //奖励类型
             }
-            console.log('提交的投资申请');
-            console.log(appInfo);
+            //console.log('提交的投资申请');
+            //console.log(appInfo);
             dispatch(investDetailActions.postInvest(appInfo,0));
 
         });
@@ -111,11 +112,12 @@ class ModalInvest extends React.Component {
     modalClose(){
         const {onSuccess,dispatch,investDetail}=this.props;
         const {postResult}=investDetail;
-        if(postResult.code==0){
+        /*if(postResult.code==0){
             dispatch(accountAc.getAccountInfo());  //成功重新获取新户信息
             dispatch(investDetailActions.getInvestRecords(this.props.id));//成功重新获取投资记录
             dispatch(investDetailActions.getInvestInfo(this.props.id)); //成功重新获取标的信息
-        }
+        }*/
+
         onSuccess();
     }
     render() {
@@ -134,14 +136,11 @@ class ModalInvest extends React.Component {
             );
         }
         const { getFieldDecorator,getFieldValue } = this.props.form;
-        const newPasswordProps = getFieldDecorator('newPassword', {
-            validate: [{
-                rules: [
-                    { required: true, pattern: tradePasswordRegExp, message: '密码长度为6-16位，必须包含数字、字母、符号' }
 
-                ],
-                trigger: ['onBlur', 'onChange']
-            }]
+        const newPasswordProps = getFieldDecorator('newPassword', {
+            rules: [
+                { required: true, min: 6, message: '密码至少为 6 个字符' }
+            ]
         });
         if(postResult.type!=`success`) {
             return (
@@ -244,6 +243,8 @@ class ModalInvest extends React.Component {
                 </div>
             );
         }else{
+
+
             return(
                 <div className="pop__invest">
                     <BbhAlert

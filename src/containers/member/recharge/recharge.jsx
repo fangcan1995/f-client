@@ -31,13 +31,12 @@ class Recharge extends React.Component{
         this.props.dispatch(accountAc.getAccountInfo());  //????
     }
     handleChange(event){
-        //console.log('修改金额');
+
         let result=checkMoney({
             'value':event.target.value,
             'type':0,
             'min_v':10,
             'max_v':100000000,
-
             'label':'充值金额',
             'interval':1
         });
