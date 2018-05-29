@@ -8,6 +8,7 @@ import  {memberLoansAc,getImageCode}  from '../../../actions/member-loans';
 import { hex_md5 } from '../../../utils/md5';
 import {formItemLayout,noop } from '../../../utils/formSetting';
 import moment from "moment";
+import {accountAc} from "../../../actions/account";
 const createForm = Form.create;
 const FormItem = Form.Item;
 
@@ -60,6 +61,7 @@ class ModalRepaymentApp extends React.Component {
         //dispatch(accountAc.getAccountInfo());  //真实
         onSuccess();
     }
+
     render() {
         let {onSuccess,onFail,value}=this.props;
         let {postResult,projectInfo,isPosting}=this.props.memberLoans.myLoans;
@@ -138,7 +140,7 @@ class ModalRepaymentApp extends React.Component {
                                     <FormItem>
                                         {
                                             isReadProps(
-                                                <Checkbox>我已阅读并同意<a href="/subject_common/6" target="_blank">《提前还款规则》</a></Checkbox>
+                                                <Checkbox>我已阅读并同意<a href="/subject_3/6" target="_blank">《提前还款规则》</a></Checkbox>
                                             )
                                         }
                                     </FormItem>

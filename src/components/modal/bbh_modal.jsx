@@ -11,6 +11,8 @@ import ModalRecharge from '../modal/modal-recharge/modaRecharge';
 import ModalRepaymentApp from '../modal/modal-repayment/modalRepaymentApp';
 import ModalRepayment from '../modal/modal-repayment/modalRepayment';
 import ModalLoanApp from '../modal/modal-loanApp/modal-loanApp';
+import ModalTransferApp from '../modal/modal-tranferApp/modal-transferApp';
+import ModalPlan from '../modal/modal-plan/modal-plan';
 import { Modal } from 'antd';
 import './bbh_modal.less';
 import {accountAc} from "../../actions/account";
@@ -76,6 +78,12 @@ export default class BbhModal extends Component{
                 break;
             case `ModalLoanApp`:
                 moduleContent=<ModalLoanApp key={this.state.key} currentId={currentId} onSuccess={()=>{this.onCancel()}} />;
+                break;
+            case `ModalTransferApp`:
+                moduleContent=<ModalTransferApp key={this.state.key} currentId={currentId} onSuccess={()=>{this.onCancel()}} />;
+                break;
+            case `ModalPlan`:
+                moduleContent=<ModalPlan key={this.state.key} currentId={currentId} onSuccess={()=>{this.onCancel()}} />;
                 break;
             default:
                 break
