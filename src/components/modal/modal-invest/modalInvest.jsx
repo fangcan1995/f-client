@@ -33,7 +33,7 @@ class ModalInvest extends React.Component {
         let {auth,investDetail,dispatch}=this.props;
         let {id,annualRate,loanExpiry}=investDetail.investInfo;
         dispatch(investDetailActions.getAvailableRewards(id));
-        //dispatch(investDetailActions.statePostResultModify(``)); //清空结果
+        dispatch(investDetailActions.statePostResultModify(``)); //清空结果
         if(auth.isAuthenticated){
 
         }
@@ -112,11 +112,11 @@ class ModalInvest extends React.Component {
     modalClose(){
         const {onSuccess,dispatch,investDetail}=this.props;
         const {postResult}=investDetail;
-        /*if(postResult.code==0){
+        if(postResult.code==0){
             dispatch(accountAc.getAccountInfo());  //成功重新获取新户信息
             dispatch(investDetailActions.getInvestRecords(this.props.id));//成功重新获取投资记录
             dispatch(investDetailActions.getInvestInfo(this.props.id)); //成功重新获取标的信息
-        }*/
+        }
 
         onSuccess();
     }
@@ -209,7 +209,7 @@ class ModalInvest extends React.Component {
                             <FormItem>
                                 <p>
                                     <Checkbox onChange={this.onChange}>我已阅读并同意
-                                        <a href="/subject_3/2" target="_blank">《投资协议》</a></Checkbox>
+                                        <a href="/subject_3/4" target="_blank">《投资协议》</a></Checkbox>
                                 </p>
                             </FormItem>
                             <FormItem>

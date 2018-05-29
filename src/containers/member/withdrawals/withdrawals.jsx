@@ -149,7 +149,7 @@ class Withdrawals extends React.Component{
                                                     </Button>
                                                 }
                                             </div>
-                                            <form name="FuiouCash" id="FuiouCash" method="post" action={toOthersInfo.url} >
+                                            <form name="FuiouCash" id="FuiouCash" method="post" action={toOthersInfo.url} target="_blank" >
                                                 <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />
                                                 <input type="hidden" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} />
                                                 <input type="hidden" name="login_id" value={toOthersInfo.login_id} />

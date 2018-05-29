@@ -1,6 +1,6 @@
 import cFetch from './../utils/cFetch';
 import {formatPostResult} from '../utils/famatData';
-
+import {postContent} from '../utils/formSetting';
 
 import parseJson2URL from "../utils/parseJson2URL";
 import {API_CONFIG} from "../config/api";
@@ -104,16 +104,16 @@ export const accountAc= {
     },
     //实名认证
     certification: (params) => {
-        console.log('实名认证提交的信息');
-        console.log(postContent(params));
+        //console.log('实名认证提交的信息');
+        //console.log(postContent(params));
         return {
             type: 'member/account/CERTIFICATION_FETCH',
             async payload() {
                 const res = await cFetch(url_setCertification, postContent(params), true);
                 //测试用
-                console.log('实名认证返回的结果');
-                console.log(res);
-                res.code=0;
+                //console.log('实名认证返回的结果');
+                //console.log(res);
+                //res.code=0;
                 //end
                 return formatPostResult(res);
             }
