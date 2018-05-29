@@ -49,6 +49,8 @@ export default createReducer(initialState, {
       postinged: false
     })},
 
+
+
     ['loan/POST_LOAN_DATA_PENDING']: (state, action) => {
         return state.merge({
         isFetching: true,
@@ -68,4 +70,11 @@ export default createReducer(initialState, {
       errorMessage: action.payload.msg,
       postinged:true
     })},
+
+    //edit by lily
+    ['loan/CLEAR']: (state, action) => state.merge({
+        isFetching: false,
+        postinged: false,
+        applyMessage:``,
+    }),
 })

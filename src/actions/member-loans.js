@@ -180,12 +180,21 @@ export const repaymentsAc={
         return {
             type: 'myLoans/repaymentPlans/FETCH',
             async payload() {
+                for(var name in params){
+                    if(params[name]===``){
+                        delete params[name];
+                    }else{
+                        if(name==`dateStart`) {
+                            params[name] += ' 00:00:00'
+                        }
+                        if(name==`dateEnd`) {
+                            params[name] += ' 23:59:59'
+                        }
+                    }
+                }
                 params = parseJson2URL(params);
-                const res = await cFetch(`${url_repaymentsList}?`+params,{method: 'GET'}, true);
+                const res = await cFetch(`${url_repaymentsList}?sortBy=-shdRpmtDate&`+params,{method: 'GET'}, true);
                 const {code, data} = res;
-                console.log('发回的数据');
-                console.log(`${url_repaymentsList}&`+params);
-                console.log(data);
                 if (code == 0) {
                     return {
                         myList:data,

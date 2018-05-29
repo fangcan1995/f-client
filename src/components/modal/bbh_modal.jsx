@@ -8,7 +8,9 @@ import ModalInvestSteps from '../modal/modal-invest-steps/modal-invest-steps';
 import ModalCertification from '../modal/modal-certification/modal-certification';
 import ModalInvest from '../modal/modal-invest/modalInvest';
 import ModalRecharge from '../modal/modal-recharge/modaRecharge';
-
+import ModalRepaymentApp from '../modal/modal-repayment/modalRepaymentApp';
+import ModalRepayment from '../modal/modal-repayment/modalRepayment';
+import ModalLoanApp from '../modal/modal-loanApp/modal-loanApp';
 import { Modal } from 'antd';
 import './bbh_modal.less';
 import {accountAc} from "../../actions/account";
@@ -34,7 +36,7 @@ export default class BbhModal extends Component{
         closeFunc();
     }
     render(){
-        let {config,visible,moduleName,investAmount,repeat,stepslength,returnPage}=this.props;
+        let {config,visible,moduleName,investAmount,repeat,stepslength,returnPage,currentId}=this.props;
         let {title,width,height}=config;
         let moduleContent=``;
 
@@ -65,6 +67,15 @@ export default class BbhModal extends Component{
                 break;
             case `ModalInvest`:
                 moduleContent=<ModalInvest key={this.state.key} value={investAmount} onSuccess={()=>{this.onCancel()}} />;
+                break;
+            case `ModalRepaymentApp`:
+                moduleContent=<ModalRepaymentApp key={this.state.key} currentId={currentId} onSuccess={()=>{this.onCancel()}} />;
+                break;
+            case `ModalRepayment`:
+                moduleContent=<ModalRepayment key={this.state.key} currentId={currentId} onSuccess={()=>{this.onCancel()}} />;
+                break;
+            case `ModalLoanApp`:
+                moduleContent=<ModalLoanApp key={this.state.key} currentId={currentId} onSuccess={()=>{this.onCancel()}} />;
                 break;
             default:
                 break

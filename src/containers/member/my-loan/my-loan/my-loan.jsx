@@ -4,16 +4,29 @@ import PieChart from '../../../../components/charts/pie';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
+import BbhModal from "../../../../components/modal/bbh_modal";
 import { Modal } from 'antd';
-import ModalRepaymentApp from './modalRepaymentApp';
+import ModalRepaymentApp from '../../../../components/modal/modal-repayment/modalRepaymentApp';
 import {toMoney,toNumber,addCommas} from '../../../../utils/famatData';
 import { connect } from 'react-redux';
 import  {memberLoansAc}  from '../../../../actions/member-loans';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import moment from "moment";
 import './my-loan.less';
+import {modal_config} from "../../../../utils/modal_config";
+import {accountAc} from "../../../../actions/account";
+import investDetailActions from "../../../../actions/invest-detail";
 
 class MyLoans extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            bbhModal:false,
+            currentModule:``,
+            currentId:``,
+            key:Math.random(),
+        }
+    }
     componentDidMount () {
         window.scrollTo(0,0);
         this.props.dispatch(memberLoansAc.stateModify({status:1,myList:``}));
@@ -30,14 +43,37 @@ class MyLoans extends React.Component {
         this.props.dispatch(memberLoansAc.stateModify({status:pram,myList:``}));
         this.props.dispatch(memberLoansAc.getList({status:pram}));
     }
-    toggleModal(visile,id) {
+    /*toggleModal(visile,id) {
         let {dispatch}=this.props;
         if(visile){
             dispatch(memberLoansAc.stateModify({modalRepaymentApp:true,currentId:id}));
         }else{
             dispatch(memberLoansAc.stateModify({modalRepaymentApp:false,currentId:``}));
         }
+    }*/
+    //模态框开启关闭
+    toggleModal=(modal,visile,id)=>{
+        if(visile){
+            this.setState({
+                bbhModal:true,
+                currentModule: modal,
+                currentId:id
+
+            });
+        }else{
+            this.setState({
+                bbhModal:false,
+                currentModule: ``,
+                currentId: ``,
+                key:Math.random()
+            });
+        }
+    };
+    closeModal(status){
+        const {investInfo,dispatch}=this.props;
+        this.toggleModal('bbhModal',false);
     }
+
     render(){
         let {dispatch}=this.props;
         let {myLoans,isFetching}=this.props.memberLoans;
@@ -153,7 +189,7 @@ class MyLoans extends React.Component {
                                                                 {
                                                                     l.refundStatus=='0'?('提前还款申请中')
                                                                         :(
-                                                                            <a onClick={() => this.toggleModal(true,l.projectId)}>提前还款</a>
+                                                                            <a onClick={() => this.toggleModal(`ModalRepaymentApp`,true,l.projectId)}>提前还款</a>
                                                                         )
                                                                 }
                                                                 <a href="">借款合同</a>
@@ -204,7 +240,7 @@ class MyLoans extends React.Component {
                         </div>
                     }
                 </div>
-                <Modal
+                {/*<Modal
                     title="提前还款申请"
                     wrapClassName="vertical-center-modal"
                     visible={modalRepaymentApp}
@@ -223,7 +259,20 @@ class MyLoans extends React.Component {
                         }
                         />:''
                     }
-                </Modal>
+                </Modal>*/}
+                {this.state.currentModule!=``?
+                    <BbhModal
+                        config={modal_config[this.state.currentModule]}
+                        visible={this.state.bbhModal}
+                        closeFunc={()=>this.closeModal()}
+                        moduleName={this.state.currentModule}
+                        key={this.state.key}
+                        currentId={this.state.currentId}
+                    >
+
+                    </BbhModal>
+                    :``
+                }
             </div>
         )
     }

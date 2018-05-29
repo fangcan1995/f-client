@@ -1,6 +1,7 @@
 import cFetch from './../utils/cFetch';
 import {formatPostResult} from '../utils/famatData';
-import {postContent} from '../utils/formSetting';
+
+
 import parseJson2URL from "../utils/parseJson2URL";
 import {API_CONFIG} from "../config/api";
 //http://172.16.1.252:9090/
@@ -109,7 +110,6 @@ export const accountAc= {
             type: 'member/account/CERTIFICATION_FETCH',
             async payload() {
                 const res = await cFetch(url_setCertification, postContent(params), true);
-
                 //测试用
                 console.log('实名认证返回的结果');
                 console.log(res);

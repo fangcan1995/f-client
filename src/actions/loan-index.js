@@ -1,3 +1,5 @@
+import {formatPostResult} from "../utils/famatData";
+
 require('es6-promise').polyfill();
 import fetch from 'isomorphic-fetch';
 import cFetch from '../utils/cFetch';
@@ -5,7 +7,7 @@ import readBlobAsDataURL from '../utils/readBlobAsDataURL';
 // import { LOGIN, LOGOUT } from './../constants/actions-type';
 import { API_CONFIG } from './../config/api';
 import {urls,token} from '../utils/url'
-
+import {postContent} from '../utils/formSetting';
 export const getImageCode = () => {
   return {
     type: 'loan/GET_IMAGE_CODE',
@@ -81,28 +83,45 @@ export const checkForm = (e) => {
       payload: e,
     }
   }
-
-  export const postLoanData = params => {
-    console.log(params)
-    params=JSON.stringify(params)
-    return {
-      type: 'loan/POST_LOAN_DATA',
-      // async/await配合promise处理异步
-      async payload() {
-
-        const res = await cFetch(`${urls}/loans/apply` , {
-          method: 'POST', 
-          headers: {
-                'Content-Type': 'application/json'
-            },
-          body:params 
-          }, true);
-          const { code, data } = res;
-          if ( code == 0 ) {
-            return data || {};
-          } else {
-            throw res;
+  export const clear = params => {
+      return {
+          type: 'loan/CLEAR',
+          payload() {
+              return params
           }
+      }
+  }
+  export const postLoanData = params => {
+
+    //params=JSON.stringify(params)
+    return {
+        type: 'loan/POST_LOAN_DATA',
+        // async/await配合promise处理异步
+        /*async payload() {
+
+          const res = await cFetch(`${urls}/loans/apply` , {
+            method: 'POST',
+            headers: {
+                  'Content-Type': 'application/json'
+              },
+            body:params
+            }, true);
+            const { code, data } = res;
+            if ( code == 0 ) {
+              return data || {};
+            } else {
+              throw res;
+            }
+          }
+        };*/
+        async payload() {
+            let res = await cFetch(`${urls}/loans/apply`, postContent(params), true);
+            //测试用
+            //console.log('借款申请返回的结果');
+            //console.log(res);
+            //res.code=406
+            //end
+            return formatPostResult(res);
         }
-      };
+    }
   };

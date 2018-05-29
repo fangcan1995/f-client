@@ -9,8 +9,6 @@ export default class PieChart extends Component{
     }
     render(){
         let {data,style,showLegend,totalTitle,color,showUserLegend,unit,labelLine}=this.props;
-        console.log('数据是')
-        console.log(data);
         if(!color){
             color=['#79b9e8', '#f69494','#72c59e','#f6ba7b','#8b9dbc'];
         }

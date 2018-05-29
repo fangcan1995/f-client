@@ -15,9 +15,11 @@ const initialState = Immutable.fromJS({
     repaymentPlans:{
         charts:``,
         myList:``,
-        projectId:'',
-        dateStart:'',
-        dateEnd:'',
+        filter:{
+            projectId:'',
+            dateStart:'',
+            dateEnd:'',
+        },
         modalRepayment: false,
         proList:``,
         currentId:'',

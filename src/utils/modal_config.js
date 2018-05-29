@@ -49,5 +49,19 @@ export const modal_config={
         width: "500px",
         height: "300px"
     },
-
+    ModalRepaymentApp: {
+        title: "提前还款申请",
+        width: "500px",
+        height: "400px"
+    },
+    ModalRepayment: {
+        title: "还款",
+        width: "500px",
+        height: "400px"
+    },
+    ModalLoanApp: {
+        title: "借款申请",
+        width: "650px",
+        height: "400px"
+    },
 }
