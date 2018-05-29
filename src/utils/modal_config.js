@@ -61,7 +61,7 @@ export const modal_config={
     },
     ModalLoanApp: {
         title: "借款申请",
-        width: "650px",
+        width: "680px",
         height: "400px"
     },
 }

@@ -6,14 +6,64 @@ import {amountExp } from '../../../utils/regExp';
 import {formItemLayout, noop} from '../../../utils/formSetting';
 import {accountAc} from "../../../actions/account";
 import {getImageCode} from "../../../actions/login";
-import { getApplyData,checkForm ,formData,postLoanData,clear, hideModal1 } from '../../../actions/loan-index'
+import { getApplyData,clear,postLoanData } from '../../../actions/loan-index';
+import {addCommas, getTips, toMoney} from "../../../utils/famatData";
 import PropTypes from "prop-types";
 import "./modal-loanApp.less";
 
 const createForm = Form.create;
 const FormItem = Form.Item;
-
 const Option = Select.Option;
+
+class PriceInput extends React.Component {
+    constructor(props) {
+        super(props);
+        const value = props.value || {};
+        this.state = {
+            number: value.number || 0,
+        };
+    }
+    componentWillReceiveProps(nextProps) {
+        // Should be a controlled component.
+        if ('value' in nextProps) {
+            const value = nextProps.value;
+            this.setState(value);
+        }
+    }
+    handleNumberChange = (e) => {
+        const number = parseInt(e.target.value || 0, 10);
+        if (isNaN(number)) {
+            return;
+        }
+        if (!('value' in this.props)) {
+            this.setState({ number });
+        }
+        this.triggerChange({ number });
+    }
+    triggerChange = (changedValue) => {
+        // Should provide an event to pass value to Form.
+        const onChange = this.props.onChange;
+        if (onChange) {
+            onChange(Object.assign({}, this.state, changedValue));
+        }
+    }
+    render() {
+        const { size } = this.props;
+        const state = this.state;
+        return (
+            <span>
+        <Input
+            type="text"
+            size={size}
+            value={state.number}
+            onChange={this.handleNumberChange}
+            style={{ width: '100%', marginRight: '3%' }}
+        />
+      </span>
+        );
+    }
+}
+
 class ModalLoanApp extends React.Component {
     constructor(props) {
         super(props);
@@ -45,7 +95,7 @@ class ModalLoanApp extends React.Component {
             }
 
             let appInfo= {
-                applyAmt: form.getFieldsValue().amount,
+                applyAmt: form.getFieldsValue().price.number,
                 graphValidateCode:form.getFieldsValue().image_code,
                 loanExpiry:form.getFieldsValue().loanExpiry,
                 loanPurpose: form.getFieldsValue().loanPurpose,
@@ -53,7 +103,6 @@ class ModalLoanApp extends React.Component {
                 repayType: this.state.repayType
 
             }
-
             dispatch(postLoanData(appInfo))
 
         });
@@ -61,9 +110,10 @@ class ModalLoanApp extends React.Component {
     }
 
     componentDidMount () {
-        const { dispatch,loans } = this.props;
-        dispatch(getImageCode());
+        const { dispatch,loans,currentId } = this.props;
         dispatch(clear());
+        dispatch(getApplyData(currentId))
+        dispatch(getImageCode());
     }
     handleImageCodeImgClick = e => {
         const { dispatch } = this.props;
@@ -76,18 +126,24 @@ class ModalLoanApp extends React.Component {
         dispatch(accountAc.clear());
         onSuccess();
     }
+    checkPrice = (rule, value, callback) => {
+        const {loans}=this.props;
+        if(value.number < 1000){
+            callback('借款金额不能小于1000元');
+            return false;
+        }
+        if(value.number > loans.maxAmount){
+            callback(`借款金额不能超过${loans.maxAmount}元`);
+            return false;
+        }
+        callback();
+        return;
+    }
     render(){
-        const {onSuccess,onFail,loans,account,auth}=this.props;
-        const {applyMessage}=loans;
+        const {loans}=this.props;
+        const {applyMessage,postinged,isPosting}=loans;
         const { imageCodeImg } = this.props.login;
-        const {isPosting,postResult,accountsInfo}=account;
-        const {trueName,idNumber,surplusAmount}=accountsInfo;
         const { getFieldDecorator,getFieldValue } = this.props.form;
-        const amountProps = getFieldDecorator('amount', {
-            rules: [
-                { required: true, pattern: amountExp, message: '借款金额有误' }
-            ]
-        });
         const imageCodeProps = getFieldDecorator('image_code', {
             validate: [{
                 rules: [
@@ -107,19 +163,13 @@ class ModalLoanApp extends React.Component {
                                 <Form layout="horizontal" onSubmit={this.handleSubmit}>
                                     <FormItem
                                         { ...formItemLayout }
-                                        label="借款金额"
-                                        required
+                                              label="借款金额"
+                                              required
                                     >
-                                        {
-                                            amountProps(
-                                                <Input
-                                                    type="text"
-                                                    autoComplete="off"
-                                                    placeholder=""
-                                                    onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
-                                                />
-                                            )
-                                        }
+                                        {getFieldDecorator('price', {
+                                            initialValue: { number: 0 },
+                                            rules: [{ validator: this.checkPrice }],
+                                        })(<PriceInput />)}
                                     </FormItem>
                                     <FormItem
                                         { ...formItemLayout }
@@ -223,19 +273,19 @@ class ModalLoanApp extends React.Component {
                                 <div className="member_info">
                                     <ul>
                                         <li>
-                                            <strong>姓名:</strong>{trueName}
+                                            <strong>姓名:</strong>{loans.trueName}
                                         </li>
                                         <li>
-                                            <strong>手机号码:</strong>{auth.userName}
+                                            <strong>手机号码:</strong>{loans.mobilePhone}
                                         </li>
                                         <li>
-                                            <strong>身份证号:</strong>{idNumber }
+                                            <strong>身份证号:</strong>{loans.identityCard }
                                         </li>
                                     </ul>
                                 </div>
                                 <dl>
                                     <dt><h3>最高额度：</h3></dt>
-                                    <dd>平台用户最高借款金额为{surplusAmount}.00元<br/>剩余借款额度随借款笔数和金额的增加而减少。</dd>
+                                    <dd>平台用户最高借款金额为{addCommas(loans.maxAmount)}元<br/>剩余借款额度随借款笔数和金额的增加而减少。</dd>
                                 </dl>
                                 <dl>
                                     <dt><h3>申请条件：</h3></dt>
@@ -267,10 +317,10 @@ class ModalLoanApp extends React.Component {
     }
 }
 function mapStateToProps(state) {
-    const { auth, account,loans,login} = state.toJS();
+    const { auth, loans,login} = state.toJS();
     return {
         auth,
-        account,loans,
+        loans,
         login
     };
 }

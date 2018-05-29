@@ -157,13 +157,13 @@ class MyLoans extends React.Component {
                                             myList.list.map((l, i) => (
                                                     (status === 1) ? (
                                                         <tr key={`row-${i}`}>
-                                                            <td>{l.name}</td>
+                                                            <td>--</td>
                                                             <td>{l.projectTypeName}</td>
                                                             <td>{l.money}</td>
                                                             <td>--</td>
                                                             <td>{l.loanExpiry}个月</td>
                                                             <td>{l.refundWayName}</td>
-                                                            <td>{l.applyTime ? moment(l.applyTime).format('YYYY-MM-DD') : ''}</td>
+                                                            <td>{l.applyTime}{l.applyTime ? moment(l.applyTime).format('YYYY-MM-DD') : ''}</td>
                                                             <td>申请中</td>
                                                         </tr>
                                                     ) : ((status === 2) ? (

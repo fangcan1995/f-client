@@ -15,7 +15,9 @@ const initialState = Immutable.fromJS({
   formData:{},
   applyMessage:'',
   errorMessage:'',
-  postinged:false
+  postinged:false,
+
+    isPosting:false, //edit by lily
 });
 
 export default createReducer(initialState, {
@@ -54,13 +56,15 @@ export default createReducer(initialState, {
     ['loan/POST_LOAN_DATA_PENDING']: (state, action) => {
         return state.merge({
         isFetching: true,
+            isPosting:true
       })
     },
     ['loan/POST_LOAN_DATA_FULFILLED']: (state, action) => {
       return state.merge({
           isFetching: false,
           applyMessage: action.payload,
-          postinged:true
+          postinged:true,
+          isPosting:false,
         })
     },
     ['loan/POST_LOAN_DATA_REJECTED']: (state, action) => {
@@ -68,7 +72,8 @@ export default createReducer(initialState, {
       return state.merge({
       isFetching: false,
       errorMessage: action.payload.msg,
-      postinged:true
+      postinged:true,
+          isPosting:false,
     })},
 
     //edit by lily

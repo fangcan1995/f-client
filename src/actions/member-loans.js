@@ -69,12 +69,28 @@ export const memberLoansAc={
         return {
             type: 'myLoans/myLoans/FETCH',
             async payload() {
-                params = parseJson2URL(params);
+
+                //console.log('查询参数是');
+                //console.log(params);
+                switch (params.status){
+                    case 1:
+                        params.sortBy='-applyTime';
+                        break;
+                    case 2:
+                        params.sortBy='-putTime';
+                        break;
+                    case 3:
+                        params.sortBy='-transferTime';
+                        break;
+                    case 4:
+                        params.sortBy='-settleTime';
+                        break;
+                }
+                params= parseJson2URL(params);
+                console.log(params);
                 const res = await cFetch(`${url_loansList}?`+params,{method: 'GET'}, true);
                 const {code, data} = res;
-                console.log('发回的数据');
-                console.log(data);
-                console.log(code);
+
                 if (code == 0) {
                     return {
                         myList:data,
