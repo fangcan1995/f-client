@@ -64,4 +64,9 @@ export const modal_config={
         width: "680px",
         height: "400px"
     },
+    ModalTransferApp: {
+        title: "债权转让申请",
+        width: "500px",
+        height: "400px"
+    },
 }
