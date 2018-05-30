@@ -2,8 +2,7 @@ import React from 'react';
 import { Form,Input,Button,Checkbox } from 'antd';
 import { connect } from 'react-redux';
 import {Loading,NoRecord,Posting,BbhAlert} from '../../../components/bbhAlert/bbhAlert';
-import {amountExp } from '../../../utils/regExp';
-import {formItemLayout, noop} from '../../../utils/formSetting';
+import {formItemLayout, noop,hasErrors} from '../../../utils/formSetting';
 import {accountAc} from "../../../actions/account";
 import {getImageCode} from "../../../actions/login";
 import PriceInput from "../../../components/price-input/price-input";
@@ -17,9 +16,7 @@ import {poundage} from "../../../utils/cost";
 
 const createForm = Form.create;
 const FormItem = Form.Item;
-function hasErrors(fieldsError) {
-    return Object.keys(fieldsError).some(field => fieldsError[field]);
-}
+
 class ModalTransferApp extends React.Component {
     constructor(props) {
         super(props);
@@ -27,14 +24,15 @@ class ModalTransferApp extends React.Component {
             amount:0,
         }
         this.handleSubmit = this.handleSubmit.bind(this);
-
     }
     static propTypes = {
         form: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired
     }
 
-
+    componentDidMount () {
+        this.props.dispatch(memberInvestAc.getTransfer(this.props.currentId));
+    }
 
     //提交
     handleSubmit(e){
@@ -47,18 +45,15 @@ class ModalTransferApp extends React.Component {
 
             let appInfo= {
                 applyAmt: form.getFieldsValue().price.number,
-                id: currentId,
+                transProjectId: currentId,
                 tradePassword:hex_md5(form.getFieldsValue().newPassword),
-
             }
-            dispatch(postLoanData(appInfo))
+            console.log('准备提交的债转数据是：');
+            console.log(appInfo);
+            dispatch(memberInvestAc.postTransfer(appInfo))
 
         });
 
-    }
-
-    componentDidMount () {
-        this.props.dispatch(memberInvestAc.getTransfer(this.props.currentId));
     }
 
     //回调
@@ -68,6 +63,7 @@ class ModalTransferApp extends React.Component {
         dispatch(accountAc.clear());
         onSuccess();
     }
+
     checkPrice = (rule, value, callback) => {
         const {transferInfo}=this.props.memberInvestments.myInvestments;
         this.setState({
@@ -84,14 +80,11 @@ class ModalTransferApp extends React.Component {
         callback();
         return;
     }
+
     render(){
-        /*const {transferInfo}=this.props.memberInvestments.myInvestments;
-        console.log('债转数据');
-        console.log(transferInfo);*/
-        let {isPosting}=this.props.memberInvestments;
-        let {postResult,transferInfo}=this.props.memberInvestments.myInvestments;
-        console.log('债转数据');
-        console.log(transferInfo);
+        const {memberInvestments}=this.props;
+        const  {isPosting,myInvestments}=memberInvestments;
+        const {postResult,transferInfo}=myInvestments;
         const { getFieldDecorator,getFieldValue,getFieldsError } = this.props.form;
         const newPasswordProps = getFieldDecorator('newPassword', {
             rules: [
@@ -142,7 +135,6 @@ class ModalTransferApp extends React.Component {
                             <FormItem
                                 { ...formItemLayout }
                                 label="手续费"
-                                required
                             >
                                 {addCommas(poundage(this.state.amount,transferInfo.proTransferFee))}元
 
@@ -150,7 +142,6 @@ class ModalTransferApp extends React.Component {
                             <FormItem
                                 { ...formItemLayout }
                                 label="预期到账金额"
-                                required
                             >
                                 {amount != 0 ?
                                     addCommas(amount - poundage(this.state.amount, transferInfo.proTransferFee))
@@ -161,11 +152,11 @@ class ModalTransferApp extends React.Component {
                             <FormItem className="agreement">
                                 {
                                     agreementProps(
-                                        <Checkbox> 我已阅读并同意<a to="/subject_3/11" target="_blank">《巴巴汇债权转让服务协议》</a></Checkbox>
+                                        <Checkbox> 我已阅读并同意</Checkbox>
                                     )
-                                }
+                                }<a href="/subject_3/11" target="_blank">《巴巴汇债权转让服务协议》</a>
                             </FormItem>
-                            <div className='tips'>错误提示</div>
+                            <div className='tips'>{postResult.message}</div>
                             <FormItem className='center'>
                                 {(isPosting) ? <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
                                         <Posting isShow={isPosting}/>

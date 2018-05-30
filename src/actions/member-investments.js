@@ -1,9 +1,10 @@
 import cFetch from '../utils/cFetch';
 import cookie from 'js-cookie';
-import {toMoney,toNumber,addCommas} from '../utils/famatData';
+import {toMoney, toNumber, addCommas, formatPostResult} from '../utils/famatData';
 import parseJson2URL from './../utils/parseJson2URL';
 import {urls,token} from './../utils/url';
 import {API_CONFIG} from "../config/api";
+import {postContent} from "../utils/formSetting";
 
 const url_investCharts=API_CONFIG.hostWeb+API_CONFIG.getMyInvestCharts; //统计图数据
 const url_investList=API_CONFIG.hostWeb+API_CONFIG.getMyInvestList;//获取投资列表
@@ -86,16 +87,16 @@ export const memberInvestAc={
         }
     },
     //债转详情
-    getTransfer: (pram) => {
+    getTransfer: (param) => {
         return {
             type: 'myInvest/investments/FETCH',
             async payload() {
-                const res = await cFetch(`${url_getTransfer}${pram}` , {method: 'GET'}, true);
+                const res = await cFetch(`${url_getTransfer}${param}` , {method: 'GET'}, true);
                 const {code, data} = res;
-                console.log('返回的债转详情');
-                console.log(data);
                 if (code == 0) {
-                    transferInfo:data
+                    return {
+                        transferInfo:data,
+                    };
                 } else {
                     throw res;
                 }
@@ -104,26 +105,18 @@ export const memberInvestAc={
     },
     //债转申请
     postTransfer:(params) =>  {
-        params = parseJson2URL(params);
+        //params = parseJson2URL(params);
         console.log('给后台传的是body');
         console.log(params);
         return {
             type: 'myInvest/investments/TRANSFER_APP',
             async payload() {
-                const res = await cFetch(`${url_postTransferApp}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: params,
-                    },
-                    true);
-                return {postResult: res};
-                /*if (res.code == 0) {
-                    return {postResult: res};
-                } else {
-                    throw res;
-                }*/
+                const res = await cFetch(url_postTransferApp, postContent(params), true);
+                return {
+                    postResult: formatPostResult(res)
+                };
+
+
             }
         }
     },
