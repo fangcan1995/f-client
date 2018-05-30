@@ -58,6 +58,7 @@ export const accountAc= {
                     /*if(data.trueName==`测试三`){
                         data.isSetTradepassword='0'
                     }*/
+                    //data.isCertification='1'
                     return data;
                 } else {
                     throw data;
@@ -90,10 +91,8 @@ export const accountAc= {
             type: 'member/account/UYOU_FETCH',
             async payload() {
                 let  res = await cFetch(`${url}`, {method: 'GET'}, true);
-
                 let {code, data} = res;
                 if (code == 0) {
-
                     return data;
                 }else {
                     return res;

@@ -4,6 +4,7 @@ import {urls,token} from '../utils/url'
 import { API_CONFIG } from './../config/api';
 import readBlobAsDataURL from '../utils/readBlobAsDataURL';
 import {toMoney,toNumber,addCommas} from '../utils/famatData';
+import {postContent} from "../utils/formSetting";
 
 const url_loansCharts=API_CONFIG.hostWeb+API_CONFIG.getMyLoansCharts; //统计图数据
 const url_loansList=API_CONFIG.hostWeb+API_CONFIG.getMyLoansList;//获取借款列表
@@ -13,8 +14,8 @@ const url_repaymentsCharts=API_CONFIG.hostWeb+API_CONFIG.getMyRepaymentsCharts; 
 const url_repaymentsList=API_CONFIG.hostWeb+API_CONFIG.getMyRepaymentsList;//获取借款列表
 const url_proList=API_CONFIG.hostWeb+API_CONFIG.getProList;//获取还款中和已完结的项目列表
 const url_repayment=API_CONFIG.hostWeb+API_CONFIG.getRepaymentInfo;//还款时获取详情
-const url_postRepayment=API_CONFIG.hostWeb+API_CONFIG.postRepaymentApp;//还款申请
-
+//const url_postRepayment=API_CONFIG.hostWeb+API_CONFIG.postRepaymentApp;//还款
+const url_postRepayment=`http://172.16.1.234:9090/repayment/normal`
 
 export const getImageCode = () => {
     return {
@@ -256,21 +257,22 @@ export const repaymentsAc={
             }
         }
     },
-    //提交提前还款申请
+    //提交还款
     postRepayment: (params,dispatch) => {
-        params = parseJson2URL(params);
+        //params = parseJson2URL(params);
         //JSON.stringify(params)
         return {
             type: 'myLoans/repaymentPlans/FETCH',
             async payload() {
-                const res = await cFetch(`${url_postRepaymentsAll}`, {
+                /*const res = await cFetch(`${url_postRepayment}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: params,
                     },
-                    false);
+                    false);*/
+                const res = await cFetch(`${url_postRepayment}`, postContent(params), true);
                 return {postResult: res};
                 /*if (res.code == 0) {
                     return {postResult: res};

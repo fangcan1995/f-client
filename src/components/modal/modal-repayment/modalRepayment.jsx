@@ -14,25 +14,32 @@ const FormItem = Form.Item;
 class ModalRepayment extends React.Component {
     componentDidMount () {
         let {currentId}=this.props;
-        console.log('id是')
-        console.log(currentId);
         this.props.dispatch(repaymentsAc.getRepayment(currentId));
-        //this.props.dispatch(repaymentsAc.getRepayment(this.props.info.currentId));
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        const { dispatch, form } = this.props;
+        const { dispatch, form,memberLoans,currentId } = this.props;
+        const {projectInfo}=memberLoans.repaymentPlans;
         form.validateFields((errors) => {
             if (errors) {
                 return false;
             }
             let appInfo={
-                password:hex_md5(form.getFieldsValue().password),
-                projectId:this.props.currentId,
+                traderPassword:hex_md5(form.getFieldsValue().password), //交易密码
+                id:currentId,  //还款计划id
+                shdRpmtDate:projectInfo.shdRpmtDate ,//应还日期
+                projectName:projectInfo.name ,//项目名称
+                rpmtIssue:projectInfo.rpmtIssue ,//还款期数
+                paidFee: projectInfo.paidFee,//应还服务费
+                rpmtCapital:projectInfo.rpmtCapital ,//应还本金
+                rpmtIint: projectInfo.rpmtIint,//应还利息
+                //lateFine:projectInfo.lateFine ,//应还罚金
+                lateIint:projectInfo.lateTotal ,//应还罚息
+                sum : projectInfo.rpmtTotal,//还款总额
             }
             console.log('要提交的还款信息');
             console.log(appInfo);
-            //dispatch(repaymentsAc.postRepayment(appInfo));
+            dispatch(repaymentsAc.postRepayment(appInfo));
 
         });
     }

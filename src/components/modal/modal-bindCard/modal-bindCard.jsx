@@ -37,13 +37,20 @@ class ModalBindCard extends React.Component {
     render(){
         let {onSuccess,onFail,returnPage}=this.props;
         let {isPosting,toOthersInfo,postResult,isOpenOthers}=this.props.account;
-
+        console.log(toOthersInfo);
         if(postResult.type!=`success`){
             return(
                 <div className="pop__openOther">
                     {/*<WaitThirdParty isShow={true} title='绑卡' callback={this.modalClose} />*/}
                     {(toOthersInfo==`` )?``
                         :<div className="form__wrapper">
+                            <div className='tips'>
+                                {
+                                    (toOthersInfo!=`` && toOthersInfo.code==406)?
+                                        <div className="errorMessages">{toOthersInfo.message}</div>
+                                        :``
+                                }
+                            </div>
                             <form name="webReg" id="webReg" method="post" action={toOthersInfo.url}>
                                 <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />
                                 <input type="hidden" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} />
@@ -63,7 +70,7 @@ class ModalBindCard extends React.Component {
                                 <input type="hidden" name="ver" value={toOthersInfo.ver} />
                                 <div className='center'>
                                     {
-                                        toOthersInfo==``?<Button type="primary"  className="pop__large" disabled={true}>去开户</Button>
+                                        (toOthersInfo==`` || toOthersInfo.code==`406`)?<Button type="primary"  className="pop__large" disabled={true}>去开户</Button>
                                             :<Button type="primary" htmlType="submit" className="pop__large" onClick={()=>this.handleSubmit()}>去开户</Button>
                                     }
 
