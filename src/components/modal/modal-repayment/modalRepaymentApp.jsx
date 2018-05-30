@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import {BbhAlert} from '../../bbhAlert/bbhAlert';
 import  {memberLoansAc,getImageCode}  from '../../../actions/member-loans';
 import { hex_md5 } from '../../../utils/md5';
-import {formItemLayout,noop } from '../../../utils/formSetting';
+import {formItemLayout, hasErrors, noop} from '../../../utils/formSetting';
 import moment from "moment";
 import {accountAc} from "../../../actions/account";
 const createForm = Form.create;
@@ -14,20 +14,12 @@ const FormItem = Form.Item;
 
 class ModalRepaymentApp extends React.Component {
     componentDidMount () {
-        let {onSuccess,onFail,currentId}=this.props;
-        console.log('id是')
-        console.log(currentId);
+        const {onSuccess,onFail,currentId}=this.props;
         this.props.dispatch(memberLoansAc.getProject(currentId));
-        //this.props.dispatch(memberLoansAc.getProject(this.props.info.currentId));
-        //this.props.dispatch(getImageCode());
     }
     static propTypes = {
         form: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired
-    }
-    handleImageCodeImgClick = e => {
-        const { dispatch } = this.props;
-        dispatch(getImageCode());
     }
     handleSubmit = (e) => {
         e.preventDefault();
@@ -38,7 +30,6 @@ class ModalRepaymentApp extends React.Component {
             }
             let appInfo={
                 password:hex_md5(form.getFieldsValue().password),
-                //verifyCode:form.getFieldsValue().verifyCode,
                 projectId:currentId
             }
             console.log('提交后台的数据是');
@@ -49,13 +40,6 @@ class ModalRepaymentApp extends React.Component {
     }
     //回调
     modalClose(){
-        /*this.setState({
-            isReset:true,
-        },()=>{
-            let {onSuccess,dispatch}=this.props;
-            dispatch(accountAc.getAccountInfo());  //真实
-            onSuccess();
-        });*/
         console.log('点击确认了');
         let {onSuccess,dispatch}=this.props;
         //dispatch(accountAc.getAccountInfo());  //真实
@@ -63,17 +47,14 @@ class ModalRepaymentApp extends React.Component {
     }
 
     render() {
-        let {onSuccess,onFail,value}=this.props;
-        let {postResult,projectInfo,isPosting}=this.props.memberLoans.myLoans;
-        let {imageCodeImg}=this.props.memberLoans;
-        const { getFieldDecorator,getFieldValue } = this.props.form;
+        const {postResult,projectInfo,isPosting}=this.props.memberLoans.myLoans;
+        const { getFieldDecorator,getFieldValue,getFieldsError } = this.props.form;
         const passwordProps = getFieldDecorator('password', {
             rules: [
                 { required: true, min: 6, message: '密码至少为 6 个字符' }
             ]
         });
-
-        const isReadProps = getFieldDecorator('isRead', {
+        const agreementProps = getFieldDecorator('is_read', {
             valuePropName: 'checked',
             initialValue: false,
         })
@@ -84,46 +65,56 @@ class ModalRepaymentApp extends React.Component {
                         (projectInfo==='') ? ('')
                             :
                             <div className="form__wrapper">
-                                <dl className="form__bar">
-                                    <dt><label>项目名称：</label></dt>
-                                    <dd>{projectInfo.name}</dd>
-                                </dl>
-                                {/*<dl className="form__bar">
-                                        <dt><label>已还期数：</label></dt>
-                                        <dd>{repaymentData.rpmtIssue} 期</dd>
-                                    </dl>*/}
-                                <dl className="form__bar">
-                                    <dt><label>到期日期：</label></dt>
-                                    <dd>{moment(projectInfo.expireDate).format('YYYY-MM-DD')}</dd>
-                                </dl>
-                                <dl className="form__bar">
-                                    <dt><label>应还本金：</label></dt>
-                                    <dd><p>{addCommas(projectInfo.rpmtCapital)} 元</p></dd>
-                                </dl>
-                                <dl className="form__bar">
-                                    <dt><label>应还利息：</label></dt>
-                                    <dd>{addCommas(projectInfo.rpmtIint)} 元</dd>
-                                </dl>
-                                {
-                                    addCommas(projectInfo.lateTotal)>0?
-                                        <dl className="form__bar">
-                                            <dt><label>应还罚息：</label></dt>
-                                            <dd>{addCommas(projectInfo.lateTotal)} 元</dd>
-                                        </dl>
-                                        :''
-                                }
-                                <dl className="form__bar">
-                                    <dt><label>手续费：</label></dt>
-                                    <dd>{addCommas(projectInfo.paidFee)} 元</dd>
-                                </dl>
-                                <dl className="form__bar">
-                                    <dt><label>还款总额：</label></dt>
-                                    <dd>{addCommas(projectInfo.rpmtTotal)} 元</dd>
-                                </dl>
                                 <Form layout="horizontal" onSubmit={this.handleSubmit}>
                                     <FormItem
                                         { ...formItemLayout }
+                                        label="项目名称"
+                                    >
+                                        {projectInfo.name}
+                                    </FormItem>
+                                    <FormItem
+                                        { ...formItemLayout }
+                                        label="到期日期"
+                                    >
+                                        {moment(projectInfo.expireDate).format('YYYY-MM-DD')}
+                                    </FormItem>
+                                    <FormItem
+                                        { ...formItemLayout }
+                                        label="应还本金"
+                                    >
+                                        {addCommas(projectInfo.rpmtCapital)} 元
+                                    </FormItem>
+                                    <FormItem
+                                        { ...formItemLayout }
+                                        label="应还利息"
+                                    >
+                                        {addCommas(projectInfo.rpmtIint)} 元
+                                    </FormItem>
+                                    {(projectInfo.lateTotal>0)?
+                                        <FormItem
+                                            { ...formItemLayout }
+                                            label="应还罚息"
+                                        >
+                                            {addCommas(projectInfo.lateTotal)} 元
+                                        </FormItem>
+                                        :``
+                                    }
+                                    <FormItem
+                                        { ...formItemLayout }
+                                        label="手续费"
+                                    >
+                                        {addCommas(projectInfo.paidFee)} 元
+                                    </FormItem>
+                                    <FormItem
+                                        { ...formItemLayout }
+                                        label="还款总额"
+                                    >
+                                        {addCommas(projectInfo.rpmtTotal)} 元
+                                    </FormItem>
+                                    <FormItem
+                                        { ...formItemLayout }
                                         label="交易密码"
+                                        required
                                     >
                                         {
                                             passwordProps(
@@ -136,25 +127,30 @@ class ModalRepaymentApp extends React.Component {
                                             )
                                         }
                                     </FormItem>
-
-                                    <FormItem>
+                                    {/*<FormItem>
                                         {
                                             isReadProps(
-                                                <Checkbox>我已阅读并同意<a href="/subject_3/6" target="_blank">《提前还款规则》</a></Checkbox>
+                                                <Checkbox>我已阅读并同意<a href="/subject_3/8" target="_blank">《提前还款规则》</a></Checkbox>
                                             )
                                         }
+                                    </FormItem>*/}
+                                    <FormItem className="agreement">
+                                        {
+                                            agreementProps(
+                                                <Checkbox> 我已阅读并同意</Checkbox>
+                                            )
+                                        }<a href="/subject_3/8" target="_blank">《提前还款规则》</a>
                                     </FormItem>
-                                    <div className='tips'>{postResult.message}</div>
+                                    <FormItem className='tips'>
+                                        {postResult.message}
+                                    </FormItem>
                                     <FormItem  className='center'>
-                                        {/*<Button type="primary" htmlType="submit" className="pop-button" disabled={!getFieldValue('isRead')}
-                                                onClick={this.handleSubmit}>
-                                            确认
-                                        </Button>*/}
-                                        {(isPosting) ? <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
+                                        {(isPosting) ?
+                                            <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
                                                 <Posting isShow={isPosting}/>
                                             </Button>
-                                            :
-                                            <Button type="primary" htmlType="submit" className="pop__large" onClick={this.handleSubmit}>确认</Button>
+                                            : <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError()) || !getFieldValue('is_read') }>确认</Button>
+
                                         }
                                     </FormItem>
                                 </Form>

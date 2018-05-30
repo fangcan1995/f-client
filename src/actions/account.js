@@ -4,7 +4,7 @@ import {postContent} from '../utils/formSetting';
 
 import parseJson2URL from "../utils/parseJson2URL";
 import {API_CONFIG} from "../config/api";
-//http://172.16.1.252:9090/
+
 const url_uyouOpenAccountInfo=API_CONFIG.hostWeb+API_CONFIG.getFuiouOpenAccountInfo; //给富有的开户信息
 const url_uyouReOpenAccountInfo=API_CONFIG.hostWeb+API_CONFIG.getFuiouChangeCard; //给富有的换卡信息
 const url_uyouRecharge=API_CONFIG.hostWeb+API_CONFIG.getFuiouRecharge; //给富有的充值信息

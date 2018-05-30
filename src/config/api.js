@@ -24,6 +24,8 @@ export const API_CONFIG = {
     forgetVerifyCode: 'uaa/code/sms/forget/password',
     setTradePasswordVerifyCode:  '/uaa/code/sms/trade/password', //设置交易密码的短信接口
 
+    getSubjects:`information/subjects`,//专题S
+
     getSbList:`invest/projects/loan/page`, //获取散标列表
     getTransferlist:`invest/transfer/loan/page`, //获取债转标列表
 
