@@ -15,6 +15,9 @@ export const formItemLayout = {
 export function noop() {
     return false;
 }
+export  function hasErrors(fieldsError) {
+    return Object.keys(fieldsError).some(field => fieldsError[field]);
+}
 //获取post请求携带的参数
 export function postContent (params){
     return{
@@ -36,6 +39,6 @@ export function putContent (params){
         body : JSON.stringify(params),
     }
 }
-
-
+//倒计时时间间隔
+export const countDownTime=180;
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { Route, Link } from 'react-router-dom';
 import {accountAc} from "../../actions/account";
 import { Tooltip,Popconfirm } from 'antd';
@@ -15,19 +16,23 @@ const ListItemLink = ({ to, ...rest }) => (
 )
 
 class MemberSidebar extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     componentWillMount() {
         this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
     }
-    handle_confirmOpen() {
-        this.props.history.push('/my-settings/bank-card')
+    handle_confirmOpen(event, history) {
+        history.push('/my-account/bank-card')
     }
-    handle_confirmRisk() {
-        this.props.history.push('/my-settings/my-riskAssess')
+    handle_confirmRisk(event, history) {
+        history.push('/my-settings/my-riskAssess')
     }
     render(){
-        const {account,auth}=this.props;
+        const {account,auth,history}=this.props;
         const {accountsInfo}=account;
-        const {photo,treeName,isOpenAccount,isRisk}=accountsInfo;
+        const {photo,trueName,isOpenAccount,isRisk}=accountsInfo;
         return (
             <main className="main member">
                 <div className="wrapper">
@@ -37,7 +42,7 @@ class MemberSidebar extends Component {
                                 <MyAvatar photo={photo}/>
                                 <div className="username">
                                     {
-                                    (treeName!='')? treeName
+                                    (trueName!='')? trueName
                                         :auth.user.userName
                                     }
                                 </div>
@@ -57,8 +62,8 @@ class MemberSidebar extends Component {
                                         >
                                             <i className='iconfont icon-card able1' ></i>
                                         </Tooltip>
-                                        :<Popconfirm placement="top" title={`未开户，是否开户`}  okText="确定" cancelText="取消" trigger='hover'
-                                                     onConfirm={this.handle_confirmOpen}
+                                        :<Popconfirm placement="top" title={`尚未开户，是否开户`}  okText="确定" cancelText="取消" trigger='hover'
+                                                     onConfirm={this.handle_confirmOpen.bind(this, event, history)}
 
                                         >
                                             <i className='iconfont icon-card able0'></i>
@@ -73,7 +78,7 @@ class MemberSidebar extends Component {
                                         >
                                             <i className='iconfont icon-fxcp able1' ></i>
                                         </Tooltip>
-                                        :<Popconfirm placement="top" title={`未测评，是否测评`} onConfirm={this.handle_confirmRisk} okText="确定" cancelText="取消" trigger='hover'>
+                                        :<Popconfirm placement="top" title={`未测评，是否测评`} onConfirm={this.handle_confirmRisk.bind(this, event, history)} okText="确定" cancelText="取消" trigger='hover'>
                                             <i className='iconfont icon-fxcp able0'></i>
                                         </Popconfirm>
                                     }
@@ -142,5 +147,5 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(MemberSidebar);
+export default connect(mapStateToProps)(withRouter(MemberSidebar));
 

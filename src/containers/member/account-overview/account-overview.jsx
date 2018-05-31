@@ -20,12 +20,17 @@ class AccountOverview extends React.Component{
         this.props.dispatch(memberAc.getDay()); //获取日收益统计数据
     }
     render(){
-        let {member,account}=this.props;
-        let {accountsInfo}=account;
-        let {accountBalance,availableBalance,yestEarns,totalEarns,memberRedInfo,memberCoupon,investAmount,freezingAmount}=accountsInfo;
-        let {amount}=member.accountsInfo;
-        let {charts}=member;
+        const {member,account}=this.props;
+        const {accountsInfo}=account;
+        const {accountBalance,availableBalance,memberRedInfo,memberCoupon,investAmount,freezingAmount}=accountsInfo;
+        const {charts}=member;
+        let totalEarns=charts.chartsMonth.series_data;
+        let yestEarns=charts.chartsDay.series_data;
 
+        if(totalEarns){
+            console.log('累计收益')
+            console.log(totalEarns[0].data[11])
+        }
         return (
             <div className="member__main">
                 <Crumbs />
@@ -43,11 +48,21 @@ class AccountOverview extends React.Component{
                                     </Tooltip>
                                     <span className='money'>{toMoney(accountBalance)}</span>&nbsp;元
                                 </div>
-                                <div>可用余额: <span className='money'>{toMoney(availableBalance)}</span>&nbsp;元</div>
+                                <div>可用余额:<span className='money'>{toMoney(availableBalance)}</span>&nbsp;元</div>
                             </div>
                             <div className="infoLine">
-                                <div>昨日收益: <span className='money'>{toMoney(yestEarns)}</span>&nbsp;元</div>
-                                <div>累计收益: <span className='money'>{toMoney(totalEarns)}</span>&nbsp;元</div>
+                                <div>昨日收益:
+                                    {(yestEarns)?<span className='money'>{toMoney(yestEarns[0].data[yestEarns[0].data.length-1])}</span>
+                                        :``
+                                    }
+                                    &nbsp;元
+                                </div>
+                                <div>累计收益:
+                                    {(totalEarns)?<span className='money'>{toMoney(totalEarns[0].data[totalEarns[0].data.length-1])}</span>
+                                        :``
+                                    }
+                                    &nbsp;元
+                                </div>
                             </div>
                         </div>
                         <div className="accountRedbag">
@@ -96,6 +111,7 @@ class AccountOverview extends React.Component{
                                         {name:'可用余额',value:availableBalance,instruction: `${addCommas(availableBalance)}元` },
                                         {name:'冻结金额',value:freezingAmount,instruction: `${addCommas(freezingAmount)}元` },
                                     ]}
+                                    unit={`元`}
                                     style={{height: '300px', width: '930px'}}
                                     totalTitle="资产总额"
                                 >

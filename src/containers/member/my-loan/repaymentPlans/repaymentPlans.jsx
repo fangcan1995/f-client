@@ -5,26 +5,33 @@ import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
 import {addCommas} from '../../../../utils/cost';
-import { Modal,Select,DatePicker } from 'antd';
-import ModalRepayment from './modalRepayment';
+import { Select,DatePicker } from 'antd';
+import BbhModal from "../../../../components/modal/bbh_modal";
 import { connect } from 'react-redux';
 import  {repaymentsAc}  from '../../../../actions/member-loans';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import './repaymentPlans.less';
-
 import moment from 'moment';
 import 'moment/locale/zh-cn';
+import {transactionRecordAc} from "../../../../actions/member";
+import {modal_config} from "../../../../utils/modal_config";
+
 moment.locale('zh-cn');
+
 const Option = Select.Option;
+const { RangePicker } = DatePicker;
 
 class RepaymentPlans extends React.Component{
     constructor(props) {
         super(props);
-        this.state={
+        this.state = {
+            bbhModal:false,
+            currentModule:``,
+            currentId:``,
+            key:Math.random(),
         }
         this.selectProject = this.selectProject.bind(this);
-        this.handleDateStartChange = this.handleDateStartChange.bind(this);
-        this.handleDateEndChange = this.handleDateEndChange.bind(this);
+        this.dateChange = this.dateChange.bind(this);
     }
     componentDidMount () {
         window.scrollTo(0,0);
@@ -34,63 +41,53 @@ class RepaymentPlans extends React.Component{
     }
     //按项目查询
     selectProject(e) {
-        let filter={};
+        let {filter}=this.props.memberLoans.repaymentPlans;
+        let filter_new=Object.assign({},filter);
         if(e!=''){
-            filter.projectId=e
+            filter_new.projectId=e
         };
-        let {dateStart,dateEnd}=this.props.memberLoans.repaymentPlans;
-        if(dateStart!=='') filter.dateStart=dateStart;
-        if(dateEnd!=='') filter.dateEnd=dateEnd;
-        this.props.dispatch(repaymentsAc.stateRepaymentPlanModify({myList:``,projectId:e}));
-        this.props.dispatch(repaymentsAc.getList(filter));
+        this.props.dispatch(repaymentsAc.stateRepaymentPlanModify({filter:filter_new,myList:``}));
+        filter_new.pageNum=1;
+        this.props.dispatch(repaymentsAc.getList(filter_new));    //获取数据
     }
-    handleDateStartChange(date,dateString) {
-        let filter={};
-        if(dateString!=''){
-            dateString=dateString+' 00:00:00';
-            filter.dateStart=dateString
-        };
-        let {projectId,dateEnd}=this.props.memberLoans.repaymentPlans;
-        if(projectId!=='') filter.projectId=projectId;
-        if(dateEnd!=='') filter.dateEnd=dateEnd;
-
-        this.props.dispatch(repaymentsAc.stateRepaymentPlanModify({myList:``,dateStart:dateString}));
-        this.props.dispatch(repaymentsAc.getList(filter));
+    dateChange(value,dateString) {
+        let {filter} = this.props.memberLoans.repaymentPlans;
+        let filter_new=Object.assign({},filter);
+        filter_new.dateStart=dateString[0];
+        filter_new.dateEnd=dateString[1];
+        this.props.dispatch(repaymentsAc.stateRepaymentPlanModify({filter:filter_new,myList:``}));
+        filter_new.pageNum=1;
+        this.props.dispatch(repaymentsAc.getList(filter_new));    //获取数据
     }
-    handleDateEndChange(date,dateString) {
-        let filter={};
-        if(dateString!=''){
-            dateString=dateString+' 23:59:59';
-            filter.dateEnd=dateString
-        };
-        let {projectId,dateStart}=this.props.memberLoans.repaymentPlans;
-        if(projectId!=='') filter.projectId=projectId;
-        if(dateStart!=='') filter.dateStart=dateStart;
-        this.props.dispatch(repaymentsAc.stateRepaymentPlanModify({myList:``,dateEnd:dateString}));
-        this.props.dispatch(repaymentsAc.getList(filter));
-    }
-    toggleModal(visile,id) {
-        let {dispatch}=this.props;
+    //模态框开启关闭
+    toggleModal=(modal,visile,id)=>{
         if(visile){
-            dispatch(repaymentsAc.stateRepaymentPlanModify({modalRepayment:true,currentId:id}));
+            this.setState({
+                bbhModal:true,
+                currentModule: modal,
+                currentId:id
+
+            });
         }else{
-            dispatch(repaymentsAc.stateRepaymentPlanModify({modalRepayment:false,currentId:``}));
+            this.setState({
+                bbhModal:false,
+                currentModule: ``,
+                currentId: ``,
+                key:Math.random()
+            });
         }
-    }
-    repaymentCallback(){
-        let {dispatch}=this.props;
-        //dispatch(repaymentsAc.stateRepaymentPlanModify({postResult:0}));
-        this.toggleModal(false,'');
+    };
+    closeModal(status){
+        const {investInfo,dispatch}=this.props;
+        this.toggleModal('bbhModal',false);
         this.props.dispatch(repaymentsAc.getPie());
         this.props.dispatch(repaymentsAc.getList());
-
     }
     render(){
         let {dispatch}=this.props;
         let {repaymentPlans,isFetching}=this.props.memberLoans;
-        let {myList,charts,modalRepayment,currentId,proList,projectId,dateStart,dateEnd}=repaymentPlans;
-        console.log('-------还款数据--------');
-        console.log(myList);
+
+        let {myList,charts,modalRepayment,currentId,proList,projectId,dateStart,dateEnd,filter}=repaymentPlans;
         return(
             <div className="member__main" id="area">
                 <Crumbs/>
@@ -130,7 +127,7 @@ class RepaymentPlans extends React.Component{
                     </Tab>
                 </div>
                 }
-                <div className="member__cbox repayRecord">
+                <div className="member__cbox repayRecord" id='mask'>
                     <Tab>
                         <div name="还款记录">
                             <div className="filter">
@@ -161,25 +158,14 @@ class RepaymentPlans extends React.Component{
                                                 <h5>应还日期:</h5>
                                             </div>
                                             <div className="filter__cell">
-                                                <DatePicker
+                                                <RangePicker
                                                     format={ 'YYYY-MM-DD'}
-                                                    placeholder="开始日期"
-                                                    onChange={ this.handleDateStartChange }
+                                                    placeholder={['开始日期', '结束日期']}
+                                                    onChange={ this.dateChange }
                                                     getCalendarContainer={() => document.getElementById('area')}
                                                 />
                                             </div>
-                                            <div className="filter__cell">
-                                                <h5>-</h5>
-                                            </div>
-                                            <div className="filter__cell">
-                                                <DatePicker
-                                                    /*defaultValue={moment(`${getNowFormatDate('-')}`, dateFormat)}*/
-                                                    format={ 'YYYY-MM-DD'}
-                                                    placeholder="结束日期"
-                                                    onChange={ this.handleDateEndChange}
-                                                    getCalendarContainer={() => document.getElementById('area')}
-                                                />
-                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -205,7 +191,7 @@ class RepaymentPlans extends React.Component{
                                             {myList.list.map((l, i) => (
                                                 <tr key={`row-${i}`}>
                                                     <td><p><a href={`/invest-detail/${l.projectId}`} target="_blank">{l.name}</a></p></td>
-                                                    <td>{moment(l.shdRpmtDate).format('YYYY-MM-DD')}{/*应还日期*/}</td>
+                                                    <td>{l.shdRpmtDate ? moment(l.shdRpmtDate).format('YYYY-MM-DD') : ''}{/*应还日期*/}</td>
                                                     <td>{l.rpmtIssue}{/*还款期数*/}</td>
                                                     <td>{l.rpmtCapital}{/*应还本金*/}</td>
                                                     <td>{l.rpmtIint}{/*应还利息*/}</td>
@@ -214,10 +200,10 @@ class RepaymentPlans extends React.Component{
                                                     <td>{l.statusName}{/*还款状态*/}</td>
                                                     <td>
                                                         {
-                                                            (l.proStatus==3)? '还款':''
+                                                            (l.proStatus==3)? <a onClick={() => this.toggleModal('ModalRepayment', true, l.rpmtplanId)}>还款</a>:''
                                                         }
                                                         {
-                                                            (l.proStatus==4||l.proStatus==5)? <a onClick={() => this.toggleModal( true, l.projectId)}>还款</a>:''
+                                                            (l.proStatus==4||l.proStatus==5)? <a onClick={() => this.toggleModal( 'ModalRepayment',true, l.rpmtplanId)}>还款</a>:''
                                                         }
 
                                                     </td>
@@ -233,16 +219,9 @@ class RepaymentPlans extends React.Component{
                                                 pageSize:myList.pageSize,
                                                 totalPage:myList.pages,
                                                 paging:(obj)=>{
-                                                    dispatch(repaymentsAc.stateRepaymentPlanModify({myList:``}));
-                                                    dispatch(repaymentsAc.getList(
-                                                        {
-                                                            pageNum:obj.currentPage,
-                                                            pageSize:obj.pageCount,
-                                                            projectId:projectId,
-                                                            dateStart:dateStart,
-                                                            dateEnd:dateEnd
-                                                        }
-                                                    ));
+                                                    filter.pageNum=obj.currentPage;
+                                                    dispatch(repaymentsAc.stateRepaymentPlanModify({filter:filter,myList:''}));  //初始化页面
+                                                    dispatch(repaymentsAc.getList(filter));
                                                 }
                                             }
                                         } ></Pagination>
@@ -252,27 +231,20 @@ class RepaymentPlans extends React.Component{
                         </div>
                     </Tab>
                 </div>
-                <Modal
-                    title="还款"
-                    wrapClassName="vertical-center-modal"
-                    visible={modalRepayment}
-                    width="520px"
-                    footer={null}
-                    onCancel={() => this.repaymentCallback()}
-                >
-                    {modalRepayment===true?
-                        <ModalRepayment info={
-                            {
-                                currentId:currentId,
-                                callback:(obj)=>{
-                                    this.repaymentCallback();
-                                }
-                            }
-                        }
 
-                        />:''
-                    }
-                </Modal>
+                {this.state.currentModule!=``?
+                    <BbhModal
+                        config={modal_config[this.state.currentModule]}
+                        visible={this.state.bbhModal}
+                        closeFunc={()=>this.closeModal()}
+                        moduleName={this.state.currentModule}
+                        key={this.state.key}
+                        currentId={this.state.currentId}
+                    >
+
+                    </BbhModal>
+                    :``
+                }
             </div>
         )
     }

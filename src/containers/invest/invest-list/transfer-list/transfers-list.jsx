@@ -53,12 +53,12 @@ class TransferList extends Component {
         console.log(transferList);
         return (
             <main className="main transfer-list">
-            <div className="wrapper">
+            <div className="wrapper" id='mask'>
                 <InvestTab isTransfer={true} />
                 {
                     list ===''? <Loading isShow={isFetching} />
                         :
-                            <div className="table__wrapper">
+                            <div className="table__wrapper" id='mask'>
                                 {(list.total) > 0 ?
                                 <div>
                                     <table className="tableList">

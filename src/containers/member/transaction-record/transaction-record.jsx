@@ -5,7 +5,7 @@ import Pagination from '../../../components/pagination/pagination';
 import {Loading,NoRecord} from '../../../components/bbhAlert/bbhAlert';
 import { Select,DatePicker } from 'antd';
 import { connect } from 'react-redux';
-import {transactionRecordAc} from "../../../actions/transaction-record";
+import {transactionRecordAc} from "../../../actions/member";
 import {addCommas, toMoney} from "../../../utils/famatData";
 
 const { RangePicker } = DatePicker;
@@ -53,24 +53,19 @@ class TransactionRecord extends Component{
         filter_new.startTime=dateString[0];
         filter_new.endTime=dateString[1];
         this.props.dispatch(transactionRecordAc.modifyState({filter:filter_new,data:``}));
-        filter_new.startTime=dateString[0]+' 00:00:00';
-        filter_new.endTime=dateString[1]+' 23:59:59';
         filter_new.pageNum=1;
         dispatch(transactionRecordAc.getData(filter_new));    //获取数据
     }
     render(){
-
         let {transactionRecord,dispatch} = this.props;
         let {filter,data,isFetching}=transactionRecord;
-        console.log('获取的数据');
-        console.log(data);
         return (
             <div className="member__main" id="area">
                 <Crumbs/>
                 <div className="member__cbox">
                     <Tab>
                         <div name="交易记录">
-                            <div className="tab_content">
+                            <div className="tab_content" id='mask'>
                                 <p className="info">
                                     <strong>提示：</strong>资金历史记录了您各种交易产生的支出和收入的明细，请选择事件类型和时间。
                                 </p>
@@ -89,13 +84,24 @@ class TransactionRecord extends Component{
                                                         getPopupContainer={() => document.getElementById('area')}
                                                     >
                                                         <Option value="">全部</Option>
-                                                        <Option value="0">充值</Option>
-                                                        <Option value="1">提现</Option>
-                                                        <Option value="2">投资</Option>
-                                                        <Option value="3">资金划转</Option>
-                                                        <Option value="4">还款</Option>
-                                                        <Option value="5">冻结</Option>
-                                                        <Option value="6">商户转账</Option>
+                                                        <Option value="0">帐户充值</Option>
+                                                        <Option value="1">充值服务费</Option>
+                                                        <Option value="2">账户提现</Option>
+                                                        <Option value="3">提现服务费</Option>
+                                                        <Option value="4">出借冻结</Option>
+                                                        <Option value="5">资金划转</Option>
+                                                        <Option value="6">资金解冻</Option>
+                                                        <Option value="7">本金回款</Option>
+                                                        <Option value="8">利息回款</Option>
+                                                        <Option value="9">债权转让</Option>
+                                                        <Option value="10">借款到账</Option>
+                                                        <Option value="11">账户还款</Option>
+                                                        <Option value="14">服务费</Option>
+                                                        <Option value="15">担保费</Option>
+                                                        <Option value="16">信用费</Option>
+                                                        <Option value="17">逾期罚息</Option>
+                                                        <Option value="18">服务罚息</Option>
+                                                        <Option value="19">系统奖励</Option>
                                                     </Select>
                                                 </div>
                                                 <div className="filter__cell">
@@ -134,7 +140,7 @@ class TransactionRecord extends Component{
                                         :
                                         data.total>0 ?
                                             <div className="table__wrapper">
-                                                <table className={`tableList table${filter.trade_type}`}>
+                                                <table className='tableList trade-record'>
                                                     <thead>
                                                     <tr>
                                                         <th>交易时间</th>
@@ -149,7 +155,11 @@ class TransactionRecord extends Component{
                                                             <tr key={`row-${rowIndex}`}>
                                                                 <td>{item.createTime}</td>
                                                                 <td>{item.payType}</td>
-                                                                <td>{toMoney(item.transAmt)}</td>
+                                                                <td>
+                                                                    {(item.amountState==1)?`+`:``}
+                                                                    {(item.amountState==2)?`-`:``}
+                                                                    {toMoney(item.transAmt)}
+                                                                    </td>
                                                                 <td>{item.transState}</td>
                                                             </tr>
                                                         ))}

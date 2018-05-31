@@ -1,0 +1,184 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import {toMoney,toNumber,addCommas} from '../../../utils/famatData';
+import { Form,Row,Input,Button,Checkbox,Col } from 'antd';
+import { connect } from 'react-redux';
+import {memberLoansAc, repaymentsAc} from '../../../actions/member-loans';
+import {BbhAlert} from '../../bbhAlert/bbhAlert';
+import { hex_md5 } from '../../../utils/md5';
+import {formItemLayout, hasErrors, noop} from '../../../utils/formSetting';
+import moment from "moment";
+const createForm = Form.create;
+const FormItem = Form.Item;
+
+class ModalRepayment extends React.Component {
+    componentDidMount () {
+        let {currentId}=this.props;
+        this.props.dispatch(repaymentsAc.getRepayment(currentId));
+    }
+    handleSubmit = (e) => {
+        e.preventDefault();
+        const { dispatch, form,memberLoans,currentId } = this.props;
+        const {projectInfo}=memberLoans.repaymentPlans;
+        form.validateFields((errors) => {
+            if (errors) {
+                return false;
+            }
+            let appInfo={
+                traderPassword:hex_md5(form.getFieldsValue().password), //交易密码
+                id:currentId,  //还款计划id
+                shdRpmtDate:projectInfo.shdRpmtDate ,//应还日期
+                projectName:projectInfo.name ,//项目名称
+                rpmtIssue:projectInfo.rpmtIssue ,//还款期数
+                paidFee: projectInfo.paidFee,//应还服务费
+                rpmtCapital:projectInfo.rpmtCapital ,//应还本金
+                rpmtIint: projectInfo.rpmtIint,//应还利息
+                //lateFine:projectInfo.lateFine ,//应还罚金
+                lateIint:projectInfo.lateTotal ,//应还罚息
+                sum : projectInfo.rpmtTotal,//还款总额
+            }
+            console.log('要提交的还款信息');
+            console.log(appInfo);
+            dispatch(repaymentsAc.postRepayment(appInfo));
+
+        });
+    }
+    static propTypes = {
+        form: PropTypes.object.isRequired,
+        dispatch: PropTypes.func.isRequired
+    }
+    //回调
+    modalClose(){
+        /*this.setState({
+            isReset:true,
+        },()=>{
+            let {onSuccess,dispatch}=this.props;
+            dispatch(accountAc.getAccountInfo());  //真实
+            onSuccess();
+        });*/
+        console.log('点击确认了');
+        let {onSuccess,dispatch}=this.props;
+        //dispatch(accountAc.getAccountInfo());  //真实
+        onSuccess();
+    }
+    render() {
+        //let {callback}=this.props.info;
+        let {postResult,projectInfo,isPosting}=this.props.memberLoans.repaymentPlans;
+        let {imageCodeImg}=this.props.memberLoans; //
+        const { getFieldDecorator,getFieldValue,getFieldsError } = this.props.form;
+        const passwordProps = getFieldDecorator('password', {
+            rules: [
+                { required: true, min: 6, message: '密码至少为 6 个字符' }
+            ]
+        });
+        const isReadProps = getFieldDecorator('isRead', {
+            valuePropName: 'checked',
+            initialValue: false,
+        })
+
+        return (
+            <div className="pop__repayment">
+                {
+                    (postResult.type!=`success`) ?
+                        (projectInfo === '') ? ``
+                            : <div className="form__wrapper">
+                                <Form layout="horizontal" onSubmit={this.handleSubmit}>
+                                <FormItem
+                                    { ...formItemLayout }
+                                    label="项目名称"
+                                >
+                                    {projectInfo.name}
+                                </FormItem>
+                                    <FormItem
+                                        { ...formItemLayout }
+                                        label="还款期数"
+                                    >
+                                        {projectInfo.rpmtIssue} 期
+                                    </FormItem>
+                                    <FormItem
+                                        { ...formItemLayout }
+                                        label="应还日期"
+                                    >
+                                        {moment(projectInfo.shdRpmtDate).format('YYYY-MM-DD')}
+                                    </FormItem>
+                                    <FormItem
+                                        { ...formItemLayout }
+                                        label="应还本金"
+                                    >
+                                        {addCommas(projectInfo.rpmtCapital)} 元
+                                    </FormItem>
+                                    <FormItem
+                                        { ...formItemLayout }
+                                        label="应还利息"
+                                    >
+                                        {addCommas(projectInfo.rpmtIint)} 元
+                                    </FormItem>
+                                    <FormItem
+                                        { ...formItemLayout }
+                                        label="应还罚息"
+                                    >
+                                        {addCommas(projectInfo.lateTotal)} 元
+                                    </FormItem>
+                                    <FormItem
+                                        { ...formItemLayout }
+                                        label="还款总额"
+                                    >
+                                        {addCommas(projectInfo.rpmtTotal)} 元
+                                    </FormItem>
+                                    <FormItem
+                                        { ...formItemLayout }
+                                        label="交易密码"
+                                        required
+                                    >
+                                        {
+                                            passwordProps(
+                                                <Input
+                                                    type="password"
+                                                    autoComplete="off"
+                                                    placeholder="请输入6-16位的交易密码"
+                                                    onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
+                                                />
+                                            )
+                                        }
+                                    </FormItem>
+                                    <FormItem className='tips'>
+                                        {postResult.message}
+                                    </FormItem>
+
+                                    <FormItem  className='center'>
+                                        {(isPosting) ?
+                                            <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
+                                                <Posting isShow={isPosting}/>
+                                            </Button>
+                                            : <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError())  }>确认</Button>
+
+                                        }
+                                    </FormItem>
+                                </Form>
+                            </div>
+                        : <div  className="pop__repayment">
+
+                            <BbhAlert
+                                info={{message:postResult.message,description:postResult.description,type:postResult.type,
+                                    callback:()=>{
+                                        this.modalClose()
+                                    }
+                                }}
+                            />
+                        </div>
+                }
+            </div>
+
+        );
+    }
+};
+
+function mapStateToProps(state) {
+    const { auth,memberLoans } = state.toJS();
+    return {
+        auth,
+        memberLoans,
+    };
+}
+ModalRepayment = connect(mapStateToProps)(createForm()(ModalRepayment));
+export default connect(mapStateToProps)(ModalRepayment);

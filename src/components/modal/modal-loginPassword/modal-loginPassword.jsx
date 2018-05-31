@@ -17,8 +17,9 @@ class ModalLoginPassword extends React.Component {
         form: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired
     }
-
-
+    componentWillMount () {
+        this.props.dispatch(memberAc.clear());
+    }
     //提交
     handleSubmit = (e) => {
         e.preventDefault();
@@ -41,15 +42,10 @@ class ModalLoginPassword extends React.Component {
     }
     //回调
     modalClose(){
-        let {onSuccess,onFail,dispatch}=this.props;
-        //清空postResult
-        dispatch(memberAc.clear());
+        let {onSuccess}=this.props;
         onSuccess();
     }
     render(){
-        console.log('-------------this.props---------------');
-        console.log(this.props);
-        let {onSuccess,onFail}=this.props;
         let {isPosting,postResult}=this.props.member;
         const { getFieldDecorator,getFieldValue } = this.props.form;
         const oldPasswordProps = getFieldDecorator('oldPassword', {

@@ -1,19 +1,19 @@
 import cFetch from '../utils/cFetch';
 import cookie from 'js-cookie';
-import {toMoney,toNumber,addCommas} from '../utils/famatData';
+import {toMoney, toNumber, addCommas, formatPostResult} from '../utils/famatData';
 import parseJson2URL from './../utils/parseJson2URL';
 import {urls,token} from './../utils/url';
+import {API_CONFIG} from "../config/api";
+import {postContent} from "../utils/formSetting";
 
+const url_investCharts=API_CONFIG.hostWeb+API_CONFIG.getMyInvestCharts; //统计图数据
+const url_investList=API_CONFIG.hostWeb+API_CONFIG.getMyInvestList;//获取投资列表
+const url_planList=API_CONFIG.hostWeb+API_CONFIG.getMyPlanList;  //获取回款记录
+const url_postTransferApp=API_CONFIG.hostWeb+API_CONFIG.postTransferApp;//转让申请
+const url_getTransfer=API_CONFIG.hostWeb+API_CONFIG.getMyTransferInfo; //获取债转详情
 
-const url_investCharts=`${urls}/members/invest/statistics`; //统计图数据
-const url_investList=`${urls}/members/investments`;//获取投资列表
-const url_planList=`${urls}/members/investments/receiving/`  //获取回款记录
-const url_postTransferApp=`http://172.16.4.5:8084/test.php`;//转让申请
-const url_getTransfer=`${urls}/members/investments/transfer/`; //获取债转详情
-
-
-const url_receivingCharts=`${urls}/members/investments/receiving/statistics`;//回款统计
-const url_receivingList=`${urls}/members/investments/receiving`;//回款列表
+const url_receivingCharts=API_CONFIG.hostWeb+API_CONFIG.getMyReceivingCharts;//回款统计
+const url_receivingList=API_CONFIG.hostWeb+API_CONFIG.getMyReceivingList;//回款列表
 
 export const memberInvestAc={
     getPie: () => {
@@ -22,7 +22,6 @@ export const memberInvestAc={
             async payload() {
                 const res = await cFetch(`${url_investCharts}` , {method: 'GET'}, true);
                 const {code, data} = res;
-                //console.log(data);
                 if (code == 0) {
                     let {totalInvestmentDto,accumulatedIncomeDto}=data;
                     let charts={
@@ -88,16 +87,16 @@ export const memberInvestAc={
         }
     },
     //债转详情
-    getTransfer: (pram) => {
+    getTransfer: (param) => {
         return {
             type: 'myInvest/investments/FETCH',
             async payload() {
-                const res = await cFetch(`${url_getTransfer}${pram}` , {method: 'GET'}, true);
+                const res = await cFetch(`${url_getTransfer}${param}` , {method: 'GET'}, true);
                 const {code, data} = res;
-                console.log('返回的债转详情');
-                console.log(data);
                 if (code == 0) {
-                    transferInfo:data
+                    return {
+                        transferInfo:data,
+                    };
                 } else {
                     throw res;
                 }
@@ -106,26 +105,18 @@ export const memberInvestAc={
     },
     //债转申请
     postTransfer:(params) =>  {
-        params = parseJson2URL(params);
+        //params = parseJson2URL(params);
         console.log('给后台传的是body');
         console.log(params);
         return {
             type: 'myInvest/investments/TRANSFER_APP',
             async payload() {
-                const res = await cFetch(`${url_postTransferApp}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: params,
-                    },
-                    true);
-                return {postResult: res};
-                /*if (res.code == 0) {
-                    return {postResult: res};
-                } else {
-                    throw res;
-                }*/
+                const res = await cFetch(url_postTransferApp, postContent(params), true);
+                return {
+                    postResult: formatPostResult(res)
+                };
+
+
             }
         }
     },
@@ -179,8 +170,6 @@ export const memberReceivingAc={
                 params = parseJson2URL(params);
                 const res = await cFetch(`${url_receivingList}?`+params,{method: 'GET'}, true);
                 const {code, data} = res;
-                console.log('发回的数据');
-                console.log(data);
                 if (code == 0) {
                     return {
                         myList:data,

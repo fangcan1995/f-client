@@ -247,6 +247,27 @@
     font-size:14px;
     .table__wrapper{
       padding: 0 0;
+      .tableList{
+        th{
+          font-size: 14px;
+          color:@text-color-default
+        }
+        &.trade-record{
+          td:nth-child(1){
+            width: 30%;
+          }
+          td:nth-child(2){
+            width: 20%;
+          }
+          td:nth-child(3){
+            width: 20%;
+            padding-right: 30px;
+          }
+          td:nth-child(4){
+            width: 20%;
+          }
+        }
+      }
     }
     //栏目标题
     .tablist {
@@ -310,6 +331,8 @@
       }
       .money {
         width: 30%;
+        text-align: right;
+        font-size: 14px;
       }
       .time {
         width: 30%
@@ -360,4 +383,13 @@
     border: 1px solid #e6eaf0;
     color: #45484c
   }
+  .peiChart{
+    .money{ font-size: 14px; padding: 0}
+    .pei__title{
+      .money{ font-size: 18px}
+    }
+  }
+
+
+
 }

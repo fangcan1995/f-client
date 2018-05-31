@@ -6,7 +6,7 @@ import Pagination from '../../../../components/pagination/pagination';
 import './redEnvelopes.less';
 import moment from "moment";
 import { connect } from 'react-redux';
-import {redEnvelopesAc} from '../../../../actions/redEnvelopes';
+import {redEnvelopesAc} from '../../../../actions/member-reward';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 
 class MyRedEnvelopes extends React.Component {
@@ -25,9 +25,9 @@ class MyRedEnvelopes extends React.Component {
         return (
             <div className="member__main">
                 <Crumbs/>
-                <div className="member__cbox">
+                <div className="member__cbox" >
                     <Tab>
-                        <div name="我的红包">
+                        <div name="我的红包" id='mask'>
                             <div className="filter" style={{marginTop:'15px'}}>
                                 <div className="filter__outer">
                                     <div className="filter__inner">

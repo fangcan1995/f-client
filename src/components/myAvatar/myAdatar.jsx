@@ -1,10 +1,11 @@
 import React,{ Component } from "react";
 import { Upload, Icon, message,Avatar } from 'antd';
 import './myAdatar.less';
-import {urls} from './../../utils/url';
 import tx from './../../assets/images/myAccount/tx.jpg';
 import cookie from 'js-cookie';
-import  {memberAc}  from '../../actions/member';
+import {API_CONFIG} from "./../../config/api";
+
+
 export default class MyAvatar extends React.Component {
     constructor(props) {
         super(props);
@@ -57,19 +58,16 @@ export default class MyAvatar extends React.Component {
         }else{
             photo_url=tx;
         }
-        /*if(photo!=``){
-            photo_url=photo;
-        }else{
-            photo_url=`http://www.baba88.com/static/quote_518/images/logo.png`;
-        }*/
+
         const uploadButton = (
             <Avatar size="large" className="memberPhoto" src={photo_url} />
         );
         const imageUrl = this.state.imageUrl;
         const token = cookie.getJSON('token') || {};
         const { access_token } = token;
-        const actionUrl=`${urls}/members/photo?access_token=${access_token}`;
-        //console.log(actionUrl);
+
+        const actionUrl=API_CONFIG.hostWeb+API_CONFIG.uploadPhoto+`?access_token=${access_token}`;
+
         return (
             <Upload
                 name="file"

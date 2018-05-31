@@ -9,6 +9,11 @@ export const modal_config={
         width: "620px",
         height: "400px"
     },
+    ModalRecharge:{
+        title: "充值",
+        width: "500px",
+        height: "300px"
+    },
     ModalReBindCard: {
         title: "更换银行卡",
         width: "620px",
@@ -44,5 +49,29 @@ export const modal_config={
         width: "500px",
         height: "300px"
     },
-
+    ModalRepaymentApp: {
+        title: "提前还款申请",
+        width: "500px",
+        height: "400px"
+    },
+    ModalRepayment: {
+        title: "还款",
+        width: "500px",
+        height: "400px"
+    },
+    ModalLoanApp: {
+        title: "借款申请",
+        width: "680px",
+        height: "400px"
+    },
+    ModalTransferApp: {
+        title: "债权转让申请",
+        width: "500px",
+        height: "400px"
+    },
+    ModalPlan: {
+        title: "回款计划",
+        width: "680px",
+        height: "500px"
+    },
 }

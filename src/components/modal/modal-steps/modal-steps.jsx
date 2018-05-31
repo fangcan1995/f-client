@@ -42,7 +42,7 @@ class ModalSteps extends React.Component {
 
     ck_certification_success(){
         let {dispatch}=this.props;
-        dispatch(accountAc.dummyModifyAccount({isCertification:'1'}));  //虚拟
+        //dispatch(accountAc.dummyModifyAccount({isCertification:'1'}));  //虚拟
         dispatch(accountAc.clear());
         this.setState({
             current:1
@@ -50,7 +50,9 @@ class ModalSteps extends React.Component {
     }
 
     ck_tradePassword_success(){
+        let {dispatch}=this.props;
         console.log('交易密码成功跳转下一步');
+        dispatch(accountAc.clear());
         this.setState({
             current:2
         })
@@ -61,10 +63,9 @@ class ModalSteps extends React.Component {
         onSuccess();
     }
 
-
     render() {
 
-        let {account,auth,stepslength}=this.props;
+        let {account,auth,stepslength,returnPage}=this.props;
         let {accountsInfo,isPosting}=account;
         let {postResult,isCertification,isOpenAccount,isSetTradepassword}=accountsInfo;
 
@@ -77,12 +78,12 @@ class ModalSteps extends React.Component {
             },
             {
                 title: '设置交易密码',
-                content: <ModalTradePassword onSuccess={() => {this.ck_tradePassword_success();}} attach={'steps'} />,
+                content: <ModalTradePassword onSuccess={() => {this.ck_tradePassword_success();}}  />,
                 icon:<Icon type="lock" />
             },
             {
                 title: '绑定银行卡',
-                content: <ModalBindCard onSuccess={() => {this.ck_bindCard_success();}} />,
+                content: <ModalBindCard returnPage={`${returnPage}`} onSuccess={() => {this.ck_bindCard_success();}} />,
                 icon:<Icon type="credit-card" />
             }
         ];
@@ -91,10 +92,15 @@ class ModalSteps extends React.Component {
         }
 
         return(
-            <div  className="pop_steps">
-                <Steps  current={current}>
-                    {steps.map(item => <Step key={item.title} title={item.title} icon={item.icon}  />)}
-                </Steps>
+            <div  className="pop_steps" >
+                {(isSetTradepassword==='1' || stepslength===2)?
+                    <Steps  current={current} style={{width:`70%`,margin:`0 auto`}}>
+                        {steps.map(item => <Step key={item.title} title={item.title} icon={item.icon}  />)}
+                    </Steps>
+                    :<Steps  current={current} >
+                        {steps.map(item => <Step key={item.title} title={item.title} icon={item.icon}  />)}
+                    </Steps>
+                }
                 <div className="steps-content">{steps[this.state.current].content}</div>
             </div>
         )

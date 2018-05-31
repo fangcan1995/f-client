@@ -115,6 +115,7 @@ class SubjectList extends Component {
 
                 <div className="wrapper">
                     <InvestTab isTransfer={false} />
+                    <div id='mask'>
                     <div className="filter">
                         <div className="filter__outer">
                             <div className="filter__inner">
@@ -211,7 +212,13 @@ class SubjectList extends Component {
                                                         <td className="rtxt">{toMoney(l.money)}元</td>
                                                         <td><em className="redTxt">{l.annualRate}%</em></td>
                                                         <td>{l.loanExpiry}个月</td>
-                                                        <td>{moment(l.putTime).format('YYYY-MM-DD')}</td>
+                                                        <td>
+                                                            {
+                                                                (l.putTime)?
+                                                                    moment(l.putTime).format('YYYY-MM-DD')
+                                                                    :``
+                                                            }
+                                                        </td>
                                                         <td className="rtxt">{toMoney(l.surplusAmount)}元</td>
                                                         <td>{l.investNumber}人</td>
                                                         <td style={{ width: 170}}>
@@ -242,6 +249,7 @@ class SubjectList extends Component {
                                 }
                             </div>
                     }
+                    </div>
                 </div>
 
             </main>

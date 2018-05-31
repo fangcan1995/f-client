@@ -11,8 +11,7 @@ const initialState = Immutable.fromJS({
     investTransferRecords:``,
     repayRecords:``,
     postResult:``,
-    redEnvelopes:``,
-    rateCoupons:``,
+    availableRewards:``,
 });
 
 export default createReducer(initialState, {
@@ -75,30 +74,19 @@ export default createReducer(initialState, {
         isFetching: false,
         errorMessage: action.message
     }),
-    //红包
-    ['investDetail/redEnvelopes/FETCH_PENDING']: (state, action) => state.mergeDeep({
+    //可用奖励
+    ['investDetail/availableRewards/FETCH_PENDING']: (state, action) => state.mergeDeep({
         isFetching: true,
     }),
-    ['investDetail/redEnvelopes/FETCH_FULFILLED']: (state, action) => state.mergeDeep({
+    ['investDetail/availableRewards/FETCH_FULFILLED']: (state, action) => state.mergeDeep({
         isFetching: false,
-        redEnvelopes: action.payload,
+        availableRewards: action.payload,
     }),
-    ['investDetail/redEnvelopes/FETCH_REJECTED']: (state, action) => state.mergeDeep({
+    ['investDetail/availableRewards/FETCH_REJECTED']: (state, action) => state.mergeDeep({
         isFetching: false,
         errorMessage: action.message
     }),
-    //加息券
-    ['investDetail/rateCoupons/FETCH_PENDING']: (state, action) => state.mergeDeep({
-        isFetching: true,
-    }),
-    ['investDetail/rateCoupons/FETCH_FULFILLED']: (state, action) => state.mergeDeep({
-        isFetching: false,
-        rateCoupons: action.payload,
-    }),
-    ['investDetail/rateCoupons/FETCH_REJECTED']: (state, action) => state.mergeDeep({
-        isFetching: false,
-        errorMessage: action.message
-    }),
+
 
     //投资
     ['investDetail/invest/POST_PENDING']: (state, action) => state.mergeDeep({
@@ -120,6 +108,15 @@ export default createReducer(initialState, {
     ['investDetail/memberInfo/MODIFY_STATE']:(state,action) => state.mergeDeep({
         memberInfo:action.payload
     }),
+    ['investDetail/CLEAR']:(state,action) => state.mergeDeep({
+        investRecords:``,
+        investTransferRecords:``,
+        repayRecords:``,
+        postResult:``,
+        memberInfo:``,
+        loanInfo:``,
+    }),
+
     ['investDetail/loan/MODIFY_STATE']:(state,action) => state.mergeDeep({
         loanInfo:action.payload
     }),
@@ -137,9 +134,9 @@ export default createReducer(initialState, {
     }),
 
     //修改可用红包
-    ['investDetail/redEnvelopes/CHANGE_DEFAULT']: (state, action) => state.mergeDeep({
+    ['investDetail/availableRewards/CHANGE_DEFAULT']: (state, action) => state.mergeDeep({
         isFetching: false,
-        redEnvelopes: action.payload,
+        availableRewards: action.payload,
     }),
 })
 

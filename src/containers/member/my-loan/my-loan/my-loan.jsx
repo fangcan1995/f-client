@@ -4,15 +4,29 @@ import PieChart from '../../../../components/charts/pie';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
+import BbhModal from "../../../../components/modal/bbh_modal";
 import { Modal } from 'antd';
-import ModalRepaymentApp from './modalRepaymentApp';
+import ModalRepaymentApp from '../../../../components/modal/modal-repayment/modalRepaymentApp';
 import {toMoney,toNumber,addCommas} from '../../../../utils/famatData';
 import { connect } from 'react-redux';
 import  {memberLoansAc}  from '../../../../actions/member-loans';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import moment from "moment";
 import './my-loan.less';
+import {modal_config} from "../../../../utils/modal_config";
+import {accountAc} from "../../../../actions/account";
+import investDetailActions from "../../../../actions/invest-detail";
+
 class MyLoans extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            bbhModal:false,
+            currentModule:``,
+            currentId:``,
+            key:Math.random(),
+        }
+    }
     componentDidMount () {
         window.scrollTo(0,0);
         this.props.dispatch(memberLoansAc.stateModify({status:1,myList:``}));
@@ -29,20 +43,33 @@ class MyLoans extends React.Component {
         this.props.dispatch(memberLoansAc.stateModify({status:pram,myList:``}));
         this.props.dispatch(memberLoansAc.getList({status:pram}));
     }
-    toggleModal(visile,id) {
-        let {dispatch}=this.props;
+    //模态框开启关闭
+    toggleModal=(modal,visile,id)=>{
         if(visile){
-            dispatch(memberLoansAc.stateModify({modalRepaymentApp:true,currentId:id}));
+            this.setState({
+                bbhModal:true,
+                currentModule: modal,
+                currentId:id
+
+            });
         }else{
-            dispatch(memberLoansAc.stateModify({modalRepaymentApp:false,currentId:``}));
+            this.setState({
+                bbhModal:false,
+                currentModule: ``,
+                currentId: ``,
+                key:Math.random()
+            });
         }
+    };
+    closeModal(status){
+        const {investInfo,dispatch}=this.props;
+        this.toggleModal('bbhModal',false);
     }
+
     render(){
         let {dispatch}=this.props;
         let {myLoans,isFetching}=this.props.memberLoans;
-        let {myList,charts,status,modalRepaymentApp,currentId}=myLoans;
-        console.log('myList');
-        console.log(myList);
+        let {myList,charts,status}=myLoans;
         let tHead=[];
         tHead[0]=<tr><th>项目名称</th><th>项目类型</th><th>借款金额(元)</th><th>借款年利率(%)</th><th>借款期限</th><th>还款方式</th><th>申请日期</th><th>状态</th></tr>;
         tHead[1]=<tr><th>项目名称</th><th>借款总额(元)</th><th>借款期限</th><th>发布日期</th><th>当前投资金额(元)</th><th>投资进度(%)</th><th>募集结束日期</th><th>状态</th></tr>;
@@ -78,7 +105,7 @@ class MyLoans extends React.Component {
                         </Tab>
                     </div>
                 }
-                <div className="member__cbox" style={{ padding:'20px 30px' }}>
+                <div className="member__cbox" style={{ padding:'20px 30px' }} id='mask'>
                     <div className="filter">
                         <div className="filter__outer">
                             <div className="filter__inner">
@@ -106,7 +133,7 @@ class MyLoans extends React.Component {
                             </div>
                         </div>
                     </div>
-                    {(myList==='') ? <Loading isShow={isFetching} />
+                    {(myList=='') ? <Loading isShow={isFetching} />
                         :
                         <div className="table__wrapper">
                             {(myList.total > 0) ? (
@@ -121,12 +148,12 @@ class MyLoans extends React.Component {
                                                     (status === 1) ? (
                                                         <tr key={`row-${i}`}>
                                                             <td>--</td>
-                                                            <td>{l.name}</td>
+                                                            <td>{l.projectTypeName}</td>
                                                             <td>{l.money}</td>
-                                                            <td>{l.annualRate}%</td>
+                                                            <td>--</td>
                                                             <td>{l.loanExpiry}个月</td>
                                                             <td>{l.refundWayName}</td>
-                                                            <td>{moment(l.applyTime).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.applyTime ? moment(l.applyTime).format('YYYY-MM-DD') : ''}</td>
                                                             <td>申请中</td>
                                                         </tr>
                                                     ) : ((status === 2) ? (
@@ -134,10 +161,10 @@ class MyLoans extends React.Component {
                                                             <td><p><a href={`/invest-detail/${l.projectId}`} target="_blank">{l.name}</a></p></td>
                                                             <td>{l.money}</td>
                                                             <td>{l.loanExpiry}个月</td>
-                                                            <td>{moment(l.dateTime).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.putTime ? moment(l.putTime).format('YYYY-MM-DD') : ''}</td>
                                                             <td>{l.moneyEnd}</td>
                                                             <td>{l.investProgress}%</td>
-                                                            <td>{moment(l.endDate).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.endDate ? moment(l.endDate).format('YYYY-MM-DD') : ''}</td>
                                                             <td>招标中</td>
                                                         </tr>
                                                     ) : ((status === 3) ? (
@@ -145,14 +172,14 @@ class MyLoans extends React.Component {
                                                             <td><p><a href={`/invest-detail/${l.projectId}`} target="_blank">{l.name}</a></p></td>
                                                             <td>{l.money}</td>
                                                             <td>{l.loanExpiry}个月</td>
-                                                            <td>{moment(l.transferTtime).format('YYYY-MM-DD')}</td>
-                                                            <td>{moment(l.shdRpmtDate).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.transferTime ? moment(l.transferTime).format('YYYY-MM-DD') : ''}</td>
+                                                            <td>{l.shdRpmtDate ? moment(l.shdRpmtDate).format('YYYY-MM-DD') : ''}</td>
                                                             <td>{l.shdRpmtMoney}</td>
                                                             <td>
                                                                 {
                                                                     l.refundStatus=='0'?('提前还款申请中')
                                                                         :(
-                                                                            <a onClick={() => this.toggleModal(true,l.projectId)}>提前还款</a>
+                                                                            <a onClick={() => this.toggleModal(`ModalRepaymentApp`,true,l.projectId)}>提前还款</a>
                                                                         )
                                                                 }
                                                                 <a href="">借款合同</a>
@@ -163,12 +190,12 @@ class MyLoans extends React.Component {
                                                             <td><p><a href={`/invest-detail/${l.projectId}`} target="_blank">{l.name}</a></p></td>
                                                             <td>{l.money}</td>
                                                             <td>{l.loanExpiry}个月</td>
-                                                            <td>{moment(l.transferTtime).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.transferTime ? moment(l.transferTime).format('YYYY-MM-DD') : ''}</td>
                                                             <td>{l.rpmtCapital}</td>
                                                             <td>{l.rpmtIint}</td>
                                                             <td>{l.lateFine}</td>
                                                             <td>{l.lateIint}</td>
-                                                            <td>{moment(l.settleTime).format('YYYY-MM-DD')}</td>
+                                                            <td>{l.settleTime ? moment(l.settleTime).format('YYYY-MM-DD') : ''}</td>
                                                             <td><a href="">借款合同</a></td>
                                                         </tr>
                                                     ) : (''))))
@@ -203,26 +230,20 @@ class MyLoans extends React.Component {
                         </div>
                     }
                 </div>
-                <Modal
-                    title="提前还款申请"
-                    wrapClassName="vertical-center-modal"
-                    visible={modalRepaymentApp}
-                    width="420px"
-                    footer={null}
-                    onCancel={() => this.repaymentCallback()}
-                >
-                    {modalRepaymentApp===true?
-                        <ModalRepaymentApp info={
-                            {
-                                currentId:currentId,
-                                callback:(obj)=>{
-                                    this.repaymentCallback();
-                                }
-                            }
-                        }
-                        />:''
-                    }
-                </Modal>
+
+                {this.state.currentModule!=``?
+                    <BbhModal
+                        config={modal_config[this.state.currentModule]}
+                        visible={this.state.bbhModal}
+                        closeFunc={()=>this.closeModal()}
+                        moduleName={this.state.currentModule}
+                        key={this.state.key}
+                        currentId={this.state.currentId}
+                    >
+
+                    </BbhModal>
+                    :``
+                }
             </div>
         )
     }
