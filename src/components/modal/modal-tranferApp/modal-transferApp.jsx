@@ -111,7 +111,7 @@ class ModalTransferApp extends React.Component {
                                 >
                                     {addCommas(transferInfo.canTransferMoney)} 元
                                 </FormItem>
-                                <FormItem
+                                <FormItem className='price'
                                     { ...formItemLayout }
                                     label="转让金额"
                                     required
