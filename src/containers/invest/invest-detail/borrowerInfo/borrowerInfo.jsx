@@ -97,6 +97,7 @@ import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
                                             <li key={`row-${i}`}>
                                                 <a href={`${l.uploadPath}`} target="_blank">
                                                     <img src={`${l.uploadPath}`} />
+                                                    <p title={`${l.fileName}`}>{l.fileName}</p>
                                                 </a>
                                             </li>
                                         ))}

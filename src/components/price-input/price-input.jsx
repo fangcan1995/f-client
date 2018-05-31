@@ -8,6 +8,11 @@ export default class PriceInput extends Component {
             number: value.number || 0,
         };
     }
+    componentWillMount() {
+        console.log('翟茹了');
+        /*const number = parseInt(``, 10);
+        this.triggerChange({ number });*/
+    }
     componentWillReceiveProps(nextProps) {
         // Should be a controlled component.
         if ('value' in nextProps) {
@@ -36,13 +41,14 @@ export default class PriceInput extends Component {
         const { size } = this.props;
         const state = this.state;
         return (
-            <span>
+            <span >
         <Input
             type="text"
             size={size}
             value={state.number}
             onChange={this.handleNumberChange}
             style={{ width: '100%', marginRight: '3%' }}
+            suffix={'元'}
         />
       </span>
         );

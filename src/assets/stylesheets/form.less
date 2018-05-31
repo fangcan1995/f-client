@@ -88,10 +88,30 @@
       border-color: #f04134;
     }
   }
-.has-success.has-feedback:after {
-  content: '\E630';
-  color: @text-color-right;
-}
+  .ant-form-item.price{
+    .ant-input{
+      font-size: 14px;
+      color:@text-color-default;
+
+    }
+    .has-success{
+      &:after{
+        content: '';
+        color: @text-color-right;
+      }
+    }
+  }
+  .has-feedback{
+
+    &.has-success{
+      &:after{
+        content: '\E630';
+        color: @text-color-right;
+      }
+    }
+
+  }
+
   .result_tips{
     font-size: 16px;padding: 30px 0;
   }

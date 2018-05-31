@@ -123,13 +123,13 @@ class Recharge extends React.Component{
                                                 >
                                                     {(availableBalance>=0)?`${toMoney(availableBalance)}元`:``}
                                                 </FormItem>
-                                                <FormItem
+                                                <FormItem className='price'
                                                     { ...formItemLayout }
                                                     label="充值金额"
                                                     required
                                                 >
                                                     {getFieldDecorator('price', {
-                                                        initialValue: { number: 0 },
+                                                        initialValue: { number: `` },
                                                         rules: [{ validator: this.checkPrice }],
                                                     })(<PriceInput  />)}
                                                 </FormItem>

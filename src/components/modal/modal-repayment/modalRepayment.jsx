@@ -28,14 +28,15 @@ class ModalRepayment extends React.Component {
                 traderPassword:hex_md5(form.getFieldsValue().password), //交易密码
                 id:currentId,  //还款计划id
                 shdRpmtDate:projectInfo.shdRpmtDate ,//应还日期
-                projectName:projectInfo.name ,//项目名称
+                projectName:projectInfo.projectName ,//项目名称
                 rpmtIssue:projectInfo.rpmtIssue ,//还款期数
                 paidFee: projectInfo.paidFee,//应还服务费
                 rpmtCapital:projectInfo.rpmtCapital ,//应还本金
                 rpmtIint: projectInfo.rpmtIint,//应还利息
-                //lateFine:projectInfo.lateFine ,//应还罚金
-                lateIint:projectInfo.lateTotal ,//应还罚息
-                sum : projectInfo.rpmtTotal,//还款总额
+                lateFine:projectInfo.lateFine ,//应还罚金
+                lateIint:projectInfo.lateIint ,//应还罚息
+                sum : projectInfo.sum,//还款总额
+                paidFee: projectInfo.paidFee,//手续费
             }
             console.log('要提交的还款信息');
             console.log(appInfo);
@@ -64,7 +65,6 @@ class ModalRepayment extends React.Component {
     render() {
         //let {callback}=this.props.info;
         let {postResult,projectInfo,isPosting}=this.props.memberLoans.repaymentPlans;
-        let {imageCodeImg}=this.props.memberLoans; //
         const { getFieldDecorator,getFieldValue,getFieldsError } = this.props.form;
         const passwordProps = getFieldDecorator('password', {
             rules: [
@@ -75,7 +75,8 @@ class ModalRepayment extends React.Component {
             valuePropName: 'checked',
             initialValue: false,
         })
-
+        console.log('还款详情');
+        console.log(projectInfo);
         return (
             <div className="pop__repayment">
                 {
@@ -87,7 +88,7 @@ class ModalRepayment extends React.Component {
                                     { ...formItemLayout }
                                     label="项目名称"
                                 >
-                                    {projectInfo.name}
+                                    {projectInfo.projectName}
                                 </FormItem>
                                     <FormItem
                                         { ...formItemLayout }
@@ -113,17 +114,29 @@ class ModalRepayment extends React.Component {
                                     >
                                         {addCommas(projectInfo.rpmtIint)} 元
                                     </FormItem>
+                                    {/*<FormItem
+                                        { ...formItemLayout }
+                                        label="应还罚金"
+                                    >
+                                        {addCommas(projectInfo.lateFine)} 元
+                                    </FormItem>*/}
                                     <FormItem
                                         { ...formItemLayout }
                                         label="应还罚息"
                                     >
-                                        {addCommas(projectInfo.lateTotal)} 元
+                                        {addCommas(projectInfo.lateIint)} 元
+                                    </FormItem>
+                                    <FormItem
+                                        { ...formItemLayout }
+                                        label="手续费"
+                                    >
+                                        {addCommas(projectInfo.paidFee)} 元
                                     </FormItem>
                                     <FormItem
                                         { ...formItemLayout }
                                         label="还款总额"
                                     >
-                                        {addCommas(projectInfo.rpmtTotal)} 元
+                                        {addCommas(projectInfo.sum)} 元
                                     </FormItem>
                                     <FormItem
                                         { ...formItemLayout }

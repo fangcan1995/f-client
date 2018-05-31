@@ -28,8 +28,6 @@ class TransferDetail extends React.Component{
         dispatch(investDetailActions.getRepayRecords(proId));
     }
     render(){
-        console.log('---------------债转标----------');
-        console.log(this.props);
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
         let transferId=pathSnippets[1];
         let {investDetail}=this.props;

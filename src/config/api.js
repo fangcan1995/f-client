@@ -75,11 +75,14 @@ export const API_CONFIG = {
     getMyLoansCharts:`members/loans/statistics`, //我的借款统计图数据
     getMyLoansList:`members/loans`,//获取借款列表
     getMyRepaymentsAll:`members/loans/repayments/all/`,//项目提前还款时获取详情
+
     postRepaymentsAll:``,//项目提前还款申请
     getMyRepaymentsCharts:`members/loans/repayments/statistics`, //统计图数据
     getMyRepaymentsList:`members/loans/repayments`,//获取借款列表
     getProList:`members/loans/proName`,//获取还款中和已完结的项目列表
+
     getRepaymentInfo:`members/loans/repayments/`,//还款时获取详情
+
     postRepaymentApp:``,//还款申请
 
 };

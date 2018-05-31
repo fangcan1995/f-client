@@ -106,13 +106,13 @@ class Withdrawals extends React.Component{
                                                 >
                                                     {toMoney(availableBalance)}元
                                                 </FormItem>
-                                                <FormItem
+                                                <FormItem className='price'
                                                     { ...formItemLayout }
                                                     label="提现金额"
                                                     required
                                                 >
                                                     {getFieldDecorator('price', {
-                                                        initialValue: { number: 0 },
+                                                        initialValue: { number: `` },
                                                         rules: [{ validator: this.checkPrice }],
                                                     })(<PriceInput  />)}
                                                 </FormItem>
