@@ -17,12 +17,12 @@ import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
                                     <p><strong>用户名：</strong>{projectInfoBaseInfoDto.userName || ``}</p>
                                     <p><strong>手机号：</strong>{projectInfoBaseInfoDto.phoneNumber}</p>
                                     <p><strong>身份证号：</strong>{projectInfoBaseInfoDto.idNumber}</p>
-                                    <p><strong>性别：</strong> {projectInfoBaseInfoDto.mSex}    </p>
-                                    <p><strong>年龄：</strong>{projectInfoBaseInfoDto.mAge}    </p>
-                                    <p><strong>学历： </strong>{projectInfoBaseInfoDto.education || ``}</p>
+                                    <p><strong>性别：</strong> {projectInfoBaseInfoDto.msexString}    </p>
+                                    <p><strong>年龄：</strong>{projectInfoBaseInfoDto.mage}    </p>
+                                    <p><strong>学历： </strong>{projectInfoBaseInfoDto.educationString || ``}</p>
                                     <p><strong>婚姻状况： </strong>{projectInfoBaseInfoDto.maritaStatusString}</p>
-                                    <p><strong>借款用途： </strong>{projectInfoLoanInfoDto.loanUse}</p>
-                                    <p><strong>还款来源： </strong>{projectInfoLoanInfoDto.rpmtSource || ''}</p>
+                                    <p><strong>借款用途： </strong>{projectInfoLoanInfoDto.loanUseString}</p>
+                                    <p><strong>还款来源： </strong>{projectInfoLoanInfoDto.rpmtSourceString || ''}</p>
                                     <p className="line"><strong>资产介绍：</strong>{projectInfoBaseInfoDto.assetDesc}</p>
                                     <p className="line"><strong>债务介绍：</strong>{projectInfoBaseInfoDto.debtDesc}</p>
                                 </dd>
@@ -40,7 +40,7 @@ import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
                                     <p><strong>待还本息:</strong>{addCommas(loanCreditCountDto.notYetSum)}元</p>
                                     <p><strong>借款总额:</strong>{addCommas(loanCreditCountDto.loanAmtSum)}元</p>
                                     <p><strong>已还笔数:</strong>{loanCreditCountDto.alreadyRpmtCount}笔</p>
-                                    <p><strong>已还本息:</strong>{addCommas(loanCreditCountDto.areadyRpmtSum)}元</p>
+                                    <p><strong>已还本息:</strong>{addCommas(loanCreditCountDto.alreadyRpmtSum)}元</p>
                                     <p><strong>提前还款笔数:</strong>{loanCreditCountDto.prepaymentCount}笔</p>
                                 </dd>
                             </dl>
