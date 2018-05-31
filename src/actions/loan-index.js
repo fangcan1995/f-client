@@ -115,7 +115,7 @@ export const checkForm = (e) => {
           }
         };*/
         async payload() {
-            let res = await cFetch(`${urls}/loans/apply`, postContent(params), true);
+            let res = await cFetch(`http://172.16.1.228:9090/loans/apply`, postContent(params), true);
             //测试用
             //console.log('借款申请返回的结果');
             //console.log(res);

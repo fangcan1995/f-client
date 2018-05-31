@@ -8,14 +8,18 @@ import {postContent} from "../utils/formSetting";
 
 const url_loansCharts=API_CONFIG.hostWeb+API_CONFIG.getMyLoansCharts; //统计图数据
 const url_loansList=API_CONFIG.hostWeb+API_CONFIG.getMyLoansList;//获取借款列表
-const url_repaymentsAll=API_CONFIG.hostWeb+API_CONFIG.getMyRepaymentsAll;//项目提前还款时获取详情
-const url_postRepaymentsAll=API_CONFIG.hostWeb+API_CONFIG.postRepaymentsAll;//项目提前还款申请
+//const url_repaymentsAll=API_CONFIG.hostWeb+API_CONFIG.getMyRepaymentsAll;//项目提前还款时获取详情
+const url_repaymentsAll=`http://172.16.1.234:9090/repayment/ahead/apply/detail` //项目提前还款时获取详情
+//const url_postRepaymentsAll=API_CONFIG.hostWeb+API_CONFIG.postRepaymentsAll;//项目提前还款申请
+const url_postRepaymentsAll=`http://172.16.1.234:9090/repayment/ahead/apply`;  //项目提前还款申请
 const url_repaymentsCharts=API_CONFIG.hostWeb+API_CONFIG.getMyRepaymentsCharts; //统计图数据
 const url_repaymentsList=API_CONFIG.hostWeb+API_CONFIG.getMyRepaymentsList;//获取借款列表
 const url_proList=API_CONFIG.hostWeb+API_CONFIG.getProList;//获取还款中和已完结的项目列表
-const url_repayment=API_CONFIG.hostWeb+API_CONFIG.getRepaymentInfo;//还款时获取详情
+//const url_repayment=API_CONFIG.hostWeb+API_CONFIG.getRepaymentInfo;//还款时获取详情
+const url_repayment=`http://172.16.1.234:9090/repayment/normal/detail` ;//还款时获取详情
+
 //const url_postRepayment=API_CONFIG.hostWeb+API_CONFIG.postRepaymentApp;//还款
-const url_postRepayment=`http://172.16.1.234:9090/repayment/normal`
+const url_postRepayment=`http://172.16.1.234:9090/repayment/normal` ;//还款
 
 export const getImageCode = () => {
     return {
@@ -24,8 +28,6 @@ export const getImageCode = () => {
             const res = await fetch(API_CONFIG.baseUri + API_CONFIG.imageCode, { credentials: 'include' })
             const blob = await res.blob();
             const dataURL = await readBlobAsDataURL(blob);
-            console.log('aaaaaaaaaaaaaaaaaaaaa');
-            console.log(dataURL);
             return dataURL;
         }
     }
@@ -102,11 +104,11 @@ export const memberLoansAc={
             }
         }
     },
-    getProject: (pram) => {
+    getProject: (params) => {
         return {
             type: 'myLoans/myLoans/FETCH',
             async payload() {
-                const res = await cFetch(`${url_repaymentsAll}${pram}` , {method: 'GET'}, true);
+                const res = await cFetch(`${url_repaymentsAll}?projectId=${params}` , {method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
                     console.log(data);
@@ -121,24 +123,11 @@ export const memberLoansAc={
     },
     //提交提前还款申请
     postRepaymentApp: (params,dispatch) => {
-        params = parseJson2URL(params);
         return {
             type: 'myLoans/myLoans/FETCH',
             async payload() {
-                const res = await cFetch(`${url_postRepaymentsAll}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: params,
-                    },
-                    false);
+                const res = await cFetch(`${url_postRepaymentsAll}`, postContent(params), true);
                 return {postResult: res};
-                /*if (res.code == 0) {
-                    return {postResult: res};
-                } else {
-                    throw res;
-                }*/
             }
         }
     },
@@ -238,11 +227,11 @@ export const repaymentsAc={
             }
         }
     },
-    getRepayment: (pram) => {
+    getRepayment: (params) => {
         return {
             type: 'myLoans/repaymentPlans/FETCH',
             async payload() {
-                const res = await cFetch(`${url_repayment}${pram}` , {method: 'GET'}, true);
+                const res = await cFetch(`${url_repayment}?rpmtId=${params}` , {method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
                     return {
@@ -256,10 +245,13 @@ export const repaymentsAc={
     },
     //提交还款
     postRepayment: (params,dispatch) => {
+
         return {
             type: 'myLoans/repaymentPlans/FETCH',
             async payload() {
-                const res = await cFetch(`${url_postRepayment}`, postContent(params), true);
+                const res = await cFetch(`${url_postRepayment}2`, postContent(params), true,600000);
+                console.log('返回的结果');
+                console.log(res);
                 return {postResult: res};
             }
         }

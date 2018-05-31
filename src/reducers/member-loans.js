@@ -3,6 +3,7 @@ import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
     isFetching:false,
+    isPosting:false,
     myLoans:{
         charts:``,
         myList:``,
@@ -59,13 +60,16 @@ export default createReducer(initialState, {
 
     ['myLoans/repaymentPlans/FETCH_PENDING']: (state, action) => state.mergeDeep({
         isFetching: true,
+        isPosting: true,
     }),
     ['myLoans/repaymentPlans/FETCH_FULFILLED']: (state, action) => state.mergeDeep({
         isFetching: false,
+        isPosting: false,
         repaymentPlans: action.payload,
     }),
     ['myLoans/repaymentPlans/FETCH_REJECTED']: (state, action) => state.mergeDeep({
         isFetching: false,
+        isPosting: false,
         errorMessage: action.message
     }),
     ['myLoans/repaymentPlans/MODIFY_STATE']:(state,action) => state.mergeDeep({

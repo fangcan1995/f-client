@@ -108,8 +108,6 @@ class SubjectList extends Component {
         let {sbList,isFetching}=this.props.investList;
         let {list,filter,sort}=sbList;
         let {noviceLoan,loanExpiry,rateGroup}=filter;
-        console.log('--------------this.props--------------');
-        console.log(this.props.investList);
         return (
             <main className="main invest-list">
 

@@ -23,18 +23,25 @@ class ModalRepaymentApp extends React.Component {
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        const { dispatch, form,currentId } = this.props;
+        const { dispatch, form,currentId,myLoans } = this.props;
+        const {projectInfo}=myLoans;
         form.validateFields((errors) => {
             if (errors) {
                 return false;
             }
+
             let appInfo={
-                password:hex_md5(form.getFieldsValue().password),
-                projectId:currentId
+                memberId:auth.user.userName, //用户id
+                traderPassword:hex_md5(form.getFieldsValue().password), //交易密码
+                projectId:currentId, //项目id
+                projectName:projectInfo.projectName, //项目名称
+                num:projectInfo.num, //剩余期数
+                capital:projectInfo.capital , //应还本金
+                iint:projectInfo.iint,//应还利息
             }
             console.log('提交后台的数据是');
             console.log(appInfo);
-            //dispatch(memberLoansAc.postRepaymentApp(appInfo));
+            dispatch(memberLoansAc.postRepaymentApp(appInfo));
 
         });
     }
@@ -58,6 +65,8 @@ class ModalRepaymentApp extends React.Component {
             valuePropName: 'checked',
             initialValue: false,
         })
+        console.log('提前还款申请中获取的详情');
+        console.log(projectInfo);
         return (
             <div className="pop__repayment">
                 {
@@ -70,25 +79,31 @@ class ModalRepaymentApp extends React.Component {
                                         { ...formItemLayout }
                                         label="项目名称"
                                     >
-                                        {projectInfo.name}
+                                        {projectInfo.projectName}
                                     </FormItem>
-                                    <FormItem
+                                    {/*<FormItem
                                         { ...formItemLayout }
                                         label="到期日期"
                                     >
                                         {moment(projectInfo.expireDate).format('YYYY-MM-DD')}
+                                    </FormItem>*/}
+                                    <FormItem
+                                        { ...formItemLayout }
+                                        label="未还期数"
+                                    >
+                                        {projectInfo.num} 期
                                     </FormItem>
                                     <FormItem
                                         { ...formItemLayout }
                                         label="应还本金"
                                     >
-                                        {addCommas(projectInfo.rpmtCapital)} 元
+                                        {addCommas(projectInfo.capital)} 元
                                     </FormItem>
                                     <FormItem
                                         { ...formItemLayout }
                                         label="应还利息"
                                     >
-                                        {addCommas(projectInfo.rpmtIint)} 元
+                                        {addCommas(projectInfo.iint)} 元
                                     </FormItem>
                                     {(projectInfo.lateTotal>0)?
                                         <FormItem
@@ -109,7 +124,7 @@ class ModalRepaymentApp extends React.Component {
                                         { ...formItemLayout }
                                         label="还款总额"
                                     >
-                                        {addCommas(projectInfo.rpmtTotal)} 元
+                                        {addCommas(projectInfo.sum)} 元
                                     </FormItem>
                                     <FormItem
                                         { ...formItemLayout }
@@ -127,13 +142,6 @@ class ModalRepaymentApp extends React.Component {
                                             )
                                         }
                                     </FormItem>
-                                    {/*<FormItem>
-                                        {
-                                            isReadProps(
-                                                <Checkbox>我已阅读并同意<a href="/subject_3/8" target="_blank">《提前还款规则》</a></Checkbox>
-                                            )
-                                        }
-                                    </FormItem>*/}
                                     <FormItem className="agreement">
                                         {
                                             agreementProps(
