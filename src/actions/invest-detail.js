@@ -233,6 +233,11 @@ let investDetailActions = {
         payload: json
     }),
 
+    //清空数据
+    clearData: json => ({
+        type: 'investDetail/CLEAR',
+        payload: json
+    }),
     //修改提交状态
     statePostResultModify: json => ({
         type: 'investDetail/postResult/MODIFY_STATE',

@@ -115,6 +115,7 @@ class SubjectList extends Component {
 
                 <div className="wrapper">
                     <InvestTab isTransfer={false} />
+                    <div id='mask'>
                     <div className="filter">
                         <div className="filter__outer">
                             <div className="filter__inner">
@@ -248,6 +249,7 @@ class SubjectList extends Component {
                                 }
                             </div>
                     }
+                    </div>
                 </div>
 
             </main>

@@ -65,7 +65,7 @@ class TransactionRecord extends Component{
                 <div className="member__cbox">
                     <Tab>
                         <div name="交易记录">
-                            <div className="tab_content">
+                            <div className="tab_content" id='mask'>
                                 <p className="info">
                                     <strong>提示：</strong>资金历史记录了您各种交易产生的支出和收入的明细，请选择事件类型和时间。
                                 </p>
@@ -84,13 +84,24 @@ class TransactionRecord extends Component{
                                                         getPopupContainer={() => document.getElementById('area')}
                                                     >
                                                         <Option value="">全部</Option>
-                                                        <Option value="0">充值</Option>
-                                                        <Option value="1">提现</Option>
-                                                        <Option value="2">投资</Option>
-                                                        <Option value="3">资金划转</Option>
-                                                        <Option value="4">还款</Option>
-                                                        <Option value="5">冻结</Option>
-                                                        <Option value="6">商户转账</Option>
+                                                        <Option value="0">帐户充值</Option>
+                                                        <Option value="1">充值服务费</Option>
+                                                        <Option value="2">账户提现</Option>
+                                                        <Option value="3">提现服务费</Option>
+                                                        <Option value="4">出借冻结</Option>
+                                                        <Option value="5">资金划转</Option>
+                                                        <Option value="6">资金解冻</Option>
+                                                        <Option value="7">本金回款</Option>
+                                                        <Option value="8">利息回款</Option>
+                                                        <Option value="9">债权转让</Option>
+                                                        <Option value="10">借款到账</Option>
+                                                        <Option value="11">账户还款</Option>
+                                                        <Option value="14">服务费</Option>
+                                                        <Option value="15">担保费</Option>
+                                                        <Option value="16">信用费</Option>
+                                                        <Option value="17">逾期罚息</Option>
+                                                        <Option value="18">服务罚息</Option>
+                                                        <Option value="19">系统奖励</Option>
                                                     </Select>
                                                 </div>
                                                 <div className="filter__cell">

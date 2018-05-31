@@ -13,11 +13,12 @@ const initialState = Immutable.fromJS({
         currentId:'',
         postResult:``,
         planList:``,
-        transferInfo:{
+        /*transferInfo:{
             transFinanced:1000,
             proTransferFee:0.01,
             proMinInvestAmount:100,
-        }//假数据
+        }//假数据*/
+        transferInfo:``
     },
     myReceiving:{
         charts:``,
@@ -27,6 +28,7 @@ const initialState = Immutable.fromJS({
 });
 
 export default createReducer(initialState, {
+    //异步获取我的投资
     ['myInvest/investments/FETCH_PENDING']:(state,action) => state.mergeDeep({
         isFetching: true,
     }),
@@ -35,6 +37,18 @@ export default createReducer(initialState, {
         myInvestments:action.payload
     }),
     ['myInvest/investments/FETCH_REJECTED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
+    //异步获取债转详情
+    ['myInvest/investments/INFO_FETCH_PENDING']:(state,action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['myInvest/investments/INFO_FETCH_FULFILLED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        myInvestments:action.payload
+    }),
+    ['myInvest/investments/INFO_FETCH_REJECTED']:(state,action) => state.mergeDeep({
         isFetching: false,
         errorMessage: action.message
     }),

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import  investDetailActions  from '../../../actions/invest-detail';
 import {accountAc} from "../../../actions/account";
 import {addCommas, getTips, toMoney} from "../../../utils/famatData";
-import {formItemLayout, noop} from "../../../utils/formSetting";
+import {formItemLayout, hasErrors, noop} from "../../../utils/formSetting";
 import { Form,Row,Input,Button,Select,Checkbox,Col,Alert,Icon,Collapse  } from 'antd';
 import {tradePasswordRegExp } from '../../../utils/regExp';
 import {hex_md5} from "../../../utils/md5";
@@ -21,22 +21,16 @@ class ModalInvest extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.onChange = this.onChange.bind(this);
         this.onChangeReward = this.onChangeReward.bind(this);
-        this.state = {
-            tips: '',  //错误提示
-            isRead: false,
-        }
+
     }
 
     componentDidMount () {
         let {auth,investDetail,dispatch}=this.props;
         let {id,annualRate,loanExpiry}=investDetail.investInfo;
         dispatch(investDetailActions.getAvailableRewards(id));
-        //dispatch(investDetailActions.statePostResultModify(``)); //清空结果
-        if(auth.isAuthenticated){
+        dispatch(investDetailActions.statePostResultModify(``)); //清空结果
 
-        }
     }
     componentDidUpdate() {
         let {dispatch, investDetail} = this.props;
@@ -44,16 +38,6 @@ class ModalInvest extends React.Component {
         if(postResult.userCode===101 && postResult.times<5 && !isPosting){
             //console.log('在这里发第'+(postResult.times+1)+'次请求');
             dispatch(investDetailActions.postInvest(appInfo,postResult.times));
-        }
-    }
-    onChange(e) {
-        this.setState({
-            isRead: e.target.checked
-        });
-        if(this.state.tips===`请阅读并同意《投资协议》`){
-            this.setState({
-                tips: ``
-            });
         }
     }
     onChangeReward(e) {
@@ -77,13 +61,6 @@ class ModalInvest extends React.Component {
         let {id}=investDetail.investInfo;
         form.validateFields((errors) => {
             if (errors) {
-                return false;
-            }
-            //2 验证是否同意协议
-            if (!this.state.isRead) {
-                this.setState({
-                    tips: `请阅读并同意《投资协议》`
-                });
                 return false;
             }
             let index=availableRewards.findIndex((x)=>
@@ -112,11 +89,11 @@ class ModalInvest extends React.Component {
     modalClose(){
         const {onSuccess,dispatch,investDetail}=this.props;
         const {postResult}=investDetail;
-        /*if(postResult.code==0){
+        if(postResult.code==0){
             dispatch(accountAc.getAccountInfo());  //成功重新获取新户信息
             dispatch(investDetailActions.getInvestRecords(this.props.id));//成功重新获取投资记录
             dispatch(investDetailActions.getInvestInfo(this.props.id)); //成功重新获取标的信息
-        }*/
+        }
 
         onSuccess();
     }
@@ -135,13 +112,17 @@ class ModalInvest extends React.Component {
                 (x)=>x.default==true
             );
         }
-        const { getFieldDecorator,getFieldValue } = this.props.form;
+        const { getFieldDecorator,getFieldValue,getFieldsError } = this.props.form;
 
         const newPasswordProps = getFieldDecorator('newPassword', {
             rules: [
                 { required: true, min: 6, message: '密码至少为 6 个字符' }
             ]
         });
+        const agreementProps = getFieldDecorator('is_read', {
+            valuePropName: 'checked',
+            initialValue: false,
+        })
         if(postResult.type!=`success`) {
             return (
                 <div className="pop__invest">
@@ -206,37 +187,29 @@ class ModalInvest extends React.Component {
                                     )
                                 }
                             </FormItem>
-                            <FormItem>
-                                <p>
-                                    <Checkbox onChange={this.onChange}>我已阅读并同意
-                                        <a href="/subject_3/2" target="_blank">《投资协议》</a></Checkbox>
-                                </p>
-                            </FormItem>
-                            <FormItem>
-
-                                {(postResult!='')?
-                                    <p className="errorMessages">
-                                        {postResult.message}
-                                    </p>:``
-                                }
-                                {(this.state.tips!='')?
-                                    <p className="errorMessages">
-                                        {this.state.tips}
-                                    </p>:``
-                                }
-                            </FormItem>
-                            <FormItem className='center'>
+                            <FormItem className="agreement">
                                 {
-                                    isPosting?
-                                        <Button type="primary"  className="pop__large"  disabled={true}>
-                                            <Posting isShow={isPosting}/>
-                                        </Button>
-                                        :
-                                        <Button type="primary"  htmlType="submit" className="pop__large" >
-                                            确定
-                                        </Button>
+                                    agreementProps(
+                                        <Checkbox> 我已阅读并同意</Checkbox>
+                                    )
+                                }<a href="/subject_3/4" target="_blank">《投资协议》</a>
+                            </FormItem>
+                            <FormItem className='tips'>
+                                {
+                                    (!postResult.message)?``
+                                        :<p className="errorMessages">
+                                            {postResult.message}
+                                        </p>
                                 }
+                            </FormItem>
+                            <FormItem  className='center'>
+                                {(isPosting) ?
+                                    <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
+                                        <Posting isShow={isPosting}/>
+                                    </Button>
+                                    : <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError()) || !getFieldValue('is_read') }>确认</Button>
 
+                                }
                             </FormItem>
                         </Form>
                     </div>

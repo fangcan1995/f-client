@@ -18,6 +18,7 @@ class InvestDetail extends React.Component{
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
         let proId=pathSnippets[1];
         let {dispatch}=this.props;
+        dispatch(investDetailActions.clearData()); //先清空数据
         dispatch(investDetailActions.getLoanInfo(proId)); //借款人信息披露
         dispatch(investDetailActions.getInvestRecords(proId));//投资记录
         dispatch(investDetailActions.getRepayRecords(proId)); //还款记录

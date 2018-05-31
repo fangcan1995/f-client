@@ -106,6 +106,7 @@ class MasterInvestBox extends Component {
     closeModal(status){
         const {investInfo,dispatch}=this.props;
         dispatch(accountAc.getAccountInfo());  //成功重载数据
+        dispatch(investDetailActions.getInvestInfo(investInfo.id));
         dispatch(investDetailActions.getInvestRecords(investInfo.id));//投资记录
         this.toggleModal('bbhModal',false);
     }

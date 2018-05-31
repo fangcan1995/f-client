@@ -103,7 +103,7 @@ class MyMessages extends React.Component {
                 <Crumbs/>
                 <div className="member__cbox">
                     <Tab>
-                        <div name="系统消息">
+                        <div name="系统消息" id='mask'>
                             <div className="filter" style={{marginTop:'15px'}}>
                                 <div className="filter__outer">
                                     <div className="filter__inner">

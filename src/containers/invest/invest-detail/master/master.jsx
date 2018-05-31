@@ -20,8 +20,6 @@ class InvestDetailMaster extends React.Component {
         let min,max;
         ((surplusAmount-minInvestAmount)< minInvestAmount)? min=surplusAmount:min=minInvestAmount;
         (maxInvestAmount<surplusAmount)?max=maxInvestAmount:max=surplusAmount;
-        console.log('//////////');
-        console.log(investInfo);
         return (
             <div>
                 <div>
@@ -110,8 +108,8 @@ class InvestDetailMaster extends React.Component {
                             <dl>
                                 <dt>项目放款</dt>
                                 <dd>放款日期：
-                                    {(investInfo.fkDateTemp)?
-                                        moment(investInfo.fkDateTemp).format('YYYY-MM-DD')
+                                    {(investInfo.transferTime)?
+                                        moment(investInfo.transferTime).format('YYYY-MM-DD')
                                         :`— —`
                                     }
                                 </dd>

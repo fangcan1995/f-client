@@ -69,4 +69,9 @@ export const modal_config={
         width: "500px",
         height: "400px"
     },
+    ModalPlan: {
+        title: "回款计划",
+        width: "680px",
+        height: "500px"
+    },
 }

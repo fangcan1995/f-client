@@ -5,7 +5,7 @@ const initialState = Immutable.fromJS({
     isFetching:false,
     myLoans:{
         charts:``,
-        myList:'',
+        myList:``,
         status: 1,
         modalRepaymentApp: false,
         currentId:'',

@@ -12,13 +12,19 @@ import { connect } from 'react-redux';
 import actionsMyInvestments from '../../../../actions/member-investments';
 import {memberInvestAc} from "../../../../actions/member-investments";
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
+import {modal_config} from "../../../../utils/modal_config";
+import BbhModal from "../../../../components/modal/bbh_modal";
 import './investments.less';
+import {accountAc} from "../../../../actions/account";
 
 class MyInvestments extends React.Component{
     constructor(props) {
         super(props);
         this.toggleModal = this.toggleModal.bind(this);
         this.state = {
+            bbhModal:false,
+            currentModule:``,
+            currentId:``,
             key:Math.random(),
         }
     }
@@ -28,68 +34,45 @@ class MyInvestments extends React.Component{
         this.props.dispatch(memberInvestAc.getPie());
         this.props.dispatch(memberInvestAc.getList({status:1}));
     }
-    filter(pram){
-        this.props.dispatch(memberInvestAc.stateModify({status:pram,myList:``}));
-        this.props.dispatch(memberInvestAc.getList({status:pram}));
+    filter(params){
+        this.props.dispatch(memberInvestAc.stateModify({status:params,myList:``}));
+        this.props.dispatch(memberInvestAc.getList({status:params}));
     }
-    toggleModal(modal,visile,id){
-        let {dispatch}=this.props;
-        let myReceiving_new={};
-        if(modal=='modalPlan'){
-            if(visile){
-                //dispatch(actionsMyInvestments.getPlanList(id));//获取某项目回款计划
-                console.log('---------------------');
-                myReceiving_new={
-                    modalPlan: true,
-                    currentId: id,
-                };
-                dispatch(memberInvestAc.stateModify(myReceiving_new));
-            }else{
-                this.setState({
-                    key:Math.random()
-                });
-                myReceiving_new={
-                    modalPlan: false,
-                    currentId: '',
-                };
-                dispatch(memberInvestAc.stateModify(myReceiving_new));
-            }
-        }else if(modal=='modalTransfer'){
+    //模态框开启关闭
+    toggleModal=(modal,visile,id)=>{
+        if(visile){
+            this.setState({
+                bbhModal:true,
+                currentId:id,
+                currentModule: modal,
 
-            if(visile){
-                myReceiving_new={
-                    modalTransfer: true,
-                    currentId: id,
-                };
-                dispatch(memberInvestAc.stateModify(myReceiving_new));
-            }else{
-                this.setState({
-                    key:Math.random()
-                });
-                myReceiving_new={
-                    modalTransfer: false,
-                    currentId: '',
-                };
-                dispatch(memberInvestAc.stateModify(myReceiving_new));
-            }
+            });
+        }else{
+            this.setState({
+                bbhModal:false,
+                currentModule: ``,
+                currentId:``,
+                key:Math.random()
+            });
         }
+    };
 
-    }
-    transferCallback(){
+    /*transferCallback(){
         let {dispatch}=this.props;
         dispatch(actionsMyInvestments.stateModify({postResult:``}));
         this.toggleModal('modalTransfer',false,'');
         this.filter(2);
+    }*/
+    closeModal(status){
+        this.props.dispatch(accountAc.clear()); //清空结果
+        this.toggleModal('bbhModal',false);
     }
     render(){
-        //let {myInvestments,dispatch} = this.props;
         console.log('-------myInvestments--------');
         console.log(this.props);
-
-        let {dispatch}=this.props;
-        let {myInvestments,isFetching}=this.props.memberInvestments;
-        let {myList,charts,status,modalPlan,modalTransfer,currentPro,currentId}=myInvestments;
-        console.log(currentId);
+        const {dispatch,memberInvestments}=this.props;
+        const {myInvestments,isFetching}=memberInvestments;
+        const {myList,charts,status,modalPlan,modalTransfer,currentPro,currentId}=myInvestments;
         let thead=[];
         thead[0]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>还款方式</th><th>投资金额(元)</th><th>投资时间</th><th>投资进度</th></tr>;
         thead[1]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>投资金额(元)</th><th>投资时间</th><th>下期回款日期</th><th>下期回款金额(元)</th><th>操作</th></tr>;
@@ -126,7 +109,7 @@ class MyInvestments extends React.Component{
                         </Tab>
                     </div>
                 }
-                <div className="member__cbox"  style={{ padding:'20px 30px' }}>
+                <div className="member__cbox"  style={{ padding:'20px 30px' }} id='mask'>
                     <div className="filter">
                         <div className="filter__outer">
                             <div className="filter__inner">
@@ -198,8 +181,8 @@ class MyInvestments extends React.Component{
                                                                 <td>{l.earnNextShdEarnDate ? moment(l.earnNextShdEarnDate).format('YYYY-MM-DD') : ''}</td>
                                                                 <td>{l.earnNextShdEarnAmou}</td>
                                                                 <td>
-                                                                    <a onClick={() => this.toggleModal('modalPlan', true, l.investId)}>回款计划</a>
-                                                                    <a onClick={() => this.toggleModal('modalTransfer', true, l.investId)}>债权转让</a>
+                                                                    <a onClick={() => this.toggleModal('ModalPlan', true, l.investId)}>回款计划</a>
+                                                                    <a onClick={() => this.toggleModal('ModalTransferApp', true, l.investId)}>债权转让</a>
                                                                     <a href="">投资合同</a>
                                                                 </td>
                                                             </tr>
@@ -213,7 +196,7 @@ class MyInvestments extends React.Component{
                                                                 <td>{l.earnRemittancAmou}</td>
                                                                 <td>{l.earnRealEarnDate ? moment(l.earnRealEarnDate).format('YYYY-MM-DD') : ''}</td>
                                                                 <td>
-                                                                    <a onClick={() => this.toggleModal('modalPlan', true, l.investId)}>回款计划</a>
+                                                                    <a onClick={() => this.toggleModal('ModalPlan', true, l.investId)}>回款计划</a>
                                                                     <a href="">投资合同</a>
                                                                 </td>
                                                             </tr>
@@ -280,39 +263,21 @@ class MyInvestments extends React.Component{
                         </div>
                     }
                 </div>
-                <Modal
-                    title="回款计划"
-                    wrapClassName="vertical-center-modal"
-                    visible={modalPlan}
-                    width="680px"
-                    footer={null}
-                    onCancel={() => this.toggleModal('modalPlan',false,'')}
-                >
-                    {modalPlan===true?
-                        <ModalPlan info={{currentId:currentId,}}
-                        />:''
-                    }
-                </Modal>
-                <Modal
-                    title="转让申请"
-                    wrapClassName="vertical-center-modal"
-                    visible={modalTransfer}
-                    width="520px"
-                    footer={null}
-                    onCancel={() => this.toggleModal('modalTransfer',false,'')}
-                >
-                    {modalTransfer===true?
-                        <ModalTransfer
-                            key={this.state.key}
-                            info={{
-                                currentId:currentId,
-                                callback:(obj)=>{
-                                    this.toggleModal('modalTransfer',false,'');
-                                }
-                            }}
-                        />:''
-                    }
-                </Modal>
+                {this.state.currentModule!=``?
+                    <BbhModal
+                        config={modal_config[this.state.currentModule]}
+                        visible={this.state.bbhModal}
+                        closeFunc={()=>this.closeModal()}
+                        moduleName={this.state.currentModule}
+                        key={this.state.key}
+                        currentId={this.state.currentId}
+                    >
+
+                    </BbhModal>
+                    :``
+                }
+
+
             </div>
 
         )

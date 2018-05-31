@@ -44,10 +44,10 @@ class RepaymentPlans extends React.Component{
         let {filter}=this.props.memberLoans.repaymentPlans;
         let filter_new=Object.assign({},filter);
         if(e!=''){
-            filter.projectId=e
+            filter_new.projectId=e
         };
-        filter_new.pageNum=1;
         this.props.dispatch(repaymentsAc.stateRepaymentPlanModify({filter:filter_new,myList:``}));
+        filter_new.pageNum=1;
         this.props.dispatch(repaymentsAc.getList(filter_new));    //获取数据
     }
     dateChange(value,dateString) {
@@ -88,8 +88,6 @@ class RepaymentPlans extends React.Component{
         let {repaymentPlans,isFetching}=this.props.memberLoans;
 
         let {myList,charts,modalRepayment,currentId,proList,projectId,dateStart,dateEnd,filter}=repaymentPlans;
-        console.log('列表')
-        console.log(myList)
         return(
             <div className="member__main" id="area">
                 <Crumbs/>
@@ -129,7 +127,7 @@ class RepaymentPlans extends React.Component{
                     </Tab>
                 </div>
                 }
-                <div className="member__cbox repayRecord">
+                <div className="member__cbox repayRecord" id='mask'>
                     <Tab>
                         <div name="还款记录">
                             <div className="filter">

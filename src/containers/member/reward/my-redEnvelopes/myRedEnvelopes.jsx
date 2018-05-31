@@ -25,9 +25,9 @@ class MyRedEnvelopes extends React.Component {
         return (
             <div className="member__main">
                 <Crumbs/>
-                <div className="member__cbox">
+                <div className="member__cbox" >
                     <Tab>
-                        <div name="我的红包">
+                        <div name="我的红包" id='mask'>
                             <div className="filter" style={{marginTop:'15px'}}>
                                 <div className="filter__outer">
                                     <div className="filter__inner">

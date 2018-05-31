@@ -5,100 +5,86 @@ import Tab from '../../../components/tab/tab';
 import { connect } from 'react-redux';
 import {accountAc} from '../../../actions/account';
 import {toMoney,addCommas} from '../../../utils/famatData';
-import {checkMoney, income} from '../../../utils/cost';
-import {formItemLayout, noop} from "../../../utils/formSetting";
-import { Form,Row,Input,Button,Select,Checkbox,Col,Alert,Icon,Collapse  } from 'antd';
-import {tradePasswordRegExp,amountExp } from '../../../utils/regExp';
+import {formItemLayout, hasErrors, noop} from "../../../utils/formSetting";
+import { Form,Input,Button} from 'antd';
 import {hex_md5} from "../../../utils/md5";
 import './withdrawals.less';
 import investDetailActions from "../../../actions/invest-detail";
 import {Loading,NoRecord,Posting} from '../../../components/bbhAlert/bbhAlert';
+import PriceInput from "../../../components/price-input/price-input";
 
-const Panel = Collapse.Panel;
 const createForm = Form.create;
 const FormItem = Form.Item;
 
 class Withdrawals extends React.Component{
     constructor(props) {
         super(props);
-        this.state={
-            value:'',
-            tips:'',
-            disabled:true,
-        }
-        this.withdrawals= this.withdrawals.bind(this);
-        this.handleChange= this.handleChange.bind(this);
+        this.handleSubmit= this.handleSubmit.bind(this);
     }
     componentWillMount() {
-        this.props.dispatch(accountAc.clear());
-    }
-    componentDidMount() {
         window.scrollTo(0,0);
+        this.props.dispatch(accountAc.clear());
         this.props.dispatch(accountAc.getAccountInfo());
     }
-
-    withdrawals(value){
-        let {dispatch, account} = this.props;
-        let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
-        value=this.refs.amount.value;
-        this.setState({
-            disabled:true
-        });
-        dispatch(accountAc.getFuyouInfo({type:'Withdrawals',url:'my-account_withdrawals',value:value}))
-        //dispatch(accountAc.getFuyouInfo({type:'ReOpenAccount'}))
-
-            .then((res)=>{
-                console.log('给富有的')
-                toOthersInfo=res.value;
-                console.log(toOthersInfo);
-                if(toOthersInfo.code==406  ){
-                    this.setState({
-                        disabled:false
-                    });
-                }else if(toOthersInfo!=``){
-                    document.getElementById('FuiouCash').submit();
-                }
-            })
-            .catch(()=>{
-                //没获取到
-            });
+    componentDidMount() {
+        //this.props.dispatch(accountAc.getAccountInfo());
     }
-    handleChange(event){
-        let result=checkMoney({
-            'value':event.target.value,
-            'type':0,
-            'min_v':1,
-            'max_v':this.props.account.accountsInfo.availableBalance,
-            'label':'提现金额',
-            'interval':1
-        });
-        if(result[0]==false){
-            if(result[1]==1){
-                this.setState({
-                    value: event.target.value,
-                    tips:`${result[2]}`,
-                    disabled:true
-                });
-            }else{
-                this.setState({
-                    value: 0,
-                    tips:`${result[2]}`,
-                    disabled:true
-                });
-            }
+    handleSubmit= (e) => {
+        e.preventDefault();
+        const {dispatch, form, account} = this.props;
+        let {isPosting, isFetching, accountsInfo, toOthersInfo, postResult, isOpenOthers} = account;
 
-        }else {
-            this.setState(
-                {
-                    value: event.target.value,
-                    tips: ``,
-                    disabled:false
+        form.validateFields((errors) => {
+            if (errors) {
+                return false;
+            }
+            let getInfo = {
+                type: 'Withdrawals',
+                url: 'my-account_withdrawals',
+                value: form.getFieldsValue().price.number,
+                tradePwd: hex_md5(form.getFieldsValue().password),
+            }
+            dispatch(accountAc.getFuyouInfo(getInfo))
+                .then((res) => {
+                    toOthersInfo = res.value;
+                    if (toOthersInfo.code == 406) {
+                    } else if (toOthersInfo != ``) {
+                        document.getElementById('FuiouCash').submit();
+                    }
+                })
+                .catch(() => {
+                    //没获取到
+                    console.log('没获取到');
                 });
+            ;
+
+        });
+    }
+    checkPrice = (rule, value, callback) => {
+        const {availableBalance}=this.props.account.accountsInfo;
+        this.setState({
+            amount:value.number
+        });
+        if(value.number < 10){
+            callback('提现金额不能小于10元');
+            return false;
         }
+        if(value.number > availableBalance){
+            callback(`提现金额不能超过${availableBalance}元`);
+            return false;
+        }
+        callback();
+        return;
     }
     render(){
         let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult}=this.props.account;
-        let {isOpenAccount,bankName,bankNo,accountBalance}=accountsInfo;
+        let {isOpenAccount,availableBalance}=accountsInfo;
+        const { getFieldDecorator,getFieldsError } = this.props.form;
+        const passwordProps = getFieldDecorator('password', {
+            rules: [
+                { required: true, min: 6, message: '交易密码至少为 6 个字符' }
+            ]
+        });
         return (
             <div className="member__main withdrawals">
                 <Crumbs/>
@@ -113,42 +99,64 @@ class Withdrawals extends React.Component{
                                         </p>
                                         :
                                         <div className="form__wrapper">
-                                            <dl className="form__bar">
-                                                <dt><label>可用余额:</label></dt>
-                                                <dd><i>{toMoney(accountsInfo.availableBalance)}</i>元</dd>
-                                            </dl>
-                                            <dl className="form__bar">
+                                            <Form layout="horizontal" onSubmit={this.handleSubmit}>
+                                                <FormItem
+                                                    { ...formItemLayout }
+                                                    label="可用余额"
+                                                >
+                                                    {toMoney(availableBalance)}元
+                                                </FormItem>
+                                                <FormItem
+                                                    { ...formItemLayout }
+                                                    label="提现金额"
+                                                    required
+                                                >
+                                                    {getFieldDecorator('price', {
+                                                        initialValue: { number: 0 },
+                                                        rules: [{ validator: this.checkPrice }],
+                                                    })(<PriceInput  />)}
+                                                </FormItem>
+                                                <FormItem
+                                                    { ...formItemLayout }
+                                                    label="交易密码"
+                                                    required
+                                                >
+                                                    {
+                                                        passwordProps(
+                                                            <Input
+                                                                type="password"
+                                                                autoComplete="off"
+                                                                placeholder="请输入6-16位的交易密码"
+                                                                onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
+                                                            />
+                                                        )
+                                                    }
+                                                </FormItem>
+                                            {/*<dl className="form__bar">
                                                 <dt><label>提现金额:</label></dt>
                                                 <dd>
                                                     <input  maxLength={8} type="text" className="textInput moneyInput" ref="amount" onChange={this.handleChange}　/>
                                                     <span className="unit">元</span>
-                                                    {/*<a href="">银行卡充值上限说明</a>*/}
+                                                    <a href="">银行卡充值上限说明</a>
                                                 </dd>
-                                            </dl>
-                                            <div className="form__bar">
-                                                {
-                                                    (toOthersInfo!=`` && toOthersInfo.code==406)? <div className="errorMessages">{toOthersInfo.message}</div>
-                                                        :``
-                                                }
-                                                {(this.state.tips!='')?
-                                                    <div className="errorMessages">
-                                                        {this.state.tips}
-                                                    </div>:``
-                                                }
-                                            </div>
-                                            <div className="form__bar">
-                                                {isPosting ?
-                                                    <Button type="primary" htmlType="submit" className='pop__large' disabled={true}>
-                                                        <Posting isShow={isPosting}/>
-                                                    </Button>
-                                                    :
-                                                    <Button type="primary"  className="pop__large"
-                                                            onClick={this.withdrawals}
-                                                            disabled={this.state.disabled}>
-                                                        确认
-                                                    </Button>
-                                                }
-                                            </div>
+                                            </dl>*/}
+                                                <FormItem className='tips'>
+                                                    {
+                                                        (toOthersInfo!=`` && toOthersInfo.code==406)?
+                                                            <div className="errorMessages">{toOthersInfo.message}</div>
+                                                            :``
+                                                    }
+                                                </FormItem>
+                                                <FormItem className='center'>
+                                                    {(isPosting) ? <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
+                                                            <Posting isShow={isPosting}/>
+                                                        </Button>
+                                                        :
+                                                        <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError())  }>确认</Button>
+                                                    }
+                                                </FormItem>
+
+                                            </Form>
                                             <form name="FuiouCash" id="FuiouCash" method="post" action={toOthersInfo.url} >
                                                 <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />
                                                 <input type="hidden" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} />
@@ -187,7 +195,6 @@ class Withdrawals extends React.Component{
         );
     }
 }
-
 
 function mapStateToProps(state) {
     const { auth,account } = state.toJS();

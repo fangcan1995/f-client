@@ -43,14 +43,6 @@ class MyLoans extends React.Component {
         this.props.dispatch(memberLoansAc.stateModify({status:pram,myList:``}));
         this.props.dispatch(memberLoansAc.getList({status:pram}));
     }
-    /*toggleModal(visile,id) {
-        let {dispatch}=this.props;
-        if(visile){
-            dispatch(memberLoansAc.stateModify({modalRepaymentApp:true,currentId:id}));
-        }else{
-            dispatch(memberLoansAc.stateModify({modalRepaymentApp:false,currentId:``}));
-        }
-    }*/
     //模态框开启关闭
     toggleModal=(modal,visile,id)=>{
         if(visile){
@@ -77,9 +69,7 @@ class MyLoans extends React.Component {
     render(){
         let {dispatch}=this.props;
         let {myLoans,isFetching}=this.props.memberLoans;
-        let {myList,charts,status,modalRepaymentApp,currentId}=myLoans;
-        console.log('myList');
-        console.log(myList);
+        let {myList,charts,status}=myLoans;
         let tHead=[];
         tHead[0]=<tr><th>项目名称</th><th>项目类型</th><th>借款金额(元)</th><th>借款年利率(%)</th><th>借款期限</th><th>还款方式</th><th>申请日期</th><th>状态</th></tr>;
         tHead[1]=<tr><th>项目名称</th><th>借款总额(元)</th><th>借款期限</th><th>发布日期</th><th>当前投资金额(元)</th><th>投资进度(%)</th><th>募集结束日期</th><th>状态</th></tr>;
@@ -115,7 +105,7 @@ class MyLoans extends React.Component {
                         </Tab>
                     </div>
                 }
-                <div className="member__cbox" style={{ padding:'20px 30px' }}>
+                <div className="member__cbox" style={{ padding:'20px 30px' }} id='mask'>
                     <div className="filter">
                         <div className="filter__outer">
                             <div className="filter__inner">
@@ -143,7 +133,7 @@ class MyLoans extends React.Component {
                             </div>
                         </div>
                     </div>
-                    {(myList==='') ? <Loading isShow={isFetching} />
+                    {(myList=='') ? <Loading isShow={isFetching} />
                         :
                         <div className="table__wrapper">
                             {(myList.total > 0) ? (
@@ -163,7 +153,7 @@ class MyLoans extends React.Component {
                                                             <td>--</td>
                                                             <td>{l.loanExpiry}个月</td>
                                                             <td>{l.refundWayName}</td>
-                                                            <td>{l.applyTime}{l.applyTime ? moment(l.applyTime).format('YYYY-MM-DD') : ''}</td>
+                                                            <td>{l.applyTime ? moment(l.applyTime).format('YYYY-MM-DD') : ''}</td>
                                                             <td>申请中</td>
                                                         </tr>
                                                     ) : ((status === 2) ? (
@@ -240,26 +230,7 @@ class MyLoans extends React.Component {
                         </div>
                     }
                 </div>
-                {/*<Modal
-                    title="提前还款申请"
-                    wrapClassName="vertical-center-modal"
-                    visible={modalRepaymentApp}
-                    width="420px"
-                    footer={null}
-                    onCancel={() => this.repaymentCallback()}
-                >
-                    {modalRepaymentApp===true?
-                        <ModalRepaymentApp info={
-                            {
-                                currentId:currentId,
-                                callback:(obj)=>{
-                                    this.repaymentCallback();
-                                }
-                            }
-                        }
-                        />:''
-                    }
-                </Modal>*/}
+
                 {this.state.currentModule!=``?
                     <BbhModal
                         config={modal_config[this.state.currentModule]}

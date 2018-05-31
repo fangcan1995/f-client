@@ -43,9 +43,6 @@
 .pop{
 	padding: 0px 0px;
 
-
-
-
 	.form__wrapper{
       margin-top: 30px;
 		.ant-form-item{
@@ -79,7 +76,13 @@
 			}
 
 		}
+		.agreement{
+			.ant-checkbox-wrapper{
+				display: inline-block;
+			}
+		}
 	}
+
 	.pop__certification{
 		.form__wrapper{
 			padding: 0 50px;
@@ -90,7 +93,13 @@
           padding: 0 50px;
 		}
 	}
-
+	.pop__openOther{
+		padding: 30px 50px;
+		.errorMessages{
+			text-align: center;
+			font-size: 14px;
+		}
+	}
 	.ant-modal-body{
 		.pop__password{
 			padding: 30px;
@@ -261,6 +270,9 @@
 			padding: 5px 0;
 		}
 	}
+	.pop__transferApp{
+		padding:0px 30px;
+	}
 	.pop__loanApp{
 		.form__wrapper .has-success.has-feedback:after{
 			content: none;
@@ -324,4 +336,5 @@
 			}
 		 }
 	}
+
 }

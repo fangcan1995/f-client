@@ -45,6 +45,7 @@ class Loan extends Component {
         }
     };
     closeModal(status){
+        this.props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息
         this.toggleModal('bbhModal',false);
     }
     render(){
