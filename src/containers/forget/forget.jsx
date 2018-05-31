@@ -34,6 +34,9 @@ function hasErrors(fieldsError) {
 class Forget extends Component {
   constructor() {
     super();
+    this.state={
+      verifyCodeCd:''
+    }
     this.verifyCodeInputRef;
   }
   static propTypes = {
@@ -48,7 +51,32 @@ class Forget extends Component {
     configPasswordRegExp = new RegExp (`^${fullCreds.password}$`);
     return configPasswordRegExp
   };
-
+  setTime(){
+    let time=180;
+    var timeInt= setInterval(()=>{ 
+        if(time>0){
+            time--;
+            if(this.mounted){
+                this.setState({
+                    verifyCodeCd:time
+                })
+            }  
+        }else{                               
+            if(this.mounted){
+                this.setState({
+                    verifyCodeCd:''
+                })
+            } 
+            clearInterval(timeInt)
+        }           
+    },1000) 
+}
+componentWillMount(){
+    this.mounted = true;
+}
+componentWillUnmount() {
+    this.mounted = false;
+}
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(getImageCode());
@@ -116,7 +144,7 @@ class Forget extends Component {
         this.verifyCodeInputRef.focus();
         return res;
       })
-      .then(res => this.startCd(180))
+      .then(res => this.setTime())
       .catch(err => {
         // 根据错误类型做更多判断，这里先把超时处理成弹message
         if ( err.statusCode == -1 ) {
@@ -368,9 +396,9 @@ class Forget extends Component {
                       size="large"
                       type="dashed"
                       htmlType="button"
-                      disabled={ !!verifyCodeCd }
+                      disabled={ this.state.verifyCodeCd }
                       onClick={ this.handleSendVerifyCodeBtnClick }
-                      >{ verifyCodeCd || '获取验证码' }</Button>
+                      >{ this.state.verifyCodeCd || '获取验证码' }</Button>
                   </Col>
                 </Row>
               </FormItem>
