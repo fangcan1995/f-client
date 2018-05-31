@@ -25,7 +25,7 @@ const params = {
 function noop() {
   return false;
 }
-
+var timeInt;
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
@@ -33,6 +33,10 @@ function hasErrors(fieldsError) {
 class Signup extends Component {
   constructor() {
     super();
+    this.state={
+      verifyCodeCd:'',
+      postResult:''
+    }
     this.verifyCodeInputRef;
   }
   static propTypes = {
@@ -43,6 +47,32 @@ class Signup extends Component {
     const { dispatch } = this.props;
     dispatch(getImageCode());
   }
+  setTime(time){
+    // let time=180;
+    timeInt= setInterval(()=>{ 
+        if(time>0){
+            time--;
+            if(this.mounted){
+                this.setState({
+                    verifyCodeCd:time
+                })
+            }  
+        }else{                               
+            if(this.mounted){
+                this.setState({
+                    verifyCodeCd:''
+                })
+            } 
+            clearInterval(timeInt)
+        }           
+    },1000) 
+}
+componentWillMount(){
+    this.mounted = true;
+}
+componentWillUnmount() {
+    this.mounted = false;
+}
   handleImageCodeImgClick = e => {
     const { dispatch } = this.props;
     dispatch(getImageCode());
@@ -103,7 +133,7 @@ class Signup extends Component {
         this.verifyCodeInputRef.focus();
         return res;
       })
-      .then(res => this.startCd(180))
+      .then(res => this.setTime(180))
       .catch(err => {
         // 根据错误类型做更多判断，这里先把超时处理成弹message
         if ( err.statusCode == -1 ) {
@@ -139,12 +169,15 @@ class Signup extends Component {
     const newValue = {
       image_code: {
         name: 'image_code',
-        validating: false,
-        value: getFieldValue('image_code'),
-        errors: [message]
+        // validating: false,
+        value: '',
+        // errors: [message]
       }
     };
     setFields(newValue);
+    this.setState({
+      postResult:message
+    })
   }
 
   loginFaileCallback = (reason) => {
@@ -168,8 +201,15 @@ class Signup extends Component {
     dispatch(setSignup(this.state.signup))
     this.props.history.push('/login');
   }
-
+  handleChange(){
+    console.log(this.state.verifyCodeCd)
+    this.setState({
+      verifyCodeCd:''
+    })
+    clearInterval(timeInt)
+  }
   render() {
+    
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, getFieldValue } = this.props.form;
     const { imageCodeImg, verifyCodeCd } = this.props.signup;
     const usernameProps = getFieldDecorator('username', {
@@ -184,6 +224,10 @@ class Signup extends Component {
           { pattern: phoneNumberRegExp, message: '请输入正确的手机号码' },
           {
             validator: (rule, value, callback) => {
+              // console.log(value)
+              // this.setState({
+              //   verifyCodeCd:''
+              // })
               if ( !phoneNumberRegExp.test(value) ) {
                 return callback()
               }
@@ -274,6 +318,7 @@ class Signup extends Component {
                   <Input
                     placeholder="请输入手机号"
                     type="text"
+                    onChange ={this.handleChange.bind(this)}
                   />
                 )}
                 {/* <span>已有账号？<Link to="/login">立即登录</Link></span> */}
@@ -342,9 +387,9 @@ class Signup extends Component {
                       size="large"
                       type="dashed"
                       htmlType="button"
-                      disabled={ !!verifyCodeCd }
+                      disabled={ this.state.verifyCodeCd }
                       onClick={ this.handleSendVerifyCodeBtnClick }
-                      >{ verifyCodeCd || '获取验证码' }</Button>
+                      >{ this.state.verifyCodeCd || '获取验证码' }</Button>
                   </Col>
                 </Row>
               </FormItem>
@@ -380,10 +425,18 @@ class Signup extends Component {
                   )
                 }
               </FormItem>
+              <FormItem className='tips'>
+                  {
+                      (!this.state.postResult)?``
+                          :<p className="errorMessages text-center">
+                              {this.state.postResult}
+                          </p>
+                  }
+              </FormItem>
               <FormItem className="agreement">
                 {
                   agreementProps(
-                    <Checkbox> 我已阅读并同意<a to="/subject_common/6" target="_blank">《用户注册及服务协议》</a></Checkbox>
+                    <Checkbox> 我已阅读并同意<Link to="subject_3/6" target="_blank">《用户注册及服务协议》</Link></Checkbox>
                   )
                 }
               </FormItem>

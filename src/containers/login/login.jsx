@@ -57,7 +57,7 @@ class Login extends Component {
           <div className="wrapper">
             <Card
               tit="登录"
-              tip={ <span>没有账号？<a onClick={this.handleSignupClick.bind(this)}>立即注册</a></span> }
+              tip={ <span>没有账号？<Link to="/signup">立即注册</Link></span> }
               >
               <Tabs defaultActiveKey="1">
                 <TabPane tab="密码登录" key="1">
@@ -71,7 +71,7 @@ class Login extends Component {
           </div>
         </div>
       </main>
-      //<span>没有账号？<Link to="/signup">立即注册</Link></span>
+      //<span>没有账号？<a onClick={this.handleSignupClick.bind(this)}>立即注册</a></span>
     );
     }else{
       return (
@@ -81,7 +81,11 @@ class Login extends Component {
    
   }
 }
+var timeInt;
 class PasswordForm extends Component {
+  state={
+    postResult:''
+  }
   static propTypes = {
     form: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
@@ -127,12 +131,15 @@ class PasswordForm extends Component {
     const newValue = {
       image_code: {
         name: 'image_code',
-        validating: false,
-        value: getFieldValue('image_code'),
-        errors: [message]
+        // validating: false,
+        value: '',
+        // errors: [message]
       }
     };
     setFields(newValue);
+    this.setState({
+      postResult:message
+    })
   }
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -239,6 +246,15 @@ class PasswordForm extends Component {
                 />
             </Col>
           </Row>
+          
+        </FormItem>
+        <FormItem className='tips'>
+            {
+                (!this.state.postResult)?``
+                    :<p className="errorMessages text-center">
+                        {this.state.postResult}
+                    </p>
+            }
         </FormItem>
         <FormItem>
           {
@@ -261,6 +277,9 @@ class PasswordForm extends Component {
 class VCodeForm extends Component {
   constructor() {
     super();
+    this.state={
+      verifyCodeCd:''
+    }
     this.verifyCodeInputRef;
   }
   static propTypes = {
@@ -271,7 +290,32 @@ class VCodeForm extends Component {
     const { dispatch } = this.props;
     dispatch(getImageCode());
   }
-
+  setTime(){
+    let time=180;
+    timeInt= setInterval(()=>{ 
+        if(time>0){
+            time--;
+            if(this.mounted){
+                this.setState({
+                    verifyCodeCd:time
+                })
+            }  
+        }else{                               
+            if(this.mounted){
+                this.setState({
+                    verifyCodeCd:''
+                })
+            } 
+            clearInterval(timeInt)
+        }           
+    },1000) 
+}
+componentWillMount(){
+    this.mounted = true;
+}
+componentWillUnmount() {
+    this.mounted = false;
+}
   handleSubmit = e => {
     e.preventDefault();
     const { dispatch, form, login } = this.props;
@@ -315,7 +359,7 @@ class VCodeForm extends Component {
         this.verifyCodeInputRef.focus();
         return res;
       })
-      .then(() => this.startCd(180))
+      .then(() => this.setTime())
       .catch(err => {
         // 根据错误类型做更多判断，这里先把超时处理成弹message
         if ( err.statusCode == -1 ) {
@@ -372,6 +416,22 @@ class VCodeForm extends Component {
       }
     };
     setFields(newValue);
+    const newValue2 = {
+      image_code: {
+        name: 'image_code',
+        // validating: false,
+        value: '',
+        // errors: [message]
+      }
+    };
+    setFields(newValue2);
+  }
+  handleChange(){
+    console.log(this.state.verifyCodeCd)
+    this.setState({
+      verifyCodeCd:''
+    })
+    clearInterval(timeInt)
   }
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -426,6 +486,7 @@ class VCodeForm extends Component {
             <Input
               placeholder="请输入手机号"
               type="text"
+              onChange={this.handleChange.bind(this)}
             />
           )}
         </FormItem>
@@ -493,9 +554,9 @@ class VCodeForm extends Component {
                 size="large"
                 type="dashed"
                 htmlType="button"
-                disabled={ !!verifyCodeCd }
+                disabled={ this.state.verifyCodeCd }
                 onClick={ this.handleSendVerifyCodeBtnClick }
-                >{ verifyCodeCd || '获取验证码' }</Button>
+                >{ this.state.verifyCodeCd || '获取验证码' }</Button>
             </Col>
           </Row>
         </FormItem>
