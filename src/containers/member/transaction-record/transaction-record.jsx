@@ -65,7 +65,7 @@ class TransactionRecord extends Component{
                 <div className="member__cbox">
                     <Tab>
                         <div name="交易记录">
-                            <div className="tab_content">
+                            <div className="tab_content" id='mask'>
                                 <p className="info">
                                     <strong>提示：</strong>资金历史记录了您各种交易产生的支出和收入的明细，请选择事件类型和时间。
                                 </p>

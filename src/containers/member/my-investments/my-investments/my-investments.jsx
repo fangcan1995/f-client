@@ -109,7 +109,7 @@ class MyInvestments extends React.Component{
                         </Tab>
                     </div>
                 }
-                <div className="member__cbox"  style={{ padding:'20px 30px' }}>
+                <div className="member__cbox"  style={{ padding:'20px 30px' }} id='mask'>
                     <div className="filter">
                         <div className="filter__outer">
                             <div className="filter__inner">

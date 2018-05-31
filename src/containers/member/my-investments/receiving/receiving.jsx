@@ -54,7 +54,7 @@ class Receiving extends React.Component{
                         </Tab>
                     </div>
                 }
-                <div className="member__cbox" style={{ padding:'20px 30px' }}>
+                <div className="member__cbox" style={{ padding:'20px 30px' }} id='mask'>
                     {(myList === '') ? <Loading isShow={isFetching} />
                         :<div  className="table__wrapper">
                             {(myList.total > 0) ? (

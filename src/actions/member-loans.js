@@ -243,11 +243,8 @@ export const repaymentsAc={
             type: 'myLoans/repaymentPlans/FETCH',
             async payload() {
                 const res = await cFetch(`${url_repayment}${pram}` , {method: 'GET'}, true);
-                console.log(`${url_repayment}${pram}`);
                 const {code, data} = res;
                 if (code == 0) {
-                    console.log('返回的还款信息');
-                    console.log(data);
                     return {
                         projectInfo: data
                     };
@@ -259,26 +256,11 @@ export const repaymentsAc={
     },
     //提交还款
     postRepayment: (params,dispatch) => {
-        //params = parseJson2URL(params);
-        //JSON.stringify(params)
         return {
             type: 'myLoans/repaymentPlans/FETCH',
             async payload() {
-                /*const res = await cFetch(`${url_postRepayment}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: params,
-                    },
-                    false);*/
                 const res = await cFetch(`${url_postRepayment}`, postContent(params), true);
                 return {postResult: res};
-                /*if (res.code == 0) {
-                    return {postResult: res};
-                } else {
-                    throw res;
-                }*/
             }
         }
     },

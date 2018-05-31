@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 
 //普通标/债转标切换
 export const InvestTab = ({isTransfer, ...rest}) => {
-    console.log(' 参数是')
-    console.log(isTransfer);
     return (
         <div className="tablist">
             <div className="tabs__nav">
@@ -16,8 +14,6 @@ export const InvestTab = ({isTransfer, ...rest}) => {
 }
 //进度条
 export const ProgressBar=({value,...rest})=>{
-    console.log(' 参数是')
-    console.log(value);
     return(
         <dl className="progressbar">
             <dt>
@@ -29,8 +25,6 @@ export const ProgressBar=({value,...rest})=>{
 }
 //标的状态
 export const InvestButton=({status,id,...rest})=>{
-    console.log(' 参数是')
-    console.log(status);
     let investTitle=``,className=`disabled`;;
     switch(status){
         case 1:

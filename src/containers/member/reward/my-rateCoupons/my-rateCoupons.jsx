@@ -27,7 +27,7 @@ class MyRateCoupons extends React.Component{
                 <Crumbs/>
                 <div className="member__cbox">
                     <Tab>
-                        <div name="我的加息券">
+                        <div name="我的加息券"  id='mask'>
                             <div className="filter">
                                 <div className="filter__outer">
                                     <div className="filter__inner">
