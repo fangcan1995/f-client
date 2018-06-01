@@ -120,7 +120,7 @@ class ModalLoanApp extends React.Component {
                                         {getFieldDecorator('price', {
                                             initialValue: { number: `` },
                                             rules: [{ validator: this.checkPrice }],
-                                        })(<PriceInput />) }
+                                        })(<PriceInput isNumber={true} />) }
                                     </FormItem>
                                     <FormItem
                                         { ...formItemLayout }

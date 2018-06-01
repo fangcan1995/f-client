@@ -12,7 +12,7 @@ import './withdrawals.less';
 import investDetailActions from "../../../actions/invest-detail";
 import {Loading,NoRecord,Posting} from '../../../components/bbhAlert/bbhAlert';
 import PriceInput from "../../../components/price-input/price-input";
-
+import { Link, withRouter } from 'react-router-dom';
 const createForm = Form.create;
 const FormItem = Form.Item;
 
@@ -95,7 +95,7 @@ class Withdrawals extends React.Component{
                                 {
                                     (isOpenAccount===`0`)?
                                         <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先
-                                            <a to="/my-account/bank-card" style={{color: '#31aaf5'}}> 绑定银行卡！</a>
+                                            <Link to="/my-account/bank-card" style={{color: '#31aaf5'}}> 绑定银行卡！</Link>
                                         </p>
                                         :
                                         <div className="form__wrapper">

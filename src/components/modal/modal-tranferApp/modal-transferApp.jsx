@@ -119,7 +119,7 @@ class ModalTransferApp extends React.Component {
                                     {getFieldDecorator('price', {
                                         initialValue: { number: transferInfo.canTransferMoney },
                                         rules: [{ validator: this.checkPrice }],
-                                    })(<PriceInput  />)}
+                                    })(<PriceInput isReadOnly={true}  />)}
                                 </FormItem>
                                 <FormItem
                                     { ...formItemLayout }
