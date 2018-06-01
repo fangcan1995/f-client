@@ -1,8 +1,10 @@
 import React,{ Component } from "react";
 import { Input } from 'antd';
+import { amountExp,amountPointExp } from './../../utils/regExp'
 export default class PriceInput extends Component {
     constructor(props) {
         super(props);
+        console.log(this.props)
         const value = props.value || {};
         this.state = {
             number: value.number || 0,
@@ -10,6 +12,7 @@ export default class PriceInput extends Component {
     }
     componentWillMount() {
         console.log('翟茹了');
+        console.log(this.props);
         /*const number = parseInt(``, 10);
         this.triggerChange({ number });*/
     }
@@ -21,8 +24,16 @@ export default class PriceInput extends Component {
         }
     }
     handleNumberChange = (e) => {
-        const number = parseInt(e.target.value || 0, 10);
-        if (isNaN(number)) {
+        const isNumber=this.props.isNumber||'true'
+        let number;
+        if(isNumber=='true'){
+             number=e.target.value;
+        }else{
+             number = parseFloat(e.target.value || 0, 10);
+        }
+        
+        const pointExp = amountExp.test(number)||amountPointExp.test(number)
+        if (isNaN(number) || !pointExp ) {
             return;
         }
         if (!('value' in this.props)) {
@@ -46,7 +57,7 @@ export default class PriceInput extends Component {
             type="text"
             size={size}
             value={state.number}
-            onChange={this.handleNumberChange}
+            onChange={this.handleNumberChange.bind(this)}
             style={{ width: '100%', marginRight: '3%' }}
             suffix={'元'}
         />

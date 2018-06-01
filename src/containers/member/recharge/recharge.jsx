@@ -131,7 +131,7 @@ class Recharge extends React.Component{
                                                     {getFieldDecorator('price', {
                                                         initialValue: { number: `` },
                                                         rules: [{ validator: this.checkPrice }],
-                                                    })(<PriceInput  />)}
+                                                    })(<PriceInput />)}
                                                 </FormItem>
                                                 <FormItem className='tips'>
                                                     {
