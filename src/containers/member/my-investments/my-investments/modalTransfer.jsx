@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
 import  {poundage,checkMoney}  from '../../../../utils/cost';
 import {addCommas} from '../../../../utils/famatData';
 import { Checkbox,message,Alert,Button } from 'antd';

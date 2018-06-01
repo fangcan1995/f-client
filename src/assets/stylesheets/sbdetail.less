@@ -13,7 +13,6 @@
 
   //总览
   .master{
-
     width: 1180px;
     background: #fff;
     margin: 20px auto;
@@ -261,6 +260,9 @@
           font-style: normal
         }
       }
+      .tips__area{
+        min-height: 30px;
+      }
     }
     a.btn{
       display:block;
@@ -467,11 +469,20 @@
           li {
             float: left;
             text-align: center;
-            margin-right: 20px;
+            margin: 0 20px 20px 0;
             img {
               width: 125px;
               height: 150px;
-              display: block
+              display: block;
+            }
+            p{
+              width: 125px;
+              display: block;
+              clear: both;
+              height: 30px;
+              overflow: hidden;
+              text-align: center;
+              .clearfix();
             }
           }
         }

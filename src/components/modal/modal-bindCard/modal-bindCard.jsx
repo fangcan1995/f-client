@@ -4,7 +4,6 @@ import { Button} from 'antd';
 import { connect } from 'react-redux';
 import {accountAc} from "../../../actions/account";
 import {Loading,NoRecord,Posting,BbhAlert,WaitThirdParty} from '../../../components/bbhAlert/bbhAlert';
-import "./modal-bindCard.less";
 
 class ModalBindCard extends React.Component {
     constructor(props) {
@@ -14,39 +13,45 @@ class ModalBindCard extends React.Component {
     }
     componentDidMount () {
         //this.props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息
-        this.props.dispatch(accountAc.getFuyouInfo({type:'OpenAccount'})); //获取开户需携带的信息
+
+        let {returnPage,dispatch}=this.props;
+        dispatch(accountAc.getFuyouInfo({type:'OpenAccount',url:returnPage})); //获取开户需携带的信息
     }
     //提交
     handleSubmit(event){
         //event.preventDefault();   //阻止提交
         let {toOthersInfo}=this.props.account;
-        console.log('切换状态');
-        console.log(toOthersInfo);
-        document.getElementById('webReg').action=toOthersInfo.url;
         document.getElementById('webReg').submit();
-        this.props.dispatch(accountAc.change_goOutState(true));
+        //this.props.dispatch(accountAc.change_goOutState(true));
         return false;
     }
     //回调
     modalClose(){
         console.log('绑卡成功回调');
         let {onSuccess,dispatch}=this.props;
-        //this.props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息,暂时注释掉
-        dispatch(accountAc.dummyModifyAccount({isOpenAccount:'1'}));  //虚拟
+        this.props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息,暂时注释掉
+        //dispatch(accountAc.dummyModifyAccount({isOpenAccount:'1'}));  //虚拟
         dispatch(accountAc.clear());
         onSuccess();
     }
     render(){
-        let {onSuccess,onFail}=this.props;
+        let {onSuccess,onFail,returnPage}=this.props;
         let {isPosting,toOthersInfo,postResult,isOpenOthers}=this.props.account;
-        console.log('去富有开户携带的信息');
         console.log(toOthersInfo);
         if(postResult.type!=`success`){
             return(
                 <div className="pop__openOther">
-                    {(isOpenOthers )?<WaitThirdParty isShow={true} title='绑卡' callback={this.modalClose} />
+                    {/*<WaitThirdParty isShow={true} title='绑卡' callback={this.modalClose} />*/}
+                    {(toOthersInfo==`` )?``
                         :<div className="form__wrapper">
-                            <form name="webReg" id="webReg" method="post"   target="_blank" >
+                            <div className='tips'>
+                                {
+                                    (toOthersInfo!=`` && toOthersInfo.code==406)?
+                                        <div className="errorMessages">{toOthersInfo.message}</div>
+                                        :``
+                                }
+                            </div>
+                            <form name="webReg" id="webReg" method="post" action={toOthersInfo.url}>
                                 <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />
                                 <input type="hidden" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} />
                                 <input type="hidden" name="user_id_from" value={toOthersInfo.user_id_from} />
@@ -59,13 +64,13 @@ class ModalBindCard extends React.Component {
                                 <input type="hidden" name="parent_bank_id" value={toOthersInfo.parent_bank_id} />
                                 <input type="hidden" name="bank_nm" value={toOthersInfo.bank_nm} />
                                 <input type="hidden" name="capAcntNo" value={toOthersInfo.capAcntNo} />
-                                <input type="hidden" name="page_notify_url" value={toOthersInfo.page_notify_url} />
+                                <input type="hidden" name="page_notify_url" value={`${toOthersInfo.page_notify_url}`} />
                                 <input type="hidden" name="back_notify_url" value={toOthersInfo.back_notify_url} />
                                 <input type="hidden" name="signature" value={toOthersInfo.signature} />
                                 <input type="hidden" name="ver" value={toOthersInfo.ver} />
                                 <div className='center'>
                                     {
-                                        toOthersInfo==``?<Button type="primary" htmlType="submit" className="pop__large" disabled={true}>去开户</Button>
+                                        (toOthersInfo==`` || toOthersInfo.code==`406`)?<Button type="primary"  className="pop__large" disabled={true}>去开户</Button>
                                             :<Button type="primary" htmlType="submit" className="pop__large" onClick={()=>this.handleSubmit()}>去开户</Button>
                                     }
 

@@ -1,5 +1,13 @@
 @import './library';
-
+.errorMessages{
+  color:@text-color-error ;
+  &:before {
+    content: "\E614";
+    padding-right: 10px;
+    font-family: iconfont;
+    font-size: 14px;
+  }
+}
 .button(){
   width: 100%;
   height: 48px;
@@ -80,17 +88,37 @@
       border-color: #f04134;
     }
   }
-.has-success.has-feedback:after {
-  content: '\E630';
-  color: @text-color-right;
-}
+  .ant-form-item.price{
+    .ant-input{
+      font-size: 14px;
+      color:@text-color-default;
+
+    }
+    .has-success{
+      &:after{
+        content: '';
+        color: @text-color-right;
+      }
+    }
+  }
+  .has-feedback{
+
+    &.has-success{
+      &:after{
+        content: '\E630';
+        color: @text-color-right;
+      }
+    }
+
+  }
+
   .result_tips{
     font-size: 16px;padding: 30px 0;
   }
 .center{
   text-align: center;
   .pop__large{
-    margin: 0 10px;
+    margin: 0 10px 20px 10px;
   }
 }
   .mp{
@@ -178,15 +206,7 @@
 
 
     }
-    .errorMessages{
-      color:@text-color-error ;
-      &:before {
-        content: "\E614";
-        padding-right: 10px;
-        font-family: iconfont;
-        font-size: 14px;
-      }
-    }
+
   }
 
   a{

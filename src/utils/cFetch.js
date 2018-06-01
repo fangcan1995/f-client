@@ -36,8 +36,6 @@ function check404(res) {
 
 function checkStatus(res) {
   if (res.status >= 200 && res.status < 300 || res.status==406) {
-    console.log('-----------res----------');
-    console.log(res);
     return res;
   } else {
     if (  res instanceof Response ) {

@@ -6,7 +6,7 @@ import Pagination from '../../../../components/pagination/pagination';
 import './rateCoupons.less';
 import moment from "moment";
 import { connect } from 'react-redux';
-import {myRateCouponsAc} from '../../../../actions/rateCoupons';
+import {myRateCouponsAc} from '../../../../actions/member-reward';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 
 class MyRateCoupons extends React.Component{
@@ -27,7 +27,7 @@ class MyRateCoupons extends React.Component{
                 <Crumbs/>
                 <div className="member__cbox">
                     <Tab>
-                        <div name="我的加息券">
+                        <div name="我的加息券"  id='mask'>
                             <div className="filter">
                                 <div className="filter__outer">
                                     <div className="filter__inner">

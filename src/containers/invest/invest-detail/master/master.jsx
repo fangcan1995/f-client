@@ -15,8 +15,11 @@ class InvestDetailMaster extends React.Component {
         this.props.dispatch(investDetailActions.getInvestInfo(this.props.id));
     }
     render(){
-        let {investInfo}=this.props.investDetail;
-
+        const {investInfo}=this.props.investDetail;
+        const {minInvestAmount,maxInvestAmount,surplusAmount}=investInfo;
+        let min,max;
+        ((surplusAmount-minInvestAmount)< minInvestAmount)? min=surplusAmount:min=minInvestAmount;
+        (maxInvestAmount<surplusAmount)?max=maxInvestAmount:max=surplusAmount;
         return (
             <div>
                 <div>
@@ -66,8 +69,8 @@ class InvestDetailMaster extends React.Component {
                                                status:investInfo.status,
                                                money:investInfo.money,
                                                surplusAmount:investInfo.surplusAmount,
-                                               min:investInfo.minInvestAmount,
-                                               max:(investInfo.maxInvestAmount<investInfo.surplusAmount)?investInfo.maxInvestAmount:investInfo.surplusAmount,
+                                               min:min,
+                                               max:max,
                                                //step:investInfo.increaseAmount,  //递增金额
                                                step:100,  //递增金额
                                                rate:investInfo.annualRate,
@@ -105,8 +108,8 @@ class InvestDetailMaster extends React.Component {
                             <dl>
                                 <dt>项目放款</dt>
                                 <dd>放款日期：
-                                    {(investInfo.fkDateTemp)?
-                                        moment(investInfo.fkDateTemp).format('YYYY-MM-DD')
+                                    {(investInfo.transferTime)?
+                                        moment(investInfo.transferTime).format('YYYY-MM-DD')
                                         :`— —`
                                     }
                                 </dd>

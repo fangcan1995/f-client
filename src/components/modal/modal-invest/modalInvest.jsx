@@ -1,179 +1,223 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import  {poundage,checkMoney,income}  from '../../../utils/cost';
-import { Checkbox,message,Select,Button } from 'antd';
-import './modalInvest.less';
+import  {checkMoney,income}  from '../../../utils/cost';
 import {BbhAlert,Posting} from '../../../components/bbhAlert/bbhAlert';
 import { connect } from 'react-redux';
 import  investDetailActions  from '../../../actions/invest-detail';
 import {accountAc} from "../../../actions/account";
-import {addCommas} from "../../../utils/famatData";
+import {addCommas, getTips, toMoney} from "../../../utils/famatData";
+import {formItemLayout, hasErrors, noop} from "../../../utils/formSetting";
+import { Form,Row,Input,Button,Select,Checkbox,Col,Alert,Icon,Collapse  } from 'antd';
+import {tradePasswordRegExp } from '../../../utils/regExp';
+import {hex_md5} from "../../../utils/md5";
+
+
+const Panel = Collapse.Panel;
+const createForm = Form.create;
+const FormItem = Form.Item;
+
+
+let appInfo={};
 class ModalInvest extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.onChange = this.onChange.bind(this);
-        this.state = {
-            tips: '',  //错误提示
-            isRead: false,
-        }
+        this.onChangeReward = this.onChangeReward.bind(this);
+
     }
+
     componentDidMount () {
         let {auth,investDetail,dispatch}=this.props;
         let {id,annualRate,loanExpiry}=investDetail.investInfo;
-        if(auth.isAuthenticated){
-            dispatch(investDetailActions.getRedEnvelopes(id));
-            dispatch(investDetailActions.getRateCoupons(id));
-        }
-    }
+        dispatch(investDetailActions.getAvailableRewards(id));
+        dispatch(investDetailActions.statePostResultModify(``)); //清空结果
 
-    onChange(e) {
-        this.setState({
-            isRead: e.target.checked
-        });
-        if(this.state.tips===`请阅读并同意《投资协议》`){
-            this.setState({
-                tips: ``
-            });
+    }
+    componentDidUpdate() {
+        let {dispatch, investDetail} = this.props;
+        let {postResult,isPosting,availableRewards}=this.props.investDetail;
+        if(postResult.userCode===101 && postResult.times<5 && !isPosting){
+            //console.log('在这里发第'+(postResult.times+1)+'次请求');
+            dispatch(investDetailActions.postInvest(appInfo,postResult.times));
         }
     }
-    handleSubmit(e) {
-        //1 验证是否同意协议
-        if (!this.state.isRead) {
-            this.setState({
-                tips: `请阅读并同意《投资协议》`
-            });
-            return false;
+    onChangeReward(e) {
+        let {dispatch,investDetail}=this.props;
+        let {availableRewards}=investDetail;
+        let index=availableRewards.findIndex((x)=>
+            x.id ==parseInt(e.target.value)
+        );
+        for(let index of availableRewards.keys()){
+            availableRewards[index].default=false;
         }
-        const { investAmount,investDetail,dispatch} = this.props;
+        availableRewards[index].default=true;
+
+        dispatch(investDetailActions.changeReward(availableRewards.splice(0)));
+    }
+    handleSubmit = (e) => {
+        e.preventDefault();
+        const { dispatch, form,value,investDetail } = this.props;
+        console.log(this.props);
+        let {availableRewards}=investDetail;
         let {id}=investDetail.investInfo;
-        //2 提交后台
-        /*console.log('提交投资申请');
-        dispatch(investDetailActions.postInvest(
-            {
+        form.validateFields((errors) => {
+            if (errors) {
+                return false;
+            }
+            let index=availableRewards.findIndex((x)=>
+                x.default ==true
+            );
+            appInfo={
+                tradePassword:hex_md5(form.getFieldsValue().newPassword),
                 projectId:id,
-                investAmt:investAmount,
+                investAmt:value,
                 ifTransfer:false,
                 investWay:1,
-                transfer:false
+                transfer:false,
             }
-            ));*/
+            if(index!=-1){
+                appInfo.rewardId=availableRewards[index].id ; //奖励id
+                appInfo.rewardType=availableRewards[index].type ; //奖励类型
+            }
+            //console.log('提交的投资申请');
+            //console.log(appInfo);
+            dispatch(investDetailActions.postInvest(appInfo,0));
+
+        });
         //3 下一步
-        this.modalClose();
+        //this.modalClose();
     }
     modalClose(){
-        //清空
-        let {investAmount,account,onFail,onSuccess,dispatch}=this.props;
-        /*let {postResult}=this.props.investDetail;
+        const {onSuccess,dispatch,investDetail}=this.props;
+        const {postResult}=investDetail;
         if(postResult.code==0){
             dispatch(accountAc.getAccountInfo());  //成功重新获取新户信息
             dispatch(investDetailActions.getInvestRecords(this.props.id));//成功重新获取投资记录
             dispatch(investDetailActions.getInvestInfo(this.props.id)); //成功重新获取标的信息
         }
-        dispatch(investDetailActions.statePostResultModify(``));*/
+
         onSuccess();
     }
     render() {
-        let {investAmount,account,onFail,onSuccess}=this.props;
-        let {postResult,isPosting,redEnvelopes,rateCoupons}=this.props.investDetail;
+        let {value,account,onFail,onSuccess,dispatch}=this.props;
+        let {postResult,isPosting,availableRewards}=this.props.investDetail;
         let {annualRate, loanExpiry} = this.props.investDetail.investInfo;
-        if(postResult===``) {
+
+        let allowInvest=false;
+        if(!isPosting){
+            allowInvest=true
+        }
+        let i=-1;
+        if(availableRewards!=``){
+            i=availableRewards.findIndex(
+                (x)=>x.default==true
+            );
+        }
+        const { getFieldDecorator,getFieldValue,getFieldsError } = this.props.form;
+
+        const newPasswordProps = getFieldDecorator('newPassword', {
+            rules: [
+                { required: true, min: 6, message: '密码至少为 6 个字符' }
+            ]
+        });
+        const agreementProps = getFieldDecorator('is_read', {
+            valuePropName: 'checked',
+            initialValue: false,
+        })
+        if(postResult.type!=`success`) {
             return (
                 <div className="pop__invest">
                     <div className="form__wrapper" id="area" >
-                        <dl className="form__bar">
-                            <dt><label>投资金额:</label></dt>
-                            <dd>
-                                <span id="money" className="money">{addCommas(parseFloat(investAmount))}</span>元
-                            </dd>
-                        </dl>
-                        <dl className="form__bar">
-                            <dt><label>使用红包:</label></dt>
-                            <dd>
-                                {(redEnvelopes==='')?``
-                                    :(redEnvelopes.length>0?
-                                        <Select
-                                            defaultValue={redEnvelopes[0].id}
-                                            style={{ width: 300 }}
-                                            onChange={this.handleChange}
-                                            getPopupContainer={() => document.getElementById('area')}
-                                        >
-                                            <Option value="0">不使用红包</Option>
-                                            {
-                                                redEnvelopes.map((item, index) => (
-                                                    <Option value={`${item.id}`} key={`row-${index}`}>{item.reAmount}元 {item.reTypeName}</Option>
-                                                ))
-                                            }
-                                        </Select>:`无可用红包`
+                        <Form layout="horizontal" onSubmit={this.handleSubmit} id='frm'>
+                            <FormItem
+                                { ...formItemLayout }
+                                label="投资金额"
+                            >
+                                <span id="money" className="money">{addCommas(parseFloat(value))}</span>元
+                            </FormItem>
+                            <FormItem
+                                { ...formItemLayout }
+                                label="使用奖励"
+                            >
+
+                                {(availableRewards==='')?``
+                                    :(availableRewards.length>0?
+                                        <Collapse bordered={false}>
+
+                                            <Panel header={(i==-1)? `` :availableRewards[i].title } key="1" >
+                                                <div className="rewardList">
+
+                                                {
+                                                    availableRewards.map((item, index) => (
+                                                        <ul key={`row-${index}`} >
+                                                            <li><Checkbox onChange={this.onChangeReward} value={`${item.id}`} checked={item.default}></Checkbox></li>
+                                                            <li>{item.title}</li>
+                                                            <li>{item.validity}</li>
+                                                        </ul>
+
+                                                    ))
+                                                }
+                                                </div>
+                                            </Panel>
+                                        </Collapse>
+
+                                            :`无可用奖励`
                                     )
                                 }
+                            </FormItem>
+                            <FormItem
+                                { ...formItemLayout }
+                                label="预期赚取"
+                            >
+                                <span  className="money">{income(value, annualRate, loanExpiry, 'm')}</span>元
 
-                            </dd>
-                        </dl>
-                        <dl className="form__bar">
-                            <dt><label>使用加息券:</label></dt>
-                            <dd>
-                                {(rateCoupons==='')?``
-                                    :(rateCoupons.length>0?
-                                        <Select
-                                        defaultValue={rateCoupons[0].id}
-                                        style={{ width: 300 }}
-                                        onChange={this.handleChange}
-                                        getPopupContainer={() => document.getElementById('area')}
-                                    >
-                                        <Option value="0">不使用加息券</Option>
-                                        {
-                                            rateCoupons.map((item, index) => (
-                                                <Option value={`${item.id}`} key={`row-${index}`}>{item.rcAmount}% 加息券</Option>
-                                            ))
-                                        }
-                                    </Select>:`无可用加息券`)
+                                {(i==-1)? `` : `+${toMoney(availableRewards[i].reAmount)}元`}
+                            </FormItem>
+                            <FormItem
+                                { ...formItemLayout }
+                                label="交易密码"
+                            >
+                                {
+                                    newPasswordProps(
+                                        <Input
+                                            type="password"
+                                            autoComplete="off"
+                                            placeholder="设置6-16位的交易密码"
+                                            onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
+                                        />
+                                    )
                                 }
-                            </dd>
-                        </dl>
-                        <dl className="form__bar">
-                            <dt><label>预期赚取：</label></dt>
-                            <dd>
-                                <span id="money"
-                                      className="money">{income(investAmount, annualRate, loanExpiry, 'm')}</span>元
-                            </dd>
-                        </dl>
-                        <div className="form__bar">
-                            <p>
-                                <Checkbox onChange={this.onChange}>我已阅读并同意
-                                    <a href="agreement_tzsb.html" target="_blank">《投资协议》</a></Checkbox>
-                            </p>
-                        </div>
-
-                        <div className="form__bar">
-                            {(this.state.tips!='')?
-                                <div className="errorMessages">
-                                    {this.state.tips}
-                                </div>:``
-                            }
-                        </div>
-                        <div className="form__bar">
-                            {/*{isPosting ?
-                                <button className="button unable" style={{marginTop: '30px'}}><Posting
-                                    isShow={isPosting}/></button>
-                                :
-                                <button className="button able" style={{marginTop: '30px'}}
-                                        onClick={this.handleSubmit}>确定</button>
-                            }*/}
-                            {
-                                isPosting?
-                                    <Button type="primary" style={{width:'100%'}} className='btn' disabled={true}>
+                            </FormItem>
+                            <FormItem className="agreement">
+                                {
+                                    agreementProps(
+                                        <Checkbox> 我已阅读并同意</Checkbox>
+                                    )
+                                }<a href="/subject_3/4" target="_blank">《投资协议》</a>
+                            </FormItem>
+                            <FormItem className='tips'>
+                                {
+                                    (!postResult.message)?``
+                                        :<p className="errorMessages">
+                                            {postResult.message}
+                                        </p>
+                                }
+                            </FormItem>
+                            <FormItem  className='center'>
+                                {(isPosting) ?
+                                    <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
                                         <Posting isShow={isPosting}/>
                                     </Button>
-                                    :<Button type="primary"   onClick={this.handleSubmit} style={{width:'100%'}} className='btn'>
-                                        确定
-                                    </Button>
-                            }
-                        </div>
+                                    : <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError()) || !getFieldValue('is_read') }>确认</Button>
+
+                                }
+                            </FormItem>
+                        </Form>
                     </div>
                 </div>
             );
         }else{
+
+
             return(
                 <div className="pop__invest">
                     <BbhAlert
@@ -197,4 +241,6 @@ function mapStateToProps(state) {
         account
     };
 }
+
+ModalInvest = connect(mapStateToProps)(createForm()(ModalInvest));
 export default connect(mapStateToProps)(ModalInvest);

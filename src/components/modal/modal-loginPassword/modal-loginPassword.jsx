@@ -8,7 +8,6 @@ import {passwordRegExp } from '../../../utils/regExp';
 import {formItemLayout,noop } from '../../../utils/formSetting';
 import {hex_md5} from "../../../utils/md5";
 
-import "./modal-loginPassword.less"
 
 const createForm = Form.create;
 const FormItem = Form.Item;
@@ -18,8 +17,9 @@ class ModalLoginPassword extends React.Component {
         form: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired
     }
-
-
+    componentWillMount () {
+        this.props.dispatch(memberAc.clear());
+    }
     //提交
     handleSubmit = (e) => {
         e.preventDefault();
@@ -36,21 +36,16 @@ class ModalLoginPassword extends React.Component {
             }
             console.log('提交后台的数据是');
             console.log(appInfo);
-            dispatch(memberAc.setTradePassword(appInfo));
+            dispatch(memberAc.setLoginPassword(appInfo));
 
         });
     }
     //回调
     modalClose(){
-        let {onSuccess,onFail,dispatch}=this.props;
-        //清空postResult
-        dispatch(memberAc.clear());
+        let {onSuccess}=this.props;
         onSuccess();
     }
     render(){
-        console.log('-------------this.props---------------');
-        console.log(this.props);
-        let {onSuccess,onFail}=this.props;
         let {isPosting,postResult}=this.props.member;
         const { getFieldDecorator,getFieldValue } = this.props.form;
         const oldPasswordProps = getFieldDecorator('oldPassword', {
@@ -69,8 +64,9 @@ class ModalLoginPassword extends React.Component {
         });
         if(postResult.type!=`success`){
             return(
-                <div className="pop__password pop">
-                    <div className="form__wrapper">
+                <div className="pop__password">
+                    <div className="form__wrapper" >
+
                         <Form layout="horizontal" onSubmit={this.handleSubmit} id='frm'>
                             <FormItem
                                 { ...formItemLayout }
@@ -95,7 +91,6 @@ class ModalLoginPassword extends React.Component {
                                     newPasswordProps(
                                         <Input
                                             type="password"
-                                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                             autoComplete="off"
                                             placeholder="设置6-16位的登录密码"
                                             onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
@@ -132,13 +127,12 @@ class ModalLoginPassword extends React.Component {
                                 }
                             </FormItem>
                         </Form>
-                        <button onClick={()=>onFail()}>下一步</button>
                     </div>
                 </div>
             )
         }else{
             return(
-                <div className="pop__password pop">
+                <div className="pop__password">
                     <BbhAlert
                         info={{message:postResult.message,description:postResult.description,type:postResult.type,
                             callback:()=>{

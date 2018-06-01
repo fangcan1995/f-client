@@ -20,7 +20,8 @@ const initialState = Immutable.fromJS({
     authInfo:{
         info:'',
         postResult:'',
-    }
+    },
+
 
 });
 

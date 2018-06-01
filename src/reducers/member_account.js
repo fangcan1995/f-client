@@ -6,7 +6,6 @@ const initialState = Immutable.fromJS({
     isPosting:false,
     isOpenOthers:false,
     postResult:``,
-    verifyCodeCd:``,
     accountsInfo:``,
     /*accountsInfo:{
         isCertification:'',	//是否实名认证（0：未实名；1：已实名）
@@ -25,7 +24,10 @@ const initialState = Immutable.fromJS({
         memberRedInfo:'',	//红包信息
         memberCoupon:'',	//加息券信息
     },*/
-    toOthersInfo:``  //调第三方接口携带的信息
+    toOthersInfo:``,  //调第三方接口携带的信息
+    verifyCode:``,
+    //verifyCodeCd:``   //倒计时起点
+    othersType:`1`,
 
 });
 
@@ -40,11 +42,30 @@ export default createReducer(initialState, {
         postResult:``,
         isPosting:false,
         isOpenOthers:false,
-        toOthersInfo:``
+        toOthersInfo:``,
+        //verifyCodeCd:5,
     }),
+    /*//清除提交结果
+    ['member/account/CLEAR_VERIFYCODECD']:(state,action) => state.mergeDeep({
+        verifyCodeCd:0,
+        isPosting:false,
+        isOpenOthers:false,
+        toOthersInfo:``
+    }),*/
     //修改是否去了第三方的状态
     ['member/account/GOOUT_STATE']:(state,action) => state.mergeDeep({
         isOpenOthers:action.payload
+    }),
+    ['member/SEND_VERIFY_CODE_PENDING']: (state, action) => state.merge({
+        isFetching: true,
+    }),
+    ['member/SEND_VERIFY_CODE_FULFILLED']: (state, action) => state.merge({
+        isFetching: false,
+        verifyCode: action.payload
+    }),
+    ['member/SEND_VERIFY_CODE_REJECTED']: (state, action) => state.merge({
+        isFetching: false,
+        errorMessage: action.message
     }),
     //异步获取会员帐户信息
     ['member/account/FETCH_PENDING']:(state,action) => state.mergeDeep({

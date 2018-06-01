@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import  {poundage,checkMoney,income}  from '../../../utils/cost';
 import { Checkbox,message,Select,Button } from 'antd';
-import './modal-investResult..less';
 import {BbhAlert,Posting} from '../../../components/bbhAlert/bbhAlert';
 import { connect } from 'react-redux';
 import  investDetailActions  from '../../../actions/invest-detail';

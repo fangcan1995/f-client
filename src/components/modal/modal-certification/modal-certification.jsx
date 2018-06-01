@@ -39,8 +39,6 @@ class ModalCertification extends React.Component {
         onSuccess();
     }
     render(){
-        console.log('-------------this.props---------------');
-        console.log(this.props);
         let {onSuccess,onFail}=this.props;
         let {isPosting,postResult,accountsInfo}=this.props.account;
         let {isCertification,isOpenAccount,isSetTradepassword}=accountsInfo;
@@ -105,7 +103,6 @@ class ModalCertification extends React.Component {
                                     <Button type="primary" htmlType="submit" className="pop__large">确认</Button>
                                 }
                             </FormItem>
-
                         </Form>
                     </div>
                 </div>

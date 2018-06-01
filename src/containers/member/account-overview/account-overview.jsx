@@ -1,32 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import PieChart from '../../../components/charts/pie';
 import BarChart from '../../../components/charts/bar';
-import './account-overview.less';
 import Tab from '../../../components/tab/tab';
 import { connect } from 'react-redux';
-import  memberActions  from '../../../actions/member';
+import {accountAc} from '../../../actions/account';
 import  {memberAc}  from '../../../actions/member';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {toMoney,toNumber,addCommas} from '../../../utils/famatData';
 import Crumbs from '../../../components/crumbs/crumbs';
-import {BbhAlert} from '../../../components/bbhAlert/bbhAlert';
+import { Tooltip, message, Button } from 'antd';
+import './account-overview.less';
+
 class AccountOverview extends React.Component{
     componentDidMount() {
-        //this.props.dispatch(memberAc.getInfo());
         window.scrollTo(0,0);
-        this.props.dispatch(memberAc.getMonth());
-        this.props.dispatch(memberAc.getDay());
+        this.props.dispatch(accountAc.getAccountInfo());  //获取账户信息
+        this.props.dispatch(memberAc.getMonth());  //获取月收益统计数据
+        this.props.dispatch(memberAc.getDay()); //获取日收益统计数据
     }
     render(){
-        console.log('-------this.props-------');
-        console.log(this.props);
-        let {charts,accountsInfo}=this.props.member;
+        const {member,account}=this.props;
+        const {accountsInfo}=account;
+        const {accountBalance,availableBalance,memberRedInfo,memberCoupon,investAmount,freezingAmount}=accountsInfo;
+        const {charts}=member;
+        let totalEarns=charts.chartsMonth.series_data;
+        let yestEarns=charts.chartsDay.series_data;
 
-        let {amount,redInfo,couponInfo}=accountsInfo;
-        console.log('数据');
-        console.log(accountsInfo);
+        if(totalEarns){
+            console.log('累计收益')
+            console.log(totalEarns[0].data[11])
+        }
         return (
             <div className="member__main">
                 <Crumbs />
@@ -34,19 +38,44 @@ class AccountOverview extends React.Component{
                     <div className="master">
                         <div className="accountInfo">
                             <div className="infoLine">
-                                <div>账户余额: <span>{toMoney(amount.accountBalance)}</span>&nbsp;元<em>?<strong>包含您可用余额及投资冻结的金额，满标划转后统一扣除</strong></em></div>
-                                <div>可用余额: <span>{toMoney(amount.availableBalance)}</span>&nbsp;元</div>
+                                <div>
+                                    <Tooltip
+                                        placement="topLeft"
+                                        title="包含您可用余额及投资冻结的金额，满标划转后统一扣除"
+                                        arrowPointAtCenter overlayClassName='myTooltip'
+                                    >
+                                        <span style={{cursor:'default'}}>账户余额:</span>
+                                    </Tooltip>
+                                    <span className='money'>{toMoney(accountBalance)}</span>&nbsp;元
+                                </div>
+                                <div>可用余额:<span className='money'>{toMoney(availableBalance)}</span>&nbsp;元</div>
                             </div>
                             <div className="infoLine">
-                                <div>昨日收益: <span>{toMoney(amount.freezingAmount)}</span>&nbsp;元</div>
-                                <div>累计收益: <span>{toMoney(amount.investAmount)}</span>&nbsp;元</div>
+                                <div>昨日收益:
+                                    {(yestEarns)?<span className='money'>{toMoney(yestEarns[0].data[yestEarns[0].data.length-1])}</span>
+                                        :``
+                                    }
+                                    &nbsp;元
+                                </div>
+                                <div>累计收益:
+                                    {(totalEarns)?<span className='money'>{toMoney(totalEarns[0].data[totalEarns[0].data.length-1])}</span>
+                                        :``
+                                    }
+                                    &nbsp;元
+                                </div>
                             </div>
                         </div>
                         <div className="accountRedbag">
                             <i className="iconfont icon-hongbao"></i>
                             <div className="numInfo">
                                 <div className="topM">可用红包</div>
-                                <div><span>{toNumber(redInfo.number)}</span>个</div>
+                                    {
+                                        (accountsInfo!=``)?
+                                            <div>
+                                                <span>{toNumber(memberRedInfo.number)}</span>个
+                                            </div>
+                                            :<div></div>
+                                    }
                             </div>
                             <div className="accountControl">
                                 <Link to="/invest-list" className="topF">立即使用</Link>
@@ -57,7 +86,13 @@ class AccountOverview extends React.Component{
                             <i className="iconfont icon-icongao"></i>
                             <div className="numInfo">
                                 <div className="topM">加息券</div>
-                                <div><span>{toNumber(couponInfo.number)}</span>个</div>
+                                    {
+                                        (accountsInfo!=``)?
+                                            <div>
+                                                <span>{toNumber(memberCoupon.number)}</span>个
+                                            </div>
+                                            :<div></div>
+                                    }
                             </div>
                             <div className="accountControl">
                                 <Link to="/invest-list" className="topF">立即使用</Link>
@@ -66,16 +101,17 @@ class AccountOverview extends React.Component{
                         </div>
                     </div>
                 </div>
-                {(amount==='')?``
+                {(accountsInfo==='')?``
                     :<div className="member__cbox pieChart">
                         <Tab>
                             <div name="账户总资产">
                                 <PieChart
                                     data={[
-                                        {name:'散标资产',value:amount.investAmount,instruction: `${addCommas(amount.investAmount)}元` },
-                                        {name:'可用余额',value:amount.availableBalance,instruction: `${addCommas(amount.availableBalance)}元` },
-                                        {name:'冻结金额',value:amount.freezingAmount,instruction: `${addCommas(amount.freezingAmount)}元` },
+                                        {name:'散标资产',value:investAmount,instruction: `${addCommas(investAmount)}元` },
+                                        {name:'可用余额',value:availableBalance,instruction: `${addCommas(availableBalance)}元` },
+                                        {name:'冻结金额',value:freezingAmount,instruction: `${addCommas(freezingAmount)}元` },
                                     ]}
+                                    unit={`元`}
                                     style={{height: '300px', width: '930px'}}
                                     totalTitle="资产总额"
                                 >
@@ -117,9 +153,10 @@ class AccountOverview extends React.Component{
     }
 }
 function mapStateToProps(state) {
-    const { auth,member } = state.toJS();
+    const { auth,account,member } = state.toJS();
     return {
         auth,
+        account,
         member
     };
 }

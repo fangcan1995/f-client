@@ -2,121 +2,182 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Crumbs from '../../../components/crumbs/crumbs';
 import Tab from '../../../components/tab/tab';
-
 import { connect } from 'react-redux';
-import {memberAc} from '../../../actions/member';
-import {toMoney,toNumber} from '../../../utils/famatData';
-import  {checkMoney,addCommas}  from '../../../utils/cost';
+import {accountAc} from '../../../actions/account';
+import {toMoney,addCommas,toNumber} from '../../../utils/famatData';
 import {Loading,NoRecord,Posting} from '../../../components/bbhAlert/bbhAlert';
 import { Link, withRouter } from 'react-router-dom';
-import {Button} from 'antd';
+import {formItemLayout, hasErrors, noop} from "../../../utils/formSetting";
+import PriceInput from "../../../components/price-input/price-input";
+import { Form,Input,Button  } from 'antd';
 import './recharge.less';
+import {hex_md5} from "../../../utils/md5";
+
+const createForm = Form.create;
+const FormItem = Form.Item;
 
 class Recharge extends React.Component{
     constructor(props) {
         super(props);
-        this.state={
-            value:'',
-            tips:'',
-            disabled:true,
-        };
-        this.recharge= this.recharge.bind(this);
-        this.handleChange= this.handleChange.bind(this);
+        this.handleSubmit= this.handleSubmit.bind(this);
+    }
+    componentWillMount() {
+        window.scrollTo(0,0);
+        this.props.dispatch(accountAc.clear());
+        this.props.dispatch(accountAc.getAccountInfo());  //????
     }
     componentDidMount() {
-        window.scrollTo(0,0);
-        //this.props.dispatch(memberAc.getInfo());
+        //this.props.dispatch(accountAc.getAccountInfo());  //????
     }
 
-    handleChange(event){
-        let result=checkMoney({
-            'value':event.target.value,
-            'type':0,
-            'min_v':10,
-            'max_v':100000000,
-            'label':'充值金额',
-            'interval':1
-        });
-        if(result[0]==false){
-            if(result[1]==1){
-                this.setState({
-                    value: event.target.value,
-                    tips:`${result[2]}`,
-                    disabled:true
-                });
-            }else{
-                this.setState({
-                    value: 0,
-                    tips:`${result[2]}`,
-                    disabled:true
-                });
+    handleSubmit= (e) => {
+        e.preventDefault();
+        const {dispatch, form, account} = this.props;
+        let {isPosting, isFetching, accountsInfo, toOthersInfo, postResult, isOpenOthers} = account;
+
+        form.validateFields((errors) => {
+            if (errors) {
+                return false;
             }
-
-        }else {
-            this.setState(
-                {
-                    value: event.target.value,
-                    tips: ``,
-                    disabled:false
+            let getInfo = {
+                type: 'reCharge',
+                url: 'my-account_recharge',
+                value: form.getFieldsValue().price.number,
+            }
+            dispatch(accountAc.getFuyouInfo(getInfo))
+                .then((res) => {
+                    console.log('给富有的');
+                    console.log(toOthersInfo);
+                    toOthersInfo = res.value;
+                    if (toOthersInfo.code == 406) {
+                    } else if (toOthersInfo != ``) {
+                        document.getElementById('webReg').submit();
+                    }
+                })
+                .catch(() => {
+                    //没获取到
+                    console.log('没获取到');
                 });
-        }
-    }
-    recharge(value){
-        value=this.refs.amount.value;
-        this.setState({
-            disabled:true
+            ;
+
         });
-        this.props.dispatch(memberAc.recharge(value));
+
+
+
+        /*value=this.refs.amount.value;
+
+        dispatch(accountAc.getFuyouInfo({type:'reCharge',url:'my-account_recharge',value:value}))
+            .then((res)=>{
+                console.log('给富有的')
+                toOthersInfo=res.value;
+                console.log(toOthersInfo);
+                if(toOthersInfo.code==406  ){
+
+                }else if(toOthersInfo!=``){
+                    document.getElementById('webReg').submit();
+                }
+            })
+            .catch(()=>{
+                //没获取到
+            });
+*/
+
+    }
+    checkPrice = (rule, value, callback) => {
+        const {availableBalance}=this.props.account.accountsInfo;
+        this.setState({
+            amount:value.number
+        });
+        if(value.number < 10){
+            callback('充值金额不能小于10元');
+            return false;
+        }
+        if(value.number >= 100000000){
+            callback(`充值金额必须小于100,000,000元`);
+            return false;
+        }
+        callback();
+        return;
     }
     render(){
-        let {isPosting}=this.props.member;
-        let {openAccountStatus,amount,dummyResult}=this.props.member.accountsInfo;
-        if(dummyResult.code==='0'){
-            this.props.dispatch(memberAc.modifyState({dummyResult:''}));
-            this.refs.amount.value='';
-            this.props.dispatch(memberAc.getInfo());
-        }
+        let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult}=this.props.account;
+        let {isCertification,isOpenAccount,bankName,bankNo,availableBalance}=accountsInfo;
+        const { getFieldDecorator,getFieldsError } = this.props.form;
         return (
             <div className="member__main recharge">
                 <Crumbs/>
                 <div className="member__cbox">
                     <Tab>
                         <div name="快速充值">
-                            <div className="tab_content" style={{width:'500px'}}>
+                            <div className="tab_content" style={{width:'400px'}}>
                                 {
-                                    (openAccountStatus === 0) ?
+                                    (isOpenAccount ===`0` ) ?
                                         <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先
                                             <Link to="/my-account/bank-card" style={{color: '#31aaf5'}}> 绑定银行卡！</Link>
                                         </p>
                                         : <div className="form__wrapper">
-                                            <dl className="form__bar">
-                                                <dt><label>可用余额:</label></dt>
-                                                <dd><i>{toMoney(amount.availableBalance)}</i>元</dd>
-                                            </dl>
-                                            <dl className="form__bar">
+                                            <Form layout="horizontal" onSubmit={this.handleSubmit}>
+                                                <FormItem
+                                                    { ...formItemLayout }
+                                                    label="可用余额"
+                                                >
+                                                    {(availableBalance>=0)?`${toMoney(availableBalance)}元`:``}
+                                                </FormItem>
+                                                <FormItem className='price'
+                                                    { ...formItemLayout }
+                                                    label="充值金额"
+                                                    required
+                                                >
+                                                    {getFieldDecorator('price', {
+                                                        initialValue: { number: `` },
+                                                        rules: [{ validator: this.checkPrice }],
+                                                    })(<PriceInput  />)}
+                                                </FormItem>
+                                                <FormItem className='tips'>
+                                                    {
+                                                        (toOthersInfo!=`` && toOthersInfo.code==406)?
+                                                            <div className="errorMessages">{toOthersInfo.message}</div>
+                                                            :``
+                                                    }
+                                                </FormItem>
+                                                <FormItem className='center'>
+                                                    {(isPosting) ? <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
+                                                            <Posting isShow={isPosting}/>
+                                                        </Button>
+                                                        :
+                                                        <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError())  }>确认</Button>
+                                                    }
+                                                </FormItem>
+
+                                            </Form>
+
+                                            {/*<dl className="form__bar">
                                                 <dt><label>充值金额:</label></dt>
                                                 <dd>
-                                                    <input  maxLength={10} type="text" className="textInput moneyInput" ref="amount" onChange={this.handleChange}　/>
+                                                    <input  maxLength={8} type="text" className="textInput moneyInput" ref="amount" onChange={this.handleChange}　/>
                                                     <span className="unit">元</span>
-
+                                                    <a href="">银行卡充值上限说明</a>
                                                 </dd>
-                                            </dl>
+                                            </dl>*/}
 
                                             {/*<div className="form__bar">
                                                 <p>充值后可用余额: <i id="money">1,000.00</i>元</p>
                                             </div>*/}
-                                            <div className="form__bar">
+                                            {/*<div className="form__bar">
+                                                {
+                                                    (toOthersInfo!=`` && toOthersInfo.code==406)? <div className="errorMessages">{toOthersInfo.message}</div>
+                                                        :``
+                                                }
                                                 {(this.state.tips!='')?
                                                     <div className="errorMessages">
                                                         {this.state.tips}
                                                     </div>:``
                                                 }
-                                            </div>
-                                            <div className="form__bar">
+                                            </div>*/}
+                                            {/*<div className="form__bar">
                                                 {isPosting ?
-                                                    <Button type="primary" htmlType="submit" className='pop__large'
-                                                            disabled={true}
-                                                    ><Posting isShow={isPosting}/>
+                                                    <Button type="primary" htmlType="submit" className='pop__large' disabled={true}>
+                                                        <Posting isShow={isPosting}/>
                                                     </Button>
                                                     :
                                                     <Button type="primary" htmlType="submit" className="pop__large"
@@ -125,10 +186,19 @@ class Recharge extends React.Component{
                                                         确认
                                                     </Button>
                                                 }
-                                            </div>
+                                            </div>*/}
                                         </div>
                                 }
                             </div>
+                            <form name="webReg" id="webReg" method="post"  action={toOthersInfo.url}>
+                                <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />
+                                <input type="hidden" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} />
+                                <input type="hidden" name="login_id" value={toOthersInfo.login_id} />
+                                <input type="hidden" name="amt" value={toOthersInfo.amt} />
+                                <input type="hidden" name="page_notify_url" value={toOthersInfo.page_notify_url} />
+                                <input type="hidden" name="back_notify_url" value={toOthersInfo.back_notify_url} />
+                                <input type="hidden" name="signature" value={toOthersInfo.signature} />
+                            </form>
                         </div>
                     </Tab>
                 </div>
@@ -157,9 +227,9 @@ class Recharge extends React.Component{
     }
 }
 function mapStateToProps(state) {
-    const { auth,member } = state.toJS();
+    const { auth,account } = state.toJS();
     return {
-        auth,member
+        auth,account
     };
 }
-export default connect(mapStateToProps)(Recharge);
+export default connect(mapStateToProps)(createForm()(Recharge));

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { Route, Link } from 'react-router-dom';
-import { Avatar } from 'antd';
-import './member-sidebar.less';
+import {accountAc} from "../../actions/account";
+import { Tooltip,Popconfirm } from 'antd';
 import MyAvatar from '../myAvatar/myAdatar';
-import  {memberAc}  from '../../actions/member'
+import './member-sidebar.less';
+
 const ListItemLink = ({ to, ...rest }) => (
   <Route path={to} children={({ match }) => (
     <li className={match ? 'active' : ''}>
@@ -14,29 +15,74 @@ const ListItemLink = ({ to, ...rest }) => (
   )}/>
 )
 
-class MemberSidebar extends React.Component {
-    componentDidMount() {
-        if(this.props.auth.isAuthenticated) {
-            this.props.dispatch(memberAc.getInfo());
-        }
+class MemberSidebar extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    componentWillMount() {
+        this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
+    }
+    handle_confirmOpen(event, history) {
+        history.push('/my-account/bank-card')
+    }
+    handle_confirmRisk(event, history) {
+        history.push('/my-settings/my-riskAssess')
     }
     render(){
-        let {member,auth}=this.props;
-        let {accountsInfo}=member;
-        //console.log('返回的会员信息');
-        //console.log(member);
+        const {account,auth,history}=this.props;
+        const {accountsInfo}=account;
+        const {photo,trueName,isOpenAccount,isRisk}=accountsInfo;
         return (
             <main className="main member">
                 <div className="wrapper">
                     <div className="member__sidebar">
                         <div className="member__info">
                             <div className="info">
-                                <MyAvatar photo={member.accountsInfo.photo}/>
-                                <div className="username">{ member.accountsInfo.userName}</div>
+                                <MyAvatar photo={photo}/>
+                                <div className="username">
+                                    {
+                                    (trueName!='')? trueName
+                                        :auth.user.userName
+                                    }
+                                </div>
                                 <div className="step">
-                                    <i className="iconfont icon-phone able1" onClick={()=>{this.props.history.push('/my-account/recharge')}}></i>
-                                    <i className={`iconfont icon-card able${accountsInfo.openAccountStatus}`} onClick={()=>{this.props.history.push('/my-account/bank-card')}}></i>
-                                    <i className={`iconfont icon-fxcp able${(!accountsInfo.riskStatus) || 0}`} onClick={()=>{this.props.history.push('/my-settings/my-riskAssess')}}></i>
+                                    <Tooltip
+                                        placement="topLeft"
+                                        title="已绑定手机号"
+                                        arrowPointAtCenter overlayClassName='myTooltip'
+                                    >
+                                        <i className="iconfont icon-phone able1" ></i>
+                                    </Tooltip>
+                                    {(isOpenAccount===`1`)?
+                                        <Tooltip
+                                            placement="topLeft"
+                                            title="已开户"
+                                            arrowPointAtCenter overlayClassName='myTooltip'
+                                        >
+                                            <i className='iconfont icon-card able1' ></i>
+                                        </Tooltip>
+                                        :<Popconfirm placement="top" title={`尚未开户，是否开户`}  okText="确定" cancelText="取消" trigger='hover'
+                                                     onConfirm={this.handle_confirmOpen.bind(this, event, history)}
+
+                                        >
+                                            <i className='iconfont icon-card able0'></i>
+                                        </Popconfirm>
+                                    }
+                                    {(isRisk===`1`)?
+                                        <Tooltip
+                                            placement="topLeft"
+                                            title="已测评"
+                                            arrowPointAtCenter overlayClassName='myTooltip'
+
+                                        >
+                                            <i className='iconfont icon-fxcp able1' ></i>
+                                        </Tooltip>
+                                        :<Popconfirm placement="top" title={`未测评，是否测评`} onConfirm={this.handle_confirmRisk.bind(this, event, history)} okText="确定" cancelText="取消" trigger='hover'>
+                                            <i className='iconfont icon-fxcp able0'></i>
+                                        </Popconfirm>
+                                    }
+
                                 </div>
                             </div>
                             <div className="action">
@@ -94,12 +140,12 @@ class MemberSidebar extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { auth,member } = state.toJS();
+    const { auth,account } = state.toJS();
     return {
         auth,
-        member
+        account
     };
 }
 
-export default connect(mapStateToProps)(MemberSidebar);
+export default connect(mapStateToProps)(withRouter(MemberSidebar));
 

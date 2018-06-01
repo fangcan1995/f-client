@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from 'antd';
-import './modal-auth.less'
 import { connect } from 'react-redux';
 import {memberAc} from "../../../actions/member";
 import {BbhAlert} from '../../../components/bbhAlert/bbhAlert';

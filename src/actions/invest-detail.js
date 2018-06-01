@@ -1,22 +1,18 @@
 import cFetch from './../utils/cFetch';
-import cookie from 'js-cookie';
-import {addCommas,checkMoney} from '../utils/cost';
-import {urls,token} from './../utils/url';
-import {url_putRList} from './member-settings';
-import parseJson2URL from "../utils/parseJson2URL";
-//let urls='http://172.16.1.228:9090';
-const url_invest_projects_loan=`${urls}/invest/projects/loan`; //投资信息
-const url_invest_transfer_loan=`${urls}/invest/transfer/loan` //债转投资信息
-const url_projects_info=`${urls}/invest/projects/info`  ;//标的详情
-const url_projects_record=`${urls}/invest/projects/record`;   //获取散标投资记录
-const url_transfer_record=`${urls}/invest/transfer/record`;//获取转让标投资记录
-const url_rpmtplan_page=`${urls}/invest/rpmtplan/page`;//获取还款记录
-const url_redEnvelopes=`${urls}/members/memberRedEnvelopes/list`; //获取特定标的可用红包列表
-const url_RateCoupons=`${urls}/members/memberRateCoupons/list`; //获取特定标的可用加息券列表
-const url_postInvest=`${urls}/invest/invest`; //提交投资申请
+import {getTips} from '../utils/famatData';
+import {postContent} from '../utils/formSetting';
+import {API_CONFIG} from "../config/api";
+
+const url_invest_projects_loan=API_CONFIG.hostWeb+API_CONFIG.getProjectsLoan; //投资信息
+const url_invest_transfer_loan=API_CONFIG.hostWeb+API_CONFIG.getTransferLoan; //债转投资信息
+const url_projects_info=API_CONFIG.hostWeb+API_CONFIG.getProjectsInfo  ;//标的详情
+const url_projects_record=API_CONFIG.hostWeb+API_CONFIG.getProjectsRecord;   //获取散标投资记录
+const url_transfer_record=API_CONFIG.hostWeb+API_CONFIG.getTransferRecord;//获取转让标投资记录
+const url_rpmtplan_page=API_CONFIG.hostWeb+API_CONFIG.getRpmtplanPage;//获取还款记录
+const url_availableRewards=API_CONFIG.hostWeb+API_CONFIG.getAvailableRewards; //获取特定标的可用红包列表
+const url_postInvest='http://172.16.1.228:9090/'+API_CONFIG.postInvestApp; //提交投资申请
 
 let investDetailActions = {
-
     //投资信息
     getInvestInfo: (id) => {
     return {
@@ -25,6 +21,7 @@ let investDetailActions = {
             const res = await cFetch(`${url_invest_projects_loan}/${id}` , {method: 'GET'}, false);
             const {code, data} = res;
             if (code == 0) {
+                //data.surplusAmount=230;
                 return data;
             } else {
                 throw res;
@@ -114,16 +111,67 @@ let investDetailActions = {
         }
     },
 
-    //获取可用红包
-    getRedEnvelopes: (id) => {
+    //获取可用奖励
+    getAvailableRewards:(id)=>{
         return {
-            type: 'investDetail/redEnvelopes/FETCH',
+            type: 'investDetail/availableRewards/FETCH',
             async payload() {
-                const res = await cFetch(`${url_redEnvelopes}?projectId=${id}` , {method: 'GET'}, true);
-                const {code, data} = res;
+                const res = await cFetch(`${url_availableRewards}?projectId=${id}` , {method: 'GET'}, true);
+                let {code, data} = res;
                 if (code == 0) {
-                    console.log('可用红包');
+                    console.log('可用奖励');
                     console.log(data);
+                    //假数据
+                    /*data=[
+                        {
+                            id:`1001`,  //编号
+                            type:`1`,   //类型 1 投资红包 2加息券
+                            title:`100元投资红包`,  //显示名称
+                            reAmount:100,       //核算金额
+                            validity:'2018年8月1日-2018年8月30日', //有效期
+                            default:true,   //是否推荐使用
+                        },
+                        {
+                            id:`1002`,
+                            type:2,
+                            title:`0.8%加息券`,
+                            reAmount:45,
+                            validity:'2018年8月1日-2018年8月30日', //有效期
+                            default:false,
+                        },
+                        {
+                            id:`1003`,
+                            type:2,
+                            title:`0.8%加息券`,
+                            reAmount:45,
+                            validity:'2018年8月1日-2018年8月30日', //有效期
+                            default:false,
+                        },
+                        {
+                            id:`1004`,
+                            type:2,
+                            title:`0.8%加息券`,
+                            reAmount:45,
+                            validity:'2018年8月1日-2018年8月30日', //有效期
+                            default:false,
+                        },
+                        {
+                            id:`1005`,
+                            type:2,
+                            title:`0.8%加息券`,
+                            reAmount:45,
+                            validity:'2018年8月1日-2018年8月30日', //有效期
+                            default:false,
+                        },
+                        {
+                            id:`1006`,
+                            type:2,
+                            title:`0.8%加息券`,
+                            reAmount:45,
+                            validity:'2018年8月1日-2018年8月30日', //有效期
+                            default:false,
+                        },
+                    ]*/
                     return data;
                 } else {
                     throw res;
@@ -132,49 +180,38 @@ let investDetailActions = {
         }
     },
 
-    //获取可用加息券
-    getRateCoupons: (id) => {
-        return {
-            type: 'investDetail/rateCoupons/FETCH',
-            async payload() {
-                const res = await cFetch(`${url_RateCoupons}?projectId=${id}` , {method: 'GET'}, true);
-                const {code, data} = res;
-                if (code == 0) {
-                    console.log('可用加息券');
-                    console.log(data);
-                    return data;
-                } else {
-                    throw res;
-                }
-            }
-        }
-    },
 
     //提交投资申请
-    postInvest:(params)  => {
+    postInvest:(params,times)  => {
         return {
             type: 'investDetail/invest/POST',
             async payload() {
-                //params = parseJson2URL(params);
-                const res = await cFetch(`${url_postInvest}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(params),
-                    },
-                    true);
 
-                console.log('投资提交后返回');
-                console.log(res);
-                let type = ``;
-                (res.code == 0) ? type = 'success' : type = 'error';
+                const res = await cFetch(`${url_postInvest}`, postContent(params), true);
+                //测试用
+                console.log('返回第'+(times+1)+'次请求的结果');
+                /*res.message='invest_101';
+                let messageCode=res.message;
+                //end
+                let type=``;
+                (res.code == 0)?type='success':type='error';
+                if((times+1)===5){
+                    messageCode='invest_102';
+                }*/
+                let type=``;
+                let messageCode=res.message;
+                (res.code == 0)?type='success':type='error';
                 return {
-                        code: res.code,
-                        type: type,
-                        message: res.message,
-                        description: res.message
-                };
+                    code:res.code,
+                    type:type,
+                    message:getTips(messageCode).message||``,
+                    description:res.description||``,
+                    userCode:getTips(messageCode).code,
+                    allowGoOn:getTips(messageCode).allowGoOn,
+                    times:times+1
+                }
+
+
             }
         }
     },
@@ -190,7 +227,17 @@ let investDetailActions = {
         type: 'investDetail/memberInfo/MODIFY_STATE',
         payload: json
     }),
+    //修改可用奖励
+    changeReward: json => ({
+        type: 'investDetail/availableRewards/CHANGE_DEFAULT',
+        payload: json
+    }),
 
+    //清空数据
+    clearData: json => ({
+        type: 'investDetail/CLEAR',
+        payload: json
+    }),
     //修改提交状态
     statePostResultModify: json => ({
         type: 'investDetail/postResult/MODIFY_STATE',
@@ -208,11 +255,13 @@ let investDetailActions = {
         type: 'investDetail/investRecords/MODIFY_STATE',
         payload: json
     }),
+
     //修改转让标投资记录状态
     stateInvestTransferRecordsModify: json => ({
         type: 'investDetail/investTransferRecords/MODIFY_STATE',
         payload: json
     }),
+
     //修改借款记录状态
     stateRepayRecordsModify: json => ({
         type: 'investDetail/repayRecords/MODIFY_STATE',

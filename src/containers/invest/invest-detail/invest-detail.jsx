@@ -9,6 +9,7 @@ import RiskNotice from './riskNotice/riskNotice';
 import  investDetailActions  from '../../../actions/invest-detail';
 import { connect } from 'react-redux';
 import './invest-detail.less';
+
 class InvestDetail extends React.Component{
     constructor(props) {
         super(props);
@@ -17,9 +18,11 @@ class InvestDetail extends React.Component{
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
         let proId=pathSnippets[1];
         let {dispatch}=this.props;
+        dispatch(investDetailActions.clearData()); //先清空数据
         dispatch(investDetailActions.getLoanInfo(proId)); //借款人信息披露
         dispatch(investDetailActions.getInvestRecords(proId));//投资记录
         dispatch(investDetailActions.getRepayRecords(proId)); //还款记录
+
     }
     render(){
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
@@ -53,11 +56,12 @@ class InvestDetail extends React.Component{
     }
 }
 function mapStateToProps(state) {
-    const { auth,investDetail,member } = state.toJS();
+    const { auth,investDetail,member,special } = state.toJS();
     return {
         auth,
         investDetail,
-        member
+        member,
+        special
     };
 }
 export default connect(mapStateToProps)(InvestDetail);
