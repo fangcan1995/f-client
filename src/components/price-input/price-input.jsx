@@ -4,18 +4,13 @@ import { amountExp,amountPointExp } from './../../utils/regExp'
 export default class PriceInput extends Component {
     constructor(props) {
         super(props);
-        console.log(this.props)
+        //console.log(this.props)
         const value = props.value || {};
         this.state = {
             number: value.number || 0,
         };
     }
-    componentWillMount() {
-        console.log('翟茹了');
-        console.log(this.props);
-        /*const number = parseInt(``, 10);
-        this.triggerChange({ number });*/
-    }
+
     componentWillReceiveProps(nextProps) {
         // Should be a controlled component.
         if ('value' in nextProps) {

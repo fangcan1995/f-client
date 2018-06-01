@@ -46,8 +46,8 @@ class Recharge extends React.Component{
             }
             dispatch(accountAc.getFuyouInfo(getInfo))
                 .then((res) => {
-                    console.log('给富有的');
-                    console.log(toOthersInfo);
+                    //console.log('给富有的');
+                    //console.log(toOthersInfo);
                     toOthersInfo = res.value;
                     if (toOthersInfo.code == 406) {
                     } else if (toOthersInfo != ``) {
@@ -62,25 +62,6 @@ class Recharge extends React.Component{
 
         });
 
-
-
-        /*value=this.refs.amount.value;
-
-        dispatch(accountAc.getFuyouInfo({type:'reCharge',url:'my-account_recharge',value:value}))
-            .then((res)=>{
-                console.log('给富有的')
-                toOthersInfo=res.value;
-                console.log(toOthersInfo);
-                if(toOthersInfo.code==406  ){
-
-                }else if(toOthersInfo!=``){
-                    document.getElementById('webReg').submit();
-                }
-            })
-            .catch(()=>{
-                //没获取到
-            });
-*/
 
     }
     checkPrice = (rule, value, callback) => {
