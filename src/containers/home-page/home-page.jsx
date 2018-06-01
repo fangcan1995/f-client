@@ -202,7 +202,7 @@ class HomePage extends Component {
           <div className="notice">
           <i className="notice__icon iconfont icon-gonggao"></i><span className='notice__tip'>最新公告:</span>
           <div className="notice__text">
-            {/* <Carousel vertical={true} autoplay key={homePage.notice.length}  wrapAround={true} 
+            <Carousel vertical={true} autoplay key={homePage.notice.length}  wrapAround={true} 
               renderTopCenterControls={({ currentSlide }) => (
                   <button></button>
                 )}
@@ -219,7 +219,7 @@ class HomePage extends Component {
                               </div>                        
                           )
                         })}
-              </Carousel> */}
+              </Carousel>
               </div> 
               {/* <p className="notice__text">关于巴巴汇金服反洗钱知识普及公告<time className="notice__date">[ 2017-1-6 ]</time></p> */}
               <a onClick={this.handleMoreClick.bind(this)} className="notice__more">更多 ></a>
