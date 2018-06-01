@@ -13,5 +13,5 @@ export const idcodeRegExp=/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/ //身份证
 export const investAmountExp=/^\+?[1-9][0-9]*$/;  //投资金额
 
 export const amountExp=/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/; //金额
-
+export const amountPointExp=/^([1-9][0-9]*)+(.{1})?$/; //金额
 

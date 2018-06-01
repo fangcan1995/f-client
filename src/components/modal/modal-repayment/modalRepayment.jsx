@@ -4,9 +4,9 @@ import {toMoney,toNumber,addCommas} from '../../../utils/famatData';
 import { Form,Row,Input,Button,Checkbox,Col } from 'antd';
 import { connect } from 'react-redux';
 import {memberLoansAc, repaymentsAc} from '../../../actions/member-loans';
-import {BbhAlert} from '../../bbhAlert/bbhAlert';
 import { hex_md5 } from '../../../utils/md5';
 import {formItemLayout, hasErrors, noop} from '../../../utils/formSetting';
+import {Posting,BbhAlert} from '../../../components/bbhAlert/bbhAlert';
 import moment from "moment";
 const createForm = Form.create;
 const FormItem = Form.Item;
@@ -38,8 +38,8 @@ class ModalRepayment extends React.Component {
                 sum : projectInfo.sum,//还款总额
                 paidFee: projectInfo.paidFee,//手续费
             }
-            console.log('要提交的还款信息');
-            console.log(appInfo);
+            //console.log('要提交的还款信息');
+            //console.log(appInfo);
             dispatch(repaymentsAc.postRepayment(appInfo));
 
         });
@@ -64,17 +64,14 @@ class ModalRepayment extends React.Component {
     }
     render() {
         //let {callback}=this.props.info;
-        let {postResult,projectInfo,isPosting}=this.props.memberLoans.repaymentPlans;
+        const {isPosting}=this.props.memberLoans
+        const {postResult,projectInfo}=this.props.memberLoans.repaymentPlans;
         const { getFieldDecorator,getFieldValue,getFieldsError } = this.props.form;
         const passwordProps = getFieldDecorator('password', {
             rules: [
                 { required: true, min: 6, message: '密码至少为 6 个字符' }
             ]
         });
-        const isReadProps = getFieldDecorator('isRead', {
-            valuePropName: 'checked',
-            initialValue: false,
-        })
         console.log('还款详情');
         console.log(projectInfo);
         return (

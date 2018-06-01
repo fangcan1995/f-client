@@ -105,7 +105,7 @@ class MyLoans extends React.Component {
                         </Tab>
                     </div>
                 }
-                <div className="member__cbox" style={{ padding:'20px 30px' }} id='mask'>
+                <div className="member__cbox myLoans" style={{ padding:'20px 30px' }} id='mask'>
                     <div className="filter">
                         <div className="filter__outer">
                             <div className="filter__inner">
@@ -158,7 +158,7 @@ class MyLoans extends React.Component {
                                                         </tr>
                                                     ) : ((status === 2) ? (
                                                         <tr key={`row-${i}`}>
-                                                            <td><p><a href={`/invest-detail/${l.projectId}`} target="_blank">{l.name}</a></p></td>
+                                                            <td><p><a href={`/invest-detail/${l.projectId}`} title={l.name} target="_blank">{l.name}</a></p></td>
                                                             <td>{l.money}</td>
                                                             <td>{l.loanExpiry}个月</td>
                                                             <td>{l.putTime ? moment(l.putTime).format('YYYY-MM-DD') : ''}</td>
@@ -169,7 +169,7 @@ class MyLoans extends React.Component {
                                                         </tr>
                                                     ) : ((status === 3) ? (
                                                         <tr key={`row-${i}`}>
-                                                            <td><p><a href={`/invest-detail/${l.projectId}`} target="_blank">{l.name}</a></p></td>
+                                                            <td><p><a href={`/invest-detail/${l.projectId}`} title={l.name} target="_blank">{l.name}</a></p></td>
                                                             <td>{l.money}</td>
                                                             <td>{l.loanExpiry}个月</td>
                                                             <td>{l.transferTime ? moment(l.transferTime).format('YYYY-MM-DD') : ''}</td>
@@ -187,7 +187,7 @@ class MyLoans extends React.Component {
                                                         </tr>
                                                     ) : ((status === 4) ? (
                                                         <tr key={`row-${i}`}>
-                                                            <td><p><a href={`/invest-detail/${l.projectId}`} target="_blank">{l.name}</a></p></td>
+                                                            <td><p><a href={`/invest-detail/${l.projectId}`} title={l.name} target="_blank">{l.name}</a></p></td>
                                                             <td>{l.money}</td>
                                                             <td>{l.loanExpiry}个月</td>
                                                             <td>{l.transferTime ? moment(l.transferTime).format('YYYY-MM-DD') : ''}</td>

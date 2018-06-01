@@ -109,19 +109,18 @@ class ModalLoanApp extends React.Component {
         if(applyMessage.type!=`success` ){
             return(
                 <div className="pop__loanApp">
-
                     <div className="form__wrapper" id="area">
                             <div className="fl">
                                 <Form layout="horizontal" onSubmit={this.handleSubmit}>
-                                    <FormItem
+                                    <FormItem className='price'
                                         { ...formItemLayout }
                                               label="借款金额"
                                               required
                                     >
                                         {getFieldDecorator('price', {
-                                            initialValue: { number: 0 },
+                                            initialValue: { number: `` },
                                             rules: [{ validator: this.checkPrice }],
-                                        })(<PriceInput />)}
+                                        })(<PriceInput />) }
                                     </FormItem>
                                     <FormItem
                                         { ...formItemLayout }

@@ -29,7 +29,7 @@ class SubjectList extends Component {
         }else{
             let filter={
                 noviceLoan:'',
-                loanExpiry:'',
+                totalrate:'',
                 rateGroup:'',
             };
             this.props.dispatch(sbListAc.stateSbModify({filter:filter}));
@@ -49,13 +49,13 @@ class SubjectList extends Component {
                         case '':
                             break;
                         case 1:
-                            Object.assign(filter,{annualRateStart:6,annualRateEnd:8})
+                            Object.assign(filter,{totalrateStart:6,totalrateEnd:8})
                             break;
                         case 2:
-                            Object.assign(filter,{annualRateStart:8,annualRateEnd:10})
+                            Object.assign(filter,{totalrateStart:8,totalrateEnd:10})
                             break;
                         case 3:
-                            Object.assign(filter,{annualRateStart:10,annualRateEnd:12})
+                            Object.assign(filter,{totalrateStart:10,totalrateEnd:12})
                             break;
                     }
                     delete filter[key];
@@ -191,7 +191,7 @@ class SubjectList extends Component {
                                             <tr>
                                                 <th>项目名称</th>
                                                 <th>投资总额</th>
-                                                <th className={`order${sort.annualRate}`} onClick={() => {this.sort('annualRate')}}>预期年化收益率<i></i></th>
+                                                <th className={`order${sort.totalrate}`} onClick={() => {this.sort('totalrate')}}>预期年化收益率<i></i></th>
                                                 <th className={`order${sort.loanExpiry}`} onClick={() => {this.sort('loanExpiry')}}>投资期限<i></i></th>
                                                 <th className={`order${sort.putTime}`} onClick={() => {this.sort('putTime')}}>发布时间<i></i></th>
                                                 <th className={`order${sort.surplusAmount}`} onClick={() => {this.sort('surplusAmount')}}>剩余金额<i></i></th>
@@ -208,7 +208,10 @@ class SubjectList extends Component {
                                                             <p><Link to={"/invest-detail/" + l['id']} title="longText">{l.name}</Link></p>
                                                         </td>
                                                         <td className="rtxt">{toMoney(l.money)}元</td>
-                                                        <td><em className="redTxt">{l.annualRate}%</em></td>
+                                                        <td>
+                                                            <em className="redTxt">{l.annualRate+l.raiseRate}%</em>
+                                                          {/*  <span className='raiseRate'>{(l.raiseRate>0)?`+${l.raiseRate}%`:``}</span>*/}
+                                                        </td>
                                                         <td>{l.loanExpiry}个月</td>
                                                         <td>
                                                             {

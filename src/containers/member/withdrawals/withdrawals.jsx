@@ -91,7 +91,7 @@ class Withdrawals extends React.Component{
                 <div className="member__cbox">
                     <Tab>
                         <div name="提现">
-                            <div className="tab_content" style={{width:'500px'}}>
+                            <div className="tab_content" style={{width:'400px'}}>
                                 {
                                     (isOpenAccount===`0`)?
                                         <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先

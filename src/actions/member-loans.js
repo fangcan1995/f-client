@@ -3,7 +3,7 @@ import parseJson2URL from './../utils/parseJson2URL';
 import {urls,token} from '../utils/url'
 import { API_CONFIG } from './../config/api';
 import readBlobAsDataURL from '../utils/readBlobAsDataURL';
-import {toMoney,toNumber,addCommas} from '../utils/famatData';
+import {toMoney, toNumber, addCommas, formatPostResult} from '../utils/famatData';
 import {postContent} from "../utils/formSetting";
 
 const url_loansCharts=API_CONFIG.hostWeb+API_CONFIG.getMyLoansCharts; //统计图数据
@@ -249,10 +249,11 @@ export const repaymentsAc={
         return {
             type: 'myLoans/repaymentPlans/FETCH',
             async payload() {
-                const res = await cFetch(`${url_postRepayment}2`, postContent(params), true,600000);
-                console.log('返回的结果');
-                console.log(res);
-                return {postResult: res};
+                const res = await cFetch(`${url_postRepayment}`, postContent(params), true,600000);
+
+                //console.log('返回的结果');
+                //console.log(res);
+                return {postResult: formatPostResult(res)};
             }
         }
     },

@@ -30,8 +30,8 @@ export const accountAc= {
                 const res = await cFetch(API_CONFIG.hostWeb+API_CONFIG.getMemberInfo,{method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
-                    console.log('后台返回的会员基础信息');
-                    console.log(res);
+                    //console.log('后台返回的会员基础信息');
+                    //console.log(res);
                     /*let mock={
                         isCertification:'1',	//是否实名认证（0：未实名；1：已实名）
                         isOpenAccount:'1',	//是否开户（0：未开户；1：已开户）

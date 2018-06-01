@@ -88,9 +88,9 @@ class TransactionRecord extends Component{
                                                         <Option value="1">充值服务费</Option>
                                                         <Option value="2">账户提现</Option>
                                                         <Option value="3">提现服务费</Option>
-                                                        <Option value="4">出借冻结</Option>
+                                                        {/*<Option value="4">出借冻结</Option>*/}
                                                         <Option value="5">资金划转</Option>
-                                                        <Option value="6">资金解冻</Option>
+                                                        {/*<Option value="6">资金解冻</Option>*/}
                                                         <Option value="7">本金回款</Option>
                                                         <Option value="8">利息回款</Option>
                                                         <Option value="9">债权转让</Option>

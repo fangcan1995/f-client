@@ -40,11 +40,14 @@ export const InvestButton=({status,id,...rest})=>{
         case 4:
             investTitle=`还款中`;
             break;
-        case 6:
-            investTitle=`已流标`;
-            break;
         case 5:
+            investTitle=`提前还款审核`;
+            break;
+        case 6:
             investTitle=`已结清`;
+            break;
+        case 7:
+            investTitle=`已流标`;
             break;
     }
     return(
