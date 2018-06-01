@@ -68,8 +68,8 @@ class MyInvestments extends React.Component{
         this.toggleModal('bbhModal',false);
     }
     render(){
-        console.log('-------myInvestments--------');
-        console.log(this.props);
+        //console.log('-------myInvestments--------');
+        //console.log(this.props);
         const {dispatch,memberInvestments}=this.props;
         const {myInvestments,isFetching}=memberInvestments;
         const {myList,charts,status,modalPlan,modalTransfer,currentPro,currentId}=myInvestments;

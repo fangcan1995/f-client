@@ -1,21 +1,31 @@
 import React ,{ Component } from "react";
-import {formatPostResult,getTips} from '../../utils/famatData';
+import {getTips} from '../../utils/famatData';
 import {Icon} from 'antd';
-let title,content,url,code,icon,allowGoOn;
-export  default  class PayAccount extends Component {
+import { Link,withRouter } from 'react-router-dom';
+/*let title,content,url,code,icon,allowGoOn;*/
+
+class PayAccount extends Component {
     constructor(props) {
         super(props);
+        //alert('跳转1');
         this.state = {
             timeOut: ``,
+            title:``,
+            content:``,
+            url:``,
+            code:``,
+            icon:``,
+            allowGoOn:``
         };
     }
 
     componentWillMount() {
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
-        console.log(pathSnippets);
-        title = pathSnippets[3];
-        content= pathSnippets[4];
-        url= pathSnippets[5];
+        //console.log(pathSnippets);
+        let title = pathSnippets[3];
+        let content= pathSnippets[4];
+        let url= pathSnippets[5];
+        let icon=``;
 
         if(title=='success'){
             icon=<Icon type="check-circle-o" style={{color:`#00a854`,fontSize:`86px` }} />;
@@ -25,29 +35,36 @@ export  default  class PayAccount extends Component {
         }else{
             icon=``;
         }
-        code=getTips(content).code;
+        let code=getTips(content).code;
+        let allowGoOn=getTips(content).allowGoOn;
 
-        allowGoOn=getTips(content).allowGoOn;
         this.setState({
-            timeOut:5
+            timeOut:5,
+            title:title,
+            content:content,
+            url:url,
+            icon:icon,
+            code:code,
+            allowGoOn:allowGoOn,
         })
     }
     componentDidMount() {
+        //alert('跳转2');
         console.log('跳转');
         /*if(this.state.title=='fail' && this.state.url!=``){
             window.location.href=url;
         }*/
-        if(allowGoOn){
+        if(this.state.allowGoOn){
             //console.log(url);
             //console.log('----------');
             ///console.log('/'+url.replace(/_/g, "/"));
             setTimeout(()=>{
-                window.location.href='/'+url.replace(/_/g, "/");
+                window.location.href='/'+this.state.url.replace(/_/g, "/");
             }, 5000);
         }
     }
     render(){
-        if(allowGoOn && this.state.timeOut && this.state.timeOut>0){
+        if(this.state.allowGoOn && this.state.timeOut && this.state.timeOut>0){
             let timeOut=this.state.timeOut;
             console.log(timeOut+'秒');
             setTimeout(()=>{
@@ -57,14 +74,14 @@ export  default  class PayAccount extends Component {
             }, 1000);
         }
         return(
-            <main className="main" className={title}>
+            <main className="main" className={this.state.title}>
                 <div className="wrapper" style={{ paddingTop:`100px`,textAlign:`center`}}>
-                    {icon}
+                    {this.state.icon}
                 </div>
                 <div className="wrapper" style={{ fontSize:`24px`,textAlign:`center`,paddingTop:`40px`}}>
-                    {getTips(content).message}
+                    {getTips(this.state.content).message}
                 </div>
-                {allowGoOn?
+                {this.state.allowGoOn?
                     <div className="wrapper" style={{ fontSize:`16px`,textAlign:`center`,paddingTop:`40px`}}>
                         <p>{this.state.timeOut}秒后页面将自动跳转</p>
                     </div>
@@ -75,3 +92,4 @@ export  default  class PayAccount extends Component {
 
     }
 }
+export  default  withRouter(PayAccount)

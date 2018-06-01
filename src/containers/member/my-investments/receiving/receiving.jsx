@@ -22,8 +22,8 @@ class Receiving extends React.Component{
         let {dispatch}=this.props;
         let {myReceiving,isFetching}=this.props.memberInvestments;
         let {myList,charts}=myReceiving;
-        console.log('回款记录');
-        console.log(myList);
+        //console.log('回款记录');
+        //console.log(myList);
         return(
             <div className="member__main receiving">
                 <Crumbs/>

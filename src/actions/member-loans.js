@@ -149,11 +149,11 @@ export const repaymentsAc={
                     let charts={
                         repayments:{
                             data:[
-                                {name:'逾期未还',value:allRepaymentDto.overdueNoRepay[1],instruction:` ${allRepaymentDto.overdueNoRepay[0]}笔 ${addCommas(allRepaymentDto.overdueNoRepay[1])}元`  },
-                                {name:'待还款',value:allRepaymentDto.repayments[1],instruction:` ${allRepaymentDto.repayments[0]}笔 ${addCommas(allRepaymentDto.repayments[1])}元`},
-                                {name:'逾期已还',value:allRepaymentDto.overdueRepay[1],instruction:` ${allRepaymentDto.overdueRepay[0]}笔 ${addCommas(allRepaymentDto.overdueRepay[1])}元`},
+                                {name:'逾期未还',value:allRepaymentDto.overdueNoRepay[1],instruction:` ${allRepaymentDto.overdueNoRepay[0]}期 ${addCommas(allRepaymentDto.overdueNoRepay[1])}元`  },
+                                {name:'待还款',value:allRepaymentDto.repayments[1],instruction:` ${allRepaymentDto.repayments[0]}期 ${addCommas(allRepaymentDto.repayments[1])}元`},
+                                {name:'逾期已还',value:allRepaymentDto.overdueRepay[1],instruction:` ${allRepaymentDto.overdueRepay[0]}期 ${addCommas(allRepaymentDto.overdueRepay[1])}元`},
                                 {name:'已提前还款',value:allRepaymentDto.advanceRepay[1],instruction:` ${allRepaymentDto.advanceRepay[0]}笔 ${addCommas(allRepaymentDto.advanceRepay[1])}元`},
-                                {name:'已正常还款',value:allRepaymentDto.normalRepay[1],instruction:` ${allRepaymentDto.normalRepay[0]}笔 ${addCommas(allRepaymentDto.normalRepay[1])}元`}
+                                {name:'已正常还款',value:allRepaymentDto.normalRepay[1],instruction:` ${allRepaymentDto.normalRepay[0]}期 ${addCommas(allRepaymentDto.normalRepay[1])}元`}
                             ]
                         },
                         todoDto:{
