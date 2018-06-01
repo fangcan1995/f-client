@@ -29,11 +29,11 @@ export default class PriceInput extends Component {
         if(isNumber=='true'){
              number=e.target.value;
         }else{
-             number = parseFloat(e.target.value || 0, 10);
+             number = parseInt(e.target.value) || '';
         }
         
         const pointExp = amountExp.test(number)||amountPointExp.test(number)
-        if (isNaN(number) || !pointExp ) {
+        if ((isNaN(number) || !pointExp)&&number ) {
             return;
         }
         if (!('value' in this.props)) {
@@ -43,20 +43,23 @@ export default class PriceInput extends Component {
     }
     triggerChange = (changedValue) => {
         // Should provide an event to pass value to Form.
+        console.log(changedValue)
         const onChange = this.props.onChange;
         if (onChange) {
             onChange(Object.assign({}, this.state, changedValue));
         }
     }
     render() {
-        const { size } = this.props;
+        const { size,isReadOnly } = this.props;
         const state = this.state;
+        console.log(isReadOnly)
         return (
             <span >
         <Input
             type="text"
             size={size}
             value={state.number}
+            readOnly={isReadOnly}
             onChange={this.handleNumberChange.bind(this)}
             style={{ width: '100%', marginRight: '3%' }}
             suffix={'元'}
