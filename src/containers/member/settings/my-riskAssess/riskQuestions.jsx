@@ -32,7 +32,7 @@ class riskQuestions extends React.Component {
         if(i==-1){
             this.setState({
                 tips:``,
-            });
+            }); 
         }
     }
     //提交答案
