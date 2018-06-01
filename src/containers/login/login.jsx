@@ -131,7 +131,7 @@ class PasswordForm extends Component {
     const newValue = {
       image_code: {
         name: 'image_code',
-        // validating: false,
+        validating: false,
         value: '',
         // errors: [message]
       }
@@ -278,7 +278,8 @@ class VCodeForm extends Component {
   constructor() {
     super();
     this.state={
-      verifyCodeCd:''
+      verifyCodeCd:'',
+      postResult:''
     }
     this.verifyCodeInputRef;
   }
@@ -397,11 +398,14 @@ componentWillUnmount() {
     const newValue = {
       image_code: {
         name: 'image_code',
-        validating: false,
-        value: getFieldValue('image_code'),
-        errors: [message]
+        // validating: false,
+        value: '',
+        // errors: [message]
       }
     };
+    this.setState({
+      postResult:message
+    })
     setFields(newValue);
   }
   loginFaileCallback = (reason) => {
@@ -410,9 +414,9 @@ componentWillUnmount() {
     const newValue = {
       verify_code: {
         name: 'verify_code',
-        validating: false,
-        value: getFieldValue('verify_code'),
-        errors: [message]
+        // validating: false,
+        value: '',
+        // errors: [message]
       }
     };
     setFields(newValue);
@@ -425,6 +429,9 @@ componentWillUnmount() {
       }
     };
     setFields(newValue2);
+    this.setState({
+      postResult:message
+    })
   }
   handleChange(){
     console.log(this.state.verifyCodeCd)
@@ -559,6 +566,14 @@ componentWillUnmount() {
                 >{ this.state.verifyCodeCd || '获取验证码' }</Button>
             </Col>
           </Row>
+        </FormItem>
+        <FormItem className='tips'>
+            {
+                (!this.state.postResult)?``
+                    :<p className="errorMessages text-center">
+                        {this.state.postResult}
+                    </p>
+            }
         </FormItem>
         <FormItem>
           {
