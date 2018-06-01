@@ -145,7 +145,7 @@ class HomePage extends Component {
               <p className="yield">
               新手专享年化收益率
                 <br />
-                <em><span>{homePage.sprog[0].annualRate}</span>%</em>
+                <em><span>{homePage.sprog[0].annualRate}</span>{homePage.sprog[0].raiseRate?`+${homePage.sprog[0].raiseRate}`:'.0'}%</em>
               </p>
                 {
                   auth.isAuthenticated?<button type="button" className="login__btn" onClick={ this.handleComeInClick.bind(this) }>立即加入</button>
@@ -202,7 +202,7 @@ class HomePage extends Component {
           <div className="notice">
           <i className="notice__icon iconfont icon-gonggao"></i><span className='notice__tip'>最新公告:</span>
           <div className="notice__text">
-            <Carousel vertical={true} autoplay key={homePage.notice.length}  wrapAround={true} 
+            {/* <Carousel vertical={true} autoplay key={homePage.notice.length}  wrapAround={true} 
               renderTopCenterControls={({ currentSlide }) => (
                   <button></button>
                 )}
@@ -219,7 +219,7 @@ class HomePage extends Component {
                               </div>                        
                           )
                         })}
-              </Carousel>
+              </Carousel> */}
               </div> 
               {/* <p className="notice__text">关于巴巴汇金服反洗钱知识普及公告<time className="notice__date">[ 2017-1-6 ]</time></p> */}
               <a onClick={this.handleMoreClick.bind(this)} className="notice__more">更多 ></a>
@@ -250,7 +250,7 @@ class HomePage extends Component {
                       <div className="sprog__item sprog__desc">
                         <h4>{item.name}<i style={{ backgroundImage: `url(${sprogIcon})` }}></i></h4>
                         <p>
-                          <em><span>{item.annualRate}</span>.0%</em>
+                          <em><span>{item.annualRate}</span>{item.raiseRate?`+${item.raiseRate}`:'.0'}%</em>
                           <br />
                           预期年化收益率
                         </p>
@@ -299,7 +299,7 @@ class HomePage extends Component {
                         <p className="desc"><em><span>{item.loanExpiry }</span>个月</em><br />锁定期</p>
                       </div>
                       <div className="card__body">
-                        <p className="yield"><em><span>{Math.floor(item.annualRate/1)}</span>.{(item.annualRate + '').split('.')[1]||0}%</em><br />预期年化收益率</p>
+                        <p className="yield"><em><span>{Math.floor(item.annualRate/1)}</span>.{(item.annualRate + '').split('.')[1]||0}%{item.raiseRate?`+${item.raiseRate}%`:''}</em><br />预期年化收益率</p>
                         <ul className="tags">
                           <li>最新推出</li>
                         </ul>
@@ -330,7 +330,7 @@ class HomePage extends Component {
                             <p className="desc"><em><span>{item.loanExpiry }</span>个月</em><br />锁定期</p>
                           </div>
                           <div className="card__body">
-                            <p className="yield"><em><span>{Math.floor(item.annualRate/1)}</span>.{(item.annualRate + '').split('.')[1]||0}%</em><br />预期年化收益率</p>
+                            <p className="yield"><em><span>{Math.floor(item.annualRate/1)}</span>.{(item.annualRate + '').split('.')[1]||0}%{item.raiseRate?`+${item.raiseRate}%`:''}</em><br />预期年化收益率</p>
                             <ul className="tags">
                               <li>最新推出</li>
                             </ul>
