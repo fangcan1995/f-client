@@ -3,9 +3,11 @@ import {getTips} from '../utils/famatData';
 import {postContent} from '../utils/formSetting';
 import {API_CONFIG} from "../config/api";
 
-const url_invest_projects_loan=API_CONFIG.hostWeb+API_CONFIG.getProjectsLoan; //投资信息
+//const url_invest_projects_loan=API_CONFIG.hostWeb+API_CONFIG.getProjectsLoan; //投资信息
+const url_invest_projects_loan=`http://172.16.1.221:9090/invest/projects/loan`;
 const url_invest_transfer_loan=API_CONFIG.hostWeb+API_CONFIG.getTransferLoan; //债转投资信息
 const url_projects_info=API_CONFIG.hostWeb+API_CONFIG.getProjectsInfo  ;//标的详情
+//const url_projects_info=`http://172.16.1.228:9090/invest/projects/info`;
 const url_projects_record=API_CONFIG.hostWeb+API_CONFIG.getProjectsRecord;   //获取散标投资记录
 const url_transfer_record=API_CONFIG.hostWeb+API_CONFIG.getTransferRecord;//获取转让标投资记录
 const url_rpmtplan_page=API_CONFIG.hostWeb+API_CONFIG.getRpmtplanPage;//获取还款记录
@@ -21,7 +23,8 @@ let investDetailActions = {
             const res = await cFetch(`${url_invest_projects_loan}/${id}` , {method: 'GET'}, false);
             const {code, data} = res;
             if (code == 0) {
-                //data.surplusAmount=230;
+                console.log('标的投资部分');
+                console.log(data);
                 return data;
             } else {
                 throw res;
@@ -52,7 +55,7 @@ let investDetailActions = {
             async payload() {
                 const res = await cFetch(`${url_projects_info}/${id}` , {method: 'GET'}, false);
                 const {code, data} = res;
-                console.log('返回的项目详情');
+                //console.log('返回的项目详情');
                 if (code == 0) {
                     return data;
                 } else {

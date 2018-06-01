@@ -251,8 +251,8 @@ export const repaymentsAc={
             async payload() {
                 const res = await cFetch(`${url_postRepayment}`, postContent(params), true,600000);
 
-                console.log('返回的结果');
-                console.log(res);
+                //console.log('返回的结果');
+                //console.log(res);
                 return {postResult: formatPostResult(res)};
             }
         }

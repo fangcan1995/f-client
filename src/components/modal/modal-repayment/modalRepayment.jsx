@@ -38,8 +38,8 @@ class ModalRepayment extends React.Component {
                 sum : projectInfo.sum,//还款总额
                 paidFee: projectInfo.paidFee,//手续费
             }
-            console.log('要提交的还款信息');
-            console.log(appInfo);
+            //console.log('要提交的还款信息');
+            //console.log(appInfo);
             dispatch(repaymentsAc.postRepayment(appInfo));
 
         });

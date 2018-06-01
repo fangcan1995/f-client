@@ -20,11 +20,11 @@ export const myMessagesAc= {
             type: 'mySettings/messages/FETCH',
             async payload() {
                 params = parseJson2URL(params);
-                console.log('提交后台的参数');
-                console.log(params);
+                //console.log('提交后台的参数');
+                //console.log(params);
                 const res = await cFetch(`${url_getMList}?` + params, {method: 'GET'}, true);
                 const {code, data} = res;
-                console.log(data);
+                //console.log(data);
                 if (data.page.total > 0) {
                     for (let index of data.page.list.keys()) {
                         data.page.list[index] = Object.assign({isShow: '0',isChecked: 0}, data.page.list[index]);

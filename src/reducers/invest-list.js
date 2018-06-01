@@ -11,7 +11,7 @@ const initialState = Immutable.fromJS({
             rateGroup:'',
         },
         sort:{
-            annualRate:0,
+            totalrate:0,
             loanExpiry:0,
             putTime:0,
             surplusAmount:0,

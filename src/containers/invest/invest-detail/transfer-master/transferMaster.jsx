@@ -241,7 +241,9 @@ class InvestBox extends React.Component {
         }
     }
     getStatusName(status,id){
+        console.log('状态是：'+status);
         let investButton=``;
+
         switch(status){
 
             case 1:
@@ -256,11 +258,14 @@ class InvestBox extends React.Component {
             case 4:
                 investButton=<Link to={`/invest-detail/${id}`} className="btn end">还款中</Link>;
                 break;
-            case 6:
-                investButton=<Link to={`/invest-detail/${id}`} className="btn end">已流标</Link>;
-                break;
             case 5:
+                investButton=<Link to={`/invest-detail/${id}`} className="btn end">提前还款审核</Link>;
+                break;
+            case 6:
                 investButton=<Link to={`/invest-detail/${id}`} className="btn end">已结清</Link>;
+                break;
+            case 7:
+                investButton=<Link to={`/invest-detail/${id}`} className="btn end">已流标</Link>;
                 break;
         }
         return investButton;
@@ -288,7 +293,7 @@ class InvestBox extends React.Component {
     //riskStatus (integer, optional): 是否风险测评（0：未测评；1：已测评） ,
     //auth.isAuthenticated true登录 false未登录
     getButton(){
-        console.log('aaaaaaaaaaaaaaaaaaaa');
+
         let {auth,member,investInfo}=this.props;
         console.log(this.props.auth);
         console.log(this.props.member);

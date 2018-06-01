@@ -33,7 +33,9 @@ class InvestDetailMaster extends React.Component {
                                 <dl className="item1">
                                     <dt className="subtitle">预期年化回报率</dt>
                                     <dd>
-                                        <i>{investInfo.annualRate}</i>%
+                                        <i>
+                                            {investInfo.annualRate}</i>%
+                                        {(investInfo.raiseRate>0)?`+${investInfo.raiseRate}%` :``}
                                         {(investInfo.noviceLoan=='1') ?
                                             <div className="addtips"><strong>新手</strong></div>
                                             :''
@@ -73,7 +75,7 @@ class InvestDetailMaster extends React.Component {
                                                max:max,
                                                //step:investInfo.increaseAmount,  //递增金额
                                                step:100,  //递增金额
-                                               rate:investInfo.annualRate,
+                                               rate:(investInfo.annualRate+investInfo.raiseRate),
                                                loanExpiry:investInfo.loanExpiry,
                                                noviceLoan:investInfo.noviceLoan //'1'新手标
                                            }}

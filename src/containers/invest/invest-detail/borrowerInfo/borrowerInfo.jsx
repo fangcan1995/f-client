@@ -5,8 +5,8 @@ import {addCommas, toMoney, toNumber,cardGetAge,cardGetSex} from "../../../../ut
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
     export default ({loanInfo,isFetching,...rest}) => {
         let {projectInfoBaseInfoDto,loanCreditCountDto,projectInfoLoanInfoDto,mortgageCarHis,mortgageHouseHis,filesList}=loanInfo;
-        console.log('------------标的详情-------------');
-        console.log(projectInfoBaseInfoDto);
+        //console.log('------------标的详情-------------');
+        //console.log(projectInfoBaseInfoDto);
         return (
             <ul className="m-intro">
                 <li>
