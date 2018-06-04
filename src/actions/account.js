@@ -6,7 +6,6 @@ import parseJson2URL from "../utils/parseJson2URL";
 import {API_CONFIG} from "../config/api";
 
 const url_uyouOpenAccountInfo=API_CONFIG.hostWeb+API_CONFIG.getFuiouOpenAccountInfo; //给富有的开户信息
-//const url_uyouOpenAccountInfo=`http://172.16.1.252:9090/payment/fuiou/account`;
 const url_uyouReOpenAccountInfo=API_CONFIG.hostWeb+API_CONFIG.getFuiouChangeCard; //给富有的换卡信息
 const url_uyouRecharge=API_CONFIG.hostWeb+API_CONFIG.getFuiouRecharge; //给富有的充值信息
 const url_uyouWithdrawals=API_CONFIG.hostWeb+API_CONFIG.getFuiouWithdrawals; //给富有的提现信息

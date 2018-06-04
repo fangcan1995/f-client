@@ -8,18 +8,17 @@ import {postContent} from "../utils/formSetting";
 
 const url_loansCharts=API_CONFIG.hostWeb+API_CONFIG.getMyLoansCharts; //统计图数据
 const url_loansList=API_CONFIG.hostWeb+API_CONFIG.getMyLoansList;//获取借款列表
-//const url_repaymentsAll=API_CONFIG.hostWeb+API_CONFIG.getMyRepaymentsAll;//项目提前还款时获取详情
-const url_repaymentsAll=`http://172.16.1.234:9090/repayment/ahead/apply/detail` //项目提前还款时获取详情
-//const url_postRepaymentsAll=API_CONFIG.hostWeb+API_CONFIG.postRepaymentsAll;//项目提前还款申请
-const url_postRepaymentsAll=`http://172.16.1.234:9090/repayment/ahead/apply`;  //项目提前还款申请
+const url_repaymentsAll=API_CONFIG.hostWeb+API_CONFIG.getMyRepaymentsAll;//项目提前还款时获取详情
+//const url_repaymentsAll=`http://172.16.1.234:9090/repayment/ahead/apply/detail` //项目提前还款时获取详情
+const url_postRepaymentsAll=API_CONFIG.hostWeb+API_CONFIG.postRepaymentsAll;//项目提前还款申请
+//const url_postRepaymentsAll=`http://172.16.1.234:9090/repayment/ahead/apply`;  //项目提前还款申请
 const url_repaymentsCharts=API_CONFIG.hostWeb+API_CONFIG.getMyRepaymentsCharts; //统计图数据
 const url_repaymentsList=API_CONFIG.hostWeb+API_CONFIG.getMyRepaymentsList;//获取借款列表
 const url_proList=API_CONFIG.hostWeb+API_CONFIG.getProList;//获取还款中和已完结的项目列表
-//const url_repayment=API_CONFIG.hostWeb+API_CONFIG.getRepaymentInfo;//还款时获取详情
-const url_repayment=`http://172.16.1.234:9090/repayment/normal/detail` ;//还款时获取详情
-
-//const url_postRepayment=API_CONFIG.hostWeb+API_CONFIG.postRepaymentApp;//还款
-const url_postRepayment=`http://172.16.1.234:9090/repayment/normal` ;//还款
+const url_repayment=API_CONFIG.hostWeb+API_CONFIG.getRepaymentInfo;//还款时获取详情
+//const url_repayment=`http://172.16.1.234:9090/repayment/normal/detail` ;//还款时获取详情
+const url_postRepayment=API_CONFIG.hostWeb+API_CONFIG.postRepaymentApp;//还款
+//const url_postRepayment=`http://172.16.1.234:9090/repayment/normal` ;//还款
 
 export const getImageCode = () => {
     return {

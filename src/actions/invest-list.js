@@ -3,9 +3,7 @@ import parseJson2URL from './../utils/parseJson2URL';
 import {API_CONFIG} from "../config/api";
 
 
-//const url_sblist=API_CONFIG.hostWeb+API_CONFIG.getSbList;//获取散标列表
-const url_sblist=`http://172.16.1.221:9090/invest/projects/loan/page`;
-
+const url_sblist=API_CONFIG.hostWeb+API_CONFIG.getSbList;//获取散标列表
 const url_transferlist=API_CONFIG.hostWeb+API_CONFIG.getTransferlist;//获取债转标列表
 
 export const sbListAc={

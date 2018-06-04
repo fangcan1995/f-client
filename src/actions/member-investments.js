@@ -9,10 +9,10 @@ import {postContent} from "../utils/formSetting";
 const url_investCharts=API_CONFIG.hostWeb+API_CONFIG.getMyInvestCharts; //统计图数据
 const url_investList=API_CONFIG.hostWeb+API_CONFIG.getMyInvestList;//获取投资列表
 const url_planList=API_CONFIG.hostWeb+API_CONFIG.getMyPlanList;  //获取回款记录
-//const url_postTransferApp=API_CONFIG.hostWeb+API_CONFIG.postTransferApp;//转让申请
-const url_postTransferApp=`http://172.16.1.234:9090/transfer/apply/`;
-//const url_getTransfer=API_CONFIG.hostWeb+API_CONFIG.getMyTransferInfo; //获取债转详情
-const url_getTransfer=`http://172.16.1.234:9090/transfer/apply/info/`; //获取债转详情
+const url_postTransferApp=API_CONFIG.hostWeb+API_CONFIG.postTransferApp;//转让申请
+//const url_postTransferApp=`http://172.16.1.234:9090/transfer/apply/`;
+const url_getTransfer=API_CONFIG.hostWeb+API_CONFIG.getMyTransferInfo; //获取债转详情
+//const url_getTransfer=`http://172.16.1.234:9090/transfer/apply/info/`; //获取债转详情
 const url_receivingCharts=API_CONFIG.hostWeb+API_CONFIG.getMyReceivingCharts;//回款统计
 const url_receivingList=API_CONFIG.hostWeb+API_CONFIG.getMyReceivingList;//回款列表
 

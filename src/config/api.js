@@ -24,7 +24,7 @@ export const API_CONFIG = {
     forgetVerifyCode: 'uaa/code/sms/forget/password',
     setTradePasswordVerifyCode:  '/uaa/code/sms/trade/password', //设置交易密码的短信接口
 
-    getSubjects:`information/subjects`,//专题S
+    getSubjects:`information/subjects`,//专题
 
     getSbList:`invest/projects/loan/page`, //获取散标列表
     getTransferlist:`invest/transfer/loan/page`, //获取债转标列表
@@ -37,6 +37,9 @@ export const API_CONFIG = {
     getRpmtplanPage:`invest/rpmtplan/page` ,//获取还款记录
     getAvailableRewards: `members/memberRedEnvelopes/list`, //获取特定标的可用奖励列表
     postInvestApp:`invest/invest` ,//提交投资申请
+
+    getApplyData:`loans/apply/qualification`, //借款申请详情
+    postLoanData:`loans/apply`,//借款申请
 
     getMemberInfo:`accounts/my/simpleInfo`, //获取会员帐户基础信息
     setCertification:`members/auth`,//实名认证
@@ -65,8 +68,8 @@ export const API_CONFIG = {
     getMyInvestCharts:`members/invest/statistics`, //我的投资统计图数据
     getMyInvestList:`members/investments`, //我的投资统计图数据
     getMyPlanList:`members/investments/receiving/`, //获取回款记录
-    postTransferApp:``, //转让申请
-    getMyTransferInfo:`members/investments/transfer/`, //获取债转详情
+    postTransferApp:`transfer/apply`, //转让申请
+    getMyTransferInfo:`transfer/apply/info`, //获取债转详情
 
     getMyReceivingCharts:`members/investments/receiving/statistics`, //回款统计
     getMyReceivingList:`members/investments/receiving`, //回款列表
@@ -74,16 +77,16 @@ export const API_CONFIG = {
 
     getMyLoansCharts:`members/loans/statistics`, //我的借款统计图数据
     getMyLoansList:`members/loans`,//获取借款列表
-    getMyRepaymentsAll:`members/loans/repayments/all/`,//项目提前还款时获取详情
+    getMyRepaymentsAll:`repayment/ahead/apply/detail`,//项目提前还款时获取详情
 
-    postRepaymentsAll:``,//项目提前还款申请
+    postRepaymentsAll:`repayment/ahead/apply`,//项目提前还款申请
     getMyRepaymentsCharts:`members/loans/repayments/statistics`, //统计图数据
     getMyRepaymentsList:`members/loans/repayments`,//获取借款列表
     getProList:`members/loans/proName`,//获取还款中和已完结的项目列表
 
-    getRepaymentInfo:`members/loans/repayments/`,//还款时获取详情
+    getRepaymentInfo:`repayment/normal/detail`,//还款时获取详情
 
-    postRepaymentApp:``,//还款申请
+    postRepaymentApp:`repayment/normal`,//还款申请
 
 };
 
