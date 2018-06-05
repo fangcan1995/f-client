@@ -80,7 +80,7 @@ class BankCard extends React.Component{
     render(){
         let {account}=this.props;
         let {postResult,accountsInfo,toOthersInfo}=account;
-        let {isCertification,isOpenAccount,bankName,bankNo,trueName}=account.accountsInfo;
+        let {isCertification,isOpenAccount,bankName,bankNo,trueName,isSetTradepassword}=account.accountsInfo;
         if(postResult.code==='0'){
             this.props.dispatch(accountAc.modifyState({postResult:''}));
             this.props.dispatch(accountAc.getAccountInfo());
@@ -97,7 +97,7 @@ class BankCard extends React.Component{
                                             <p>为保证账户资金安全，请绑定本人的银行卡</p>
                                             <div className="grayCard">
 
-                                                {(isCertification==='1')?
+                                                {(isCertification==='1' && isSetTradepassword===`1`)?
                                                     <a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalBindCard`,true)}>
                                                         <i className="iconfont add"></i>
                                                         <p>绑定银行卡！</p>
@@ -172,7 +172,7 @@ class BankCard extends React.Component{
                         visible={this.state.bbhModal}
                         closeFunc={()=>this.closeModal()}
                         moduleName={this.state.currentModule}
-                        stepslength={2}
+                        /*stepslength={2}*/
                         returnPage={`my-account_bank-card`}
                     >
 

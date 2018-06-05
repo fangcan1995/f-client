@@ -131,7 +131,7 @@ class MyAuthInfo extends React.Component {
                                                         <td className="operate"><a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalCertification`,true)}>认证</a></td>
                                                     </tr>
                                             }
-                                            {isOpenAccount==='1'?
+                                            {(isOpenAccount==='1' )?
                                                 <tr>
                                                     <th><i className="iconfont no icon-card"></i>银行卡</th>
                                                     <td className="Result">已开户</td>
@@ -150,7 +150,7 @@ class MyAuthInfo extends React.Component {
                                                         <td className="Result">未开户</td>
                                                         <td className="detail"></td>
                                                         <td className="operate">
-                                                            {(isCertification==='1')?<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalBindCard`,true)}>开户</a>
+                                                            {(isCertification==='1'&& isSetTradepassword===`1`)?<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalBindCard`,true)}>开户</a>
                                                                 :<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalSteps`,true)}>开户</a>
                                                                 /*<Popconfirm placement="top" title={`请您先完成实名认证`} onConfirm={this.confirm} okText="确定" cancelText="取消">
                                                                     <a href="javascript:void(0);" >开户</a>
@@ -224,7 +224,7 @@ class MyAuthInfo extends React.Component {
                         closeFunc={()=>this.closeModal()}
                         moduleName={this.state.currentModule}
                         repeat={true}
-                        stepslength={2}
+                        /*stepslength={2}*/
                         returnPage={`my-settings_my-authInfo`}
                         key={this.state.key}
                     >

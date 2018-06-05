@@ -39,7 +39,7 @@ export const postLoanData = params => {
     return {
         type: 'loan/POST_LOAN_DATA',
         async payload() {
-            let res = await cFetch(postLoanData, postContent(params), true);
+            let res = await cFetch(post_LoanData, postContent(params), true);
             return formatPostResult(res);
         }
     }
