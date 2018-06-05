@@ -151,9 +151,10 @@ class MyAuthInfo extends React.Component {
                                                         <td className="detail"></td>
                                                         <td className="operate">
                                                             {(isCertification==='1')?<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalBindCard`,true)}>开户</a>
-                                                                :<Popconfirm placement="top" title={`请您先完成实名认证`} onConfirm={this.confirm} okText="确定" cancelText="取消">
+                                                                :<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalSteps`,true)}>开户</a>
+                                                                /*<Popconfirm placement="top" title={`请您先完成实名认证`} onConfirm={this.confirm} okText="确定" cancelText="取消">
                                                                     <a href="javascript:void(0);" >开户</a>
-                                                                </Popconfirm>
+                                                                </Popconfirm>*/
                                                             }
                                                         </td>
                                                     </tr>

@@ -102,12 +102,13 @@ class BankCard extends React.Component{
                                                         <i className="iconfont add"></i>
                                                         <p>绑定银行卡！</p>
                                                     </a>
-                                                    :<Popconfirm placement="top" title={`请您先完成实名认证`} onConfirm={this.confirm} okText="确定" cancelText="取消">
+                                                    :<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalSteps`,true)}>绑定银行卡!</a>
+                                                    /*<Popconfirm placement="top" title={`请您先完成实名认证`} onConfirm={this.confirm} okText="确定" cancelText="取消">
                                                         <a href="javascript:void(0);" >
                                                             <i className="iconfont add"></i>
                                                             <p>绑定银行卡！</p>
                                                         </a>
-                                                    </Popconfirm>
+                                                    </Popconfirm>*/
                                                 }
 
                                             </div>
