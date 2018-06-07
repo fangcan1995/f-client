@@ -65,12 +65,12 @@ class Withdrawals extends React.Component{
         this.setState({
             amount:value.number
         });
-        if(value.number < 10){
+        if(parseFloat(value.number) < 10){
             callback('提现金额不能小于10元');
             return false;
         }
-        if(value.number > availableBalance){
-            callback(`提现金额不能超过${availableBalance}元`);
+        if(parseFloat(value.number) > parseFloat(availableBalance)){
+            callback(`提现金额不能超过${addCommas(availableBalance)}元`);
             return false;
         }
         callback();

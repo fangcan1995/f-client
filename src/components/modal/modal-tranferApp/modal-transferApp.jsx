@@ -69,11 +69,11 @@ class ModalTransferApp extends React.Component {
         this.setState({
             amount:value.number
         });
-        if(value.number < transferInfo.minInvestAmount){
-            callback(`转让金额不能小于${transferInfo.minInvestAmount}元`);
+        if(parseFloat(value.number) < parseFloat(transferInfo.minInvestAmount)){
+            callback(`转让金额不能小于${addCommas(transferInfo.minInvestAmount)}元`);
             return false;
         }
-        if(value.number > transferInfo.canTransferMoney){
+        if(parseFloat(value.number) > parseFloat(transferInfo.canTransferMoney)){
             callback(`转让金额不能超过投资金额`);
             return false;
         }

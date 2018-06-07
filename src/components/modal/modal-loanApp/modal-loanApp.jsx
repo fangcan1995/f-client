@@ -81,12 +81,12 @@ class ModalLoanApp extends React.Component {
     }
     checkPrice = (rule, value, callback) => {
         const {loans}=this.props;
-        if(value.number < 1000){
-            callback('借款金额不能小于1000元');
+        if(parseFloat(value.number) < 1000){
+            callback('借款金额不能小于1,000元');
             return false;
         }
-        if(value.number > loans.maxAmount){
-            callback(`借款金额不能超过${loans.maxAmount}元`);
+        if(parseFloat(value.number) > parseFloat(loans.maxAmount)){
+            callback(`借款金额不能超过${addCommas(loans.maxAmount)}元`);
             return false;
         }
         callback();

@@ -69,11 +69,11 @@ class Recharge extends React.Component{
         this.setState({
             amount:value.number
         });
-        if(value.number < 10){
+        if(parseFloat(value.number) < 10){
             callback('充值金额不能小于10元');
             return false;
         }
-        if(value.number >= 100000000){
+        if(parseFloat(value.number) >= 100000000){
             callback(`充值金额必须小于100,000,000元`);
             return false;
         }

@@ -21,6 +21,7 @@ class MemberSidebar extends Component {
     }
 
     componentWillMount() {
+        this.props.dispatch(accountAc.clear()); //清空数据
         this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
     }
     handle_confirmOpen(event, history) {
