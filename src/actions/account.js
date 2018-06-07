@@ -82,7 +82,8 @@ export const accountAc= {
 
                 break;
             case 'Withdrawals':
-                url=url_uyouWithdrawals+`?url=`+params.url+'&transAmt='+params.value;
+                url=url_uyouWithdrawals+`?url=`+params.url+'&transAmt='+params.value+'&tradePwd='+params.tradePwd;
+
                 break;
             default:
                 break;
