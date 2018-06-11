@@ -23,8 +23,9 @@ class ModalRepaymentApp extends React.Component {
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        const { dispatch, form,currentId,myLoans } = this.props;
-        const {projectInfo}=myLoans;
+        const { dispatch, form,currentId, memberLoans, auth } = this.props;
+        console.log(this.props)
+        const {projectInfo}=memberLoans.myLoans;
         form.validateFields((errors) => {
             if (errors) {
                 return false;

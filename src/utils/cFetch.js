@@ -11,16 +11,17 @@ const errorMessages = (res) => `${res.status} ${res.statusText}`;
 function check401(res) {
   // 登陆界面不需要做401校验
   if (res.status === 401 && !res.url.match('uaa/oauth/token')) {
-    Modal.error({
-      title: "登陆验证过期",
-      content: "您的登陆验证已过期，请重新登陆",
-      onOk: () => {
-        cookie.remove('token');
-        cookie.remove('user');
-        location.href = '/login';
-      }
-    });
-
+    // Modal.error({
+    //   title: "登陆验证过期",
+    //   content: "您的登陆验证已过期，请重新登陆",
+    //   onOk: () => {
+    //     cookie.remove('token');
+    //     cookie.remove('user');
+    //     location.href = '/login';
+    //   }
+    // });
+    cookie.remove('token');
+    cookie.remove('user');
     return Promise.reject(errorMessages(res));
 
   }

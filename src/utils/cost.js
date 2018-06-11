@@ -70,6 +70,6 @@ export  function income(val,y_per,time,type){
 
 //计算手续费
 export  function poundage(amount,rate){
-    return ((amount*rate).toFixed(2));
+    return ((amount*rate/100).toFixed(2));
 }
 

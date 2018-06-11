@@ -31,11 +31,16 @@ class ModalTransferApp extends React.Component {
     }
 
     componentDidMount () {
-        this.props.dispatch(memberInvestAc.getTransfer(this.props.currentId));
+        this.props.dispatch(memberInvestAc.getTransfer(this.props.currentId)).then(res=>{
+            this.setState({
+                amount:res.value.transferInfo.canTransferMoney
+            })
+        });
     }
-
+    
     //提交
     handleSubmit(e){
+        const {transferInfo}=this.props.memberInvestments.myInvestments;
         e.preventDefault();
         const { dispatch, form,account,currentId } = this.props;
         form.validateFields((errors) => {
@@ -47,6 +52,7 @@ class ModalTransferApp extends React.Component {
                 transAmt: form.getFieldsValue().price.number,
                 investId: currentId,
                 traderPassword:hex_md5(form.getFieldsValue().newPassword),
+                transFee:poundage(this.state.amount,transferInfo.transferRate)
             }
             console.log('准备提交的债转数据是：');
             console.log(appInfo);
@@ -119,7 +125,8 @@ class ModalTransferApp extends React.Component {
                                     {getFieldDecorator('price', {
                                         initialValue: { number: transferInfo.canTransferMoney },
                                         rules: [{ validator: this.checkPrice }],
-                                    })(<PriceInput isReadOnly={true}  />)}
+                                    })(<PriceInput   />)}
+                                    {/* isReadOnly={true} */}
                                 </FormItem>
                                 <FormItem
                                     { ...formItemLayout }
@@ -140,7 +147,7 @@ class ModalTransferApp extends React.Component {
                                     { ...formItemLayout }
                                     label="手续费"
                                 >
-                                    {addCommas(poundage(this.state.amount,transferInfo.proTransferFee))}元
+                                    {addCommas(poundage(this.state.amount,transferInfo.transferRate))}元
 
                                 </FormItem>
                                 <FormItem
@@ -148,7 +155,7 @@ class ModalTransferApp extends React.Component {
                                     label="预期到账金额"
                                 >
                                     {amount != 0 ?
-                                        addCommas(amount - poundage(this.state.amount, transferInfo.proTransferFee))
+                                        addCommas(amount - poundage(this.state.amount, transferInfo.transferRate))
                                         : `0.00`
                                     }元
                                 </FormItem>

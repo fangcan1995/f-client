@@ -74,14 +74,14 @@ export const  getAdvertTital = () => {
     }
   }
 }
-
+//本万地址http://172.16.1.221:9090
 export const getNovice  = (list) => {
     console.log('aaa222')
     list=0
     return {
       type: 'homePage/GET_NOVICE',
       async payload() {
-        const res = await cFetch(`http://172.16.1.221:9090/invest/homes/novice?` , { method: 'GET' }, false);
+        const res = await cFetch(`${urls}/invest/homes/novice?` , { method: 'GET' }, false);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)
@@ -98,7 +98,7 @@ export const getNovice  = (list) => {
     return {
       type: 'homePage/GET_STANDARD',
       async payload() {
-        const res = await cFetch(`http://172.16.1.221:9090/invest/homes/standard?num=4` , { method: 'GET' }, false);
+        const res = await cFetch(`${urls}/invest/homes/standard?num=4` , { method: 'GET' }, false);
         const { code, data } = res;
         if ( code == 0 ) {
             console.log(data)
