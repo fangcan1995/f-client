@@ -43,6 +43,7 @@ export default createReducer(initialState, {
         isPosting:false,
         isOpenOthers:false,
         toOthersInfo:``,
+        accountsInfo:``
         //verifyCodeCd:5,
     }),
     /*//清除提交结果

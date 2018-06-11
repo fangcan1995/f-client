@@ -11,8 +11,12 @@ import {hex_md5} from "../../../utils/md5";
 
 const createForm = Form.create;
 const FormItem = Form.Item;
+let configPasswordRegExp = null;
 
 class ModalLoginPassword extends React.Component {
+    constructor() {
+        super();
+    }
     static propTypes = {
         form: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired
@@ -20,6 +24,11 @@ class ModalLoginPassword extends React.Component {
     componentWillMount () {
         this.props.dispatch(memberAc.clear());
     }
+    configPasswordRegExp = ()=>{
+        const { form } = this.props;
+        configPasswordRegExp = new RegExp (`^${form.getFieldsValue().newPassword}$`);
+        return configPasswordRegExp
+    };
     //提交
     handleSubmit = (e) => {
         e.preventDefault();
@@ -62,6 +71,15 @@ class ModalLoginPassword extends React.Component {
                 trigger: ['onBlur', 'onChange']
             }]
         });
+        const configPasswordProps = getFieldDecorator('configPassword', {
+            validate: [{
+                rules: [
+                    { required: true, pattern: configPasswordRegExp, message: '与第一次输入的密码不一致' }
+
+                ],
+                trigger: ['onBlur', 'onChange']
+            }]
+        });
         if(postResult.type!=`success`){
             return(
                 <div className="pop__password">
@@ -93,29 +111,27 @@ class ModalLoginPassword extends React.Component {
                                             type="password"
                                             autoComplete="off"
                                             placeholder="设置6-16位的登录密码"
+                                            onBlur={this.configPasswordRegExp}
                                             onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
                                         />
                                     )
                                 }
                             </FormItem>
+
                             <FormItem
-                                {...formItemLayout}
+                                { ...formItemLayout }
                                 label="确认新密码"
                             >
-                                {getFieldDecorator('confirm', {
-                                    rules: [{
-                                        required: true, message: '请确认新密码',
-                                    }, {
-                                        validator: this.compareToFirstPassword,
-                                    }],
-                                })(
-                                    <Input
-                                        type="password"
-                                        autoComplete="off"
-                                        placeholder=""
-                                        onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
-                                    />
-                                )}
+                                {
+                                    configPasswordProps(
+                                        <Input
+                                            type="password"
+                                            autoComplete="off"
+                                            placeholder="请再次输入新密码"
+                                            onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
+                                        />
+                                    )
+                                }
                             </FormItem>
                             <div className='tips'>{postResult.message}</div>
                             <FormItem className='center'>
