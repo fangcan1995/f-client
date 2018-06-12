@@ -9,7 +9,7 @@ import { Modal } from 'antd';
 import ModalRepaymentApp from '../../../../components/modal/modal-repayment/modalRepaymentApp';
 import {toMoney,toNumber,addCommas} from '../../../../utils/famatData';
 import { connect } from 'react-redux';
-import  {memberLoansAc}  from '../../../../actions/member-loans';
+import {memberLoansAc, repaymentsAc} from '../../../../actions/member-loans';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import moment from "moment";
 import './my-loan.less';
@@ -63,6 +63,8 @@ class MyLoans extends React.Component {
     };
     closeModal(status){
         const {investInfo,dispatch}=this.props;
+        this.props.dispatch(memberLoansAc.stateModify({status:3,myList:``}));
+        this.props.dispatch(memberLoansAc.getList({status:3}));
         this.toggleModal('bbhModal',false);
     }
 

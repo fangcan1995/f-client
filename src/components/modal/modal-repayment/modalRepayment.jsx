@@ -4,6 +4,7 @@ import {toMoney,toNumber,addCommas} from '../../../utils/famatData';
 import { Form,Row,Input,Button,Checkbox,Col } from 'antd';
 import { connect } from 'react-redux';
 import {memberLoansAc, repaymentsAc} from '../../../actions/member-loans';
+import {accountAc} from '../../../actions/account';
 import { hex_md5 } from '../../../utils/md5';
 import {formItemLayout, hasErrors, noop} from '../../../utils/formSetting';
 import {Posting,BbhAlert} from '../../../components/bbhAlert/bbhAlert';
@@ -50,18 +51,9 @@ class ModalRepayment extends React.Component {
     }
     //回调
     modalClose(){
-        /*this.setState({
-            isReset:true,
-        },()=>{
-            let {onSuccess,dispatch}=this.props;
-            dispatch(accountAc.getAccountInfo());  //真实
-            onSuccess();
-        });*/
-        console.log('点击确认了');
         let {onSuccess,dispatch}=this.props;
-        dispatch(accountAc.getAccountInfo());  //真实
-        //清空postResult
         dispatch(memberLoansAc.stateModify({postResult:``}));
+        //模态框回调方法只清楚post结果，但不更新父组件数据
         onSuccess();
     }
     render() {
