@@ -122,7 +122,7 @@ class MyLoans extends React.Component {
                                            onClick={ () => { this.filter(2) } }>招标中</p>
                                     </div>
                                     <div className="filter__cell">
-                                        <p className={(status===3 || status===5)?'filter__opt filter__opt--active':'filter__opt'}
+                                        <p className={(status===3)?'filter__opt filter__opt--active':'filter__opt'}
                                            onClick={ () => { this.filter(3) } }>还款中</p>
                                     </div>
                                     <div className="filter__cell">
@@ -167,7 +167,7 @@ class MyLoans extends React.Component {
                                                             <td>{l.endDate ? moment(l.endDate).format('YYYY-MM-DD') : ''}</td>
                                                             <td>招标中</td>
                                                         </tr>
-                                                    ) : ((status === 3 || status===5) ? (
+                                                    ) : ((status === 3) ? (
                                                         <tr key={`row-${i}`}>
                                                             <td><p><a href={`/invest-detail/${l.projectId}`} title={l.name} target="_blank">{l.name}</a></p></td>
                                                             <td>{l.money}</td>
