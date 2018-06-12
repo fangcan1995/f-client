@@ -50,7 +50,8 @@ class ModalRepaymentApp extends React.Component {
     modalClose(){
         console.log('点击确认了');
         let {onSuccess,dispatch}=this.props;
-        //dispatch(accountAc.getAccountInfo());  //真实
+        //清空postResult
+        dispatch(memberLoansAc.stateModify({postResult:``}));
         onSuccess();
     }
 
