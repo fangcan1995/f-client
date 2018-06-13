@@ -66,8 +66,8 @@ class ModalTransferApp extends React.Component {
     modalClose(){
         let {onSuccess,onFail,dispatch}=this.props;
         //清空postResult
-        dispatch(accountAc.clear());
-        onSuccess();
+        dispatch(memberInvestAc.stateModify({postResult:``}));
+        onSuccess('transferApp');
     }
 
     checkPrice = (rule, value, callback) => {

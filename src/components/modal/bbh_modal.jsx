@@ -30,8 +30,7 @@ export default class BbhModal extends Component{
         this.setState({
             key:Math.random(),
         })
-        console.log('在这重新载入数据');
-        console.log(this.props)
+
         /*dispatch(accountAc.getAccountInfo());  //成功重新获取新户信息
         dispatch(investDetailActions.getInvestRecords(this.props.id));//成功重新获取投资记录
         dispatch(investDetailActions.getInvestInfo(this.props.id)); //成功重新获取标的信息*/

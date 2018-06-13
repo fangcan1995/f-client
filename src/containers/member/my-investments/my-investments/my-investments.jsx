@@ -63,8 +63,13 @@ class MyInvestments extends React.Component{
         this.toggleModal('modalTransfer',false,'');
         this.filter(2);
     }*/
-    closeModal(status){
-        this.props.dispatch(accountAc.clear()); //清空结果
+    closeModal(){
+        let {onSuccess,onFail,dispatch}=this.props;
+
+        if(this.state.currentModule==`ModalTransferApp`){
+            this.props.dispatch(memberInvestAc.getList({status:this.props.memberInvestments.myInvestments.status}));
+        }
+        //重新载入数据
         this.toggleModal('bbhModal',false);
     }
     render(){
