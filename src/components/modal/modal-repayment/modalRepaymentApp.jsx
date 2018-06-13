@@ -13,6 +13,9 @@ const createForm = Form.create;
 const FormItem = Form.Item;
 
 class ModalRepaymentApp extends React.Component {
+    state={
+        message:''
+    }
     componentDidMount () {
         const {onSuccess,onFail,currentId}=this.props;
         this.props.dispatch(memberLoansAc.getProject(currentId));
@@ -42,7 +45,12 @@ class ModalRepaymentApp extends React.Component {
             }
             console.log('提交后台的数据是');
             console.log(appInfo);
-            dispatch(memberLoansAc.postRepaymentApp(appInfo));
+            dispatch(memberLoansAc.postRepaymentApp(appInfo)).then(res=>{
+                console.log(res)
+                this.setState({
+                    message:res.value.postResult.message
+                })
+            });
 
         });
     }
@@ -151,14 +159,14 @@ class ModalRepaymentApp extends React.Component {
                                         }<a href="/subject_3/8" target="_blank">《提前还款规则》</a>
                                     </FormItem>
                                     <FormItem className='tips'>
-                                        {postResult.message}
+                                        {this.state.message}
                                     </FormItem>
                                     <FormItem  className='center'>
                                         {(isPosting) ?
                                             <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
                                                 <Posting isShow={isPosting}/>
                                             </Button>
-                                            : <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError()) || !getFieldValue('is_read') }>确认</Button>
+                                            : <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError()) || !getFieldValue('is_read') || this.state.message}>确认</Button>
 
                                         }
                                     </FormItem>

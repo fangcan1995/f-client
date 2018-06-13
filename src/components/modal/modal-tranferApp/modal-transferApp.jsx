@@ -22,6 +22,7 @@ class ModalTransferApp extends React.Component {
         super(props);
         this.state={
             amount:0,
+            message:''
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -56,7 +57,11 @@ class ModalTransferApp extends React.Component {
             }
             console.log('准备提交的债转数据是：');
             console.log(appInfo);
-            dispatch(memberInvestAc.postTransfer(appInfo))
+            dispatch(memberInvestAc.postTransfer(appInfo)).then(res=>{
+                this.setState({
+                    message:res.value.postResult.message
+                })
+            })
 
         });
 
@@ -167,7 +172,7 @@ class ModalTransferApp extends React.Component {
                                         )
                                     }<a href="/subject_3/11" target="_blank">《巴巴汇债权转让服务协议》</a>
                                 </FormItem>
-                                <div className='tips'>{postResult.message}</div>
+                                <div className='tips'>{this.state.message}</div>
                                 <FormItem className='center'>
                                     {(isPosting) ? <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
                                             <Posting isShow={isPosting}/>
