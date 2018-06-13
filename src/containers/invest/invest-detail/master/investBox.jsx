@@ -135,6 +135,7 @@ class MasterInvestBox extends Component {
                                     min:investInfo.min,
                                     max:investInfo.max,
                                     step:investInfo.step,
+                                    surplusAmount:investInfo.surplusAmount,
                                     callback:(obj)=>{
                                         this.setState({
                                             tips:obj.tips,

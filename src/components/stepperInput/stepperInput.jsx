@@ -32,7 +32,7 @@ export default class StepperInput extends Component{
         });
     }
     checkMoney(value){
-        const {min,max,step} = this.props.config;
+        const {min,max,step,surplusAmount} = this.props.config;
         console.log('金额分别是：')
         console.log(value);
         console.log(min);
@@ -47,7 +47,7 @@ export default class StepperInput extends Component{
                 }else if(value>max){
                     return {code:3,tips: `最高可投${max}元`};
                 }else{
-                    if((max-value)<min && max!=value){
+                    if((surplusAmount-value)<min && max!=value){
                         return {code:4,tips: `投资后剩余金额不能小于起投金额，请投满剩余金额或留出最小投资金额`};
                     }
                     if(value%step!=0 && max!=value){
