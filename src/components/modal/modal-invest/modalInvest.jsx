@@ -26,9 +26,10 @@ class ModalInvest extends React.Component {
     }
 
     componentDidMount () {
-        let {auth,investDetail,dispatch}=this.props;
-        let {id,annualRate,loanExpiry}=investDetail.investInfo;
-        dispatch(investDetailActions.getAvailableRewards(id));
+        let {auth,investDetail,dispatch,value}=this.props;
+        let {id,projectId,loanExpiry,isTransfer,transferPeriod}=investDetail.investInfo;
+
+        dispatch(investDetailActions.getAvailableRewards(id,value,isTransfer));
         dispatch(investDetailActions.statePostResultModify(``)); //清空结果
 
     }
@@ -59,6 +60,8 @@ class ModalInvest extends React.Component {
         console.log(this.props);
         let {availableRewards}=investDetail;
         let {id}=investDetail.investInfo;
+        let isTransfer=false;
+
         form.validateFields((errors) => {
             if (errors) {
                 return false;
@@ -66,14 +69,30 @@ class ModalInvest extends React.Component {
             let index=availableRewards.findIndex((x)=>
                 x.default ==true
             );
-            appInfo={
-                tradePassword:hex_md5(form.getFieldsValue().newPassword),
-                projectId:id,
-                investAmt:value,
-                ifTransfer:false,
-                investWay:1,
-                transfer:false,
+            if(investDetail.investInfo.isTransfer==`1`){
+                //债转标
+                appInfo={
+                    tradePassword:hex_md5(form.getFieldsValue().newPassword),
+                    transferProjectId:id,
+                    investAmt:value,
+                    isTransfer:false,
+                    investWay:1,
+                    transfer:true,
+                }
+            }else{
+                //散标
+                appInfo={
+                    tradePassword:hex_md5(form.getFieldsValue().newPassword),
+                    projectId:id,
+                    investAmt:value,
+                    isTransfer:false,
+                    investWay:1,
+                    transfer:false,
+                }
             }
+
+
+
             if(index!=-1){
                 appInfo.rewardId=availableRewards[index].id ; //奖励id
                 appInfo.rewardType=availableRewards[index].type ; //奖励类型
@@ -98,10 +117,15 @@ class ModalInvest extends React.Component {
         onSuccess();
     }
     render() {
+
         let {value,account,onFail,onSuccess,dispatch}=this.props;
         let {postResult,isPosting,availableRewards}=this.props.investDetail;
-        let {annualRate, loanExpiry} = this.props.investDetail.investInfo;
-
+        let {annualRate,raiseRate, loanExpiry,transferPeriod,isTransfer} = this.props.investDetail.investInfo;
+        let rate=annualRate;
+        if(raiseRate){
+            rate=rate+raiseRate;
+        }
+        console.log(rate);
         let allowInvest=false;
         if(!isPosting){
             allowInvest=true
@@ -168,7 +192,12 @@ class ModalInvest extends React.Component {
                                 { ...formItemLayout }
                                 label="预期赚取"
                             >
-                                <span  className="money">{income(value, annualRate, loanExpiry, 'm')}</span>元
+                                <span  className="money">
+                                    {
+                                        (isTransfer===`1`)?income(value,rate,transferPeriod, 'm')
+                                            :income(value,rate,loanExpiry, 'm')
+                                    }
+                                </span>元
 
                                 {(i==-1)? `` : `+${toMoney(availableRewards[i].reAmount)}元`}
                             </FormItem>

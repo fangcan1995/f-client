@@ -26,14 +26,15 @@ class InvestDetail extends React.Component{
     }
     render(){
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
-        let proId=pathSnippets[1];
+        const proId=pathSnippets[1];
+        const returnAmount=pathSnippets[2]||``;
         let {investDetail}=this.props;
         let {investInfo,memberInfo,loanInfo,investRecords,repayRecords,isFetching}=investDetail;
         //let project=investInfo.data;
         return (
             <main className="main sbDetail">
                 <div className="wrapper">
-                    <InvestDetailMaster id={proId} />
+                    <InvestDetailMaster id={proId} returnAmount={returnAmount} />
                     <div className="tab_info">
                         <Tab>
                             <div name="项目信息" >

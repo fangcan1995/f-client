@@ -7,7 +7,6 @@ import { Link,withRouter } from 'react-router-dom';
 class PayAccount extends Component {
     constructor(props) {
         super(props);
-        //alert('跳转1');
         this.state = {
             timeOut: ``,
             title:``,
@@ -21,7 +20,6 @@ class PayAccount extends Component {
 
     componentWillMount() {
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
-        //console.log(pathSnippets);
         let title = pathSnippets[3];
         let content= pathSnippets[4];
         let url= pathSnippets[5];
@@ -39,7 +37,7 @@ class PayAccount extends Component {
         let allowGoOn=getTips(content).allowGoOn;
 
         this.setState({
-            timeOut:5,
+            timeOut:20,
             title:title,
             content:content,
             url:url,
@@ -49,24 +47,15 @@ class PayAccount extends Component {
         })
     }
     componentDidMount() {
-        //alert('跳转2');
-        console.log('跳转');
-        /*if(this.state.title=='fail' && this.state.url!=``){
-            window.location.href=url;
-        }*/
         if(this.state.allowGoOn){
-            //console.log(url);
-            //console.log('----------');
-            ///console.log('/'+url.replace(/_/g, "/"));
             setTimeout(()=>{
                 window.location.href='/'+this.state.url.replace(/_/g, "/");
-            }, 5000);
+            }, 20000);
         }
     }
     render(){
         if(this.state.allowGoOn && this.state.timeOut && this.state.timeOut>0){
             let timeOut=this.state.timeOut;
-            console.log(timeOut+'秒');
             setTimeout(()=>{
                 this.setState({
                     timeOut:timeOut-1,

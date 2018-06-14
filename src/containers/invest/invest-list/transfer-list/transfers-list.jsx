@@ -7,7 +7,7 @@ import moment from "moment";
 import {tranferListAc} from "../../../../actions/invest-list"
 import Pagination from '../../../../components/pagination/pagination';
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
-import {InvestTab,ProgressBar,InvestButton} from '../investComponents';
+import {InvestTab,ProgressBar,TransferInvestButton} from '../investComponents';
 import '../invest-list.less';
 let orderBy={};
 class TransferList extends Component {
@@ -49,8 +49,6 @@ class TransferList extends Component {
         let {dispatch}=this.props;
         let {transferList,isFetching}=this.props.investList;
         let {list,sort}=transferList;
-        console.log('-----------transferList--------');
-        console.log(transferList);
         return (
             <main className="main transfer-list">
             <div className="wrapper" id='mask'>
@@ -80,7 +78,7 @@ class TransferList extends Component {
                                             list.list.map((l, i) => (
                                                 <tr key={`row-${i}`}>
                                                     <td className="t_table">
-                                                        <p><a href={"/invest-detail/" + l['proId']}  title="longText">{l.transNo}</a></p>
+                                                        <p><a href={"/transfer-detail/" + l['id']+'/'+ l['projectId']}  title="longText">{l.transNo}</a></p>
                                                     </td>
                                                     <td className="rtxt">{l.transAmt}元</td>
                                                     <td><em className="redTxt">{l.annualRate}%</em></td>
@@ -92,7 +90,7 @@ class TransferList extends Component {
                                                         <ProgressBar value={l.investmentProgress} />
                                                     </td>
                                                     <td>
-                                                        <InvestButton status={l.status} id={l.id} />
+                                                        <TransferInvestButton status={l.transStatus} id={l.id} projectId={l.projectId} />
                                                     </td>
                                                 </tr>
                                             ))
