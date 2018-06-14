@@ -3,7 +3,7 @@ import {getTips} from '../../utils/famatData';
 import {Icon} from 'antd';
 import { Link,withRouter } from 'react-router-dom';
 /*let title,content,url,code,icon,allowGoOn;*/
-
+let t;
 class PayAccount extends Component {
     constructor(props) {
         super(props);
@@ -37,7 +37,7 @@ class PayAccount extends Component {
         let allowGoOn=getTips(content).allowGoOn;
 
         this.setState({
-            timeOut:20,
+            timeOut:10,
             title:title,
             content:content,
             url:url,
@@ -48,11 +48,17 @@ class PayAccount extends Component {
     }
     componentDidMount() {
         if(this.state.allowGoOn){
-            setTimeout(()=>{
+            t=window.setTimeout(()=>{
                 window.location.href='/'+this.state.url.replace(/_/g, "/");
-            }, 20000);
+            }, 10000);
         }
     }
+
+    componentWillUnmount(){
+        //清除定时器
+        window.clearTimeout(t);
+    }
+
     render(){
         if(this.state.allowGoOn && this.state.timeOut && this.state.timeOut>0){
             let timeOut=this.state.timeOut;
