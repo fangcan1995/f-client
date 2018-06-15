@@ -5,9 +5,12 @@ import { connect } from 'react-redux';
 import {memberInvestAc} from "../../../actions/member-investments";
 import {Loading,NoRecord} from '../../../components/bbhAlert/bbhAlert';
 import {accountAc} from "../../../actions/account";
+import {clear} from "../../../actions/loan-index";
 
 class ModalPlan extends Component {
     componentDidMount () {
+        //清理
+        this.props.dispatch(memberInvestAc.stateModify({planList:``}));
         this.props.dispatch(memberInvestAc.getPlanList(this.props.currentId));
     }
 

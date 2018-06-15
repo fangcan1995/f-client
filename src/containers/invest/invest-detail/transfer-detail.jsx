@@ -17,29 +17,35 @@ class TransferDetail extends React.Component{
     }
     componentDidMount () {
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
-        let proId=pathSnippets[2];
-        let transferId=pathSnippets[1];
-        let {dispatch}=this.props;
-        //this.props.dispatch(investDetailActions.getTransferData(proId,transferId));
-        //dispatch(investDetailActions.getInvestInfo(transferId));
-        dispatch(investDetailActions.getLoanInfo(proId));
-        dispatch(investDetailActions.getInvestRecords(proId));
-        dispatch(investDetailActions.getTransferInvestRecords(transferId));
-        dispatch(investDetailActions.getRepayRecords(proId));
+        const transferId=pathSnippets[1];
+        const proId=pathSnippets[2];
+
+        const {dispatch}=this.props;
+        dispatch(investDetailActions.clearData()); //先清空数据
+        dispatch(investDetailActions.getLoanInfo(proId)); //借款人信息披露
+        dispatch(investDetailActions.getInvestRecords(proId));//投资记录
+        dispatch(investDetailActions.getRepayRecords(proId)); //还款记录
+        dispatch(investDetailActions.getTransferInvestRecords(transferId)); //债转投资记录
+
     }
+
     render(){
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
-        let transferId=pathSnippets[1];
+        const transferId=pathSnippets[1];
+        const proId=pathSnippets[2];
+        const returnAmount=pathSnippets[3];
+        console.log('回调的投资金额');
+        console.log(returnAmount);
         let {investDetail}=this.props;
-        let {investInfo,memberInfo,loanInfo,investRecords,investTransferRecords,repayRecords}=investDetail;
+        let {investInfo,memberInfo,loanInfo,investRecords,investTransferRecords,repayRecords,isFetching}=investDetail;
         return (
             <main className="main sbDetail">
                 <div className="wrapper">
-                    <TransferDetailMaster id={transferId}/>
+                    <TransferDetailMaster transferId={transferId} proId={proId} returnAmount={returnAmount} />
                     <div className="tab_info">
                         <Tab>
                             <div name="项目信息">
-                                <BorrowerInfo/>
+                                <BorrowerInfo loanInfo={loanInfo} isFetching={isFetching} />
                             </div>
                             <div name="转让投标记录" style={{marginBottom:'30px'}}>
                                 <TransferInvestRecords pageSize={10}/>
