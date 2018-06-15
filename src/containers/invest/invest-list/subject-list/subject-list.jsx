@@ -49,13 +49,13 @@ class SubjectList extends Component {
                         case '':
                             break;
                         case 1:
-                            Object.assign(filter,{totalrateStart:6,totalrateEnd:8})
+                            Object.assign(filter,{totalRateStart:6,totalRateEnd:8})
                             break;
                         case 2:
-                            Object.assign(filter,{totalrateStart:8,totalrateEnd:10})
+                            Object.assign(filter,{totalRateStart:8,totalRateEnd:10})
                             break;
                         case 3:
-                            Object.assign(filter,{totalrateStart:10,totalrateEnd:12})
+                            Object.assign(filter,{totalRateStart:10,totalRateEnd:12})
                             break;
                     }
                     delete filter[key];
