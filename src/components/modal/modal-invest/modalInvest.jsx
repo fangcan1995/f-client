@@ -7,7 +7,6 @@ import {accountAc} from "../../../actions/account";
 import {addCommas, getTips, toMoney} from "../../../utils/famatData";
 import {formItemLayout, hasErrors, noop} from "../../../utils/formSetting";
 import { Form,Row,Input,Button,Select,Checkbox,Col,Alert,Icon,Collapse  } from 'antd';
-import {tradePasswordRegExp } from '../../../utils/regExp';
 import {hex_md5} from "../../../utils/md5";
 
 
