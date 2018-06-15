@@ -37,7 +37,7 @@ class PayAccount extends Component {
         let allowGoOn=getTips(content).allowGoOn;
 
         this.setState({
-            timeOut:10,
+            timeOut:5,
             title:title,
             content:content,
             url:url,
@@ -50,7 +50,7 @@ class PayAccount extends Component {
         if(this.state.allowGoOn){
             t=window.setTimeout(()=>{
                 window.location.href='/'+this.state.url.replace(/_/g, "/");
-            }, 10000);
+            }, 5000);
         }
     }
 
