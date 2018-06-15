@@ -38,7 +38,6 @@ class TransferDetailMaster extends React.Component {
                 [modal]: false,
             });
         }
-        console.log(this.state);
     };
     rechargeCallback(){
         this.toggleModal(`modalRecharge`,false);

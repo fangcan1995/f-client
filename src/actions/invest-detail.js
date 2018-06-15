@@ -88,7 +88,7 @@ let investDetailActions = {
         return {
             type: 'investDetail/investTransferRecords/FETCH',
             async payload() {
-                const res = await cFetch(`${url_transfer_record}?pageNum=1&pageSize=1000&projectId=${id}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_transfer_record}?pageNum=1&pageSize=1000&transId=${id}` , {method: 'GET'}, false);
 
                 const {code, data} = res;
                 if (code == 0) {

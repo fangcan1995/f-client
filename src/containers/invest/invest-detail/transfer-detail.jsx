@@ -34,8 +34,6 @@ class TransferDetail extends React.Component{
         const transferId=pathSnippets[1];
         const proId=pathSnippets[2];
         const returnAmount=pathSnippets[3];
-        console.log('回调的投资金额');
-        console.log(returnAmount);
         let {investDetail}=this.props;
         let {investInfo,memberInfo,loanInfo,investRecords,investTransferRecords,repayRecords,isFetching}=investDetail;
         return (

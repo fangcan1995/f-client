@@ -106,8 +106,14 @@ class MasterInvestBox extends Component {
     closeModal(status){
         const {investInfo,dispatch}=this.props;
         dispatch(accountAc.getAccountInfo());  //成功重载数据
-        dispatch(investDetailActions.getInvestInfo(investInfo.id));
-        dispatch(investDetailActions.getInvestRecords(investInfo.id));//投资记录
+        if(investInfo.isTransfer==`1`){
+            dispatch(investDetailActions.getInvestInfo(investInfo.projectId));
+            dispatch(investDetailActions.getInvestRecords(investInfo.projectId));//投资记录
+            dispatch(investDetailActions.getTransferInvestRecords(investInfo.id)); //债转投资记录
+        }else{
+            dispatch(investDetailActions.getInvestInfo(investInfo.id));
+            dispatch(investDetailActions.getInvestRecords(investInfo.id));//投资记录
+        }
         this.toggleModal('bbhModal',false);
     }
     render(){
