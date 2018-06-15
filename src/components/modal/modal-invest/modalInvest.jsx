@@ -210,7 +210,7 @@ class ModalInvest extends React.Component {
                                         <Input
                                             type="password"
                                             autoComplete="off"
-                                            placeholder="设置6-16位的交易密码"
+                                            placeholder=""
                                             onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
                                         />
                                     )
