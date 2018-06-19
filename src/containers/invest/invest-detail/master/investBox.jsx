@@ -241,7 +241,7 @@ class MasterInvestBox extends Component {
                         closeFunc={()=>this.closeModal()}
                         moduleName={this.state.currentModule}
                         investAmount={this.state.investAmount}
-                        returnPage={`transfer-detail_${investInfo.id}_${investInfo.projectId}_${investInfo.returnAmount}`}
+                        returnPage={`transfer-detail_${investInfo.id}_${investInfo.projectId}_${this.state.investAmount}`}
                     >
                     </BbhModal>
                     :``

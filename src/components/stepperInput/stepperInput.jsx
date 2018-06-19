@@ -8,8 +8,10 @@ export default class StepperInput extends Component{
         this.cutClick = this.cutClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
         let defaultValue=``;
-        if(this.checkMoney(props.config.returnAmount).code==100){
-            defaultValue=props.config.returnAmount;
+        if(props.config.returnAmount){
+            if(this.checkMoney(props.config.returnAmount).code==100) {
+                defaultValue = props.config.returnAmount;
+            }
         }else{
             defaultValue=props.config.defaultValue;
         }
@@ -37,6 +39,8 @@ export default class StepperInput extends Component{
         });
     }
     checkMoney(value){
+        console.log('//////////');
+        console.log(value);
         const {min,max,step,surplusAmount} = this.props.config;
         if(value.length<=0){
             return {code:0,tips:'请输入投资金额'};
