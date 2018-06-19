@@ -137,7 +137,7 @@ class ModalTradePassword extends React.Component {
         const newPasswordProps = getFieldDecorator('newPassword', {
             validate: [{
                 rules: [
-                    { required: true, pattern: tradePasswordRegExp, message: '密码长度为6-16位，必须包含数字、字母、符号' }
+                    { required: true, pattern: tradePasswordRegExp, message: '请输入6-16位交易密码，可以为数字、字母、英文符号' }
 
                 ],
                 trigger: ['onBlur', 'onChange']

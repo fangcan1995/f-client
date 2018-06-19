@@ -106,9 +106,6 @@ export const memberInvestAc={
     },
     //债转申请
     postTransfer:(params) =>  {
-        //params = parseJson2URL(params);
-        console.log('给后台传的是body');
-        console.log(params);
         return {
             type: 'myInvest/investments/TRANSFER_APP',
             async payload() {

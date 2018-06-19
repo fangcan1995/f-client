@@ -7,9 +7,14 @@ export default class StepperInput extends Component{
         this.minus = this.minus.bind(this);
         this.cutClick = this.cutClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        let defaultValue=``;
+        if(this.checkMoney(props.config.returnAmount).code==100){
+            defaultValue=props.config.returnAmount;
+        }else{
+            defaultValue=props.config.defaultValue;
+        }
         this.state = {
-            value:props.config.defaultValue,
-            //tips:''
+            value:defaultValue,
         }
     }
     handleChange(event) {
@@ -32,11 +37,7 @@ export default class StepperInput extends Component{
         });
     }
     checkMoney(value){
-        const {min,max,step} = this.props.config;
-        console.log('金额分别是：')
-        console.log(value);
-        console.log(min);
-        console.log(max);
+        const {min,max,step,surplusAmount} = this.props.config;
         if(value.length<=0){
             return {code:0,tips:'请输入投资金额'};
         }else {
@@ -47,7 +48,7 @@ export default class StepperInput extends Component{
                 }else if(value>max){
                     return {code:3,tips: `最高可投${max}元`};
                 }else{
-                    if((max-value)<min && max!=value){
+                    if((surplusAmount-value)<min && max!=value){
                         return {code:4,tips: `投资后剩余金额不能小于起投金额，请投满剩余金额或留出最小投资金额`};
                     }
                     if(value%step!=0 && max!=value){

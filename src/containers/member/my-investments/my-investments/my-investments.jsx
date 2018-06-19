@@ -63,8 +63,13 @@ class MyInvestments extends React.Component{
         this.toggleModal('modalTransfer',false,'');
         this.filter(2);
     }*/
-    closeModal(status){
-        this.props.dispatch(accountAc.clear()); //清空结果
+    closeModal(){
+        let {onSuccess,onFail,dispatch}=this.props;
+
+        if(this.state.currentModule==`ModalTransferApp`){
+            this.props.dispatch(memberInvestAc.getList({status:this.props.memberInvestments.myInvestments.status}));
+        }
+        //重新载入数据
         this.toggleModal('bbhModal',false);
     }
     render(){
@@ -182,7 +187,7 @@ class MyInvestments extends React.Component{
                                                                 <td>{l.earnNextShdEarnAmou}</td>
                                                                 <td>
                                                                     <a onClick={() => this.toggleModal('ModalPlan', true, l.investId)}>回款计划</a>
-                                                                    <a onClick={() => this.toggleModal('ModalTransferApp', true, l.investId)}>债权转让</a>
+                                                                    <a onClick={() => this.toggleModal('ModalTransferApp', true, l.investId)} disabled={l.loanRefundTranStatus=='0'} className={ l.loanRefundTranStatus=='0'?'disabled':'' }>债权转让</a>
                                                                     <a href="">投资合同</a>
                                                                 </td>
                                                             </tr>
