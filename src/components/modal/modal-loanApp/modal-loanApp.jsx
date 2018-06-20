@@ -152,7 +152,7 @@ class ModalLoanApp extends React.Component {
                                             onChange={this.typeChange}
                                         >
                                             <Option value="1">按月付息，到期还本</Option>
-                                            <Option value="2">一次性还本还息</Option>
+                                            {/*<Option value="2">一次性还本还息</Option>*/}
                                         </Select>
 
                                     </FormItem>
