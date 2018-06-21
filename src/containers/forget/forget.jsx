@@ -98,6 +98,7 @@ componentWillUnmount() {
       const { send_terminal } = params
 
       creds.password = hex_md5(creds.password);
+      creds.config_password = hex_md5(creds.config_password)
       const queryParams = `?${parseJson2URL({...creds, send_terminal: send_terminal, forget_password_token: signup.verifyCode.token })}`;
       dispatch(forgetSignupUser(queryParams))
       .then(res => {
