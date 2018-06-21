@@ -15,6 +15,7 @@ class InvestDetailMaster extends React.Component {
         this.props.dispatch(investDetailActions.getInvestInfo(this.props.id));
     }
     render(){
+        let {returnAmount}=this.props;
         const {investInfo}=this.props.investDetail;
         const {minInvestAmount,maxInvestAmount,surplusAmount}=investInfo;
         let min,max;
@@ -77,7 +78,9 @@ class InvestDetailMaster extends React.Component {
                                                step:100,  //递增金额
                                                rate:(investInfo.annualRate+investInfo.raiseRate),
                                                loanExpiry:investInfo.loanExpiry,
-                                               noviceLoan:investInfo.noviceLoan //'1'新手标
+                                               noviceLoan:investInfo.noviceLoan, //'1'新手标
+                                               isTransfer:`0`,
+                                               returnAmount:returnAmount  //回调的金额
                                            }}
                                 />
                             :``}

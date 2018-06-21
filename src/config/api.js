@@ -35,7 +35,7 @@ export const API_CONFIG = {
     getProjectsRecord:`invest/projects/record` ,//获取散标投资记录
     getTransferRecord: `invest/transfer/record`,//获取转让标投资记录
     getRpmtplanPage:`invest/rpmtplan/page` ,//获取还款记录
-    getAvailableRewards: `members/memberRedEnvelopes/list`, //获取特定标的可用奖励列表
+    getAvailableRewards: `/members/memberRewards/list`, //获取特定标的可用奖励列表
     postInvestApp:`invest/invest` ,//提交投资申请
 
     getApplyData:`loans/apply/qualification`, //借款申请详情

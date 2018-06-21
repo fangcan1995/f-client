@@ -37,7 +37,7 @@ class MasterInvestBox extends Component {
         let {accountsInfo}=account;
         let {availableBalance}=accountsInfo;
         let value=this.state.investAmount-availableBalance;
-        dispatch(accountAc.getFuyouInfo({type:'reCharge',url:'invest-detail_'+investInfo.id,value:value}))
+        dispatch(accountAc.getFuyouInfo({type:'reCharge',url:'transfer-detail_'+investInfo.id+'_'+investInfo.projectId,value:value}))
             .then((res)=>{
                 let toOthersInfo=res.value;
                 if(toOthersInfo.code==406  ){
@@ -106,15 +106,26 @@ class MasterInvestBox extends Component {
     closeModal(status){
         const {investInfo,dispatch}=this.props;
         dispatch(accountAc.getAccountInfo());  //成功重载数据
-        dispatch(investDetailActions.getInvestInfo(investInfo.id));
-        dispatch(investDetailActions.getInvestRecords(investInfo.id));//投资记录
+        if(investInfo.isTransfer==`1`){
+            dispatch(investDetailActions.getInvestInfo(investInfo.projectId));
+            dispatch(investDetailActions.getInvestRecords(investInfo.projectId));//投资记录
+            dispatch(investDetailActions.getTransferInvestRecords(investInfo.id)); //债转投资记录
+        }else{
+            dispatch(investDetailActions.getInvestInfo(investInfo.id));
+            dispatch(investDetailActions.getInvestRecords(investInfo.id));//投资记录
+        }
         this.toggleModal('bbhModal',false);
     }
     render(){
         let {account,auth,investInfo,type}=this.props;
         let {isFetching,accountsInfo,toOthersInfo}=account;
         let {availableBalance,memberRedInfo,memberCoupon,postResult,isCertification,isOpenAccount,isRisk,riskLevel,isNovice,surplusAmount}=accountsInfo;
-
+        let loginReturnUrl=``;
+        if(investInfo.isTransfer==`1`){
+            loginReturnUrl=`/login?redirect=%2Ftransfer-detail%2F${investInfo.id}%2F${investInfo.projectId}`
+        }else{
+            loginReturnUrl=`/login?redirect=%2Finvest-detail%2F${investInfo.id}`
+        }
         return(
             <div className="form_area">
                 {investInfo===``?``
@@ -132,6 +143,7 @@ class MasterInvestBox extends Component {
                             </ul>
                             <StepperInput config = {{
                                     defaultValue:investInfo.min, //默认金额
+                                    returnAmount:investInfo.returnAmount,
                                     min:investInfo.min,
                                     max:investInfo.max,
                                     step:investInfo.step,
@@ -154,15 +166,15 @@ class MasterInvestBox extends Component {
                                     <ul className="others">
                                         <li>
                                             <strong>我的可用余额：</strong>
-                                            <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
+                                            <Link  to={loginReturnUrl} >登陆查看</Link>
                                         </li>
                                         <li>
                                             <strong>可用红包总计：</strong>
-                                            <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
+                                            <Link  to={loginReturnUrl} >登陆查看</Link>
                                         </li>
                                         <li>
                                             <strong>可用加息券：</strong>
-                                            <Link  to={`/login?redirect=%2invest-detail%${investInfo.id}`} >登陆查看</Link>
+                                            <Link  to={loginReturnUrl} >登陆查看</Link>
                                         </li>
                                         <li>
                                             <strong>预期可赚取：</strong>
@@ -174,7 +186,7 @@ class MasterInvestBox extends Component {
                                         </li>
                                     </ul>
                                     <div>
-                                        <Link  to={`/login?redirect=%2Finvest-detail%2F${investInfo.id}`} className="btn">我要登录</Link>
+                                        <Link  to={loginReturnUrl} className="btn">我要登录</Link>
                                     </div>
                                 </div>
                                 :<div>
@@ -206,16 +218,6 @@ class MasterInvestBox extends Component {
                                                 :(investInfo.noviceLoan=='1' && isNovice==='0')?<Button type="primary"  className="pop__wp100" disabled={true}>仅限新手</Button>
                                                 :<Button type="primary" onClick={() => this.toggleModal(`bbhModal`,true)} className="pop__wp100" disabled={isFetching || this.state.code!=100}>立即投资</Button>
 
-                                                /*(availableBalance<this.state.investAmount)?
-                                                    <Popconfirm placement="top" title={`您的帐户可用余额不足，是否充值`} onConfirm={()=>this.handle_confirmRechange()} okText="确定" cancelText="取消">
-                                                        <Button type="primary"  className="pop__wp100" disabled={isFetching}>立即投资</Button>
-                                                    </Popconfirm>
-                                                    :(this.state.investAmount>surplusAmount)?
-                                                        <Popconfirm placement="top" title={`根据您的风险测评等级不支持本次出借，重新测评？`} onConfirm={this.handle_confirmRisk} okText="确定" cancelText="取消">
-                                                            <Button type="primary"  className="pop__wp100" disabled={isFetching}>立即投资</Button>
-                                                        </Popconfirm>
-                                                        :<Button type="primary" onClick={() => this.toggleModal(`bbhModal`,true)} className="pop__wp100" disabled={isFetching || this.state.code!=100}>立即投资</Button>*/
-
                                         }
 
                                     </div>
@@ -239,7 +241,7 @@ class MasterInvestBox extends Component {
                         closeFunc={()=>this.closeModal()}
                         moduleName={this.state.currentModule}
                         investAmount={this.state.investAmount}
-                        returnPage={`invest-detail_${investInfo.id}`}
+                        returnPage={`transfer-detail_${investInfo.id}_${investInfo.projectId}_${this.state.investAmount}`}
                     >
                     </BbhModal>
                     :``

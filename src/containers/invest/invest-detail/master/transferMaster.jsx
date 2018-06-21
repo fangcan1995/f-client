@@ -23,9 +23,9 @@ class TransferDetailMaster extends React.Component {
         }
     }
     componentDidMount () {
-        //console.log(this.props);
-        this.props.dispatch(memberAc.getInfo());
-        this.props.dispatch(investDetailActions.getTransferInvestInfo(this.props.id));
+        const {proId,transferId}=this.props;
+        this.props.dispatch(investDetailActions.getTransferInvestInfo(transferId));
+        //this.props.dispatch(investDetailActions.getInvestInfo(proId));
     }
     //模态框开启关闭
     toggleModal=(modal,visile,id)=>{
@@ -38,7 +38,6 @@ class TransferDetailMaster extends React.Component {
                 [modal]: false,
             });
         }
-        console.log(this.state);
     };
     rechargeCallback(){
         this.toggleModal(`modalRecharge`,false);
@@ -82,7 +81,7 @@ class TransferDetailMaster extends React.Component {
     }
     render(){
         let {investAmount}=this.state;
-        let {dispatch,auth,member}=this.props;
+        let {dispatch,auth,member,returnAmount}=this.props;
         let {investInfo}=this.props.investDetail;
         return (
             <div>
@@ -91,7 +90,7 @@ class TransferDetailMaster extends React.Component {
                         <dl className="info">
                             <dt className="title">
                                 <h2>抵押标</h2>
-                                <p>{investInfo.transNo}</p>
+                                <p>{investInfo.transNo||``}</p>
                             </dt>
                             <dd className="content">
                                 <dl className="item1">
@@ -132,10 +131,14 @@ class TransferDetailMaster extends React.Component {
                                                surplusAmount:investInfo.surplusAmount,
                                                min:investInfo.minInvestAmount,
                                                max:(investInfo.maxInvestAmount<investInfo.surplusAmount)?investInfo.maxInvestAmount:investInfo.surplusAmount,
-                                               step:investInfo.increaseAmount,
-                                               rate:investInfo.annualRate,
+                                               step:100,  //递增金额
+                                               rate:(investInfo.annualRate+((investInfo.raiseRate)?investInfo.raiseRate:0)),
                                                loanExpiry:investInfo.transferPeriod,
-                                               noviceLoan:investInfo.noviceLoan //'1'新手标
+                                               noviceLoan:investInfo.noviceLoan, //'1'新手标
+                                               isTransfer:`1`,
+                                               projectId:investInfo.projectId,
+                                               returnAmount:returnAmount  //回调的金额
+
                                            }}
                                 />
                                 :``

@@ -11,7 +11,9 @@ const url_projects_record=API_CONFIG.hostWeb+API_CONFIG.getProjectsRecord;   //�
 const url_transfer_record=API_CONFIG.hostWeb+API_CONFIG.getTransferRecord;//获取转让标投资记录
 const url_rpmtplan_page=API_CONFIG.hostWeb+API_CONFIG.getRpmtplanPage;//获取还款记录
 const url_availableRewards=API_CONFIG.hostWeb+API_CONFIG.getAvailableRewards; //获取特定标的可用红包列表
-const url_postInvest=API_CONFIG.hostWeb+API_CONFIG.postInvestApp; //提交投资申请
+//const url_postInvest=API_CONFIG.hostWeb+API_CONFIG.postInvestApp; //提交投资申请
+
+const url_postInvest=`http://172.16.1.221:9090/`+API_CONFIG.postInvestApp; //提交投资申请
 
 let investDetailActions = {
     //投资信息
@@ -39,6 +41,7 @@ let investDetailActions = {
                 const res = await cFetch(`${url_invest_transfer_loan}/${transferId}` , {method: 'GET'}, false);
                 const {code, data} = res;
                 if (code == 0) {
+                    data.isTransfer=`1`;
                     return data;
                 } else {
                     throw res;
@@ -85,7 +88,7 @@ let investDetailActions = {
         return {
             type: 'investDetail/investTransferRecords/FETCH',
             async payload() {
-                const res = await cFetch(`${url_transfer_record}?pageNum=1&pageSize=1000&projectId=${id}` , {method: 'GET'}, false);
+                const res = await cFetch(`${url_transfer_record}?pageNum=1&pageSize=1000&transId=${id}` , {method: 'GET'}, false);
 
                 const {code, data} = res;
                 if (code == 0) {
@@ -114,11 +117,11 @@ let investDetailActions = {
     },
 
     //获取可用奖励
-    getAvailableRewards:(id)=>{
+    getAvailableRewards:(id,amount,isTransfer)=>{
         return {
             type: 'investDetail/availableRewards/FETCH',
             async payload() {
-                const res = await cFetch(`${url_availableRewards}?projectId=${id}` , {method: 'GET'}, true);
+                const res = await cFetch(`${url_availableRewards}?projectId=${id}&investAmount=${amount}&isTransfer=${isTransfer}` , {method: 'GET'}, true);
                 let {code, data} = res;
                 if (code == 0) {
                     console.log('可用奖励');

@@ -109,6 +109,7 @@ export default createReducer(initialState, {
         memberInfo:action.payload
     }),
     ['investDetail/CLEAR']:(state,action) => state.mergeDeep({
+        investInfo:``,
         investRecords:``,
         investTransferRecords:``,
         repayRecords:``,
