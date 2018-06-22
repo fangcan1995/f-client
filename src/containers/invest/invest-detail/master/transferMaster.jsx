@@ -90,7 +90,7 @@ class TransferDetailMaster extends React.Component {
                         <dl className="info">
                             <dt className="title">
                                 <h2>抵押标</h2>
-                                <p>{investInfo.transNo+((investInfo.raiseRate)?investInfo.raiseRate:0)}</p>
+                                <p>{investInfo.transNo||``}</p>
                             </dt>
                             <dd className="content">
                                 <dl className="item1">
