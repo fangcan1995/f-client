@@ -358,6 +358,9 @@ componentWillUnmount() {
       dispatch(sendVerifyCode(creds))
       .then(res => {
         this.verifyCodeInputRef.focus();
+        this.setState({
+          postResult:''
+        })
         return res;
       })
       .then(() => this.setTime())
