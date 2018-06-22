@@ -75,7 +75,7 @@ class InvestDetailMaster extends React.Component {
                                                min:min,
                                                max:max,
                                                //step:investInfo.increaseAmount,  //递增金额
-                                               step:100,  //递增金额
+                                               step:min,  //递增金额
                                                rate:(investInfo.annualRate+investInfo.raiseRate),
                                                loanExpiry:investInfo.loanExpiry,
                                                noviceLoan:investInfo.noviceLoan, //'1'新手标
