@@ -38,7 +38,7 @@ class TeamContent extends Component{
         let contentStatus = 0;
         
         if (contentStatus === 0) {
-            console.log(content.list)
+            console.log(match);
             return (
                 <div>
                     <div className="tabs__nav">
@@ -54,7 +54,11 @@ class TeamContent extends Component{
                                                 <dl>
                                                     <dt>
                                                         <h3>{item.title}</h3>
-                                                        <p>国汇财富投资管理（大连）股份有限公司</p>
+                                                        {
+                                                            match.params.childId !== '72' 
+                                                                ? <p>国汇财富投资管理（大连）股份有限公司</p>
+                                                                : null
+                                                        }
                                                     </dt>
                                                     <dd className="photo">
                                                         <img src={item.affIcon} />
@@ -69,13 +73,14 @@ class TeamContent extends Component{
                                 })
                             }
                         </ul>
+                        <div style={{paddingBottom: '30px'}}></div>
                     </div>
                     <Pagination config={
                         {
                             currentPage: content.pageNum,
                             pageSize: content.pageSize,
                             totalPage: content.pages,
-                            hidden: false,
+                            hidden: true,
                             paging: (obj) => {
                                 this.handlePage(obj.currentPage, obj.pageCount);
                             }

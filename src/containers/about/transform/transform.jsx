@@ -18,6 +18,7 @@ class TransformPage extends Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0, 0);
         const { childId, dispatch, aboutContent, match } = this.props;
         const status = aboutContent.status;
         if(!match.params.articalId) {
@@ -44,7 +45,7 @@ class TransformPage extends Component {
             );
         }
         else if (aboutContent.status === 1) {
-            if (pageInfo.list.length > 1) {
+            if (pageInfo.pages > 1 || pageInfo.list.length > 1) {
                 if (pageInfo.list[0].affIcon) {
                     return (
                         <TeamContent tabName={tabName}

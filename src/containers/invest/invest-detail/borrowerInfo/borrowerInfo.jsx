@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {addCommas, toMoney, toNumber,cardGetAge,cardGetSex} from "../../../../utils/famatData"
 import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
     export default ({loanInfo,isFetching,...rest}) => {
-        let {projectInfoBaseInfoDto,loanCreditCountDto,projectInfoLoanInfoDto,mortgageCarHis,mortgageHouseHis,filesList}=loanInfo;
+        let {projectInfoBaseInfoDto,loanCreditCountDto,projectInfoLoanInfoDto,mortgageCarHis,houseTypeName,mortgageHouseHis,filesList}=loanInfo;
         //console.log('------------标的详情-------------');
         //console.log(projectInfoBaseInfoDto);
         return (
@@ -78,7 +78,7 @@ import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
                                     <dt><h3>抵押物信息</h3></dt>
                                     <dd>
                                         <p><strong>房产地址:</strong>{mortgageHouseHis.houseAdress}</p>
-                                        <p><strong>房屋类型:</strong>{mortgageHouseHis.houseType}</p>
+                                        <p><strong>房屋类型:</strong>{houseTypeName}</p>
                                         <p><strong>建筑面积:</strong>{mortgageHouseHis.area}平方米</p>
                                         <p><strong>竣工年份:</strong>{mortgageHouseHis.houseAge}年</p>
                                         <p><strong>尚欠贷余额:</strong>{mortgageHouseHis.debtMoney}元</p>
