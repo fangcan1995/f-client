@@ -42,6 +42,7 @@ const articalList = (props) => {
                     hidden: false,
                     paging: (obj) => {
                         handlePage(obj.currentPage, obj.pageCount);
+                        window.scrollTo(0, 0);
                         //this.loadData(obj.currentPage,obj.pageCount);
                     }
                 }

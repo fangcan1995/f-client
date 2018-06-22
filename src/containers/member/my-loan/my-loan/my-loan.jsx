@@ -156,7 +156,7 @@ class MyLoans extends React.Component {
                                                             <td>{l.loanExpiry}个月</td>
                                                             <td>{l.refundWayName}</td>
                                                             <td>{l.applyTime ? moment(l.applyTime).format('YYYY-MM-DD') : ''}</td>
-                                                            <td>申请中</td>
+                                                            <td>{l.statusName}</td>
                                                         </tr>
                                                     ) : ((status === 2) ? (
                                                         <tr key={`row-${i}`}>

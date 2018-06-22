@@ -104,7 +104,7 @@ class HomePage extends Component {
   render() {
     const { homePage,auth } = this.props;
     
-   console.log(homePage )
+   console.log(homePage)
     return (
     <main className="main home-page" id="home-page">
       <div className="banner" >
@@ -286,7 +286,7 @@ class HomePage extends Component {
           <ul className="standard__content">
           {
             homePage.standard.map((item)=>{
-              if(item.type=='project'){
+              /* if(item.type=='project'){ */
               return (      
                 <li className="standard__card" key={item.id} onClick={this.handleStandardClick.bind(this,item.id)}>
                     <div className="card__scroll">
@@ -317,40 +317,11 @@ class HomePage extends Component {
                     </div>
                 </li>
                
-              )}else if(item.type=="transfer"){
-                return (
-                    <li className="standard__card" key={item.id} onClick={this.handleStandardClick.bind(this,item.standardId)}>
-                        <div className="card__scroll">
-                          <div className="card__header">
-                            <h4 className="tit">{item.name}</h4>
-                            <p className="tip">起投金额&nbsp;<em>{item.minInvestAmount }</em>元</p>
-                            <ul className="tags">
-                              <li>{item.refundWayString }</li>
-                            </ul>
-                            <p className="desc"><em><span>{item.loanExpiry }</span>个月</em><br />锁定期</p>
-                          </div>
-                          <div className="card__body">
-                            <p className="yield"><em><span>{Math.floor(item.annualRate/1)}</span>.{(item.annualRate + '').split('.')[1]||0}%{item.raiseRate?`+${item.raiseRate}%`:''}</em><br />预期年化收益率</p>
-                            <ul className="tags">
-                              <li>最新推出</li>
-                            </ul>
-                            <div className="progress">
-                              <div className="progress__bar">
-                                <div className="progress__bar--cur" style={{width: `${item.investmentProgress }%`}}></div>
-                              </div>
-                              <p className="progress__percent">{item.hadPercent}</p>
-                              <p className="progress__number">{item.moneyEnd }万/{item.money }万</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="card__footer">
-                          <a onClick={this.handleStandardClick.bind(this,item.standardId)} className="join">立即加入</a>
-                        </div>
-                    </li>
-                )
-              }
+              )
             })
-          }
+
+            
+        } 
             
             
             
@@ -403,7 +374,7 @@ class HomePage extends Component {
                   <div className="dynamicImg__outer">
                     <img src={small} alt="" className="news__img dynamicImg__inner" onClick={this.handleAdClick.bind(this,'')} />
                   </div>
-                  <p className="news__text">巴巴汇金服资金存管上线</p>
+                  <p className="news__text"></p>
                 </div>
               }
               

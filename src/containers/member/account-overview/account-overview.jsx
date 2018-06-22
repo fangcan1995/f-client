@@ -52,7 +52,7 @@ class AccountOverview extends React.Component{
                             </div>
                             <div className="infoLine">
                                 <div>昨日收益:
-                                    {(yestEarns)?<span className='money'>{toMoney(yestEarns[0].data[yestEarns[0].data.length-1])}</span>
+                                    {(yestEarns)?<span className='money'>{toMoney(yestEarns[0].data[yestEarns[0].data.length-2])}</span>
                                         :``
                                     }
                                     &nbsp;元

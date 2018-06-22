@@ -49,6 +49,9 @@ export const InvestButton=({status,id,...rest})=>{
         case 7:
             investTitle=`已流标`;
             break;
+        case 8:
+            investTitle=`已结束`;
+            break;
     }
     return(
         <Link to={`/invest-detail/${id}`} className={`btn ${className}`}>{investTitle}</Link>

@@ -363,7 +363,7 @@ class ConstantTable extends Component {
                                         <option value="2018">2018</option>
                                     </select>
                                 </div>
-                                <div className="investLine">
+                                {/* <div className="investLine">
                                     <div className="pieChartCell">
                                         <h4>性别分布</h4>
                                         <div className="pieChart">
@@ -375,7 +375,7 @@ class ConstantTable extends Component {
                                                 showLegend='false'
                                                 unit='人'
                                                 labelLine='false'
-                                                /* color={['#e32323', '#498911']} */
+                                                color={['#e32323', '#498911']}
                                             />
                                         </div>
                                     </div>
@@ -393,7 +393,7 @@ class ConstantTable extends Component {
 
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
