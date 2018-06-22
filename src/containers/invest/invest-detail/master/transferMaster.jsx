@@ -51,11 +51,11 @@ class TransferDetailMaster extends React.Component {
         dispatch(investDetailActions.statePostResultModify(newState));
     }
     getStatusName(status,id,transferId){
-        console.log('状态是：'+status);
+        //console.log('状态是：'+status);
         let investButton=``;
         switch(status){
             case 1:
-                investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">待发布</Link>;
+                investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">待审核</Link>;
                 break;
             case 2:
                 investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn start">立即加入</Link>;
@@ -67,12 +67,6 @@ class TransferDetailMaster extends React.Component {
                 investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">还款中</Link>;
                 break;
             case 5:
-                investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">提前还款审核</Link>;
-                break;
-            case 6:
-                investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">已结清</Link>;
-                break;
-            case 7:
                 investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">已流标</Link>;
                 break;
 

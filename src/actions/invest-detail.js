@@ -11,9 +11,8 @@ const url_projects_record=API_CONFIG.hostWeb+API_CONFIG.getProjectsRecord;   //�
 const url_transfer_record=API_CONFIG.hostWeb+API_CONFIG.getTransferRecord;//获取转让标投资记录
 const url_rpmtplan_page=API_CONFIG.hostWeb+API_CONFIG.getRpmtplanPage;//获取还款记录
 const url_availableRewards=API_CONFIG.hostWeb+API_CONFIG.getAvailableRewards; //获取特定标的可用红包列表
-//const url_postInvest=API_CONFIG.hostWeb+API_CONFIG.postInvestApp; //提交投资申请
-
-const url_postInvest=`http://172.16.1.221:9090/`+API_CONFIG.postInvestApp; //提交投资申请
+const url_postInvest=API_CONFIG.hostWeb+API_CONFIG.postInvestApp; //提交投资申请
+//const url_postInvest=`http://172.16.1.221:9090/`+API_CONFIG.postInvestApp; //提交投资申请
 
 let investDetailActions = {
     //投资信息
@@ -24,9 +23,9 @@ let investDetailActions = {
             const res = await cFetch(`${url_invest_projects_loan}/${id}` , {method: 'GET'}, false);
             const {code, data} = res;
             if (code == 0) {
-                console.log('标的投资部分');
-                console.log(data);
-                data.surplusAmount=5800;
+                //console.log('标的投资部分');
+                //console.log(data);
+                //data.surplusAmount=5800;
                 return data;
             } else {
                 throw res;

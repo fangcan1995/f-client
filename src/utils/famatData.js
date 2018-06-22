@@ -161,6 +161,30 @@ export function getTips(messageCode){
             message:{code: 0, message: `操作成功`, allowGoOn: true}
         },
         {
+            code:`pay_1001`,
+            message:{code: 0, message: `未进行实名认证`, allowGoOn: false}
+        },
+        {
+            code:`pay_1002`,
+            message:{code: 0, message: `尚未开户`, allowGoOn: false}
+        },
+        {
+            code:`pay_1003`,
+            message:{code: 0, message: `会员信息有误`, allowGoOn: false}
+        },
+        {
+            code:`pay_1004`,
+            message:{code: 0, message: `暂无更换银行卡请求记录`, allowGoOn: false}
+        },
+        {
+            code:`pay_1005`,
+            message:{code: 0, message: `请输入合法的金额`, allowGoOn: false}
+        },
+        {
+            code:`pay_1006`,
+            message:{code: 0, message: `账户余额不足 `, allowGoOn: false}
+        },
+        {
             code:`pay_9999`,
             message:{code: 9999, message: `操作失败`, allowGoOn: true}
         },
@@ -172,6 +196,7 @@ export function getTips(messageCode){
             code:`pay_5343`,
             message:{code: 102, message: `用户已开户`, allowGoOn: true}
         },
+
 
     ];
     let index=errDicts.findIndex((x)=>
