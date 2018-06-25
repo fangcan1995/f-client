@@ -20,6 +20,8 @@ export default class PieChart extends Component{
                 total+=parseFloat(key.value);
             });
         }
+        console.log('饼图数据');
+        console.log(data);
         if(!showUserLegend){
             showUserLegend=true;
         }else{
@@ -54,7 +56,7 @@ export default class PieChart extends Component{
                                         <i style={{backgroundColor:`${color[rowIndex]}`}}></i>
                                         <strong>{item.name}:</strong>
                                         <span className='money'>{item.instruction}</span>
-
+                                        {item.readMe?
                                         <Tooltip
                                             placement="topLeft"
                                             title={item.readMe}
@@ -62,6 +64,8 @@ export default class PieChart extends Component{
                                         >
                                             <span style={{cursor:'default'}} className='readme'>?</span>
                                         </Tooltip>
+                                            :``
+                                        }
                                     </li>
                                 ))
                             }

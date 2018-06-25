@@ -43,6 +43,7 @@ class MyAuthInfo extends React.Component {
     componentDidMount() {
         window.scrollTo(0,0);
         this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
+
     }
     //开卡前询问是否实名认证
     confirm() {

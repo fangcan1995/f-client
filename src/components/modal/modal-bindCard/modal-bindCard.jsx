@@ -15,7 +15,8 @@ class ModalBindCard extends React.Component {
         //this.props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息
         const {returnPage,dispatch}=this.props;
         dispatch(accountAc.clear());
-        console.log(this.props);
+        //console.log('开户//////////')
+        //console.log(this.props);
 
         dispatch(accountAc.getFuyouInfo({type:'OpenAccount',url:returnPage})); //获取开户需携带的信息
     }
@@ -32,7 +33,6 @@ class ModalBindCard extends React.Component {
         console.log('绑卡成功回调');
         let {onSuccess,dispatch}=this.props;
         this.props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息,暂时注释掉
-        //dispatch(accountAc.dummyModifyAccount({isOpenAccount:'1'}));  //虚拟
         dispatch(accountAc.clear());
         onSuccess();
     }
@@ -53,6 +53,7 @@ class ModalBindCard extends React.Component {
                                         :``
                                 }
                             </div>
+
                             <form name="webReg" id="webReg" method="post" action={toOthersInfo.url}>
                                 <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />
                                 <input type="hidden" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} />

@@ -81,7 +81,7 @@ class TransferList extends Component {
                                                         <p><a href={"/transfer-detail/" + l['id']+'/'+ l['projectId']}  title="longText">{l.transNo}</a></p>
                                                     </td>
                                                     <td className="rtxt">{l.transAmt}元</td>
-                                                    <td><em className="redTxt">{l.annualRate}%</em></td>
+                                                    <td><em className="redTxt">{l.annualRate+l.raiseRate}%</em></td>
                                                     <td>{l.transferPeriod}个月</td>
                                                     <td>{moment(l.putDate).format('YYYY-MM-DD')}</td>
                                                     <td className="rtxt">{l.surplusAmount}元</td>

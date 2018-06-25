@@ -8,6 +8,7 @@ export default class StepperInput extends Component{
         this.cutClick = this.cutClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
         let defaultValue=``;
+
         if(props.config.returnAmount){
             if(this.checkMoney(props.config.returnAmount).code==100) {
                 defaultValue = props.config.returnAmount;

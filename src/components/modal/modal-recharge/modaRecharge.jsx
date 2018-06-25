@@ -21,8 +21,8 @@ class ModalRecharge extends React.Component {
     }
     componentDidMount () {
         let {value,account,returnPage}=this.props;
-        console.log('1111111111');
-        console.log(returnPage);
+        //console.log('1111111111');
+        //console.log(returnPage);
         let {availableBalance}=account.accountsInfo;
         this.props.dispatch(accountAc.getFuyouInfo({type:'reCharge',value:((value-availableBalance).toFixed(2)),url:returnPage})); //获取开户需携带的信息
 

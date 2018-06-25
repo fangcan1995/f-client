@@ -37,7 +37,7 @@ export default class BbhModal extends Component{
         closeFunc();
     }
     render(){
-        let {config,visible,moduleName,investAmount,repeat,stepslength,returnPage,currentId}=this.props;
+        let {config,visible,moduleName,investAmount,repeat,stepslength,returnPage,currentId,isTransfer}=this.props;
         let {title,width,height}=config;
         let moduleContent=``;
 
@@ -67,7 +67,7 @@ export default class BbhModal extends Component{
                 moduleContent=<ModalInvestSteps key={this.state.key} value={investAmount} onSuccess={()=>{this.onCancel()}} />;
                 break;
             case `ModalInvest`:
-                moduleContent=<ModalInvest key={this.state.key} value={investAmount} onSuccess={()=>{this.onCancel()}} />;
+                moduleContent=<ModalInvest key={this.state.key} value={investAmount} isTransfer={isTransfer} onSuccess={()=>{this.onCancel()}} />;
                 break;
             case `ModalRepaymentApp`:
                 moduleContent=<ModalRepaymentApp key={this.state.key} currentId={currentId} onSuccess={()=>{this.onCancel()}} />;

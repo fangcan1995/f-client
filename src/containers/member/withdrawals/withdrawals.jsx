@@ -98,6 +98,7 @@ class Withdrawals extends React.Component{
                                             <Link to="/my-account/bank-card" style={{color: '#31aaf5'}}> 绑定银行卡！</Link>
                                         </p>
                                         :
+                                        (isOpenAccount===`1`)?
                                         <div className="form__wrapper">
                                             <Form layout="horizontal" onSubmit={this.handleSubmit}>
                                                 <FormItem
@@ -167,6 +168,7 @@ class Withdrawals extends React.Component{
                                                 <input type="hidden" name="signature" value={toOthersInfo.signature} />
                                             </form>
                                         </div>
+                                            :``
                                 }
 
 

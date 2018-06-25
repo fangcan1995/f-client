@@ -90,8 +90,7 @@ class TransferDetailMaster extends React.Component {
                                 <dl className="item1">
                                     <dt className="subtitle">预期年化回报率</dt>
                                     <dd>
-                                        <i>{investInfo.annualRate}</i>%
-
+                                        <i>{investInfo.annualRate+investInfo.raiseRate}</i>%
                                     </dd>
 
                                 </dl>

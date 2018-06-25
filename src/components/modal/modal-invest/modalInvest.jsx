@@ -25,38 +25,49 @@ class ModalInvest extends React.Component {
     }
 
     componentDidMount () {
-        let {auth,investDetail,dispatch,value}=this.props;
-        let {id,projectId,loanExpiry,isTransfer,transferPeriod}=investDetail.investInfo;
+        let {auth,investDetail,dispatch,value,isTransfer}=this.props;
+        let {id,projectId,loanExpiry,transferPeriod}=investDetail.investInfo;
+        console.log('标的信息')
+        console.log(this.props);
 
+        dispatch(investDetailActions.changeReward(``)); //清空红包列表
         dispatch(investDetailActions.getAvailableRewards(id,value,isTransfer));
         dispatch(investDetailActions.statePostResultModify(``)); //清空结果
+
 
     }
     componentDidUpdate() {
         let {dispatch, investDetail} = this.props;
         let {postResult,isPosting,availableRewards}=this.props.investDetail;
         if(postResult.userCode===101 && postResult.times<5 && !isPosting){
-            //console.log('在这里发第'+(postResult.times+1)+'次请求');
-            dispatch(investDetailActions.postInvest(appInfo,postResult.times));
+            let t=window.setTimeout(()=>{
+                console.log('在这里发第'+(postResult.times+1)+'次请求');
+                dispatch(investDetailActions.postInvest(appInfo,postResult.times));
+            }, 500);
+
         }
     }
     onChangeReward(e) {
         let {dispatch,investDetail}=this.props;
         let {availableRewards}=investDetail;
+        //console.log(e.target);
+        //console.log('////////////');
+        //console.log(availableRewards);
         let index=availableRewards.findIndex((x)=>
-            x.id ==parseInt(e.target.value)
+            x.id ==e.target.value
         );
         for(let index of availableRewards.keys()){
-            availableRewards[index].default=false;
+            availableRewards[index].isDefault=false;
         }
-        availableRewards[index].default=true;
+        //console.log(index);
+        availableRewards[index].isDefault=true;
 
         dispatch(investDetailActions.changeReward(availableRewards.splice(0)));
     }
     handleSubmit = (e) => {
         e.preventDefault();
         const { dispatch, form,value,investDetail } = this.props;
-        console.log(this.props);
+        //console.log(this.props);
         let {availableRewards}=investDetail;
         let {id}=investDetail.investInfo;
         let isTransfer=false;
@@ -66,7 +77,7 @@ class ModalInvest extends React.Component {
                 return false;
             }
             let index=availableRewards.findIndex((x)=>
-                x.default ==true
+                x.isDefault ==true
             );
             if(investDetail.investInfo.isTransfer==`1`){
                 //债转标
@@ -74,7 +85,7 @@ class ModalInvest extends React.Component {
                     tradePassword:hex_md5(form.getFieldsValue().newPassword),
                     transferProjectId:id,
                     investAmt:value,
-                    isTransfer:false,
+                    isTransfer:true,
                     investWay:1,
                     transfer:true,
                 }
@@ -89,9 +100,6 @@ class ModalInvest extends React.Component {
                     transfer:false,
                 }
             }
-
-
-
             if(index!=-1){
                 appInfo.rewardId=availableRewards[index].id ; //奖励id
                 appInfo.rewardType=availableRewards[index].type ; //奖励类型
@@ -106,17 +114,18 @@ class ModalInvest extends React.Component {
     }
     modalClose(){
         const {onSuccess,dispatch,investDetail}=this.props;
+        console.log('标的信息-------');
+        console.log(investDetail);
         const {postResult}=investDetail;
-        if(postResult.code==0){
+        /*if(postResult.code==0){
             dispatch(accountAc.getAccountInfo());  //成功重新获取新户信息
             dispatch(investDetailActions.getInvestRecords(this.props.id));//成功重新获取投资记录
             dispatch(investDetailActions.getInvestInfo(this.props.id)); //成功重新获取标的信息
-        }
+        }*/
 
         onSuccess();
     }
     render() {
-
         let {value,account,onFail,onSuccess,dispatch}=this.props;
         let {postResult,isPosting,availableRewards}=this.props.investDetail;
         let {annualRate,raiseRate, loanExpiry,transferPeriod,isTransfer} = this.props.investDetail.investInfo;
@@ -124,7 +133,7 @@ class ModalInvest extends React.Component {
         if(raiseRate){
             rate=rate+raiseRate;
         }
-        console.log(rate);
+
         let allowInvest=false;
         if(!isPosting){
             allowInvest=true
@@ -132,7 +141,7 @@ class ModalInvest extends React.Component {
         let i=-1;
         if(availableRewards!=``){
             i=availableRewards.findIndex(
-                (x)=>x.default==true
+                (x)=>x.isDefault==true
             );
         }
         const { getFieldDecorator,getFieldValue,getFieldsError } = this.props.form;
@@ -172,7 +181,7 @@ class ModalInvest extends React.Component {
                                                 {
                                                     availableRewards.map((item, index) => (
                                                         <ul key={`row-${index}`} >
-                                                            <li><Checkbox onChange={this.onChangeReward} value={`${item.id}`} checked={item.default}></Checkbox></li>
+                                                            <li><Checkbox onChange={this.onChangeReward} value={`${item.id}`} checked={item.isDefault}></Checkbox></li>
                                                             <li>{item.title}</li>
                                                             <li>{item.validity}</li>
                                                         </ul>
@@ -231,9 +240,9 @@ class ModalInvest extends React.Component {
                                 }
                             </FormItem>
                             <FormItem  className='center'>
-                                {(isPosting) ?
+                                {(isPosting || postResult.userCode===101) ?
                                     <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
-                                        <Posting isShow={isPosting}/>
+                                        <Posting isShow={true}/>
                                     </Button>
                                     : <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError()) || !getFieldValue('is_read') }>确认</Button>
 
