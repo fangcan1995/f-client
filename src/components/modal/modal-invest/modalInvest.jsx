@@ -132,7 +132,7 @@ class ModalInvest extends React.Component {
         let i=-1;
         if(availableRewards!=``){
             i=availableRewards.findIndex(
-                (x)=>x.default==true
+                (x)=>x.isDefault==true
             );
         }
         const { getFieldDecorator,getFieldValue,getFieldsError } = this.props.form;
@@ -172,7 +172,7 @@ class ModalInvest extends React.Component {
                                                 {
                                                     availableRewards.map((item, index) => (
                                                         <ul key={`row-${index}`} >
-                                                            <li><Checkbox onChange={this.onChangeReward} value={`${item.id}`} checked={item.default}></Checkbox></li>
+                                                            <li><Checkbox onChange={this.onChangeReward} value={`${item.id}`} checked={item.isDefault}></Checkbox></li>
                                                             <li>{item.title}</li>
                                                             <li>{item.validity}</li>
                                                         </ul>
