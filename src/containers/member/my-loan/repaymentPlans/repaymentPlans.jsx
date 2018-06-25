@@ -79,9 +79,11 @@ class RepaymentPlans extends React.Component{
     };
     closeModal(status){
         const {investInfo,dispatch}=this.props;
+        let {filter}=this.props.memberLoans.repaymentPlans;
+        dispatch(repaymentsAc.stateRepaymentPlanModify({filter:filter,myList:``}));
         this.toggleModal('bbhModal',false);
-        this.props.dispatch(repaymentsAc.getPie());
-        this.props.dispatch(repaymentsAc.getList());
+        dispatch(repaymentsAc.getPie());
+        dispatch(repaymentsAc.getList(filter));
     }
     render(){
         let {dispatch}=this.props;
@@ -199,9 +201,9 @@ class RepaymentPlans extends React.Component{
                                                     <td>{l.rpmtTotal}{/*还款总额*/}</td>
                                                     <td>{l.statusName}{/*还款状态*/}</td>
                                                     <td>
-                                                        {
+                                                        {/*{
                                                             (l.proStatus==3)? <a onClick={() => this.toggleModal('ModalRepayment', true, l.rpmtplanId)}>还款</a>:''
-                                                        }
+                                                        }*/}
                                                         {
                                                             (l.proStatus==4||l.proStatus==5)? <a onClick={() => this.toggleModal( 'ModalRepayment',true, l.rpmtplanId)}>还款</a>:''
                                                         }
