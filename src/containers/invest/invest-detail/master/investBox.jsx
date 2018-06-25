@@ -16,10 +16,17 @@ import { Button,Popconfirm} from 'antd';
 class MasterInvestBox extends Component {
     constructor(props) {
         super(props);
-
+        let defaultValue=``;
+        if(props.investInfo.returnAmount){
+            if(this.checkMoney(props.investInfo.returnAmount).code==100) {
+                defaultValue = props.investInfo.returnAmount;
+            }
+        }else{
+            defaultValue=props.investInfo.min;
+        }
         this.state = {
             member:{},
-            investAmount:props.investInfo.min,
+            investAmount:defaultValue,
             bbhModal:false,
             currentModule:``,
             tips:'',
@@ -31,6 +38,33 @@ class MasterInvestBox extends Component {
         if(this.props.auth.isAuthenticated){
             this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
         }
+    }
+    checkMoney(value){
+        /*console.log('//////////');
+        console.log(value);*/
+        const {min,max,step,surplusAmount} = this.props.investInfo;
+        if(value.length<=0){
+            return {code:0,tips:'请输入投资金额'};
+        }else {
+            let reg=/^\+?[1-9][0-9]*$/;
+            if(reg.test(value)){
+                if(value<min){
+                    return {code:2,tips: `最低可投${min}元`};
+                }else if(value>max){
+                    return {code:3,tips: `最高可投${max}元`};
+                }else{
+                    /*if((surplusAmount-value)<min && max!=value){
+                        return {code:4,tips: `投资后剩余金额不能小于起投金额，请投满剩余金额或留出最小投资金额`};
+                    }*/
+                    if(value%step!=0 && max!=value){
+                        return {code:4,tips: `必须是${step}的倍数`};
+                    }
+                    return {code:100,tips: ``};
+                }
+            }else{
+                return {code:1,tips: `金额格式不正确`};
+            };
+        };
     }
     handle_confirmRechange() {
         let {dispatch, account,investInfo} = this.props;
@@ -105,6 +139,8 @@ class MasterInvestBox extends Component {
     };
     closeModal(status){
         const {investInfo,dispatch}=this.props;
+        console.log('参数是：');
+        console.log(this.props);
         dispatch(accountAc.getAccountInfo());  //成功重载数据
         if(investInfo.isTransfer==`1`){
             dispatch(investDetailActions.getInvestInfo(investInfo.projectId));
@@ -126,8 +162,7 @@ class MasterInvestBox extends Component {
         }else{
             loginReturnUrl=`/login?redirect=%2Finvest-detail%2F${investInfo.id}`
         }
-        //console.log('投资金额');
-        //console.log(this.state.investAmount);
+
         return(
             <div className="form_area">
                 {investInfo===``?``
@@ -238,15 +273,27 @@ class MasterInvestBox extends Component {
                         </div>
                 }
                 {this.state.currentModule!=``?
-                    <BbhModal
-                        config={modal_config[this.state.currentModule]}
-                        visible={this.state.bbhModal}
-                        closeFunc={()=>this.closeModal()}
-                        moduleName={this.state.currentModule}
-                        investAmount={this.state.investAmount}
-                        returnPage={`transfer-detail_${investInfo.id}_${investInfo.projectId}_${this.state.investAmount}`}
-                    >
-                    </BbhModal>
+                    investInfo.isTransfer==`1`?
+                        <BbhModal
+                            config={modal_config[this.state.currentModule]}
+                            visible={this.state.bbhModal}
+                            closeFunc={()=>this.closeModal()}
+                            moduleName={this.state.currentModule}
+                            investAmount={this.state.investAmount}
+                            returnPage={`transfer-detail_${investInfo.id}_${investInfo.projectId}_${this.state.investAmount}`}
+                            isTransfer={`1`}
+                        >
+                        </BbhModal>
+                        : <BbhModal
+                            config={modal_config[this.state.currentModule]}
+                            visible={this.state.bbhModal}
+                            closeFunc={()=>this.closeModal()}
+                            moduleName={this.state.currentModule}
+                            investAmount={this.state.investAmount}
+                            returnPage={`invest-detail_${investInfo.id}_${this.state.investAmount}`}
+                            isTransfer={`0`}
+                        >
+                        </BbhModal>
                     :``
                 }
             </div>

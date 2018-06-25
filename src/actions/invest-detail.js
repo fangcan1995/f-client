@@ -121,62 +121,19 @@ let investDetailActions = {
         return {
             type: 'investDetail/availableRewards/FETCH',
             async payload() {
-                const res = await cFetch(`${url_availableRewards}?projectId=${id}&investAmount=${amount}&isTransfer=${isTransfer}` , {method: 'GET'}, true);
+                let url;
+                if(isTransfer==`0`){
+                    url=`${url_availableRewards}?projectId=${id}&investAmount=${amount}&isTransfer=0`
+                }else if(isTransfer==`1`){
+                    url=`${url_availableRewards}?projectId=${id}&investAmount=${amount}&isTransfer=1`
+                }
+
+                const res = await cFetch( url, {method: 'GET'}, true);
                 let {code, data} = res;
                 if (code == 0) {
                     console.log('可用奖励');
                     console.log(data);
-                    //假数据
-                    /*data=[
-                        {
-                            id:`1001`,  //编号
-                            type:`1`,   //类型 1 投资红包 2加息券
-                            title:`100元投资红包`,  //显示名称
-                            reAmount:100,       //核算金额
-                            validity:'2018年8月1日-2018年8月30日', //有效期
-                            default:true,   //是否推荐使用
-                        },
-                        {
-                            id:`1002`,
-                            type:2,
-                            title:`0.8%加息券`,
-                            reAmount:45,
-                            validity:'2018年8月1日-2018年8月30日', //有效期
-                            default:false,
-                        },
-                        {
-                            id:`1003`,
-                            type:2,
-                            title:`0.8%加息券`,
-                            reAmount:45,
-                            validity:'2018年8月1日-2018年8月30日', //有效期
-                            default:false,
-                        },
-                        {
-                            id:`1004`,
-                            type:2,
-                            title:`0.8%加息券`,
-                            reAmount:45,
-                            validity:'2018年8月1日-2018年8月30日', //有效期
-                            default:false,
-                        },
-                        {
-                            id:`1005`,
-                            type:2,
-                            title:`0.8%加息券`,
-                            reAmount:45,
-                            validity:'2018年8月1日-2018年8月30日', //有效期
-                            default:false,
-                        },
-                        {
-                            id:`1006`,
-                            type:2,
-                            title:`0.8%加息券`,
-                            reAmount:45,
-                            validity:'2018年8月1日-2018年8月30日', //有效期
-                            default:false,
-                        },
-                    ]*/
+                    //data=[];
                     return data;
                 } else {
                     throw res;

@@ -25,11 +25,13 @@ class ModalInvest extends React.Component {
     }
 
     componentDidMount () {
-        let {auth,investDetail,dispatch,value}=this.props;
-        let {id,projectId,loanExpiry,isTransfer,transferPeriod}=investDetail.investInfo;
-
+        let {auth,investDetail,dispatch,value,isTransfer}=this.props;
+        let {id,projectId,loanExpiry,transferPeriod}=investDetail.investInfo;
+        console.log('标的信息')
+        console.log(this.props);
         dispatch(investDetailActions.getAvailableRewards(id,value,isTransfer));
         dispatch(investDetailActions.statePostResultModify(``)); //清空结果
+
 
     }
     componentDidUpdate() {
@@ -81,7 +83,7 @@ class ModalInvest extends React.Component {
                     tradePassword:hex_md5(form.getFieldsValue().newPassword),
                     transferProjectId:id,
                     investAmt:value,
-                    isTransfer:false,
+                    isTransfer:true,
                     investWay:1,
                     transfer:true,
                 }
@@ -110,12 +112,14 @@ class ModalInvest extends React.Component {
     }
     modalClose(){
         const {onSuccess,dispatch,investDetail}=this.props;
+        console.log('标的信息-------');
+        console.log(investDetail);
         const {postResult}=investDetail;
-        if(postResult.code==0){
+        /*if(postResult.code==0){
             dispatch(accountAc.getAccountInfo());  //成功重新获取新户信息
             dispatch(investDetailActions.getInvestRecords(this.props.id));//成功重新获取投资记录
             dispatch(investDetailActions.getInvestInfo(this.props.id)); //成功重新获取标的信息
-        }
+        }*/
 
         onSuccess();
     }
@@ -234,9 +238,9 @@ class ModalInvest extends React.Component {
                                 }
                             </FormItem>
                             <FormItem  className='center'>
-                                {(isPosting) ?
+                                {(isPosting || postResult.userCode===101) ?
                                     <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
-                                        <Posting isShow={isPosting}/>
+                                        <Posting isShow={true}/>
                                     </Button>
                                     : <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError()) || !getFieldValue('is_read') }>确认</Button>
 
