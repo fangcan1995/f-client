@@ -185,27 +185,19 @@ let investDetailActions = {
         }
     },
 
-
     //提交投资申请
     postInvest:(params,times)  => {
         return {
             type: 'investDetail/invest/POST',
             async payload() {
-
                 const res = await cFetch(`${url_postInvest}`, postContent(params), true);
-                //测试用
-                console.log('返回第'+(times+1)+'次请求的结果');
-                /*res.message='invest_101';
-                let messageCode=res.message;
-                //end
+                console.log('返回第'+(times+1)+'次请求的结果'); //测试用
                 let type=``;
                 (res.code == 0)?type='success':type='error';
-                if((times+1)===5){
+                let messageCode=res.message;
+                if(messageCode==`invest_101` && (times+1)===5 ){
                     messageCode='invest_102';
-                }*/
-                let type=``;
-                let messageCode=res.message;
-                (res.code == 0)?type='success':type='error';
+                }
                 return {
                     code:res.code,
                     type:type,
