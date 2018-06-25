@@ -43,22 +43,22 @@ function checkStatus(res) {
       // 这里补充更多错误参数
         //406 操作失败
         //500
-        console.log('-----------res 500 406----------');
-        console.log(res)
+        //console.log('-----------res 500 406----------');
+        //console.log(res)
       return res.json().then(error => {
-        console.log('-----------res 500 406 error----------');
-        console.log(error)
+        //console.log('-----------res 500 406 error----------');
+        //console.log(error)
           if(res.code == 406){
-            console.log(res)
+            //console.log(res)
               return res;
           }else if(res.code == 500) {
-            console.log(res)
+            //console.log(res)
               return res;
           }else if(res.status == 406){
-            console.log(error)
+            //console.log(error)
             return error;
           }else if(res.status == 500){
-            console.log(error)
+            //console.log(error)
             return error;
           }else {
               return new StandardError({

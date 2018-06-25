@@ -59,7 +59,7 @@ export const InvestButton=({status,id,...rest})=>{
 }
 
 export const TransferInvestButton=({status,id,projectId,...rest})=>{
-    let investTitle=``,className=`disabled`;;
+    let investTitle=``,className=`disabled`;
     switch(status){
         case 1:
             investTitle=`待发布`;
