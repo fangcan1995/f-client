@@ -126,6 +126,8 @@ class MasterInvestBox extends Component {
         }else{
             loginReturnUrl=`/login?redirect=%2Finvest-detail%2F${investInfo.id}`
         }
+        //console.log('投资金额');
+        //console.log(this.state.investAmount);
         return(
             <div className="form_area">
                 {investInfo===``?``
@@ -179,7 +181,8 @@ class MasterInvestBox extends Component {
                                         <li>
                                             <strong>预期可赚取：</strong>
                                             <i id="money">
-                                                {(this.state.investAmount==0)?income(investInfo.min,(investInfo.rate),investInfo.loanExpiry,'m')
+                                                {(this.state.investAmount==0)?
+                                                    (this.state.investAmount)
                                                     :income(this.state.investAmount,(investInfo.rate),investInfo.loanExpiry,'m')
                                                 }
                                             </i>元
@@ -206,7 +209,7 @@ class MasterInvestBox extends Component {
                                         <li>
                                             <strong>预期可赚取：</strong>
                                             <i id="money">
-                                                {(this.state.investAmount==0)?income(investInfo.min,(investInfo.rate),investInfo.loanExpiry,'m')
+                                                {(this.state.investAmount==0)?toMoney(this.state.investAmount)
                                                     :income(this.state.investAmount,(investInfo.rate),investInfo.loanExpiry,'m')
                                                 }
                                             </i>元
