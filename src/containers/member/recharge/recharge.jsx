@@ -96,79 +96,81 @@ class Recharge extends React.Component{
                                         <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先
                                             <Link to="/my-account/bank-card" style={{color: '#31aaf5'}}> 绑定银行卡！</Link>
                                         </p>
-                                        : <div className="form__wrapper">
-                                            <Form layout="horizontal" onSubmit={this.handleSubmit}>
-                                                <FormItem
-                                                    { ...formItemLayout }
-                                                    label="可用余额"
-                                                >
-                                                    {(availableBalance>=0)?`${toMoney(availableBalance)}元`:``}
-                                                </FormItem>
-                                                <FormItem className='price'
-                                                    { ...formItemLayout }
-                                                    label="充值金额"
-                                                    required
-                                                >
-                                                    {getFieldDecorator('price', {
-                                                        initialValue: { number: `` },
-                                                        rules: [{ validator: this.checkPrice }],
-                                                    })(<PriceInput />)}
-                                                </FormItem>
-                                                <FormItem className='tips'>
+                                        : (isOpenAccount===`1`)?
+                                            <div className="form__wrapper">
+                                                <Form layout="horizontal" onSubmit={this.handleSubmit}>
+                                                    <FormItem
+                                                        { ...formItemLayout }
+                                                        label="可用余额"
+                                                    >
+                                                        {(availableBalance>=0)?`${toMoney(availableBalance)}元`:``}
+                                                    </FormItem>
+                                                    <FormItem className='price'
+                                                        { ...formItemLayout }
+                                                        label="充值金额"
+                                                        required
+                                                    >
+                                                        {getFieldDecorator('price', {
+                                                            initialValue: { number: `` },
+                                                            rules: [{ validator: this.checkPrice }],
+                                                        })(<PriceInput />)}
+                                                    </FormItem>
+                                                    <FormItem className='tips'>
+                                                        {
+                                                            (toOthersInfo!=`` && toOthersInfo.code==406)?
+                                                                <div className="errorMessages">{toOthersInfo.message}</div>
+                                                                :``
+                                                        }
+                                                    </FormItem>
+                                                    <FormItem className='center'>
+                                                        {(isPosting) ? <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
+                                                                <Posting isShow={isPosting}/>
+                                                            </Button>
+                                                            :
+                                                            <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError())  }>确认</Button>
+                                                        }
+                                                    </FormItem>
+
+                                                </Form>
+
+                                                {/*<dl className="form__bar">
+                                                    <dt><label>充值金额:</label></dt>
+                                                    <dd>
+                                                        <input  maxLength={8} type="text" className="textInput moneyInput" ref="amount" onChange={this.handleChange}　/>
+                                                        <span className="unit">元</span>
+                                                        <a href="">银行卡充值上限说明</a>
+                                                    </dd>
+                                                </dl>*/}
+
+                                                {/*<div className="form__bar">
+                                                    <p>充值后可用余额: <i id="money">1,000.00</i>元</p>
+                                                </div>*/}
+                                                {/*<div className="form__bar">
                                                     {
-                                                        (toOthersInfo!=`` && toOthersInfo.code==406)?
-                                                            <div className="errorMessages">{toOthersInfo.message}</div>
+                                                        (toOthersInfo!=`` && toOthersInfo.code==406)? <div className="errorMessages">{toOthersInfo.message}</div>
                                                             :``
                                                     }
-                                                </FormItem>
-                                                <FormItem className='center'>
-                                                    {(isPosting) ? <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
+                                                    {(this.state.tips!='')?
+                                                        <div className="errorMessages">
+                                                            {this.state.tips}
+                                                        </div>:``
+                                                    }
+                                                </div>*/}
+                                                {/*<div className="form__bar">
+                                                    {isPosting ?
+                                                        <Button type="primary" htmlType="submit" className='pop__large' disabled={true}>
                                                             <Posting isShow={isPosting}/>
                                                         </Button>
                                                         :
-                                                        <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError())  }>确认</Button>
+                                                        <Button type="primary" htmlType="submit" className="pop__large"
+                                                                onClick={this.recharge}
+                                                                disabled={this.state.disabled}>
+                                                            确认
+                                                        </Button>
                                                     }
-                                                </FormItem>
-
-                                            </Form>
-
-                                            {/*<dl className="form__bar">
-                                                <dt><label>充值金额:</label></dt>
-                                                <dd>
-                                                    <input  maxLength={8} type="text" className="textInput moneyInput" ref="amount" onChange={this.handleChange}　/>
-                                                    <span className="unit">元</span>
-                                                    <a href="">银行卡充值上限说明</a>
-                                                </dd>
-                                            </dl>*/}
-
-                                            {/*<div className="form__bar">
-                                                <p>充值后可用余额: <i id="money">1,000.00</i>元</p>
-                                            </div>*/}
-                                            {/*<div className="form__bar">
-                                                {
-                                                    (toOthersInfo!=`` && toOthersInfo.code==406)? <div className="errorMessages">{toOthersInfo.message}</div>
-                                                        :``
-                                                }
-                                                {(this.state.tips!='')?
-                                                    <div className="errorMessages">
-                                                        {this.state.tips}
-                                                    </div>:``
-                                                }
-                                            </div>*/}
-                                            {/*<div className="form__bar">
-                                                {isPosting ?
-                                                    <Button type="primary" htmlType="submit" className='pop__large' disabled={true}>
-                                                        <Posting isShow={isPosting}/>
-                                                    </Button>
-                                                    :
-                                                    <Button type="primary" htmlType="submit" className="pop__large"
-                                                            onClick={this.recharge}
-                                                            disabled={this.state.disabled}>
-                                                        确认
-                                                    </Button>
-                                                }
-                                            </div>*/}
-                                        </div>
+                                                </div>*/}
+                                            </div>
+                                        :``
                                 }
                             </div>
                             <form name="webReg" id="webReg" method="post"  action={toOthersInfo.url}>

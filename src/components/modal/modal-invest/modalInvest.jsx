@@ -36,27 +36,34 @@ class ModalInvest extends React.Component {
         let {dispatch, investDetail} = this.props;
         let {postResult,isPosting,availableRewards}=this.props.investDetail;
         if(postResult.userCode===101 && postResult.times<5 && !isPosting){
-            //console.log('在这里发第'+(postResult.times+1)+'次请求');
-            dispatch(investDetailActions.postInvest(appInfo,postResult.times));
+            let t=window.setTimeout(()=>{
+                console.log('在这里发第'+(postResult.times+1)+'次请求');
+                dispatch(investDetailActions.postInvest(appInfo,postResult.times));
+            }, 500);
+
         }
     }
     onChangeReward(e) {
         let {dispatch,investDetail}=this.props;
         let {availableRewards}=investDetail;
+        //console.log(e.target);
+        //console.log('////////////');
+        //console.log(availableRewards);
         let index=availableRewards.findIndex((x)=>
-            x.id ==parseInt(e.target.value)
+            x.id ==e.target.value
         );
         for(let index of availableRewards.keys()){
-            availableRewards[index].default=false;
+            availableRewards[index].isDefault=false;
         }
-        availableRewards[index].default=true;
+        //console.log(index);
+        availableRewards[index].isDefault=true;
 
         dispatch(investDetailActions.changeReward(availableRewards.splice(0)));
     }
     handleSubmit = (e) => {
         e.preventDefault();
         const { dispatch, form,value,investDetail } = this.props;
-        console.log(this.props);
+        //console.log(this.props);
         let {availableRewards}=investDetail;
         let {id}=investDetail.investInfo;
         let isTransfer=false;
@@ -66,7 +73,7 @@ class ModalInvest extends React.Component {
                 return false;
             }
             let index=availableRewards.findIndex((x)=>
-                x.default ==true
+                x.isDefault ==true
             );
             if(investDetail.investInfo.isTransfer==`1`){
                 //债转标
@@ -89,9 +96,6 @@ class ModalInvest extends React.Component {
                     transfer:false,
                 }
             }
-
-
-
             if(index!=-1){
                 appInfo.rewardId=availableRewards[index].id ; //奖励id
                 appInfo.rewardType=availableRewards[index].type ; //奖励类型
@@ -116,7 +120,6 @@ class ModalInvest extends React.Component {
         onSuccess();
     }
     render() {
-
         let {value,account,onFail,onSuccess,dispatch}=this.props;
         let {postResult,isPosting,availableRewards}=this.props.investDetail;
         let {annualRate,raiseRate, loanExpiry,transferPeriod,isTransfer} = this.props.investDetail.investInfo;
@@ -124,7 +127,7 @@ class ModalInvest extends React.Component {
         if(raiseRate){
             rate=rate+raiseRate;
         }
-        console.log(rate);
+
         let allowInvest=false;
         if(!isPosting){
             allowInvest=true
