@@ -10,8 +10,8 @@ const url_loansCharts=API_CONFIG.hostWeb+API_CONFIG.getMyLoansCharts; //统计�
 const url_loansList=API_CONFIG.hostWeb+API_CONFIG.getMyLoansList;//获取借款列表
 const url_repaymentsAll=API_CONFIG.hostWeb+API_CONFIG.getMyRepaymentsAll;//项目提前还款时获取详情
 //const url_repaymentsAll=`http://172.16.1.234:9090/repayment/ahead/apply/detail` //项目提前还款时获取详情
-//const url_postRepaymentsAll=API_CONFIG.hostWeb+API_CONFIG.postRepaymentsAll;//项目提前还款申请
-const url_postRepaymentsAll=`http://172.16.1.234:9090/repayment/ahead/apply`;  //项目提前还款申请
+const url_postRepaymentsAll=API_CONFIG.hostWeb+API_CONFIG.postRepaymentsAll;//项目提前还款申请
+//const url_postRepaymentsAll=`http://172.16.1.234:9090/repayment/ahead/apply`;  //项目提前还款申请
 const url_repaymentsCharts=API_CONFIG.hostWeb+API_CONFIG.getMyRepaymentsCharts; //统计图数据
 const url_repaymentsList=API_CONFIG.hostWeb+API_CONFIG.getMyRepaymentsList;//获取借款列表
 const url_proList=API_CONFIG.hostWeb+API_CONFIG.getProList;//获取还款中和已完结的项目列表
@@ -45,16 +45,16 @@ export const memberLoansAc={
                     let charts={
                         totalLoan:{
                             data:[
-                                {name:'申请中',value:totalLoanDto.loaningMoney,instruction:`${addCommas(totalLoanDto.loaningMoney)}`  },
-                                {name:'招标中',value:totalLoanDto.investingMoney,instruction:`${addCommas(totalLoanDto.investingMoney)}`},
-                                {name:'还款中',value:totalLoanDto.repayingMoney,instruction:`${addCommas(totalLoanDto.repayingMoney)}`},
-                                {name:'已结清',value:totalLoanDto.settleMoney,instruction:`${addCommas(totalLoanDto.settleMoney)}`}
+                                {name:'申请中',value:totalLoanDto.loaningMoney,instruction:`${addCommas(totalLoanDto.loaningMoney)}元`  },
+                                {name:'招标中',value:totalLoanDto.investingMoney,instruction:`${addCommas(totalLoanDto.investingMoney)}元`},
+                                {name:'还款中',value:totalLoanDto.repayingMoney,instruction:`${addCommas(totalLoanDto.repayingMoney)}元`},
+                                {name:'已结清',value:totalLoanDto.settleMoney,instruction:`${addCommas(totalLoanDto.settleMoney)}元`}
                             ]
                         },
                         accumulatedInterest:{
                             data:[
-                                {name:'还款中',value:accumulatedInterestDto.repayingIint,instruction:`${addCommas(accumulatedInterestDto.repayingIint)}`  },
-                                {name:'已结清',value:accumulatedInterestDto.settleIint,instruction:`${addCommas(accumulatedInterestDto.settleIint)}`  },
+                                {name:'还款中',value:accumulatedInterestDto.repayingIint,instruction:`${addCommas(accumulatedInterestDto.repayingIint)}元`  },
+                                {name:'已结清',value:accumulatedInterestDto.settleIint,instruction:`${addCommas(accumulatedInterestDto.settleIint)}元`  },
                             ]
                         },
                     };
