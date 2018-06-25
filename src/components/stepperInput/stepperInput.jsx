@@ -69,15 +69,21 @@ export default class StepperInput extends Component{
         const {callback} = this.props.config;
         let step=this.props.config.step;
         let max=this.props.config.max;  //可投金额
-        console.log('可投金额');
-        console.log(max);
+        let min=this.props.config.min;  //可投金额
+        //console.log('可投金额');
+        //console.log(max);
+        let result0=this.checkMoney(parseInt(this.state.value));  //验证是否合法
+        //console.log(result0);
+        if(result0.code==2){
+            step=min-parseInt(this.state.value)
+        }else if(result0.code==3){
+            step=0
+        }else{
+            step=step;
+        }
         let result=this.checkMoney(parseInt(this.state.value)+step);  //验证增加后是否合法
-        console.log(this.state.value);
+       // console.log(result);
         if(result.code>1 ){
-            if(result.code==3){step=(max-parseInt(this.state.value))
-            }else{
-                step=step;
-            }
             this.setState({
                 code:result.code,
                 value: (parseInt(this.state.value) + step),
@@ -96,16 +102,32 @@ export default class StepperInput extends Component{
     minus(){
         const {callback} = this.props.config;
         let step=this.props.config.step;
-        //递增金额去零头
+        let max=this.props.config.max;  //可投金额
+        let min=this.props.config.min;  //可投金额
+        //console.log('可投金额');
+        //console.log(max);
+        let result0=this.checkMoney(parseInt(this.state.value));  //验证是否合法
+        //console.log(result0);
+        if(result0.code==2){
+            step=0
+        }else if(result0.code==3){
+            step=parseInt(this.state.value)-max;
+        }else{
+            step=step;
+        }
+        let result=this.checkMoney(parseInt(this.state.value)-step);  //验证增加后是否合法
+        //console.log(result);
+
+        /*//递增金额去零头
         if(parseInt(this.state.value)%step!=0){
             step=parseInt(this.state.value)%step
         }else{
             step=this.props.config.step
-        }
-        let result=this.checkMoney(parseInt(this.state.value)-step);
+        }*/
+
         if(result.code>1 ){
             //(result.code==4)?step=0:step=step;
-            (result.code==2)?step=0:step=step;
+            /*(result.code==2)?step=0:step=step;*/
             this.setState({
                 code:result.code,
                 value: (parseInt(this.state.value) - step),
