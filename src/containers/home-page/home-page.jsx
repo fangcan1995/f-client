@@ -148,7 +148,7 @@ class HomePage extends Component {
                 <em><span>{homePage.sprog[0].annualRate}</span>{homePage.sprog[0].raiseRate?`+${homePage.sprog[0].raiseRate}`:'.0'}%</em>
               </p>
                 {
-                  auth.isAuthenticated?<button type="button" className="login__btn" onClick={ this.handleComeInClick.bind(this) }>立即加入</button>
+                  auth.isAuthenticated?<button type="button" className="login__btn" onClick={ this.handleComeInClick.bind(this,homePage.sprog[0].id) }>立即加入</button>
                   :<div>
                   <button type="button" className="login__btn" onClick={ this.handleLoginBtnClick }>立即登录</button>
                   <p className="signup">

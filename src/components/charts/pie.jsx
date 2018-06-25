@@ -3,6 +3,7 @@ import ReactEcharts from 'echarts-for-react';
 import {getEchartPie} from '../../utils/getEchart';
 import {toMoney,toNumber,addCommas} from '../../utils/famatData';
 import './pie.less';
+import { Tooltip } from 'antd';
 export default class PieChart extends Component{
     constructor(props) {
         super(props);
@@ -53,6 +54,14 @@ export default class PieChart extends Component{
                                         <i style={{backgroundColor:`${color[rowIndex]}`}}></i>
                                         <strong>{item.name}:</strong>
                                         <span className='money'>{item.instruction}</span>
+
+                                        <Tooltip
+                                            placement="topLeft"
+                                            title={item.readMe}
+                                            arrowPointAtCenter overlayClassName='myTooltip'
+                                        >
+                                            <span style={{cursor:'default'}} className='readme'>?</span>
+                                        </Tooltip>
                                     </li>
                                 ))
                             }

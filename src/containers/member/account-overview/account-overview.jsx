@@ -39,14 +39,17 @@ class AccountOverview extends React.Component{
                         <div className="accountInfo">
                             <div className="infoLine">
                                 <div>
-                                    <Tooltip
-                                        placement="topLeft"
-                                        title="包含您可用余额及投资冻结的金额，满标划转后统一扣除"
-                                        arrowPointAtCenter overlayClassName='myTooltip'
-                                    >
+
                                         <span style={{cursor:'default'}}>账户余额:</span>
-                                    </Tooltip>
+
                                     <span className='money'>{toMoney(accountBalance)}</span>&nbsp;元
+                                <Tooltip
+                                    placement="topLeft"
+                                    title="包含您可用余额及投资冻结的金额，满标划转后统一扣除"
+                                    arrowPointAtCenter overlayClassName='myTooltip'
+                                >
+                                    <span style={{cursor:'default'}} className='readme'>?</span>
+                                </Tooltip>
                                 </div>
                                 <div>可用余额:<span className='money'>{toMoney(availableBalance)}</span>&nbsp;元</div>
                             </div>
@@ -57,11 +60,23 @@ class AccountOverview extends React.Component{
                                     }
                                     &nbsp;元
                                 </div>
-                                <div>累计收益:
+                                <div>
+
+
+                                        <span style={{cursor:'default'}}>累计收益:</span>
+
+
                                     {(totalEarns)?<span className='money'>{toMoney(totalEarns[0].data[totalEarns[0].data.length-1])}</span>
                                         :``
                                     }
                                     &nbsp;元
+                                <Tooltip
+                                    placement="topLeft"
+                                    title="出借人在巴巴汇出借累计获得的预估回款总额（已扣除相关费用）"
+                                    arrowPointAtCenter overlayClassName='myTooltip'
+                                >
+                                    <span style={{cursor:'default'}} className='readme'>?</span>
+                                </Tooltip>
                                 </div>
                             </div>
                         </div>
@@ -107,9 +122,9 @@ class AccountOverview extends React.Component{
                             <div name="账户总资产">
                                 <PieChart
                                     data={[
-                                        {name:'散标资产',value:investAmount,instruction: `${addCommas(investAmount)}元` },
-                                        {name:'可用余额',value:availableBalance,instruction: `${addCommas(availableBalance)}元` },
-                                        {name:'冻结金额',value:freezingAmount,instruction: `${addCommas(freezingAmount)}元` },
+                                        {name:'散标资产',value:investAmount,instruction: `${addCommas(investAmount)}元`,readMe:`散标和债权转让标回款中的金额总和` },
+                                        {name:'可用余额',value:availableBalance,instruction: `${addCommas(availableBalance)}元`,readMe:`账户内可用于出借和提现的金额，不包含冻结金额` },
+                                        {name:'冻结金额',value:freezingAmount,instruction: `${addCommas(freezingAmount)}元` ,readMe:`冻结金额=散标/债权转让招标中金额+提现在途资金`},
                                     ]}
                                     unit={`元`}
                                     style={{height: '300px', width: '930px'}}
@@ -123,6 +138,18 @@ class AccountOverview extends React.Component{
                 <div className="member__cbox">
                     <Tab>
                         <div name="收益情况" className="chart">
+                            {/*<dl className='total_income'>
+                                <dt>累计回款：
+                                    <Tooltip
+                                        placement="topLeft"
+                                        title='出借人在巴巴汇出借累计获得的预估回款总额（已扣除相关费用）'
+                                        arrowPointAtCenter overlayClassName='myTooltip'
+                                    >
+                                        <span style={{cursor:'default'}} className='readme'>?</span>
+                                    </Tooltip>
+                                </dt>
+                                <dd>{totalEarns[0].data[11] || `0.00`}元</dd>
+                            </dl>*/}
                             <Tab>
                                 <div name="累计收益">
                                     <BarChart

@@ -59,13 +59,13 @@ export const InvestButton=({status,id,...rest})=>{
 }
 
 export const TransferInvestButton=({status,id,projectId,...rest})=>{
-    let investTitle=``,className=`disabled`;;
+    let investTitle=``,className=`disabled`;
     switch(status){
         case 1:
             investTitle=`待发布`;
             break;
         case 2:
-            investTitle=`立即投资`;
+            investTitle=`立即加入`;
             className=``;
             break;
         case 3:
@@ -75,14 +75,9 @@ export const TransferInvestButton=({status,id,projectId,...rest})=>{
             investTitle=`还款中`;
             break;
         case 5:
-            investTitle=`提前还款审核`;
-            break;
-        case 6:
-            investTitle=`已结清`;
-            break;
-        case 7:
             investTitle=`已流标`;
             break;
+
     }
     return(
         <Link to={`/transfer-detail/${id}/${projectId}`} className={`btn ${className}`}>{investTitle}</Link>
