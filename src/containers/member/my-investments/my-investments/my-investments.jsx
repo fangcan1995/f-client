@@ -188,9 +188,9 @@ class MyInvestments extends React.Component{
                                                                 <td>
                                                                     <a onClick={() => this.toggleModal('ModalPlan', true, l.investId)}>回款计划</a>
                                                                     <a onClick={() => this.toggleModal('ModalTransferApp', true, l.investId)}
-                                                                       disabled={l.loanRefundTranStatus=='0'}
-                                                                       className={ l.loanRefundTranStatus=='0'?'disabled':'' }>
-                                                                        {l.loanRefundTranStatus=='0'?`申请中`:`债权转让`}
+                                                                       disabled={l.loanRefundTranStatus=='1'}
+                                                                       className={ l.loanRefundTranStatus=='1'?'disabled':'' }>
+                                                                        {l.loanRefundTranStatus=='1'?`申请中`:`债权转让`}
 
                                                                     </a>
 
