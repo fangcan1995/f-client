@@ -25,7 +25,7 @@ let investDetailActions = {
             if (code == 0) {
                 //console.log('标的投资部分');
                 //console.log(data);
-                //data.surplusAmount=5800;
+                //data.surplusAmount=800;
                 return data;
             } else {
                 throw res;

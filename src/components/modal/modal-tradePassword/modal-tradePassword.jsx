@@ -34,15 +34,16 @@ class ModalTradePassword extends React.Component {
     compareToFirstPassword = (rule, value, callback) => {
         const form = this.props.form;
         if (value && value !== form.getFieldValue('newPassword')) {
-            callback('两次输入的密码不一致');
+
+            if(value.length<form.getFieldValue('newPassword').length){
+                callback('请确认密码');
+            }else{
+                callback('两次输入的密码不一致');
+            }
         } else {
             callback();
         }
     }
-    /*componentWillMount () {
-        this.props.dispatch(accountAc.clear());
-        console.log('重载了');
-    }*/
     //提交
     handleSubmit = (e) => {
         e.preventDefault();
@@ -103,7 +104,6 @@ class ModalTradePassword extends React.Component {
         }
         cd();
     })
-
     //重新设置交易密码
     reset(){
         this.setState({
@@ -173,7 +173,10 @@ class ModalTradePassword extends React.Component {
                                         required: true, message: '请确认密码',
                                     }, {
                                         validator: this.compareToFirstPassword,
-                                    }],
+                                    },{
+                                        trigger:[`onBlur`]
+                                    }
+                                    ],
                                 })(
                                     <Input
                                         type="password"

@@ -58,7 +58,8 @@ export const accountAc= {
                     /*if(data.trueName==`测试三`){
                         data.isSetTradepassword='0'
                     }*/
-                    //data.isOpenAccount='0'
+                    //data.isSetTradepassword='0';
+                    //data.isOpenAccount='0';
                     return data;
                 } else {
                     throw data;

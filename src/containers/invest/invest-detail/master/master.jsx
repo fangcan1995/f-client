@@ -19,7 +19,7 @@ class InvestDetailMaster extends React.Component {
         const {investInfo}=this.props.investDetail;
         const {minInvestAmount,maxInvestAmount,surplusAmount}=investInfo;
         let min,max;
-        ((surplusAmount-minInvestAmount)< minInvestAmount)? min=surplusAmount:min=minInvestAmount;
+        (surplusAmount<minInvestAmount)? min=surplusAmount:min=minInvestAmount;
         (maxInvestAmount<surplusAmount)?max=maxInvestAmount:max=surplusAmount;
         return (
             <div>

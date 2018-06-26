@@ -69,7 +69,13 @@ import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
                                         <p><strong>登记证号:</strong>{mortgageCarHis.carRegNumber}</p>
                                         <p><strong>行驶里程:</strong>{mortgageCarHis.mileage}公里</p>
                                         <p><strong>购车年份:</strong>{mortgageCarHis.carAge}年</p>
-                                        <p><strong>评估价格:</strong>{addCommas(mortgageCarHis.pricePotential)}元</p>
+                                        <p><strong>评估价格:</strong>
+
+                                            {
+                                                mortgageCarHis.pricePotential?`${addCommas(mortgageCarHis.pricePotential)}元`
+                                                    :``
+                                            }
+                                        </p>
                                     </dd>
                                 </dl>:''
                             }

@@ -230,7 +230,7 @@ export function getTips(messageCode){
         },
         {
             code:`invest_023`,
-            message:{code: 101, message: `当前投资用户过多，请稍后再试！`, allowGoOn: true}
+            message:{code: 101, message: `当前投资用户过多，请耐心等待！`, allowGoOn: true}
         },
         {
             code:`invest_024`,
@@ -238,7 +238,7 @@ export function getTips(messageCode){
         },
         {
             code:`invest_025`,
-            message:{code: 101, message: `系统烦忙，请稍后！`, allowGoOn: true}
+            message:{code: 101, message: `系统烦忙，请耐心等待！`, allowGoOn: true}
         },
         {
             code:`invest_026`,

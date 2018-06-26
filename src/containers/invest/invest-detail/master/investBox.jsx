@@ -138,18 +138,24 @@ class MasterInvestBox extends Component {
 
     };
     closeModal(status){
-        const {investInfo,dispatch}=this.props;
-        console.log('参数是：');
-        console.log(this.props);
+        const {investInfo,dispatch,investDetail}=this.props;
+        //console.log('关闭回调');
+        //console.log('参数是：');
+        //console.log(this.props);
         dispatch(accountAc.getAccountInfo());  //成功重载数据
         if(investInfo.isTransfer==`1`){
-            dispatch(investDetailActions.getInvestInfo(investInfo.projectId));
+            dispatch(investDetailActions.getInvestInfo(investInfo.projectId));   //标的信息
             dispatch(investDetailActions.getInvestRecords(investInfo.projectId));//投资记录
             dispatch(investDetailActions.getTransferInvestRecords(investInfo.id)); //债转投资记录
         }else{
-            dispatch(investDetailActions.getInvestInfo(investInfo.id));
+            dispatch(investDetailActions.getInvestInfo(investInfo.id));   //标的信息
             dispatch(investDetailActions.getInvestRecords(investInfo.id));//投资记录
         }
+        //console.log('新的标的信息');
+        //console.log(investDetail.investInfo.surplusAmount);
+        this.setState({
+            investAmount:(investDetail.investInfo.surplusAmount>investInfo.min)? investDetail.investInfo.surplusAmount:investInfo.min
+        })
         this.toggleModal('bbhModal',false);
     }
     render(){
@@ -179,7 +185,7 @@ class MasterInvestBox extends Component {
                                 <li><strong>可投金额：</strong>{addCommas(investInfo.surplusAmount)}元</li>
                             </ul>
                             <StepperInput config = {{
-                                    defaultValue:investInfo.min, //默认金额
+                                    defaultValue:this.state.investAmount, //默认金额
                                     returnAmount:investInfo.returnAmount,
                                     min:investInfo.min,
                                     max:investInfo.max,
@@ -302,10 +308,11 @@ class MasterInvestBox extends Component {
     }
 }
 function mapStateToProps(state) {
-    const { auth,account } = state.toJS();
+    const { auth,account,investDetail } = state.toJS();
     return {
         auth,
-        account
+        account,
+        investDetail
     };
 }
 export default  connect(mapStateToProps)(MasterInvestBox);
