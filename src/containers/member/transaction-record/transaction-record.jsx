@@ -20,13 +20,13 @@ class TransactionRecord extends Component{
     }
     componentDidMount () {
         window.scrollTo(0,0);  //转到页面顶部
-        let {transactionRecord,dispatch} = this.props;
+
+        /*let {transactionRecord,dispatch} = this.props;
         let {filter}=transactionRecord;
         //清空上一次请求的状态
-        let filter_new=Object.assign({},filter);
-        this.props.dispatch(transactionRecordAc.modifyState({filter:filter_new,data:``}));
-
-        dispatch(transactionRecordAc.getData(filter_new));    //获取数据
+        let filter_new=Object.assign({},filter);*/
+        this.props.dispatch(transactionRecordAc.modifyState({filter:``,data:``}));
+        this.props.dispatch(transactionRecordAc.getData());    //获取数据
     }
     typeChange(value) {
         let {transactionRecord,dispatch} = this.props;

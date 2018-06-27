@@ -35,6 +35,8 @@ class RepaymentPlans extends React.Component{
     }
     componentDidMount () {
         window.scrollTo(0,0);
+
+        this.props.dispatch(repaymentsAc.stateRepaymentPlanModify({myList:``}));//清空数据
         this.props.dispatch(repaymentsAc.getPie());
         this.props.dispatch(repaymentsAc.getList());
         this.props.dispatch(repaymentsAc.getProList());

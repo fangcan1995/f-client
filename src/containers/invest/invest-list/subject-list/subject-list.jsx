@@ -9,6 +9,8 @@ import {Loading,NoRecord,WaitThirdParty} from '../../../../components/bbhAlert/b
 import {InvestTab,ProgressBar,InvestButton} from '../investComponents';
 import {toMoney,toNumber,addCommas} from '../../../../utils/famatData';
 import '../invest-list.less';
+import {memberInvestAc} from "../../../../actions/member-investments";
+import {repaymentsAc} from "../../../../actions/member-loans";
 
 
 let orderBy={};
@@ -18,6 +20,8 @@ class SubjectList extends Component {
         this.multiFilter = this.multiFilter.bind(this);
     }
     componentDidMount () {
+        //清空
+        this.props.dispatch(sbListAc.stateSbModify({list:``}));
         //处理来自新手标的路由
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
         if(pathSnippets[1]=='newNoviceLoan'){
@@ -242,9 +246,11 @@ class SubjectList extends Component {
                                                     dispatch(sbListAc.stateSbModify({list:``,filter:filter,sort:sort}));
                                                     let prams=Object.assign({pageNum:obj.currentPage,pageSize:obj.pageCount},this.todoFilter(Object.assign({},filter)),orderBy);
                                                     dispatch(sbListAc.getList(prams));
+
                                                 }
                                             }
                                         } ></Pagination>
+
                                     </div>
                                     :<NoRecord isShow={true} />
                                 }
