@@ -71,31 +71,35 @@ export default class StepperInput extends Component{
         let step=this.props.config.step;
         let max=this.props.config.max;  //可投金额
         let min=this.props.config.min;  //可投金额
-        //console.log('可投金额');
-        //console.log(max);
+        let value;
+
         let result0=this.checkMoney(parseInt(this.state.value));  //验证是否合法
-        //console.log(result0);
-        if(result0.code==2){
-            step=min-parseInt(this.state.value)
+        if(result0.code==1 || result0.code==2 ){
+            value=min;
+            step=0;
         }else if(result0.code==3){
-            step=0
+            value=max;
+            step=0;
+        }else if(result0.code==4){
+            value=parseInt(parseInt(this.state.value)/min)*min;
+            step=step-parseInt(this.state.value)%min;
         }else{
-            step=step;
+            if(this.checkMoney(parseInt(this.state.value)+step).code==3){
+                step=max-parseInt(this.state.value)
+            }
+            value=parseInt(this.state.value);
         }
-        let result=this.checkMoney(parseInt(this.state.value)+step);  //验证增加后是否合法
-       // console.log(result);
+        let result=this.checkMoney(value+step);  //验证增加后是否合法
         if(result.code>1 ){
             this.setState({
                 code:result.code,
-                value: (parseInt(this.state.value) + step),
-                //tips:result.tips
+                value: (value + step),
             },()=>{
                 let code=this.checkMoney(parseInt(this.state.value)).code;
                 callback({
                     code:code,
                     value:this.state.value,
                     tips:`${result.tips}`,
-
                 });
             });
         }
@@ -103,36 +107,31 @@ export default class StepperInput extends Component{
     minus(){
         const {callback} = this.props.config;
         let step=this.props.config.step;
-        let max=this.props.config.max;  //可投金额
-        let min=this.props.config.min;  //可投金额
-        //console.log('可投金额');
-        //console.log(max);
+        let max=this.props.config.max;  //最大金额
+        let min=this.props.config.min;  //最小金额
+        let value;
         let result0=this.checkMoney(parseInt(this.state.value));  //验证是否合法
-        //console.log(result0);
-        if(result0.code==2){
-            step=0
+
+        if(result0.code==1 || result0.code==2 ){
+            value=min;
+            step=0;
         }else if(result0.code==3){
-            step=parseInt(this.state.value)-max;
+            value=max;
+            step=0;
+        }else if(result0.code==4){
+            value=parseInt(parseInt(this.state.value)/min)*min;
+            step=0;
         }else{
-            step=step;
+            if(this.checkMoney(parseInt(this.state.value)-step).code==2){
+                step=parseInt(this.state.value)-min;
+            }
+            value=parseInt(this.state.value);
         }
-        let result=this.checkMoney(parseInt(this.state.value)-step);  //验证增加后是否合法
-        //console.log(result);
-
-        /*//递增金额去零头
-        if(parseInt(this.state.value)%step!=0){
-            step=parseInt(this.state.value)%step
-        }else{
-            step=this.props.config.step
-        }*/
-
+        let result=this.checkMoney(value-step);  //验证增加后是否合法
         if(result.code>1 ){
-            //(result.code==4)?step=0:step=step;
-            /*(result.code==2)?step=0:step=step;*/
             this.setState({
                 code:result.code,
-                value: (parseInt(this.state.value) - step),
-                //tips:result.tips
+                value: (value - step),
             },()=>{
                 let code=this.checkMoney(parseInt(this.state.value)).code;
                 callback({
