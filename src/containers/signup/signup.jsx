@@ -8,14 +8,15 @@ import { loginUser } from '../../actions/auth';
 import { hex_md5 } from '../../utils/md5';
 import parseJson2URL from '../../utils/parseJson2URL';
 import parseQueryString from '../../utils/parseQueryString';
+import { passwordRegExp, phoneRegExp } from '../../utils/regExp'
 
 import Card from '../../components/login-card/login-card';
 import './signup.less';
 
 const createForm = Form.create;
 const FormItem = Form.Item;
-const phoneNumberRegExp = /^1[3|4|5|7|8]\d{9}$/;
-const passwordRegExp = /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*?_., ]).*$/;
+// const phoneRegExp = /^1[3|4|5|7|8]\d{9}$/;
+// const passwordRegExp = /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*?_., ]).*$/;
 const params = {
   client_id: 'member',
   client_secret: 'secret',
@@ -224,14 +225,14 @@ componentWillUnmount() {
         trigger: 'onBlur'
       }, {
         rules: [
-          { pattern: phoneNumberRegExp, message: '请输入正确的手机号码' },
+          { pattern: phoneRegExp, message: '请输入正确的手机号码' },
           {
             validator: (rule, value, callback) => {
               // console.log(value)
               // this.setState({
               //   verifyCodeCd:''
               // })
-              if ( !phoneNumberRegExp.test(value) ) {
+              if ( !phoneRegExp.test(value) ) {
                 return callback()
               }
               const params = `?${parseJson2URL({username: value || ''})}`;
