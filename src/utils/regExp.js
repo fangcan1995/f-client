@@ -1,4 +1,4 @@
-export const passwordRegExp = /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*?_., ]).*$/;  //登录密码
+export const passwordRegExp = /^(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*?_.,]).{6,16}$/;  //登录密码
 export const tradePasswordRegExp = /^[\@A-Za-z0-9\!\#\$\%\^\&\*\.\~]{6,16}$/;  //交易密码
 export const phoneRegExp=/^(0|86|17951)?(13[0-9]|15[012356789]|17[0135678]|18[0-9]|14[579])[0-9]{8}$/;   //手机号正则
 export const passRegExp=/^[\@A-Za-z0-9\!\#\$\%\^\&\*\.\~]{6,16}$/;  //密码正则

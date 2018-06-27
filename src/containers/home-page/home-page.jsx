@@ -308,7 +308,7 @@ class HomePage extends Component {
                             <div className="progress__bar--cur" style={{width: `${item.investmentProgress}%`}}></div>
                           </div>
                           <p className="progress__percent">{item.hadPercent}</p>
-                          <p className="progress__number">{item.moneyEnd }万/{item.money  }万</p>
+                          <p className="progress__number">{item.moneyEnd/10000 }万/{item.money/10000  }万</p>
                         </div>
                       </div>
                     </div>
