@@ -42,6 +42,7 @@ class ModalRepaymentApp extends React.Component {
                 num:projectInfo.num, //剩余期数
                 capital:projectInfo.capital , //应还本金
                 iint:projectInfo.iint,//应还利息
+                paidFee:projectInfo.paidFee,//应还手续费
             }
             console.log('提交后台的数据是');
             console.log(appInfo);
@@ -133,7 +134,7 @@ class ModalRepaymentApp extends React.Component {
                                         { ...formItemLayout }
                                         label="还款总额"
                                     >
-                                        {addCommas(projectInfo.sum)} 元
+                                        {addCommas(parseFloat(projectInfo.sum)+parseFloat(projectInfo.paidFee))} 元
                                     </FormItem>
                                     <FormItem
                                         { ...formItemLayout }

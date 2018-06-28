@@ -90,7 +90,8 @@ class ModalSteps extends React.Component {
         if(isSetTradepassword==='1' || stepslength===2){
             steps.splice(1, 1);
         }
-
+        console.log('isSetTradepassword='+isSetTradepassword);
+        console.log('stepslength='+stepslength);
         return(
             <div  className="pop_steps" >
                 {(isSetTradepassword==='1' || stepslength===2)?
