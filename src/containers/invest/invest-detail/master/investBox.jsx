@@ -138,28 +138,32 @@ class MasterInvestBox extends Component {
 
     };
     closeModal(status){
-        const {investInfo,dispatch,investDetail}=this.props;
-        //console.log('关闭回调');
-        //console.log('参数是：');
-        //console.log(this.props);
+        const {investInfo,dispatch}=this.props;
         dispatch(accountAc.getAccountInfo());  //成功重载数据
         if(investInfo.isTransfer==`1`){
-            dispatch(investDetailActions.getInvestInfo(investInfo.projectId));   //标的信息
+            dispatch(investDetailActions.getInvestInfo(investInfo.projectId)).then(()=>{
+                const {investDetail}=this.props;
+                    this.setState({
+                        investAmount:(investDetail.investInfo.surplusAmount>investInfo.min)? investInfo.min:investDetail.investInfo.surplusAmount
+                    })//修改默认投资金额
+                }
+            );   //标的信息
             dispatch(investDetailActions.getInvestRecords(investInfo.projectId));//投资记录
             dispatch(investDetailActions.getTransferInvestRecords(investInfo.id)); //债转投资记录
         }else{
-            dispatch(investDetailActions.getInvestInfo(investInfo.id));   //标的信息
+            dispatch(investDetailActions.getInvestInfo(investInfo.id)).then(()=> {
+                    const {investDetail}=this.props;
+                    this.setState({
+                        investAmount: (investDetail.investInfo.surplusAmount > investInfo.min) ? investInfo.min : investDetail.investInfo.surplusAmount
+                    })//修改默认投资金额
+                }
+            );   //标的信息
             dispatch(investDetailActions.getInvestRecords(investInfo.id));//投资记录
         }
-        //console.log('新的标的信息');
-        //console.log(investDetail.investInfo.surplusAmount);
-        this.setState({
-            investAmount:(investDetail.investInfo.surplusAmount>investInfo.min)? investDetail.investInfo.surplusAmount:investInfo.min
-        })
         this.toggleModal('bbhModal',false);
     }
     render(){
-        let {account,auth,investInfo,type}=this.props;
+        let {account,auth,investInfo,type,investDetail}=this.props;
         let {isFetching,accountsInfo,toOthersInfo}=account;
         let {availableBalance,memberRedInfo,memberCoupon,postResult,isCertification,isOpenAccount,isRisk,riskLevel,isNovice,surplusAmount}=accountsInfo;
         let loginReturnUrl=``;
@@ -168,7 +172,9 @@ class MasterInvestBox extends Component {
         }else{
             loginReturnUrl=`/login?redirect=%2Finvest-detail%2F${investInfo.id}`
         }
-
+        console.log('1111111111111');
+        console.log(investDetail);
+        console.log(investInfo);
         return(
             <div className="form_area">
                 {investInfo===``?``

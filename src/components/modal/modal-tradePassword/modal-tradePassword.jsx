@@ -144,7 +144,7 @@ class ModalTradePassword extends React.Component {
             }]
         });
 
-        if(postResult.type!=`success`  ){
+        if(postResult.type!=`success`){
             return(
                 <div className="pop__password pop">
                     <div className="form__wrapper">
@@ -227,7 +227,7 @@ class ModalTradePassword extends React.Component {
                                     </Col>
                                 </Row>
                             </FormItem>
-                            <div className='tips'>{postResult.message}{this.state.errMessages}</div>
+                            <div className='tips'>{postResult.message}</div>
                             <FormItem className='center'>
                                 {(isPosting) ? <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
                                         <Posting isShow={isPosting}/>

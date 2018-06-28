@@ -47,7 +47,7 @@ export default class PriceInput extends Component {
     render() {
         const { size,isReadOnly } = this.props;
         const state = this.state;
-        console.log(isReadOnly)
+        //console.log(isReadOnly)
         return (
             <span >
         <Input

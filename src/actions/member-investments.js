@@ -57,9 +57,9 @@ export const memberInvestAc={
                 params = parseJson2URL(params);
                 const res = await cFetch(`${url_investList}?`+params,{method: 'GET'}, true);
                 const {code, data} = res;
-                console.log('发回的数据');
-                console.log(data);
-                console.log(code);
+                //console.log('发回的数据');
+                //console.log(data);
+                //console.log(code);
                 if (code == 0) {
                     return {
                         myList:data,

@@ -32,6 +32,8 @@ class ModalTransferApp extends React.Component {
     }
 
     componentDidMount () {
+        //清理
+        this.props.dispatch(memberInvestAc.stateModify({postResult:``}));
         this.props.dispatch(memberInvestAc.getTransfer(this.props.currentId)).then(res=>{
             this.setState({
                 amount:res.value.transferInfo.canTransferMoney
@@ -41,6 +43,7 @@ class ModalTransferApp extends React.Component {
     
     //提交
     handleSubmit(e){
+        this.props.dispatch(memberInvestAc.stateModify({postResult:``}));
         const {transferInfo}=this.props.memberInvestments.myInvestments;
         e.preventDefault();
         const { dispatch, form,account,currentId } = this.props;
@@ -57,11 +60,11 @@ class ModalTransferApp extends React.Component {
             }
             console.log('准备提交的债转数据是：');
             console.log(appInfo);
-            dispatch(memberInvestAc.postTransfer(appInfo)).then(res=>{
+            dispatch(memberInvestAc.postTransfer(appInfo))/*.then(res=>{
                 this.setState({
                     message:res.value.postResult.message
                 })
-            })
+            })*/
 
         });
 
@@ -80,12 +83,16 @@ class ModalTransferApp extends React.Component {
         this.setState({
             amount:value.number
         });
-        if(parseFloat(value.number) < parseFloat(transferInfo.minInvestAmount)){
-            callback(`转让金额不能小于${addCommas(transferInfo.minInvestAmount)}元`);
+        if(parseFloat(value.number) < 100){
+            callback(`转让金额不能小于100元`);
             return false;
         }
         if(parseFloat(value.number) > parseFloat(transferInfo.canTransferMoney)){
             callback(`转让金额不能超过投资金额`);
+            return false;
+        }
+        if(parseFloat(value.number)%100!=0 && parseFloat(value.number)!=parseFloat(transferInfo.canTransferMoney)){
+            callback(`转让金额必须是100的倍数`);
             return false;
         }
         callback();
@@ -107,13 +114,13 @@ class ModalTransferApp extends React.Component {
             initialValue: false,
         })
         let {amount,tips,isRead,postSwitch} =this.state;
-        console.log('返回的债转详情');
-        console.log(transferInfo);
-        if(postResult.type!=`success` ){
+        console.log('返回的债转结果');
+        console.log(typeof postResult);
+        if(postResult.type!=`success`){
             return(
                 <div className="pop__transferApp">
-                    {isFetching?``
-                        :
+
+
                         <div className="form__wrapper" id="area">
                             <Form layout="horizontal" onSubmit={this.handleSubmit}>
                                 <FormItem
@@ -172,19 +179,32 @@ class ModalTransferApp extends React.Component {
                                         )
                                     }<a href="/subject_3/11" target="_blank">《巴巴汇债权转让服务协议》</a>
                                 </FormItem>
-                                <div className='tips'>{this.state.message}</div>
+                                <div className='tips'>{postResult.message}</div>
                                 <FormItem className='center'>
                                     {(isPosting) ? <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
                                             <Posting isShow={isPosting}/>
                                         </Button>
                                         :
-                                        <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError()) || !getFieldValue('is_read') }>确认</Button>
+                                        <Button type="primary" htmlType="submit" className="pop__large"
+                                                disabled={ hasErrors(getFieldsError()) || !getFieldValue('is_read') }>确认
+                                        </Button>
                                     }
                                 </FormItem>
 
+                                {/*<FormItem className='center'>
+                                    {(isPosting) ? <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
+                                            <Posting isShow={isPosting}/>
+                                        </Button>
+                                        :
+                                        <Button type="primary" htmlType="submit" className="pop__large" >确认</Button>
+                                    }
+                                </FormItem>*/}
+
+
+
                             </Form>
                         </div>
-                    }
+
 
                 </div>
             )

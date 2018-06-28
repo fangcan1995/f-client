@@ -1,5 +1,6 @@
 import React,{ Component } from "react";
 import './stepperInput.less';
+import {accountAc} from "../../actions/account";
 export default class StepperInput extends Component{
     constructor(props){
         super(props);
@@ -7,18 +8,30 @@ export default class StepperInput extends Component{
         this.minus = this.minus.bind(this);
         this.cutClick = this.cutClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.state = {
+            value:0,
+        }
+    }
+    componentDidMount () {
+        const {config}=this.props;
         let defaultValue=``;
 
-        if(props.config.returnAmount){
-            if(this.checkMoney(props.config.returnAmount).code==100) {
-                defaultValue = props.config.returnAmount;
+        if(config.returnAmount){
+            if(this.checkMoney(config.returnAmount).code==100) {
+                defaultValue = config.returnAmount;
             }
         }else{
-            defaultValue=props.config.defaultValue;
+            defaultValue=config.defaultValue;
         }
-        this.state = {
-            value:defaultValue,
-        }
+        this.setState({
+            value:defaultValue
+        })//修改默认投资金额
+    }
+    componentWillReceiveProps(){
+        const {config}=this.props;
+        this.setState({
+            value:config.defaultValue
+        })//修改默认投资金额
     }
     handleChange(event) {
         const {min,max,callback} = this.props.config;
@@ -40,8 +53,6 @@ export default class StepperInput extends Component{
         });
     }
     checkMoney(value){
-        /*console.log('//////////');
-        console.log(value);*/
         const {min,max,step,surplusAmount} = this.props.config;
         if(value.length<=0){
             return {code:0,tips:'请输入投资金额'};
@@ -160,5 +171,6 @@ export default class StepperInput extends Component{
                 </div>
             </div>
         );
+
     }
 }
