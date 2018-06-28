@@ -121,7 +121,7 @@ class PasswordForm extends Component {
         } else {
           this.loginFaileCallback(err)
         }
-        //dispatch(getImageCode());   //临时注释
+        dispatch(getImageCode());   //临时注释
       });
     });
   }
