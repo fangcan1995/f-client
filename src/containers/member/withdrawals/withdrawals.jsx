@@ -4,7 +4,7 @@ import Crumbs from '../../../components/crumbs/crumbs';
 import Tab from '../../../components/tab/tab';
 import { connect } from 'react-redux';
 import {accountAc} from '../../../actions/account';
-import {toMoney,addCommas} from '../../../utils/famatData';
+import {toMoney, addCommas, getTips} from '../../../utils/famatData';
 import {formItemLayout, hasErrors, noop} from "../../../utils/formSetting";
 import { Form,Input,Button} from 'antd';
 import {hex_md5} from "../../../utils/md5";
@@ -144,7 +144,7 @@ class Withdrawals extends React.Component{
                                                 <FormItem className='tips'>
                                                     {
                                                         (toOthersInfo!=`` && toOthersInfo.code==406)?
-                                                            <div className="errorMessages">{toOthersInfo.message}</div>
+                                                            <div className="errorMessages">{getTips(toOthersInfo.message).message}</div>
                                                             :``
                                                     }
                                                 </FormItem>

@@ -4,7 +4,7 @@ import Crumbs from '../../../components/crumbs/crumbs';
 import Tab from '../../../components/tab/tab';
 import { connect } from 'react-redux';
 import {accountAc} from '../../../actions/account';
-import {toMoney,addCommas,toNumber} from '../../../utils/famatData';
+import {toMoney,addCommas,toNumber,getTips} from '../../../utils/famatData';
 import {Loading,NoRecord,Posting} from '../../../components/bbhAlert/bbhAlert';
 import { Link, withRouter } from 'react-router-dom';
 import {formItemLayout, hasErrors, noop} from "../../../utils/formSetting";
@@ -118,7 +118,7 @@ class Recharge extends React.Component{
                                                     <FormItem className='tips'>
                                                         {
                                                             (toOthersInfo!=`` && toOthersInfo.code==406)?
-                                                                <div className="errorMessages">{toOthersInfo.message}</div>
+                                                                <div className="errorMessages">{getTips(toOthersInfo.message).message}</div>
                                                                 :``
                                                         }
                                                     </FormItem>

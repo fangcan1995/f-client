@@ -43,6 +43,7 @@ class MyAuthInfo extends React.Component {
     componentDidMount() {
         window.scrollTo(0,0);
         this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
+        this.props.dispatch(accountAc.getFuyouInfo({type:'ReOpenAccount'})); //获取换卡需携带的信息
 
     }
     //开卡前询问是否实名认证
@@ -138,11 +139,10 @@ class MyAuthInfo extends React.Component {
                                                     <td className="Result">已开户</td>
                                                     <td className="detail">{bankNo}</td>
                                                     <td className="operate">
-
-                                                        {
-                                                            this.state.disabled?<a href="javascript:void(0);" onClick={this.changeCard}>更换</a>
-                                                                :`更换`
+                                                        {toOthersInfo.code==`406`? `换卡审核中`
+                                                            :<a href="javascript:void(0);" onClick={this.changeCard}>更换</a>
                                                         }
+
                                                     </td>
                                                 </tr>
                                                 :isOpenAccount==='0'?

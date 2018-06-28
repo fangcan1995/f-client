@@ -4,6 +4,7 @@ import { Button} from 'antd';
 import { connect } from 'react-redux';
 import {accountAc} from "../../../actions/account";
 import {Loading,NoRecord,Posting,BbhAlert,WaitThirdParty} from '../../../components/bbhAlert/bbhAlert';
+import {getTips} from "../../../utils/famatData";
 
 class ModalBindCard extends React.Component {
     constructor(props) {
@@ -49,7 +50,7 @@ class ModalBindCard extends React.Component {
                             <div className='tips'>
                                 {
                                     (toOthersInfo!=`` && toOthersInfo.code==406)?
-                                        <div className="errorMessages">{toOthersInfo.message}</div>
+                                        <div className="errorMessages">{getTips(toOthersInfo.message).message}</div>
                                         :``
                                 }
                             </div>
