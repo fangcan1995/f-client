@@ -22,7 +22,7 @@ class TransactionRecord extends Component{
     componentDidMount () {
         window.scrollTo(0,0);  //转到页面顶部
         this.props.dispatch(transactionRecordAc.modifyState({filter:``,data:``}));
-        this.props.dispatch(transactionRecordAc.getData());    //获取数据
+        this.props.dispatch(transactionRecordAc.getData({sortBy:`-createTime`}));    //获取数据
     }
     typeChange(value) {
         let {transactionRecord,dispatch} = this.props;
