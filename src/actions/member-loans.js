@@ -123,7 +123,7 @@ export const memberLoansAc={
     //提交提前还款申请
     postRepaymentApp: (params,dispatch) => {
         return {
-            type: 'myLoans/myLoans/FETCH',
+            type: 'myLoans/myLoans/POST',
             async payload() {
                 const res = await cFetch(`${url_postRepaymentsAll}`, postContent(params), true);
                 console.log(res);
@@ -228,6 +228,7 @@ export const repaymentsAc={
             }
         }
     },
+
     getRepayment: (params) => {
         return {
             type: 'myLoans/repaymentPlans/FETCH',
@@ -246,14 +247,10 @@ export const repaymentsAc={
     },
     //提交还款
     postRepayment: (params,dispatch) => {
-
         return {
-            type: 'myLoans/repaymentPlans/FETCH',
+            type: 'myLoans/repaymentPlans/POST',
             async payload() {
                 const res = await cFetch(`${url_postRepayment}`, postContent(params), true,600000);
-
-                //console.log('返回的结果');
-                //console.log(res);
                 return {postResult: formatPostResult(res)};
             }
         }
