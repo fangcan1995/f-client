@@ -5,6 +5,7 @@ import Tab from '../../../components/tab/tab';
 import { Route, Link } from 'react-router-dom';
 import { aboutContentAction, articalListAction, articalAction } from '../../../actions/aboutContent';
 
+import './content.less';
 
 
 class articalContent extends Component {
