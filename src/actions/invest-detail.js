@@ -6,13 +6,12 @@ import {API_CONFIG} from "../config/api";
 const url_invest_projects_loan=API_CONFIG.hostWeb+API_CONFIG.getProjectsLoan; //投资信息
 const url_invest_transfer_loan=API_CONFIG.hostWeb+API_CONFIG.getTransferLoan; //债转投资信息
 const url_projects_info=API_CONFIG.hostWeb+API_CONFIG.getProjectsInfo  ;//标的详情
-//const url_projects_info=`http://172.16.1.228:9090/invest/projects/info`;
 const url_projects_record=API_CONFIG.hostWeb+API_CONFIG.getProjectsRecord;   //获取散标投资记录
 const url_transfer_record=API_CONFIG.hostWeb+API_CONFIG.getTransferRecord;//获取转让标投资记录
 const url_rpmtplan_page=API_CONFIG.hostWeb+API_CONFIG.getRpmtplanPage;//获取还款记录
 const url_availableRewards=API_CONFIG.hostWeb+API_CONFIG.getAvailableRewards; //获取特定标的可用红包列表
 const url_postInvest=API_CONFIG.hostWeb+API_CONFIG.postInvestApp; //提交投资申请
-//const url_postInvest=`http://172.16.1.221:9090/`+API_CONFIG.postInvestApp; //提交投资申请
+
 
 let investDetailActions = {
     //投资信息
@@ -22,6 +21,8 @@ let investDetailActions = {
         async payload() {
             const res = await cFetch(`${url_invest_projects_loan}/${id}` , {method: 'GET'}, false);
             const {code, data} = res;
+            console.log('返回的散标数据');
+            console.log(data);
             if (code == 0) {
                 return data;
             } else {
@@ -40,7 +41,7 @@ let investDetailActions = {
                 console.log('返回的债转数据');
                 console.log(data);
                 if (code == 0) {
-                    //data.isTransfer=`1`;
+                    data.isTransfer=`1`;
                     return data;
                 } else {
                     throw res;

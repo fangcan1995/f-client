@@ -6,7 +6,7 @@ import {income} from "../../../../utils/cost";
 import {addCommas, toMoney, toNumber} from "../../../../utils/famatData"
 import {  withRouter,Link} from 'react-router-dom';
 import  {accountAc}  from '../../../../actions/account';
-import {InvestButton} from '../../invest-list/investComponents';
+import {InvestButton,TransferInvestButton} from '../../invest-list/investComponents';
 import investDetailActions from "../../../../actions/invest-detail";
 import BbhModal from "../../../../components/modal/bbh_modal";
 import {modal_config} from "../../../../utils/modal_config";
@@ -30,7 +30,8 @@ class MasterInvestBox extends Component {
             bbhModal:false,
             currentModule:``,
             tips:'',
-            code:100
+            code:100,
+            status:props.investInfo.status
         }
     }
 
@@ -138,13 +139,20 @@ class MasterInvestBox extends Component {
 
     };
     closeModal(status){
+        console.log('回调了');
         const {investInfo,dispatch}=this.props;
         dispatch(accountAc.getAccountInfo());  //成功重载数据
+        console.log(investInfo.isTransfer)
         if(investInfo.isTransfer==`1`){
-            dispatch(investDetailActions.getInvestInfo(investInfo.projectId)).then(()=>{
+            console.log('///////////')
+            dispatch(investDetailActions.getTransferInvestInfo(investInfo.id)).then(()=>{
+
                 const {investDetail}=this.props;
+                console.log('-----')
+                console.log(investDetail);
                     this.setState({
-                        investAmount:(investDetail.investInfo.surplusAmount>investInfo.min)? investInfo.min:investDetail.investInfo.surplusAmount
+                        status:investDetail.investInfo.transStatus,
+                        investAmount:(investDetail.investInfo.surplusAmount>100)? 100:investDetail.investInfo.surplusAmount
                     })//修改默认投资金额
                 }
             );   //标的信息
@@ -154,6 +162,7 @@ class MasterInvestBox extends Component {
             dispatch(investDetailActions.getInvestInfo(investInfo.id)).then(()=> {
                     const {investDetail}=this.props;
                     this.setState({
+                        status:investDetail.investInfo.status,
                         investAmount: (investDetail.investInfo.surplusAmount > investInfo.min) ? investInfo.min : investDetail.investInfo.surplusAmount
                     })//修改默认投资金额
                 }
@@ -176,12 +185,14 @@ class MasterInvestBox extends Component {
         return(
             <div className="form_area">
                 {investInfo===``?``
-                    :(investInfo.status!=2)?
+                    :(this.state.status!=2 )?
                         <div>
                             <ul className="m-amount">
                                 <li><strong>开放金额：</strong>{addCommas(toMoney(investInfo.money))}元</li>
                             </ul>
-                            <InvestButton status={investInfo.status} id={investInfo.id} />
+                            {investInfo.isTransfer == `1` ?<TransferInvestButton status={investInfo.status} id={investInfo.id} projectId={investInfo.projectId} />
+                                : <InvestButton status={investInfo.status} id={investInfo.id}/>
+                            }
                         </div>
                         :<div>
                             <ul className="m-amount">

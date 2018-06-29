@@ -195,7 +195,7 @@ class MyInvestments extends React.Component{
                                                                        disabled={l.loanRefundTranStatus=='1'}
                                                                        className={ l.loanRefundTranStatus=='1'?'disabled':'' }>
                                                                         {l.loanRefundTranStatus=='1'?`申请中`:`债权转让`}
-
+                                                                        
                                                                     </a>
 
                                                                     <a href="">投资合同</a>

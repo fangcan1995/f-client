@@ -31,7 +31,8 @@ export default class StepperInput extends Component{
         const {config}=this.props;
         console.log('----config----')
         console.log(config);
-        if(config.defaultValue!=config.surplusAmount && this.state.trigger!='handle'){
+        console.log(this.state.trigger);
+        if(config.defaultValue>config.surplusAmount && this.state.trigger!='handle'){
             this.setState({
                 value:config.surplusAmount,
                 trigger:`auto`

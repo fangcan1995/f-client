@@ -69,6 +69,9 @@ class TransferDetailMaster extends React.Component {
             case 5:
                 investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">已流标</Link>;
                 break;
+            case 6:
+                investButton=<Link to={`/transfer-detail/${transferId}/${id}`} className="btn end">已流标</Link>;
+                break;
 
         }
         return investButton;
@@ -77,6 +80,10 @@ class TransferDetailMaster extends React.Component {
         let {investAmount}=this.state;
         let {dispatch,auth,member,returnAmount}=this.props;
         let {investInfo}=this.props.investDetail;
+        const {minInvestAmount,maxInvestAmount,surplusAmount}=investInfo;
+        let min,max;
+        (surplusAmount<100)? min=surplusAmount:min=100;
+        (maxInvestAmount<surplusAmount)?max=maxInvestAmount:max=surplusAmount;
         return (
             <div>
                 <div>
@@ -122,8 +129,8 @@ class TransferDetailMaster extends React.Component {
                                                status:investInfo.transStatus,
                                                money:investInfo.transAmt,
                                                surplusAmount:investInfo.surplusAmount,
-                                               min:investInfo.minInvestAmount,
-                                               max:(investInfo.maxInvestAmount<investInfo.surplusAmount)?investInfo.maxInvestAmount:investInfo.surplusAmount,
+                                               min:100,
+                                               max:max,
                                                step:100,  //递增金额
                                                rate:(investInfo.annualRate+((investInfo.raiseRate)?investInfo.raiseRate:0)),
                                                loanExpiry:investInfo.transferPeriod,
@@ -134,6 +141,9 @@ class TransferDetailMaster extends React.Component {
 
                                            }}
                                 />
+
+
+
                                 :``
                             }
                         </div>
