@@ -29,9 +29,11 @@ export default class StepperInput extends Component{
     }
     componentWillReceiveProps(){
         const {config}=this.props;
-        if(config.defaultValue!=config.min && this.state.trigger!='handle'){
+        console.log('----config----')
+        console.log(config);
+        if(config.defaultValue!=config.surplusAmount && this.state.trigger!='handle'){
             this.setState({
-                value:config.defaultValue,
+                value:config.surplusAmount,
                 trigger:`auto`
             })//修改默认投资金额
         }

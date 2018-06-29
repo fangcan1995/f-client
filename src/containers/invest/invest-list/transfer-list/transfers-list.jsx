@@ -15,6 +15,7 @@ class TransferList extends Component {
         super(props);
     }
     componentDidMount () {
+
         this.props.dispatch(tranferListAc.stateRepaymentPlanModify({list:``,sort:{
                 annualRate:0,
                 transferPeriod:0,

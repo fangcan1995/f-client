@@ -153,7 +153,7 @@ class TransferDetailMaster extends React.Component {
                         </li>
                         <li className="step3"><i className="iconfont icon-3"></i>
                             <dl>
-                                <dt>原项目放款</dt>
+                                <dt>项目放款</dt>
                                 <dd>放款日期：
                                     {(investInfo.projectTransferDate!='')? `${moment(investInfo.investInfoTransferDate).format('YYYY-MM-DD')} ` : '— —'}
                                 </dd>

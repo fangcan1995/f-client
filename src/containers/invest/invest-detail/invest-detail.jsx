@@ -15,6 +15,7 @@ class InvestDetail extends React.Component{
         super(props);
     }
     componentDidMount () {
+        window.scrollTo(0,0);
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
         let proId=pathSnippets[1];
         let {dispatch}=this.props;
