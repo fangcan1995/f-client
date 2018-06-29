@@ -15,7 +15,13 @@ class TransferList extends Component {
         super(props);
     }
     componentDidMount () {
-        //this.props.dispatch(tranferListAc.getTransferList(1,10,{},{status:2}));
+        this.props.dispatch(tranferListAc.stateRepaymentPlanModify({list:``,sort:{
+                annualRate:0,
+                transferPeriod:0,
+                putDate:0,
+                surplusAmount:0,
+                investmentProgress:0,
+            }})); //清空
         this.props.dispatch(tranferListAc.getList({status:``}));
     }
     sort(type){
@@ -103,7 +109,7 @@ class TransferList extends Component {
                                             pageSize:list.pageSize,
                                             totalPage:list.pages,
                                             paging:(obj)=>{
-                                                dispatch(sbListAc.stateSbModify({list:``,sort:sort}));
+                                                dispatch(tranferListAc.stateRepaymentPlanModify({list:``,sort:sort}));
                                                 let parms=Object.assign({pageNum:obj.currentPage,pageSize:obj.pageCount},orderBy)
                                                 dispatch(tranferListAc.getList(parms));
                                             }

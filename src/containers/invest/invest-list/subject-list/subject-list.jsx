@@ -20,8 +20,13 @@ class SubjectList extends Component {
         this.multiFilter = this.multiFilter.bind(this);
     }
     componentDidMount () {
-        //清空
-        this.props.dispatch(sbListAc.stateSbModify({list:``}));
+        this.props.dispatch(sbListAc.stateSbModify({list:``, sort:{
+                totalrate:0,
+                loanExpiry:0,
+                putTime:0,
+                surplusAmount:0,
+                investmentProgress:0,
+            }})); //清空
         //处理来自新手标的路由
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
         if(pathSnippets[1]=='newNoviceLoan'){

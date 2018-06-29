@@ -7,6 +7,7 @@ import { Select,DatePicker } from 'antd';
 import { connect } from 'react-redux';
 import {transactionRecordAc} from "../../../actions/member";
 import {addCommas, toMoney} from "../../../utils/famatData";
+import {sbListAc} from "../../../actions/invest-list";
 
 const { RangePicker } = DatePicker;
 const Option = Select.Option;
@@ -20,13 +21,8 @@ class TransactionRecord extends Component{
     }
     componentDidMount () {
         window.scrollTo(0,0);  //转到页面顶部
-
-        /*let {transactionRecord,dispatch} = this.props;
-        let {filter}=transactionRecord;
-        //清空上一次请求的状态
-        let filter_new=Object.assign({},filter);*/
         this.props.dispatch(transactionRecordAc.modifyState({filter:``,data:``}));
-        this.props.dispatch(transactionRecordAc.getData());    //获取数据
+        this.props.dispatch(transactionRecordAc.getData({sortBy:`-createTime`}));    //获取数据
     }
     typeChange(value) {
         let {transactionRecord,dispatch} = this.props;
@@ -171,9 +167,10 @@ class TransactionRecord extends Component{
                                                         pageSize:data.pageSize,
                                                         totalPage:data.pages,
                                                         paging: (obj) => {
-                                                            filter.pageNum=obj.currentPage;
-                                                            dispatch(transactionRecordAc.modifyState({filter:filter,data:''}));  //初始化页面
-                                                            dispatch(transactionRecordAc.getData(filter));    //获取数据
+                                                            let filter_new=Object.assign({},filter);
+                                                            filter_new.pageNum=obj.currentPage;
+                                                            dispatch(transactionRecordAc.modifyState({filter:filter_new,data:''}));  //初始化页面
+                                                            dispatch(transactionRecordAc.getData(filter_new));    //获取数据
                                                         }
                                                     }
                                                 } ></Pagination>

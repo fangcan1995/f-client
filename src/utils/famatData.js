@@ -124,8 +124,8 @@ export  function cardGetSex(identityCard) {
 export  function formatPostResult(res){
     let type=``;
     (res.code == 0)?type='success':type='error';
-    console.log('提示信息-------------');
-    console.log(res.message);
+    //console.log('提示信息-------------');
+    //console.log(res.message);
     //console.log(number(res.message));
     return {
         code:res.code,

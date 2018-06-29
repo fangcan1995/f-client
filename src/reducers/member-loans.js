@@ -38,6 +38,23 @@ export default createReducer(initialState, {
         isFetching: false,
         myLoans: action.payload,
     }),
+    ['myLoans/myLoans/FETCH_REJECTED']: (state, action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
+
+    ['myLoans/myLoans/POST_PENDING']: (state, action) => state.mergeDeep({
+        isPosting: true,
+    }),
+    ['myLoans/myLoans/POST_FULFILLED']: (state, action) => state.mergeDeep({
+        isPosting: false,
+        myLoans: action.payload,
+    }),
+    ['myLoans/myLoans/POST_REJECTED']: (state, action) => state.mergeDeep({
+        isPosting: false,
+        errorMessage: action.message
+    }),
+
     ['myLoans/GET_IMAGE_CODE_PENDING']: (state, action) => state.mergeDeep({
         isFetching: true,
     }),
@@ -49,10 +66,6 @@ export default createReducer(initialState, {
         isFetching: false,
         errorMessage: action.message
     }),
-    ['myLoans/myLoans/FETCH_REJECTED']: (state, action) => state.mergeDeep({
-        isFetching: false,
-        errorMessage: action.message
-    }),
     ['myLoans/myLoans/MODIFY_STATE']:(state,action) => state.mergeDeep({
         myLoans:action.payload
     }),
@@ -60,15 +73,23 @@ export default createReducer(initialState, {
 
     ['myLoans/repaymentPlans/FETCH_PENDING']: (state, action) => state.mergeDeep({
         isFetching: true,
-        isPosting: true,
     }),
     ['myLoans/repaymentPlans/FETCH_FULFILLED']: (state, action) => state.mergeDeep({
         isFetching: false,
-        isPosting: false,
         repaymentPlans: action.payload,
     }),
     ['myLoans/repaymentPlans/FETCH_REJECTED']: (state, action) => state.mergeDeep({
         isFetching: false,
+        errorMessage: action.message
+    }),
+    ['myLoans/repaymentPlans/POST_PENDING']: (state, action) => state.mergeDeep({
+        isPosting: true,
+    }),
+    ['myLoans/repaymentPlans/POST_FULFILLED']: (state, action) => state.mergeDeep({
+        isPosting: false,
+        repaymentPlans: action.payload,
+    }),
+    ['myLoans/repaymentPlans/POST_REJECTED']: (state, action) => state.mergeDeep({
         isPosting: false,
         errorMessage: action.message
     }),

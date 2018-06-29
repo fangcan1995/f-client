@@ -172,9 +172,7 @@ class MasterInvestBox extends Component {
         }else{
             loginReturnUrl=`/login?redirect=%2Finvest-detail%2F${investInfo.id}`
         }
-        console.log('1111111111111');
-        console.log(investDetail);
-        console.log(investInfo);
+
         return(
             <div className="form_area">
                 {investInfo===``?``

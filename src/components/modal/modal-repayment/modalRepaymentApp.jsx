@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import {toMoney,toNumber,addCommas} from '../../../utils/famatData';
 import { Form,Row,Input,Button,Checkbox,Col } from 'antd';
 import { connect } from 'react-redux';
-import {BbhAlert} from '../../bbhAlert/bbhAlert';
 import  {memberLoansAc,getImageCode}  from '../../../actions/member-loans';
 import { hex_md5 } from '../../../utils/md5';
 import {formItemLayout, hasErrors, noop} from '../../../utils/formSetting';
+import {Posting,BbhAlert} from '../../../components/bbhAlert/bbhAlert';
 import moment from "moment";
 import {accountAc} from "../../../actions/account";
 const createForm = Form.create;
@@ -42,6 +42,7 @@ class ModalRepaymentApp extends React.Component {
                 num:projectInfo.num, //剩余期数
                 capital:projectInfo.capital , //应还本金
                 iint:projectInfo.iint,//应还利息
+                paidFee:projectInfo.paidFee,//应还手续费
             }
             console.log('提交后台的数据是');
             console.log(appInfo);
@@ -63,7 +64,10 @@ class ModalRepaymentApp extends React.Component {
     }
 
     render() {
-        const {postResult,projectInfo,isPosting}=this.props.memberLoans.myLoans;
+        console.log('----------');
+        console.log(this.props.memberLoans);
+        const{myLoans,isPosting,isFetching}=this.props.memberLoans;
+        const {postResult,projectInfo}=myLoans;
         const { getFieldDecorator,getFieldValue,getFieldsError } = this.props.form;
         const passwordProps = getFieldDecorator('password', {
             rules: [
@@ -74,8 +78,8 @@ class ModalRepaymentApp extends React.Component {
             valuePropName: 'checked',
             initialValue: false,
         })
-        console.log('提前还款申请中获取的详情');
-        console.log(projectInfo);
+        /*console.log('提前还款申请中获取的详情');
+        console.log(projectInfo);*/
         return (
             <div className="pop__repayment">
                 {
@@ -133,7 +137,7 @@ class ModalRepaymentApp extends React.Component {
                                         { ...formItemLayout }
                                         label="还款总额"
                                     >
-                                        {addCommas(projectInfo.sum)} 元
+                                        {addCommas(parseFloat(projectInfo.sum)+parseFloat(projectInfo.paidFee))} 元
                                     </FormItem>
                                     <FormItem
                                         { ...formItemLayout }

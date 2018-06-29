@@ -10,12 +10,12 @@ export default class StepperInput extends Component{
         this.handleChange = this.handleChange.bind(this);
         this.state = {
             value:0,
+            trigger:`auto`
         }
     }
     componentDidMount () {
         const {config}=this.props;
         let defaultValue=``;
-
         if(config.returnAmount){
             if(this.checkMoney(config.returnAmount).code==100) {
                 defaultValue = config.returnAmount;
@@ -29,13 +29,20 @@ export default class StepperInput extends Component{
     }
     componentWillReceiveProps(){
         const {config}=this.props;
-        this.setState({
-            value:config.defaultValue
-        })//修改默认投资金额
+        if(config.defaultValue!=config.min && this.state.trigger!='handle'){
+            this.setState({
+                value:config.defaultValue,
+                trigger:`auto`
+            })//修改默认投资金额
+        }
     }
     handleChange(event) {
         const {min,max,callback} = this.props.config;
-        this.setState({value: event.target.value}, () =>{
+        this.setState({
+                value: event.target.value,
+                trigger:`handle`
+            }
+            , () =>{
             let result=this.checkMoney(this.state.value);
            if(result.code>1){
                 callback({
@@ -83,7 +90,6 @@ export default class StepperInput extends Component{
         let max=this.props.config.max;  //可投金额
         let min=this.props.config.min;  //可投金额
         let value;
-
         let result0=this.checkMoney(parseInt(this.state.value));  //验证是否合法
         if(result0.code==1 || result0.code==2 ){
             value=min;
@@ -105,6 +111,7 @@ export default class StepperInput extends Component{
             this.setState({
                 code:result.code,
                 value: (value + step),
+                trigger:`handle`
             },()=>{
                 let code=this.checkMoney(parseInt(this.state.value)).code;
                 callback({
@@ -143,6 +150,7 @@ export default class StepperInput extends Component{
             this.setState({
                 code:result.code,
                 value: (value - step),
+                trigger:`handle`
             },()=>{
                 let code=this.checkMoney(parseInt(this.state.value)).code;
                 callback({

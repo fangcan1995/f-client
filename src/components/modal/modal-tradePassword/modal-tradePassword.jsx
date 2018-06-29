@@ -8,12 +8,12 @@ import {tradePasswordRegExp } from '../../../utils/regExp';
 import {formItemLayout,noop,countDownTime } from '../../../utils/formSetting';
 import {hex_md5} from "../../../utils/md5";
 import "./modal-tradePassword.less"
-import {memberAc} from "../../../actions/member";
 
 
 const createForm = Form.create;
 const FormItem = Form.Item;
 
+let timer = 1;
 
 class ModalTradePassword extends React.Component {
     constructor(props) {
@@ -59,8 +59,14 @@ class ModalTradePassword extends React.Component {
                 trade_password_code:form.getFieldsValue().verify_code,
                 trade_password_token:account.verifyCode.token
             }
-            dispatch(accountAc.setTradePassword(appInfo));
-            //停止计数器
+            console.log('清除定时器');
+            window.clearTimeout(timer);
+            dispatch(accountAc.setTradePassword(appInfo)).then(()=>{
+                console.log('提交了');
+
+            });
+
+
         });
     }
     handleSendVerifyCodeBtnClick = e => {
@@ -76,6 +82,7 @@ class ModalTradePassword extends React.Component {
                 })
                 .then(
                     () => this.startCd()
+
                 )
                 .catch(err => {
 
@@ -87,7 +94,7 @@ class ModalTradePassword extends React.Component {
         });
     }
     startCd = () => new Promise((resolve, reject) => {
-        let timer = null;
+        //let timer = null;
         const cd = () => {
             if(this.state.verifyCodeCd>0){
                 this.setState({
@@ -143,7 +150,8 @@ class ModalTradePassword extends React.Component {
                 trigger: ['onBlur', 'onChange']
             }]
         });
-
+        console.log('提交后的结果-----------');
+        console.log(postResult);
         if(postResult.type!=`success`){
             return(
                 <div className="pop__password pop">
@@ -246,7 +254,11 @@ class ModalTradePassword extends React.Component {
             return(
                 <div className="pop__password pop">
                     <BbhAlert
-                        info={{message:postResult.message,description:postResult.description,type:postResult.type,
+                        info={{
+                            type:postResult.type,
+                            message:postResult.message,
+                            description:postResult.description,
+
                             callback:()=>{
                                 this.modalClose()
                             }

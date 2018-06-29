@@ -53,6 +53,8 @@ class BankCard extends React.Component{
     closeModal(status){
         //this.props.dispatch(accountAc.getAccountInfo());  //成功重载数据,暂时注释掉
         this.toggleModal('bbhModal',false);
+        this.props.dispatch(accountAc.modifyState({postResult:''}));
+        this.props.dispatch(accountAc.getAccountInfo());
     }
     changeCard(){
         let {toOthersInfo}=this.props.account;
@@ -81,10 +83,10 @@ class BankCard extends React.Component{
         let {account}=this.props;
         let {postResult,accountsInfo,toOthersInfo}=account;
         let {isCertification,isOpenAccount,bankName,bankNo,trueName,isSetTradepassword}=account.accountsInfo;
-        if(postResult.code==='0'){
+        /*if(postResult.code==='0' ){
             this.props.dispatch(accountAc.modifyState({postResult:''}));
             this.props.dispatch(accountAc.getAccountInfo());
-        }
+        }*/
         return (
             <div className="member__main">
                 <Crumbs />
@@ -172,7 +174,6 @@ class BankCard extends React.Component{
                         visible={this.state.bbhModal}
                         closeFunc={()=>this.closeModal()}
                         moduleName={this.state.currentModule}
-                        /*stepslength={2}*/
                         returnPage={`my-account_bank-card`}
                     >
 
