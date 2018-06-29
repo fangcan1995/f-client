@@ -194,7 +194,6 @@ class MyInvestments extends React.Component{
                                                                     <a onClick={() => this.toggleModal('ModalTransferApp', true, l.investId)}
                                                                        disabled={l.loanRefundTranStatus=='1'}
                                                                        className={ l.loanRefundTranStatus=='1'?'disabled':'' }>
-                                                                        /{l.loanRefundTranStatus}/
                                                                         {l.loanRefundTranStatus=='1'?`申请中`:`债权转让`}
 
                                                                     </a>
