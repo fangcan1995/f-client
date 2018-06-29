@@ -28,70 +28,56 @@ class HomePage extends Component {
 
   handleLoginBtnClick = (e) => {
     e.preventDefault();
-    console.log('aaaa')
     this.props.history.push('/login');
 
   }
   handleBannerClick(e) {
-    //  console.log(e)
     window.location.href = e;
   }
   handleSpecClick = (e) => {
     e.preventDefault();
-    // console.log('aaaa')
     this.props.history.push('/about/81/82');
 
   }
   handleNoticeClick(e) {
-    console.log(e);
     this.props.history.push(`/about/90/91/${e}`)
   }
   handleMoreClick() {
-    console.log('22')
     this.props.history.push('/about/90/91')
   }
   handleComeInClick(e) {
-    console.log(e)
-    if(e){
+    if (e) {
       this.props.history.push(`/invest-detail/${e}`)
-    }else{
+    } else {
       this.props.history.push(`/invest-list`)
     }
-    
+
   }
   handleStandardClick(e) {
-    console.log(e)
     this.props.history.push(`/invest-detail/${e}`)
   }
   handleAdClick(e) {
-    console.log(e)
     if (e) {
       return this.props.history.push(`/about/90/94/${e}`)
     }
     this.props.history.push(`/about/90/94`)
   }
   handleCommediaClick(e) {
-    console.log(e)
     this.props.history.push(`/about/news/mediaCompany`)
   }
   handleNewsClick(e) {
-    console.log(e)
     this.props.history.push(`/about/90/95/${e}`)
   }
   handleMimageClick(e) {
-    console.log(e)
   }
   handleMoreMediaClick() {
-    console.log('1111')
     this.props.history.push('/about/90/95')
   }
   handleMedIcoClick(e) {
-    console.log(e)
     this.props.history.push(`/about/90/95/${e}`)
     // window.location.href=e
   }
   handlePartnerClick(e) {
-    console.log(e)
     this.props.history.push(`/about/67/72/${e}`)
   }
 
@@ -109,8 +95,6 @@ class HomePage extends Component {
   }
   render() {
     const { homePage, auth } = this.props;
-
-    console.log(homePage)
     return (
       <main className="main home-page" id="home-page">
         <div className="banner" >
@@ -164,25 +148,25 @@ class HomePage extends Component {
                       </div>
                   }
 
-                </div> :homePage.standard.length?
-                <div className="login" key={homePage.standard.length}>
-                  <p className="yield">
-                    年化收益率
+                </div> : homePage.standard.length ?
+                  <div className="login" key={homePage.standard.length}>
+                    <p className="yield">
+                      年化收益率
                 <br />
-                    <em><span>{homePage.standard[0].annualRate}</span>{homePage.standard[0].raiseRate ? `+${homePage.standard[0].raiseRate}` : '.0'}%</em>
-                  </p>
-                  {
-                    auth.isAuthenticated ? <button type="button" className="login__btn" onClick={this.handleComeInClick.bind(this,'')}>立即加入</button>
-                      : <div>
-                        <button type="button" className="login__btn" onClick={this.handleLoginBtnClick}>立即登录</button>
-                        <p className="signup">
-                          没有账号？
+                      <em><span>{homePage.standard[0].annualRate}</span>{homePage.standard[0].raiseRate ? `+${homePage.standard[0].raiseRate}` : '.0'}%</em>
+                    </p>
+                    {
+                      auth.isAuthenticated ? <button type="button" className="login__btn" onClick={this.handleComeInClick.bind(this, '')}>立即加入</button>
+                        : <div>
+                          <button type="button" className="login__btn" onClick={this.handleLoginBtnClick}>立即登录</button>
+                          <p className="signup">
+                            没有账号？
                   <Link to={'/signup'}>立即注册</Link>
-                        </p>
-                      </div>
-                  }
+                          </p>
+                        </div>
+                    }
 
-                </div>:''
+                  </div> : ''
             }
 
           </div>
