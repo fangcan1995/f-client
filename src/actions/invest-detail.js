@@ -41,7 +41,8 @@ let investDetailActions = {
                 const {code, data} = res;
                 /*console.log('返回的债转数据');
                 console.log(data);
-                data.transferPeriod=5;*/
+                data.annualRate=9.1;
+                data.transferPeriod=1;*/
                 if (code == 0) {
                     data.isTransfer=`1`;
                     return data;
