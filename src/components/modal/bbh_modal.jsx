@@ -61,7 +61,7 @@ export default class BbhModal extends Component{
                 moduleContent=<ModalRecharge key={this.state.key} onSuccess={()=>{this.onCancel()}} value={investAmount} returnPage={returnPage||``} />;
                 break;
             case `ModalRiskAssess`:
-                moduleContent=<ModalRiskAssess key={this.state.key} onSuccess={()=>{this.onCancel()}} />;
+                moduleContent=<ModalRiskAssess key={this.state.key} onSuccess={()=>{this.onCancel()}} value={investAmount} />;
                 break;
             case `ModalInvestSteps`:
                 moduleContent=<ModalInvestSteps key={this.state.key} value={investAmount} onSuccess={()=>{this.onCancel()}} />;

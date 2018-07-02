@@ -23,6 +23,7 @@ let investDetailActions = {
             const {code, data} = res;
             console.log('返回的散标数据');
             console.log(data);
+
             if (code == 0) {
                 return data;
             } else {
@@ -38,8 +39,9 @@ let investDetailActions = {
             async payload() {
                 const res = await cFetch(`${url_invest_transfer_loan}/${transferId}` , {method: 'GET'}, false);
                 const {code, data} = res;
-                console.log('返回的债转数据');
+                /*console.log('返回的债转数据');
                 console.log(data);
+                data.transferPeriod=5;*/
                 if (code == 0) {
                     data.isTransfer=`1`;
                     return data;

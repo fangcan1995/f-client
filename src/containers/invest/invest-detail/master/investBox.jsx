@@ -12,18 +12,26 @@ import BbhModal from "../../../../components/modal/bbh_modal";
 import {modal_config} from "../../../../utils/modal_config";
 import { Button,Popconfirm} from 'antd';
 
+let defaultValue;
 
 class MasterInvestBox extends Component {
     constructor(props) {
         super(props);
-        let defaultValue=``;
         if(props.investInfo.returnAmount){
             if(this.checkMoney(props.investInfo.returnAmount).code==100) {
                 defaultValue = props.investInfo.returnAmount;
+            }else {
+                defaultValue = props.investInfo.min;
             }
         }else{
-            defaultValue=props.investInfo.min;
+            if(props.investInfo.surplusAmount<props.investInfo.min){
+                defaultValue=props.investInfo.surplusAmount
+            }else{
+                defaultValue=props.investInfo.min
+            }
         }
+        console.log('-------defaultValue----------')
+        console.log(defaultValue);
         this.state = {
             member:{},
             investAmount:defaultValue,
@@ -39,10 +47,10 @@ class MasterInvestBox extends Component {
         if(this.props.auth.isAuthenticated){
             this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
         }
+        //console.log('-------this.state.investAmount----------')
+        //console.log(this.state.investAmount)
     }
     checkMoney(value){
-        /*console.log('//////////');
-        console.log(value);*/
         const {min,max,step,surplusAmount} = this.props.investInfo;
         if(value.length<=0){
             return {code:0,tips:'请输入投资金额'};
@@ -139,36 +147,69 @@ class MasterInvestBox extends Component {
 
     };
     closeModal(status){
-        console.log('回调了');
+        console.log('弹窗关闭回调');
         const {investInfo,dispatch}=this.props;
         dispatch(accountAc.getAccountInfo());  //成功重载数据
-        console.log(investInfo.isTransfer)
         if(investInfo.isTransfer==`1`){
-            console.log('///////////')
             dispatch(investDetailActions.getTransferInvestInfo(investInfo.id)).then(()=>{
-
                 const {investDetail}=this.props;
-                console.log('-----')
-                console.log(investDetail);
-                    this.setState({
-                        status:investDetail.investInfo.transStatus,
-                        investAmount:(investDetail.investInfo.surplusAmount>100)? 100:investDetail.investInfo.surplusAmount
-                    })//修改默认投资金额
+                /*console.log('重新获取标的信息');
+                console.log(this.props);
+                console.log('默认金额：'+this.state.investAmount);
+                console.log('剩余金额：'+investDetail.investInfo.surplusAmount);
+                console.log('起投金额：'+investInfo.min);*/
+                let return_money;
+                if(investDetail.investInfo.surplusAmount>this.state.investAmount){
+                    return_money=this.state.investAmount
+                }else{
+                    if(investDetail.investInfo.surplusAmount>investInfo.min){
+                        return_money=100
+                    }else{
+                        return_money=investDetail.investInfo.surplusAmount
+                    }
+                }
+                this.setState({
+                    status:investDetail.investInfo.transStatus,
+                    investAmount:return_money
+                })//修改默认投资金额
+
                 }
             );   //标的信息
             dispatch(investDetailActions.getInvestRecords(investInfo.projectId));//投资记录
             dispatch(investDetailActions.getTransferInvestRecords(investInfo.id)); //债转投资记录
         }else{
             dispatch(investDetailActions.getInvestInfo(investInfo.id)).then(()=> {
-                    const {investDetail}=this.props;
-                    this.setState({
-                        status:investDetail.investInfo.status,
-                        investAmount: (investDetail.investInfo.surplusAmount > investInfo.min) ? investInfo.min : investDetail.investInfo.surplusAmount
-                    })//修改默认投资金额
+                const {investDetail}=this.props;
+                /*console.log('重新获取标的信息');
+                console.log('默认金额：'+this.state.investAmount);
+                console.log('剩余金额：'+investDetail.investInfo.surplusAmount);
+                console.log('起投金额：'+investInfo.min);*/
+                let return_money;
+                if(investDetail.investInfo.surplusAmount>this.state.investAmount){
+                    return_money=this.state.investAmount
+                }else{
+                    //console.log(1);
+                    if(investDetail.investInfo.surplusAmount>investInfo.min){
+                        //console.log(2);
+                        return_money=investInfo.min
+                    }else{
+                        //console.log(3);
+                        return_money=investDetail.investInfo.surplusAmount
+                    }
+                }
+                //console.log('默认投资金额为');
+                //console.log(return_money);
+                this.setState({
+                    status:investDetail.investInfo.status,
+                    investAmount: return_money,
+                })//修改默认投资金额
+
+
                 }
             );   //标的信息
             dispatch(investDetailActions.getInvestRecords(investInfo.id));//投资记录
         }
+
         this.toggleModal('bbhModal',false);
     }
     render(){
