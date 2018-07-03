@@ -131,14 +131,15 @@ export const transactionRecordAc={
                         }
                     }
                 }
-                console.log('----------')
-                console.log(params);
+                /*console.log('----------')
+                console.log(params);*/
+                params.sortBy='-createTime';
                 params = parseJson2URL(params);
-                console.log('----------')
-                console.log(params);
+                /*console.log('----------')
+                console.log(params);*/
                 const res = await cFetch(`${url_transaction_record}?`+params,{method: 'GET'}, true);
-                console.log('后端接口');
-                console.log(`${url_transaction_record}?`+params);
+                /*console.log('后端接口');
+                console.log(`${url_transaction_record}?`+params);*/
                 const {code, data} = res;
                 if (code == 0) {
                     return data;

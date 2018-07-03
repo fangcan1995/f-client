@@ -64,8 +64,8 @@ class ModalRepaymentApp extends React.Component {
     }
 
     render() {
-        console.log('----------');
-        console.log(this.props.memberLoans);
+        /*console.log('----------');
+        console.log(this.props.memberLoans);*/
         const{myLoans,isPosting,isFetching}=this.props.memberLoans;
         const {postResult,projectInfo}=myLoans;
         const { getFieldDecorator,getFieldValue,getFieldsError } = this.props.form;

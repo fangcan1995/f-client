@@ -165,7 +165,7 @@ class TransferDetailMaster extends React.Component {
                             <dl>
                                 <dt>项目放款</dt>
                                 <dd>放款日期：
-                                    {(investInfo.projectTransferDate!='')? `${moment(investInfo.investInfoTransferDate).format('YYYY-MM-DD')} ` : '— —'}
+                                    {(investInfo.transferDate )? `${moment(investInfo.transferDate).format('YYYY-MM-DD')} ` : '— —'}
                                 </dd>
                             </dl>
                         </li>

@@ -30,8 +30,8 @@ class MasterInvestBox extends Component {
                 defaultValue=props.investInfo.min
             }
         }
-        console.log('-------defaultValue----------')
-        console.log(defaultValue);
+        //console.log('-------defaultValue----------')
+        //console.log(defaultValue);
         this.state = {
             member:{},
             investAmount:defaultValue,
@@ -159,7 +159,7 @@ class MasterInvestBox extends Component {
                 console.log('剩余金额：'+investDetail.investInfo.surplusAmount);
                 console.log('起投金额：'+investInfo.min);*/
                 let return_money;
-                if(investDetail.investInfo.surplusAmount>this.state.investAmount){
+                if(investDetail.investInfo.surplusAmount>=this.state.investAmount){
                     return_money=this.state.investAmount
                 }else{
                     if(investDetail.investInfo.surplusAmount>investInfo.min){
@@ -185,20 +185,16 @@ class MasterInvestBox extends Component {
                 console.log('剩余金额：'+investDetail.investInfo.surplusAmount);
                 console.log('起投金额：'+investInfo.min);*/
                 let return_money;
-                if(investDetail.investInfo.surplusAmount>this.state.investAmount){
+                if(investDetail.investInfo.surplusAmount>=this.state.investAmount){
                     return_money=this.state.investAmount
                 }else{
-                    //console.log(1);
                     if(investDetail.investInfo.surplusAmount>investInfo.min){
-                        //console.log(2);
                         return_money=investInfo.min
                     }else{
-                        //console.log(3);
                         return_money=investDetail.investInfo.surplusAmount
                     }
                 }
-                //console.log('默认投资金额为');
-                //console.log(return_money);
+
                 this.setState({
                     status:investDetail.investInfo.status,
                     investAmount: return_money,
@@ -278,8 +274,7 @@ class MasterInvestBox extends Component {
                                         <li>
                                             <strong>预期可赚取：</strong>
                                             <i id="money">
-                                                {(this.state.investAmount==0)?
-                                                    (this.state.investAmount)
+                                                {(this.state.investAmount==0)? (this.state.investAmount)
                                                     :income(this.state.investAmount,(investInfo.rate),investInfo.loanExpiry,'m')
                                                 }
                                             </i>元
