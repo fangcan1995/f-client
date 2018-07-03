@@ -90,7 +90,7 @@ class RepaymentPlans extends React.Component{
     closeModal(status){
         const {investInfo,dispatch}=this.props;
         let {filter}=this.props.memberLoans.repaymentPlans;
-        dispatch(repaymentsAc.stateRepaymentPlanModify({filter:filter,myList:``}));
+        dispatch(repaymentsAc.stateRepaymentPlanModify({filter:filter,myList:``,postResult:``}));
         this.toggleModal('bbhModal',false);
         dispatch(repaymentsAc.getPie());
         dispatch(repaymentsAc.getList(filter));

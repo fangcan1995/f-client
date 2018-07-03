@@ -30,8 +30,8 @@ class MasterInvestBox extends Component {
                 defaultValue=props.investInfo.min
             }
         }
-        console.log('-------defaultValue----------')
-        console.log(defaultValue);
+        //console.log('-------defaultValue----------')
+        //console.log(defaultValue);
         this.state = {
             member:{},
             investAmount:defaultValue,

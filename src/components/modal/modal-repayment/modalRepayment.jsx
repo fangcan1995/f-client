@@ -50,16 +50,7 @@ class ModalRepayment extends React.Component {
     }
     //回调
     modalClose(){
-        /*this.setState({
-            isReset:true,
-        },()=>{
-            let {onSuccess,dispatch}=this.props;
-            dispatch(accountAc.getAccountInfo());  //真实
-            onSuccess();
-        });*/
-        console.log('点击确认了');
         let {onSuccess,dispatch}=this.props;
-        //dispatch(accountAc.getAccountInfo());  //真实
         onSuccess();
     }
     render() {
@@ -72,8 +63,8 @@ class ModalRepayment extends React.Component {
                 { required: true, min: 6, message: '密码至少为 6 个字符' }
             ]
         });
-        console.log('还款详情');
-        console.log(projectInfo);
+        /*console.log('还款详情');
+        console.log(projectInfo);*/
         return (
             <div className="pop__repayment">
                 {

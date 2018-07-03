@@ -39,6 +39,8 @@ let investDetailActions = {
             async payload() {
                 const res = await cFetch(`${url_invest_transfer_loan}/${transferId}` , {method: 'GET'}, false);
                 const {code, data} = res;
+                console.log('返回的债转数据');
+                console.log(data);
                 /*console.log('返回的债转数据');
                 console.log(data);
                 data.annualRate=9.1;

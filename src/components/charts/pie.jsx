@@ -20,8 +20,7 @@ export default class PieChart extends Component{
                 total+=parseFloat(key.value);
             });
         }
-        console.log('饼图数据');
-        console.log(data);
+
         if(!showUserLegend){
             showUserLegend=true;
         }else{
