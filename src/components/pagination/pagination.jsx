@@ -1,5 +1,7 @@
 import React,{ Component } from "react";
 import './pagination.less';
+let handlePageNum;
+let startPageInt=1;
 export default class Pagination extends Component{
     constructor(props) {
         super(props)
@@ -10,13 +12,17 @@ export default class Pagination extends Component{
             currentPage:props.config.currentPage,
             hidden: props.config.hidden  === false ? props.config.hidden : true,
             groupCount:5,
-            startPage:1,
+            startPage:startPageInt,
         }
 
     }
     componentDidMount() {
         this.setState({
             pageCountEle:document.querySelector("#pageCount"),
+            startPage:startPageInt
+        },()=>{
+            //console.log('重载组件了');
+            this.create()
         });
 
         setTimeout(() => {
@@ -26,6 +32,7 @@ export default class Pagination extends Component{
                 }
             },false);
         },0)
+
     }
     choosePageCount(e){
         const parentUI = this.state.pageCountEle.parentNode;
@@ -49,13 +56,17 @@ export default class Pagination extends Component{
         },0);
     }
     create(){
+
+        //console.log('获取');
         const {
             totalPage,
         } = this.props.config;
         const {
             currentPage,groupCount,startPage,
         } = this.state;
-
+        /*console.log('开始的标号是');
+        console.log(startPageInt);*/
+        //startPageInt=startPage
         let pages = [];
         if( totalPage <= groupCount){
 
@@ -67,13 +78,20 @@ export default class Pagination extends Component{
             pages.push(<li onClick = { this.goNext.bind(this) } className = { this.state.currentPage === totalPage? "nomore":"" } key={totalPage + 1}>&gt;</li>)
         }else{
             pages.push(<li className = { this.state.currentPage === 1? "nomore":"" } key={ 0 } onClick = { this.goPrev.bind(this) }>&lt;</li>)
-            for(let i = startPage;i < groupCount + startPage;i ++){
+            // 分页中间的省略号
+            if(startPageInt > groupCount){
+                pages.push(<li className ="" key={1} onClick = { this.go.bind(this,1) }>{1}</li>)
+                pages.push(<li className = "ellipsis" key={ -2 }>···</li>)
+            }
+            for(let i = startPageInt;i < groupCount + startPageInt;i ++){
                 if(i <= totalPage - 1){
                     pages.push(<li className = { this.state.currentPage === i? "active":""} key={i} onClick = { this.go.bind(this,i) }>{i}</li>)
                 }
             }
+
             // 分页中间的省略号
-            if(totalPage - startPage > groupCount){
+            if((totalPage - startPageInt) > groupCount){
+
                 pages.push(<li className = "ellipsis" key={ -1 }>···</li>)
             }
             // 倒数第一页
@@ -81,7 +99,10 @@ export default class Pagination extends Component{
             // 下一页
             pages.push(<li className = { this.state.currentPage === totalPage ? "nomore":"" } key={ totalPage + 1 } onClick = { this.goNext.bind(this) }>&gt;</li>)
         }
-        return pages;
+        this.setState({
+            pages:pages
+        })
+        //return pages;
 
 
     }
@@ -99,9 +120,10 @@ export default class Pagination extends Component{
         } = this.props.config;
 
         // 处理下一页的情况
-        if(currentPage % groupCount === 1){
+        /*if(currentPage % groupCount === 1){
+            console.log('111111111')
             this.setState({
-                startPage:currentPage
+                startPage:parseInt(currentPage/groupCount)*groupCount+1
             })
         }
 
@@ -110,13 +132,8 @@ export default class Pagination extends Component{
             this.setState({
                 startPage:currentPage - groupCount + 1
             })
-        }
-        // 点击最后两页时重新计算 startPage
-        if(totalPage - currentPage < 2){
-            this.setState({
-                startPage:totalPage - groupCount,
-            })
-        }
+        }*/
+
         // 选择每页条数后重新分页
         if(reset === true){
             this.setState({
@@ -124,10 +141,23 @@ export default class Pagination extends Component{
                 startPage:1,
             });
         }else{
-            this.setState({
+            /*this.setState({
                 currentPage
-            });
+            });*/
+            this.setState({
+                currentPage:currentPage,
+                startPage:parseInt(currentPage/groupCount)*groupCount+1
+            },()=>{
+                if(parseInt((currentPage-1)/groupCount)>0){
+                    startPageInt=parseInt((currentPage-1)/groupCount)*groupCount+1;
+                }else{
+                    startPageInt=1
+                }
+
+                this.create();
+            })
         }
+
         setTimeout(()=>{
             paging({
                 currentPage:this.state.currentPage,
@@ -172,15 +202,19 @@ export default class Pagination extends Component{
                 totalPage,
             } = this.props.config;
             if(currentPage > totalPage || currentPage<1){
-                console.log('非法');
+                //console.log('非法');
                 return;
             }
         }
+        handlePageNum=currentPage;
+        setTimeout(()=>{
 
-        this.go( currentPage)
+            this.go(handlePageNum)
+        }, 1000);
+        //this.go( currentPage)
     }
     render(){
-        const Pages = this.create.bind(this)();
+        //const Pages = this.create.bind(this)();
         if(this.props.config.totalPage>1){
             return(
                 <div className="pagination" >
@@ -197,7 +231,7 @@ export default class Pagination extends Component{
                         </div>
                     </div>
                     <ul className = "page">
-                        { Pages }
+                        { this.state.pages }
                         <li className="jump">跳至<input type="text" className="pagination__page" value={this.state.page} onChange = {this.jumpPage} />页
                            {/* <button className="pagination__button" onClick = {this.jumpPage}>确定</button>*/}
                         </li>
@@ -221,7 +255,7 @@ export default class Pagination extends Component{
                         </div>
                     </div>
                     <ul className = "page">
-                        { Pages }
+                        { this.state.pages }
                         <li className="jump">到第<input type="text" className="pagination__page" value={this.state.page} onChange = {this.jumpPage} />页
                             <button className="pagination__button" onClick = {this.jumpPage}>确定</button>
                         </li>
