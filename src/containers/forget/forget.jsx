@@ -50,8 +50,24 @@ class Forget extends Component {
     let fullCreds = form.getFieldsValue();
     console.log(fullCreds.password)
     configPasswordRegExp = new RegExp (`^${fullCreds.password}$`);
+    console.log(configPasswordRegExp)
     return configPasswordRegExp
   };
+  compareToFirstPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if (value && value !== form.getFieldValue('password')) {
+      callback('Two passwords that you enter is inconsistent!');
+    } else {
+      callback();
+    }
+  }
+  validateToNextPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if (value && this.state.confirmDirty) {
+      form.validateFields(['confirm'], { force: true });
+    }
+    callback();
+  }
   setTime(){
     let time=180;
     var timeInt= setInterval(()=>{ 
@@ -268,8 +284,8 @@ componentWillUnmount() {
 
     const configPasswordProps = getFieldDecorator('config_password', {
       validate: [{
-        rules: [
-          { required: true, pattern: configPasswordRegExp, message: '与第一次输入的密码不一致' }
+        rules: [//validator: this.compareToFirstPassword
+          { required: true, validator: this.compareToFirstPassword, message: '与第一次输入的密码不一致' }
           
         ],
         trigger: ['onBlur', 'onChange']
