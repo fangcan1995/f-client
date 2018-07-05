@@ -24,7 +24,7 @@ import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
                                     <p><strong>学历： </strong>{projectInfoBaseInfoDto.educationString || ``}</p>
                                     <p><strong>婚姻状况： </strong>{projectInfoBaseInfoDto.maritaStatusString}</p>
                                     <p><strong>借款用途： </strong>{projectInfoLoanInfoDto.loanUseString}</p>
-                                    <p><strong>还款来源： </strong>{projectInfoLoanInfoDto.rpmtSourceString || ''}</p>
+                                    <p><strong>还款来源： </strong>{projectInfoLoanInfoDto.rpmtSource || ''}</p>
                                     <p className="line"><strong>资产介绍：</strong>{projectInfoBaseInfoDto.assetDesc}</p>
                                     <p className="line"><strong>债务介绍：</strong>{projectInfoBaseInfoDto.debtDesc}</p>
                                 </dd>

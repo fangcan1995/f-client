@@ -150,8 +150,8 @@ class ModalTradePassword extends React.Component {
                 trigger: ['onBlur', 'onChange']
             }]
         });
-        console.log('提交后的结果-----------');
-        console.log(postResult);
+        //console.log('提交后的结果-----------');
+        //console.log(postResult);
         if(postResult.type!=`success`){
             return(
                 <div className="pop__password pop">

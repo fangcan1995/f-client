@@ -344,6 +344,7 @@ componentWillUnmount() {
                             type="text"
                             autoComplete="off"
                             placeholder="验证码"
+                            maxLength={10}
                             onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
                           />
                         )
@@ -377,6 +378,7 @@ componentWillUnmount() {
                             size="large"
                             autoComplete="off"
                             placeholder="请输入短信验证码"
+                            maxLength={10}
                             onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
                             
                             ref={ c => this.verifyCodeInputRef = c }

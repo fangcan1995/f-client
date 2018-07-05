@@ -20,6 +20,7 @@ class SubjectList extends Component {
         this.multiFilter = this.multiFilter.bind(this);
     }
     componentDidMount () {
+
         this.props.dispatch(sbListAc.stateSbModify({list:``, sort:{
                 totalrate:0,
                 loanExpiry:0,
@@ -255,6 +256,7 @@ class SubjectList extends Component {
                                                 }
                                             }
                                         } ></Pagination>
+
 
                                     </div>
                                     :<NoRecord isShow={true} />

@@ -29,6 +29,7 @@ class ModalInvest extends React.Component {
         let {id,projectId,loanExpiry,transferPeriod}=investDetail.investInfo;
         console.log('标的信息')
         console.log(this.props);
+        console.log('isTransfer'+isTransfer);
 
         dispatch(investDetailActions.changeReward(``)); //清空红包列表
         dispatch(investDetailActions.getAvailableRewards(id,value,isTransfer));

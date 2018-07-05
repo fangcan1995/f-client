@@ -1,6 +1,7 @@
 import React,{ Component } from "react";
 import './stepperInput.less';
 import {accountAc} from "../../actions/account";
+let surplusAmount;
 export default class StepperInput extends Component{
     constructor(props){
         super(props);
@@ -16,24 +17,54 @@ export default class StepperInput extends Component{
     componentDidMount () {
         const {config}=this.props;
         let defaultValue=``;
-        if(config.returnAmount){
-            if(this.checkMoney(config.returnAmount).code==100) {
-                defaultValue = config.returnAmount;
-            }
+        /*if(config.returnAmount && this.checkMoney(config.returnAmount).code==100 && config.returnAmount<=config.surplusAmount){
+            defaultValue = config.returnAmount;
         }else{
             defaultValue=config.defaultValue;
-        }
+        }*/
+        defaultValue=config.defaultValue;
+        surplusAmount=config.surplusAmount;
         this.setState({
             value:defaultValue
         })//修改默认投资金额
     }
     componentWillReceiveProps(){
         const {config}=this.props;
-        if(config.defaultValue!=config.min && this.state.trigger!='handle'){
-            this.setState({
-                value:config.defaultValue,
-                trigger:`auto`
-            })//修改默认投资金额
+        /*console.log('----config1----');
+        console.log(config)
+        console.log('----this.state.trigger----')
+        console.log(this.state.trigger);
+        console.log('surplusAmount='+surplusAmount);
+        console.log('config.surplusAmount='+config.surplusAmount)*/
+        if(surplusAmount>config.surplusAmount){
+            /*console.log('----config2----');
+            console.log(config);*/
+            /*if(config.defaultValue>config.surplusAmount && config.min>config.surplusAmount ){
+                this.setState({
+                    value:config.surplusAmount,
+                    trigger:`auto`
+                })//修改默认投资金额
+            }*/
+            if(config.defaultValue>config.surplusAmount  ){
+                if(config.surplusAmount>config.min){
+                    //console.log(11);
+                    this.setState({
+                        value:config.min,
+                        trigger:`auto`
+                    })//修改默认投资金额为起投金额
+                }else{
+                    //console.log(22);
+                    this.setState({
+                        value:config.surplusAmount,
+                        trigger:`auto`
+                    })//修改默认投资金额为剩余可投金额
+                }
+
+            }
+            surplusAmount=config.surplusAmount;
+
+
+
         }
     }
     handleChange(event) {
@@ -89,17 +120,26 @@ export default class StepperInput extends Component{
         let step=this.props.config.step;
         let max=this.props.config.max;  //可投金额
         let min=this.props.config.min;  //可投金额
+        /*console.log(this.state.value);
+        console.log('step='+step)*/
         let value;
         let result0=this.checkMoney(parseInt(this.state.value));  //验证是否合法
+        console.log(result0)
         if(result0.code==1 || result0.code==2 ){
             value=min;
             step=0;
         }else if(result0.code==3){
+
             value=max;
             step=0;
         }else if(result0.code==4){
+
             value=parseInt(parseInt(this.state.value)/min)*min;
-            step=step-parseInt(this.state.value)%min;
+            //step=step-parseInt(this.state.value)%min;
+            step=this.props.config.step;
+            /*console.log('-------');
+            console.log(value);
+            console.log(step);*/
         }else{
             if(this.checkMoney(parseInt(this.state.value)+step).code==3){
                 step=max-parseInt(this.state.value)

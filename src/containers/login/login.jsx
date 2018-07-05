@@ -121,7 +121,7 @@ class PasswordForm extends Component {
         } else {
           this.loginFaileCallback(err)
         }
-        //dispatch(getImageCode());   //临时注释
+        dispatch(getImageCode());   //临时注释
       });
     });
   }
@@ -230,6 +230,7 @@ class PasswordForm extends Component {
                       size="large"
                       type="text"
                       autoComplete="off"
+                      maxLength={10}
                       placeholder="验证码"
                       onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
                     />
@@ -517,6 +518,7 @@ componentWillUnmount() {
                     size="large"
                     type="text"
                     autoComplete="off"
+                    maxLength={10}
                     placeholder="验证码"
                     onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
                   />
@@ -550,6 +552,7 @@ componentWillUnmount() {
                     type="text"
                     size="large"
                     autoComplete="off"
+                    maxLength={10}
                     placeholder="请输入短信验证码"
                     onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
                     ref={ c => this.verifyCodeInputRef = c }

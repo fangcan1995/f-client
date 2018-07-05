@@ -16,6 +16,7 @@ class TransferDetail extends React.Component{
         super(props);
     }
     componentDidMount () {
+        window.scrollTo(0,0);
         const pathSnippets = this.props.location.pathname.split('/').filter(i => i);
         const transferId=pathSnippets[1];
         const proId=pathSnippets[2];
@@ -26,7 +27,6 @@ class TransferDetail extends React.Component{
         dispatch(investDetailActions.getInvestRecords(proId));//投资记录
         dispatch(investDetailActions.getRepayRecords(proId)); //还款记录
         dispatch(investDetailActions.getTransferInvestRecords(transferId)); //债转投资记录
-
     }
 
     render(){

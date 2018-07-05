@@ -6,31 +6,40 @@ import {income} from "../../../../utils/cost";
 import {addCommas, toMoney, toNumber} from "../../../../utils/famatData"
 import {  withRouter,Link} from 'react-router-dom';
 import  {accountAc}  from '../../../../actions/account';
-import {InvestButton} from '../../invest-list/investComponents';
+import {InvestButton,TransferInvestButton} from '../../invest-list/investComponents';
 import investDetailActions from "../../../../actions/invest-detail";
 import BbhModal from "../../../../components/modal/bbh_modal";
 import {modal_config} from "../../../../utils/modal_config";
 import { Button,Popconfirm} from 'antd';
 
+let defaultValue;
 
 class MasterInvestBox extends Component {
     constructor(props) {
         super(props);
-        let defaultValue=``;
         if(props.investInfo.returnAmount){
             if(this.checkMoney(props.investInfo.returnAmount).code==100) {
                 defaultValue = props.investInfo.returnAmount;
+            }else {
+                defaultValue = props.investInfo.min;
             }
         }else{
-            defaultValue=props.investInfo.min;
+            if(props.investInfo.surplusAmount<props.investInfo.min){
+                defaultValue=props.investInfo.surplusAmount
+            }else{
+                defaultValue=props.investInfo.min
+            }
         }
+        //console.log('-------defaultValue----------')
+        //console.log(defaultValue);
         this.state = {
             member:{},
             investAmount:defaultValue,
             bbhModal:false,
             currentModule:``,
             tips:'',
-            code:100
+            code:100,
+            status:props.investInfo.status
         }
     }
 
@@ -38,10 +47,10 @@ class MasterInvestBox extends Component {
         if(this.props.auth.isAuthenticated){
             this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
         }
+        //console.log('-------this.state.investAmount----------')
+        //console.log(this.state.investAmount)
     }
     checkMoney(value){
-        /*console.log('//////////');
-        console.log(value);*/
         const {min,max,step,surplusAmount} = this.props.investInfo;
         if(value.length<=0){
             return {code:0,tips:'请输入投资金额'};
@@ -138,28 +147,65 @@ class MasterInvestBox extends Component {
 
     };
     closeModal(status){
+        console.log('弹窗关闭回调');
         const {investInfo,dispatch}=this.props;
         dispatch(accountAc.getAccountInfo());  //成功重载数据
         if(investInfo.isTransfer==`1`){
-            dispatch(investDetailActions.getInvestInfo(investInfo.projectId)).then(()=>{
+            dispatch(investDetailActions.getTransferInvestInfo(investInfo.id)).then(()=>{
                 const {investDetail}=this.props;
-                    this.setState({
-                        investAmount:(investDetail.investInfo.surplusAmount>investInfo.min)? investInfo.min:investDetail.investInfo.surplusAmount
-                    })//修改默认投资金额
+                /*console.log('重新获取标的信息');
+                console.log(this.props);
+                console.log('默认金额：'+this.state.investAmount);
+                console.log('剩余金额：'+investDetail.investInfo.surplusAmount);
+                console.log('起投金额：'+investInfo.min);*/
+                let return_money;
+                if(investDetail.investInfo.surplusAmount>=this.state.investAmount){
+                    return_money=this.state.investAmount
+                }else{
+                    if(investDetail.investInfo.surplusAmount>investInfo.min){
+                        return_money=100
+                    }else{
+                        return_money=investDetail.investInfo.surplusAmount
+                    }
+                }
+                this.setState({
+                    status:investDetail.investInfo.transStatus,
+                    investAmount:return_money
+                })//修改默认投资金额
+
                 }
             );   //标的信息
             dispatch(investDetailActions.getInvestRecords(investInfo.projectId));//投资记录
             dispatch(investDetailActions.getTransferInvestRecords(investInfo.id)); //债转投资记录
         }else{
             dispatch(investDetailActions.getInvestInfo(investInfo.id)).then(()=> {
-                    const {investDetail}=this.props;
-                    this.setState({
-                        investAmount: (investDetail.investInfo.surplusAmount > investInfo.min) ? investInfo.min : investDetail.investInfo.surplusAmount
-                    })//修改默认投资金额
+                const {investDetail}=this.props;
+                /*console.log('重新获取标的信息');
+                console.log('默认金额：'+this.state.investAmount);
+                console.log('剩余金额：'+investDetail.investInfo.surplusAmount);
+                console.log('起投金额：'+investInfo.min);*/
+                let return_money;
+                if(investDetail.investInfo.surplusAmount>=this.state.investAmount){
+                    return_money=this.state.investAmount
+                }else{
+                    if(investDetail.investInfo.surplusAmount>investInfo.min){
+                        return_money=investInfo.min
+                    }else{
+                        return_money=investDetail.investInfo.surplusAmount
+                    }
+                }
+
+                this.setState({
+                    status:investDetail.investInfo.status,
+                    investAmount: return_money,
+                })//修改默认投资金额
+
+
                 }
             );   //标的信息
             dispatch(investDetailActions.getInvestRecords(investInfo.id));//投资记录
         }
+
         this.toggleModal('bbhModal',false);
     }
     render(){
@@ -176,12 +222,14 @@ class MasterInvestBox extends Component {
         return(
             <div className="form_area">
                 {investInfo===``?``
-                    :(investInfo.status!=2)?
+                    :(this.state.status!=2 )?
                         <div>
                             <ul className="m-amount">
                                 <li><strong>开放金额：</strong>{addCommas(toMoney(investInfo.money))}元</li>
                             </ul>
-                            <InvestButton status={investInfo.status} id={investInfo.id} />
+                            {investInfo.isTransfer == `1` ?<TransferInvestButton status={investInfo.status} id={investInfo.id} projectId={investInfo.projectId} />
+                                : <InvestButton status={investInfo.status} id={investInfo.id}/>
+                            }
                         </div>
                         :<div>
                             <ul className="m-amount">
@@ -226,8 +274,7 @@ class MasterInvestBox extends Component {
                                         <li>
                                             <strong>预期可赚取：</strong>
                                             <i id="money">
-                                                {(this.state.investAmount==0)?
-                                                    (this.state.investAmount)
+                                                {(this.state.investAmount==0)? (this.state.investAmount)
                                                     :income(this.state.investAmount,(investInfo.rate),investInfo.loanExpiry,'m')
                                                 }
                                             </i>元

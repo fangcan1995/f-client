@@ -168,7 +168,9 @@ class MyInvestments extends React.Component{
                                                     myList.list.map((l, i) => (
                                                         (status === 1) ? (
                                                             <tr key={`row-${i}`}>
-                                                                <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                {l.transId?<td><p><a href={`/transfer-detail/${l.transId}/${l.proId}`} target="_blank">{l.transNo}</a></p></td>
+                                                                    : <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                }
                                                                 <td>{l.proMoney}</td>
                                                                 <td>{l.loanExpiry}个月</td>
                                                                 <td>{l.loanRefundWay}</td>
@@ -178,7 +180,9 @@ class MyInvestments extends React.Component{
                                                             </tr>
                                                         ) : ((status === 2) ? (
                                                             <tr key={`row-${i}`}>
-                                                                <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                {l.transId?<td><p><a href={`/transfer-detail/${l.transId}/${l.proId}`} target="_blank">{l.transNo}</a></p></td>
+                                                                    : <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                }
                                                                 <td>{l.proMoney}</td>
                                                                 <td>{l.loanExpiry}个月</td>
                                                                 <td>{l.proMoneyEnd}</td>
@@ -191,7 +195,7 @@ class MyInvestments extends React.Component{
                                                                        disabled={l.loanRefundTranStatus=='1'}
                                                                        className={ l.loanRefundTranStatus=='1'?'disabled':'' }>
                                                                         {l.loanRefundTranStatus=='1'?`申请中`:`债权转让`}
-
+                                                                        
                                                                     </a>
 
                                                                     <a href="">投资合同</a>
@@ -199,7 +203,9 @@ class MyInvestments extends React.Component{
                                                             </tr>
                                                         ) : ((status === 3) ? (
                                                             <tr key={`row-${i}`}>
-                                                                <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                {l.transId?<td><p><a href={`/transfer-detail/${l.transId}/${l.proId}`} target="_blank">{l.transNo}</a></p></td>
+                                                                    : <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
+                                                                }
                                                                 <td>{l.proMoney}</td>
                                                                 <td>{l.loanExpiry}个月</td>
                                                                 <td>{l.proMoneyEnd}</td>
@@ -213,7 +219,7 @@ class MyInvestments extends React.Component{
                                                             </tr>
                                                         ) : ((status === 4) ? (
                                                             <tr key={`row-${i}`}>
-                                                                <td>{l.transNo}</td>
+                                                                <td>--</td>
                                                                 <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
                                                                 <td>{l.proMoneyEnd}</td>
                                                                 <td>{l.transAmt}</td>
@@ -223,7 +229,7 @@ class MyInvestments extends React.Component{
                                                             </tr>
                                                         ) : ((status === 5) ? (
                                                             <tr key={`row-${i}`}>
-                                                                <td>{l.transNo}</td>
+                                                                <td><p><a href={`/transfer-detail/${l.transId}/${l.proId}`} target="_blank">{l.transNo}</a></p></td>
                                                                 <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
                                                                 <td>{l.transAmt}</td>
                                                                 <td>{l.transFinanced}</td>
@@ -235,7 +241,7 @@ class MyInvestments extends React.Component{
                                                             </tr>
                                                         ) : ((status === 6) ? (
                                                             <tr key={`row-${i}`}>
-                                                                <td>{l.transNo}</td>
+                                                                <td><p><a href={`/transfer-detail/${l.transId}/${l.proId}`} target="_blank">{l.transNo}</a></p></td>
                                                                 <td><p><a href={`/invest-detail/${l.proId}`} target="_blank">{l.proName}</a></p></td>
                                                                 <td>{l.transAmt}</td>
                                                                 <td>{l.transferDate ? moment(l.transferDate).format('YYYY-MM-DD') : ''}</td>

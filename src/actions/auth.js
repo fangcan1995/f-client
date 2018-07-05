@@ -42,16 +42,16 @@ export const logoutUser = () => {
 
 
       const res = await cFetch(API_CONFIG.baseUri + API_CONFIG.logout + params, { method: 'POST', body: params });
-      console.log('------------');
-      console.log(res);
+      /*console.log('------------');
+      console.log(res);*/
       const { code, message: msg } = res;
       if ( code == 0 ) {
         cookie.remove('token');
         cookie.remove('user');
         return msg;
       } else {
-          console.log('111111111------------');
-          console.log(res);
+          /*console.log('111111111------------');
+          console.log(res);*/
         throw res;
       }
     }

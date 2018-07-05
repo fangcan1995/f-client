@@ -35,8 +35,16 @@ class RepaymentPlans extends React.Component{
     }
     componentDidMount () {
         window.scrollTo(0,0);
-
-        this.props.dispatch(repaymentsAc.stateRepaymentPlanModify({myList:``}));//清空数据
+        this.props.dispatch(repaymentsAc.stateRepaymentPlanModify(
+            {
+                myList:``,
+                filter:{
+                    projectId:'',
+                    dateStart:'',
+                    dateEnd:'',
+                },
+            }
+            ));//清空数据
         this.props.dispatch(repaymentsAc.getPie());
         this.props.dispatch(repaymentsAc.getList());
         this.props.dispatch(repaymentsAc.getProList());
@@ -82,7 +90,7 @@ class RepaymentPlans extends React.Component{
     closeModal(status){
         const {investInfo,dispatch}=this.props;
         let {filter}=this.props.memberLoans.repaymentPlans;
-        dispatch(repaymentsAc.stateRepaymentPlanModify({filter:filter,myList:``}));
+        dispatch(repaymentsAc.stateRepaymentPlanModify({filter:filter,myList:``,postResult:``}));
         this.toggleModal('bbhModal',false);
         dispatch(repaymentsAc.getPie());
         dispatch(repaymentsAc.getList(filter));

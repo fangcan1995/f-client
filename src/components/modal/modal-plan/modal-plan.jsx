@@ -27,8 +27,8 @@ class ModalPlan extends Component {
                             <th>回款时间</th>
                             <th>回款期数</th>
                             <th>已回款（元）</th>
-                            <th>待回本金（元）</th>
-                            <th>待回利息（元）</th>
+                            <th>应回本金（元）</th>
+                            <th>应回利息（元）</th>
                             <th>逾期罚息（元）</th>
                         </tr>
                         </thead>

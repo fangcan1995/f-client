@@ -83,14 +83,16 @@ class ModalRiskAssess extends React.Component {
         console.log('测评成功回调');
         let {onSuccess,dispatch}=this.props;
         //props.dispatch(accountAc.getAccountInfo()); //获取会员帐户信息,暂时注释掉
-        dispatch(accountAc.dummyModifyAccount({isRisk:'1'}));  //虚拟
-        dispatch(accountAc.clear());
+        //dispatch(accountAc.dummyModifyAccount({isRisk:'1'}));  //虚拟
+        //dispatch(accountAc.clear());
         onSuccess();
     }
 
     render(){
 
         let {dispatch,memberRiskAssess,account,onSuccess,onFail}=this.props;
+        console.log('-------------');
+        console.log(this.props);
         let {accountsInfo}=account;
         let {isRisk,surplusAmount}=accountsInfo;
         let {result,myList,postResult,isFetching,isPosting}=memberRiskAssess;

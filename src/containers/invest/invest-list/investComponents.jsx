@@ -77,6 +77,10 @@ export const TransferInvestButton=({status,id,projectId,...rest})=>{
         case 5:
             investTitle=`已流标`;
             break;
+        case 6:
+            investTitle=`已结束`;
+            break;
+
 
     }
     return(

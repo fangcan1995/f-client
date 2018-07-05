@@ -96,8 +96,8 @@ class MyMessages extends React.Component {
         this.props.dispatch(myMessagesAc.modify_list({ page: { list: list } }));
     }
     render() {
-        console.log('----------this.props-------------');
-        console.log(this.props);
+        /*console.log('----------this.props-------------');
+        console.log(this.props);*/
         let { messagesList, readTag, isFetching, deleteResult } = this.props.memberMessages;
         return (
             <div className="member__main myMessage">
