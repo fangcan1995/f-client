@@ -32,9 +32,9 @@ import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
                             <dl className="intro">
                                 <dt><h3>信用信息</h3></dt>
                                 <dd>
-                                    <p><strong>申请借款:</strong>{loanCreditCountDto.loanApplyCount}笔</p>
+                                    {/* <p><strong>申请借款:</strong>{loanCreditCountDto.loanApplyCount}笔</p> */}
                                     <p><strong>成功借款:</strong>{loanCreditCountDto.loanSuccessCount}笔</p>
-                                    <p><strong>失败借款:</strong>{loanCreditCountDto.loanFailCount}笔</p>
+                                    {/* <p><strong>失败借款:</strong>{loanCreditCountDto.loanFailCount}笔</p> */}
                                     <p><strong>逾期金额:</strong>{addCommas(loanCreditCountDto.lateTotalFee)}元</p>
                                     <p><strong>逾期次数:</strong>{loanCreditCountDto.lateAllCount}次</p>
                                     <p><strong>严重逾期:</strong>{loanCreditCountDto.seriousLateCount}次</p>
