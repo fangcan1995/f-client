@@ -168,6 +168,7 @@ export const memberReceivingAc={
         return {
             type: 'myInvest/receiving/FETCH',
             async payload() {
+                params.sortBy='investStatus,-createTime';
                 params = parseJson2URL(params);
                 const res = await cFetch(`${url_receivingList}?`+params,{method: 'GET'}, true);
                 const {code, data} = res;
