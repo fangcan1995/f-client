@@ -257,7 +257,7 @@ export default class Pagination extends Component{
                     <ul className = "page">
                         { this.state.pages }
                         <li className="jump">到第<input type="text" className="pagination__page" value={this.state.page} onChange = {this.jumpPage} />页
-                            <button className="pagination__button" onClick = {this.jumpPage}>确定</button>
+                            {/* <button className="pagination__button" onClick = {this.jumpPage}>确定</button> */}
                         </li>
 
                     </ul>

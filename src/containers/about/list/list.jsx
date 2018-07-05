@@ -10,6 +10,7 @@ import { aboutContentAction, articalListAction, articalAction } from '../../../a
 const articalList = (props) => {
     const { tabName, match, content, childId, dispatch } = props;
     const handlePage = (pageNum, pageCount) => {
+        console.log(pageNum, pageCount);
         dispatch(articalListAction(childId, 1, pageNum, pageCount));
     }
     const handleArtical = (articalId) => {

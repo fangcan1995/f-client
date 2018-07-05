@@ -269,6 +269,7 @@ class ConstantTable extends Component {
                                                 series_data:[{data:constantData.borrowInfo.loanMoney}]
                                             }}
                                             style={{height: '300px', width: '100%'}}
+                                            unit="万元"
                                         >
                                         </BarChart>
                                     </div>
