@@ -19,8 +19,6 @@ developmentConfig.devServer = {
     hot: true,
     inline: true,
     progress: true,
-    host:"172.16.6.2",
-    // host: "172.16.1.224"
     //host:"172.16.6.2",
     //port: 4800,
 };
