@@ -137,6 +137,8 @@ let investDetailActions = {
                 let {code, data} = res;
                 if (code == 0) {
                     console.log('可用奖励');
+
+                    data.push({id:'noUse',isDefault:false,title:`不使用奖励`});
                     console.log(data);
                     //data=[];
                     return data;
