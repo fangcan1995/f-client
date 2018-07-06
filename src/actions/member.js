@@ -1,6 +1,7 @@
 import cFetch from './../utils/cFetch';
 import parseJson2URL from "../utils/parseJson2URL";
 import {API_CONFIG} from "../config/api";
+import {formatPostResult} from "../utils/famatData";
 
 const url_incomeMonth=API_CONFIG.hostWeb+API_CONFIG.getIncomeMonth; //获取月收益统计
 const url_incomeDay=API_CONFIG.hostWeb+API_CONFIG.getIncomeDay; //获取日收益统计
@@ -83,14 +84,10 @@ export const memberAc= {
 
                 let type=``;
                 (res.code == 0)?type='success':type='error';
-                console.log('修改密码返回的结果');
-                console.log(res);
-                return {
-                        code:res.code,
-                        type:type,
-                        message:res.message||``,
-                        description:res.data||``,
-                };
+                //console.log('修改密码返回的结果');
+                //console.log(res);
+
+                return formatPostResult(res);
             }
         }
     },

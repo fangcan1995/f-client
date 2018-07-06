@@ -132,12 +132,12 @@ let investDetailActions = {
                 }else if(isTransfer==`1`){
                     url=`${url_availableRewards}?projectId=${id}&investAmount=${amount}&isTransfer=1`
                 }
-
+                console.log(url);
                 const res = await cFetch( url, {method: 'GET'}, true);
                 let {code, data} = res;
                 if (code == 0) {
-                    //console.log('可用奖励');
-                    //console.log(data.length)
+                    console.log('可用奖励');
+                    console.log(data.length)
                     if(data.length>0){
                         data.push({id:'noUse',isDefault:false,title:`不使用奖励`});
                     }
