@@ -102,11 +102,15 @@ class ModalInvest extends React.Component {
                 }
             }
             if(index!=-1){
-                appInfo.rewardId=availableRewards[index].id ; //奖励id
-                appInfo.rewardType=availableRewards[index].type ; //奖励类型
+
+                if(availableRewards[index].id!=`noUse`){
+                    appInfo.rewardId=availableRewards[index].id ; //奖励id
+                    appInfo.rewardType=availableRewards[index].type ; //奖励类型
+                }
+
             }
-            //console.log('提交的投资申请');
-            //console.log(appInfo);
+            /*console.log('提交的投资申请');
+            console.log(appInfo);*/
             dispatch(investDetailActions.postInvest(appInfo,0));
 
         });
@@ -115,8 +119,8 @@ class ModalInvest extends React.Component {
     }
     modalClose(){
         const {onSuccess,dispatch,investDetail}=this.props;
-        console.log('标的信息-------');
-        console.log(investDetail);
+        //console.log('标的信息-------');
+        //console.log(investDetail);
         const {postResult}=investDetail;
         /*if(postResult.code==0){
             dispatch(accountAc.getAccountInfo());  //成功重新获取新户信息

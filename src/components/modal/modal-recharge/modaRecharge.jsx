@@ -21,8 +21,7 @@ class ModalRecharge extends React.Component {
     }
     componentDidMount () {
         let {value,account,returnPage}=this.props;
-        //console.log('1111111111');
-        //console.log(returnPage);
+
         let {availableBalance}=account.accountsInfo;
         this.props.dispatch(accountAc.getFuyouInfo({type:'reCharge',value:((value-availableBalance).toFixed(2)),url:returnPage})); //获取开户需携带的信息
 
@@ -32,13 +31,14 @@ class ModalRecharge extends React.Component {
     }
     handleSubmit(e){
         let {toOthersInfo}=this.props.account;
-        console.log('切换状态');
-        console.log(toOthersInfo);
-        document.getElementById('webReg').action=toOthersInfo.url;
+        //console.log('切换状态');
+        //console.log(toOthersInfo);
+        //document.getElementById('webReg').action=toOthersInfo.url;
         document.getElementById('webReg').submit();
         this.props.dispatch(accountAc.change_goOutState(true));
+
         return false;
-        //console.log(document.getElementById('webReg').action);
+
 
     }
     handleChange(event){
@@ -104,12 +104,14 @@ class ModalRecharge extends React.Component {
         let {returnPage,value,onSuccess,account}=this.props;
         let {isPosting,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
         let {availableBalance,bankName,bankNo}=accountsInfo;
-
+        console.log('跳转信息----------------');
+        console.log(account.toOthersInfo);
+        console.log('/跳转信息----------------');
             return (
                 <div>
                     {(isOpenOthers) ? ``
                         : <div className="pop__recharge form__wrapper" id="area">
-                            <form name="webReg" id="webReg" method="post"   >
+                            <form name="webReg" id="webReg" method="post" action={toOthersInfo.url}>
                                 <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />
                                 <input type="hidden" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} />
                                 <input type="hidden" name="login_id" value={toOthersInfo.login_id} />

@@ -136,9 +136,11 @@ let investDetailActions = {
                 const res = await cFetch( url, {method: 'GET'}, true);
                 let {code, data} = res;
                 if (code == 0) {
-                    console.log('可用奖励');
-                    console.log(data);
-                    //data=[];
+                    //console.log('可用奖励');
+                    //console.log(data.length)
+                    if(data.length>0){
+                        data.push({id:'noUse',isDefault:false,title:`不使用奖励`});
+                    }
                     return data;
                 } else {
                     throw res;
