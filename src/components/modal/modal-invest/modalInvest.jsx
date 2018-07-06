@@ -111,7 +111,7 @@ class ModalInvest extends React.Component {
             }
             /*console.log('提交的投资申请');
             console.log(appInfo);*/
-            //dispatch(investDetailActions.postInvest(appInfo,0));
+            dispatch(investDetailActions.postInvest(appInfo,0));
 
         });
         //3 下一步

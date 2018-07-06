@@ -59,7 +59,7 @@ class ModalTradePassword extends React.Component {
                 trade_password_code:form.getFieldsValue().verify_code,
                 trade_password_token:account.verifyCode.token
             }
-            console.log('清除定时器');
+            //console.log('清除定时器');
             window.clearTimeout(timer);
             dispatch(accountAc.setTradePassword(appInfo)).then(()=>{
                 console.log('提交了');
@@ -235,7 +235,7 @@ class ModalTradePassword extends React.Component {
                                     </Col>
                                 </Row>
                             </FormItem>
-                            <div className='tips'>{postResult.message}</div>
+                            <div className='tips' style={{ marginTop: '22px'}}>{postResult.message}</div>
                             <FormItem className='center'>
                                 {(isPosting) ? <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
                                         <Posting isShow={isPosting}/>
