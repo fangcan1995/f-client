@@ -123,15 +123,27 @@ export  function cardGetSex(identityCard) {
 //格式化成功失败信息
 export  function formatPostResult(res){
     let type=``;
-    (res.code == 0)?type='success':type='error';
-    //console.log('提示信息-------------');
-    //console.log(res.message);
-    //console.log(number(res.message));
+    let message=``;
+    let description=``;
+    if(res.code == 0){
+        type='success';
+        if(res.message.length>12){
+            message=`操作成功`;
+            description=res.message
+        }else{
+            message=res.message;
+            description=``
+        }
+    }else{
+        type='error';
+        message=res.message;
+    }
+
     return {
         code:res.code,
         type:type,
-        message:res.message||``,
-        description:res.description||``,
+        message:message,
+        description:description||``,
     }
 }
 export function getTips(messageCode){

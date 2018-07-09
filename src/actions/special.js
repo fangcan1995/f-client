@@ -12,8 +12,8 @@ let specialAc = {
             async payload() {
                 const res = await cFetch(`${API_CONFIG.hostWeb}${API_CONFIG.getSubjects}/${id}` , {method: 'GET'}, false);
                 const {code, data} = res;
-                console.log('返回的数据');
-                console.log(res);
+                //console.log('返回的数据');
+                //console.log(res);
                 return res;
 
             }
