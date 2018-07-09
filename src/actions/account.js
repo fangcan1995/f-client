@@ -12,15 +12,6 @@ const url_uyouWithdrawals=API_CONFIG.hostWeb+API_CONFIG.getFuiouWithdrawals; //�
 const url_setCertification=API_CONFIG.hostWeb+API_CONFIG.setCertification
 
 export const accountAc= {
-    //虚拟流程，静态修改账户信息
-    dummyModifyAccount:(params)=>{
-        return {
-            type: 'member/account/MODIFY_ACCOUNT',
-            payload() {
-                return params
-            }
-        }
-    },
     //获取会员帐户信息
     getAccountInfo: (params) => {
         return {
@@ -105,8 +96,6 @@ export const accountAc= {
     },
     //实名认证
     certification: (params) => {
-        //console.log('实名认证提交的信息');
-        //console.log(postContent(params));
         return {
             type: 'member/account/CERTIFICATION_FETCH',
             async payload() {
@@ -165,9 +154,11 @@ export const sendMemberVerifyCode = params => {
         async payload() {
             const res = await cFetch(API_CONFIG.baseUri + API_CONFIG.setTradePasswordVerifyCode + params, { credentials: 'include' }, false);
             const { code, data } = res;
+            //console.log('发短信返回的结果');
+            //console.log(res);
             if ( code == 0 ) {
                 return data || {};
-            } else {
+            } else{
                 throw res;
             }
         }

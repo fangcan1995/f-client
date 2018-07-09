@@ -48,6 +48,7 @@ class ModalTradePassword extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         const { dispatch, form,account } = this.props;
+        const {postResult}=account;
         form.validateFields((errors) => {
             if (errors) {
                 return false;
@@ -61,9 +62,18 @@ class ModalTradePassword extends React.Component {
             }
             //console.log('清除定时器');
             window.clearTimeout(timer);
-            dispatch(accountAc.setTradePassword(appInfo)).then(()=>{
+            this.setState({
+                errMessages:``
+            });
+            dispatch(accountAc.setTradePassword(appInfo)).then(res=>{
+                const { code, message } = res.value;
                 console.log('提交了');
-
+                console.log(res);
+                if(code==406){
+                    this.setState({
+                        errMessages:message
+                    });
+                }
             });
 
 
@@ -79,10 +89,10 @@ class ModalTradePassword extends React.Component {
                 .then(res => {
                     this.verifyCodeInputRef.focus();
                     return res;
+
                 })
                 .then(
                     () => this.startCd()
-
                 )
                 .catch(err => {
 
@@ -119,14 +129,6 @@ class ModalTradePassword extends React.Component {
     }
     //回调
     modalClose(){
-        /*this.setState({
-            isReset:true,
-        },()=>{
-            let {onSuccess,dispatch}=this.props;
-            dispatch(accountAc.getAccountInfo());  //真实
-            onSuccess();
-        });*/
-        console.log('点击确认了');
         let {onSuccess,dispatch}=this.props;
         //dispatch(accountAc.getAccountInfo());  //真实
         onSuccess();
@@ -153,6 +155,7 @@ class ModalTradePassword extends React.Component {
         //console.log('提交后的结果-----------');
         //console.log(postResult);
         if(postResult.type!=`success`){
+
             return(
                 <div className="pop__password pop">
                     <div className="form__wrapper">
@@ -235,7 +238,11 @@ class ModalTradePassword extends React.Component {
                                     </Col>
                                 </Row>
                             </FormItem>
-                            <div className='tips' style={{ marginTop: '22px'}}>{postResult.message}</div>
+                            <div className='tips' style={{ marginTop: '22px'}}>
+                                {/*{postResult.message}
+                                {this.state.errMessages!=``?`${this.state.errMessages}`:``}*/}
+                                {this.state.errMessages}
+                                </div>
                             <FormItem className='center'>
                                 {(isPosting) ? <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
                                         <Posting isShow={isPosting}/>
