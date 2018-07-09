@@ -296,7 +296,7 @@ class MasterInvestBox extends Component {
                                         </li>
                                         <li>
                                             <strong>可用加息券：</strong>
-                                            {(accountsInfo!=``)? `${memberRedInfo.number} ` : ``} 张
+                                            {(accountsInfo!=``)? `${memberCoupon.number} ` : ``} 张
                                         </li>
                                         <li>
                                             <strong>预期可赚取：</strong>
