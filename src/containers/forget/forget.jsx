@@ -27,7 +27,7 @@ const params = {
 function noop() {
   return false;
 }
-
+let timeInt;
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
@@ -56,7 +56,7 @@ class Forget extends Component {
   compareToFirstPassword = (rule, value, callback) => {
     const form = this.props.form;
     if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
+      callback('与第一次输入的密码不一致');
     } else {
       callback();
     }
@@ -70,7 +70,7 @@ class Forget extends Component {
   }
   setTime(){
     let time=180;
-    var timeInt= setInterval(()=>{ 
+    timeInt= setInterval(()=>{ 
         if(time>0){
             time--;
             if(this.mounted){
@@ -116,7 +116,7 @@ componentWillUnmount() {
 
       creds.password = hex_md5(creds.password);
       creds.config_password = hex_md5(creds.config_password)
-      const queryParams = `?${parseJson2URL({...creds, send_terminal: send_terminal, forget_password_token: signup.verifyCode.token })}`;
+      const queryParams = `?${parseJson2URL({...creds, send_terminal: send_terminal, forget_password_token: localStorage.getItem('forgetVerifyCode') })}`;
       dispatch(forgetSignupUser(queryParams))
       .then(res => {
         console.log(res)
@@ -159,6 +159,7 @@ componentWillUnmount() {
       
       dispatch(sendForgetVerifyCode(creds))
       .then(res => {
+        localStorage.setItem('forgetVerifyCode',res.value.token)
         this.verifyCodeInputRef.focus();
         return res;
       })
@@ -227,7 +228,15 @@ componentWillUnmount() {
     dispatch(setSignup(this.state.signup))
     this.props.history.push('/login');
   }
-
+  handleChange(){
+    console.log(this.state.verifyCodeCd)
+    this.setState({
+      verifyCodeCd:''
+    })
+    const { dispatch } = this.props;
+    dispatch(getImageCode());
+    clearInterval(timeInt)
+  }
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, getFieldValue } = this.props.form;
     const { imageCodeImg, verifyCodeCd } = this.props.signup;
@@ -285,7 +294,10 @@ componentWillUnmount() {
     const configPasswordProps = getFieldDecorator('config_password', {
       validate: [{
         rules: [//validator: this.compareToFirstPassword
-          { required: true, validator: this.compareToFirstPassword, message: '与第一次输入的密码不一致' }
+          { required: true, message: '请再次输入您的新密码' },
+          {
+            validator: this.compareToFirstPassword, 
+          }
           
         ],
         trigger: ['onBlur', 'onChange']
@@ -346,6 +358,7 @@ componentWillUnmount() {
                   <Input
                     placeholder="请输入手机号"
                     type="text"
+                    onChange={this.handleChange.bind(this)}
                   />
                 )}
                 {/* <span>已有账号？<Link to="/login">立即登录</Link></span> */}
