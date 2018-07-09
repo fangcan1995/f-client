@@ -327,7 +327,7 @@ componentWillUnmount() {
 
       let fullCreds = form.getFieldsValue();
       let { imageCode, ...creds } = fullCreds;
-      creds = `?${parseJson2URL({...creds, ...params, verify_token: login.verifyCode.token })}`;
+      creds = `?${parseJson2URL({...creds, ...params, verify_token: localStorage.getItem('loginVerifyCode') })}`;
       dispatch(loginUser(creds))
       .then(res => {
         const { history, location } = this.props;
@@ -358,6 +358,8 @@ componentWillUnmount() {
       creds = `?${parseJson2URL({...creds, send_terminal: send_terminal})}`;
       dispatch(sendVerifyCode(creds))
       .then(res => {
+        console.log(res)
+        localStorage.setItem('loginVerifyCode',res.value.token)
         this.verifyCodeInputRef.focus();
         this.setState({
           postResult:''
@@ -442,6 +444,8 @@ componentWillUnmount() {
     this.setState({
       verifyCodeCd:''
     })
+    const { dispatch } = this.props;
+    dispatch(getImageCode());
     clearInterval(timeInt)
   }
   render() {

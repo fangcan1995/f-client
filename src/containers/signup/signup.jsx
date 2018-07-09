@@ -91,7 +91,7 @@ componentWillUnmount() {
       const { send_terminal } = params
 
       creds.password = hex_md5(creds.password);
-      const queryParams = `?${parseJson2URL({...creds, send_terminal: send_terminal, register_token: signup.verifyCode.token })}`;
+      const queryParams = `?${parseJson2URL({...creds, send_terminal: send_terminal, register_token: localStorage.getItem('siginVerifyCode') })}`;
       dispatch(signupUser(queryParams))
       .then(res => {
         console.log(res)
@@ -131,6 +131,7 @@ componentWillUnmount() {
 
       dispatch(sendVerifyCode(creds))
       .then(res => {
+        localStorage.setItem('siginVerifyCode',res.value.token)
         this.verifyCodeInputRef.focus();
         this.setState({
           postResult:''
