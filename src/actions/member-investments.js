@@ -50,6 +50,7 @@ export const memberInvestAc={
             }
         }
     },
+
     getList: (params) => {
         return {
             type: 'myInvest/investments/FETCH',
@@ -121,7 +122,40 @@ export const memberInvestAc={
             }
         }
     },
+    getPactList: (params) => {
+        return {
+            type: 'myInvest/investments/PACTLIST_FETCH',
+            async payload() {
+                params = parseJson2URL(params);
+                const res = await cFetch(`http://172.16.1.252:9090/invest/transfer/record?`+params,{method: 'GET'}, true);
+                const {code, data} = res;
+                if (code == 0) {
+                    return {
+                        pactsList:data,
+                    };
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
 
+    downLoad:(params) =>{
+        return {
+            type: 'myInvest/investments/PACT_FETCH',
+            async payload() {
+                const res = await cFetch(`http://172.16.1.252:9090/pact/invest/`+params,{method: 'GET'}, true,300000);
+                const {code, data} = res;
+                if (code == 0) {
+                    return {
+                        pactUrl:data,
+                    };
+                } else {
+                    throw res;
+                }
+            }
+        }
+    },
 
     //修改状态
     stateModify: json => ({

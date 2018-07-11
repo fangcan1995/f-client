@@ -5,7 +5,12 @@ export const modal_config={
         height: "400px"
     },
     ModalBindCard: {
-        title: "开户",
+        title: "富友开户",
+        width: "620px",
+        height: "400px"
+    },
+    ModalBindCardBohai: {
+        title: "渤海开户",
         width: "620px",
         height: "400px"
     },
@@ -73,5 +78,10 @@ export const modal_config={
         title: "回款计划",
         width: "680px",
         height: "500px"
+    },
+    ModalPactsList: {
+        title: "债转合同",
+        width: "500px",
+        height: "400px"
     },
 }

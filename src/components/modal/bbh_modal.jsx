@@ -3,6 +3,7 @@ import ModalSteps from '../modal/modal-steps/modal-steps';
 import ModalTradePassword from '../modal/modal-tradePassword/modal-tradePassword';
 import ModalLoginPassword from '../modal/modal-loginPassword/modal-loginPassword';
 import ModalBindCard from '../modal/modal-bindCard/modal-bindCard';
+import ModalBindCardBohai from '../modal/modal-bindCard-bohai/modal-bindCard-bohai';
 import ModalRiskAssess from '../modal/modal-riskAssess/modal-riskAssess';
 import ModalInvestSteps from '../modal/modal-invest-steps/modal-invest-steps';
 import ModalCertification from '../modal/modal-certification/modal-certification';
@@ -13,6 +14,7 @@ import ModalRepayment from '../modal/modal-repayment/modalRepayment';
 import ModalLoanApp from '../modal/modal-loanApp/modal-loanApp';
 import ModalTransferApp from '../modal/modal-tranferApp/modal-transferApp';
 import ModalPlan from '../modal/modal-plan/modal-plan';
+import ModalPactsList from '../modal/modal-pactsList/modal-pactsList';
 import { Modal } from 'antd';
 import './bbh_modal.less';
 import {accountAc} from "../../actions/account";
@@ -54,8 +56,11 @@ export default class BbhModal extends Component{
             case `ModalLoginPassword`:
                 moduleContent=<ModalLoginPassword key={this.state.key} onSuccess={()=>{this.onCancel()}} />;
                 break;
-            case `ModalBindCard`:
+            case `ModalBindCard`:  //富友
                 moduleContent=<ModalBindCard key={this.state.key} onSuccess={()=>{this.onCancel()}} returnPage={returnPage||``} />;
+                break;
+            case `ModalBindCardBohai`:  //渤海
+                moduleContent=<ModalBindCardBohai key={this.state.key} onSuccess={()=>{this.onCancel()}} returnPage={returnPage||``} />;
                 break;
             case `ModalRecharge`:
                 moduleContent=<ModalRecharge key={this.state.key} onSuccess={()=>{this.onCancel()}} value={investAmount} returnPage={returnPage||``} />;
@@ -84,6 +89,10 @@ export default class BbhModal extends Component{
             case `ModalPlan`:
                 moduleContent=<ModalPlan key={this.state.key} currentId={currentId} onSuccess={()=>{this.onCancel()}} />;
                 break;
+            case `ModalPactsList`:
+                moduleContent=<ModalPactsList key={this.state.key} currentId={currentId} onSuccess={()=>{this.onCancel()}} />;
+                break;
+
             default:
                 break
         }

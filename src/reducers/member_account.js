@@ -92,18 +92,18 @@ export default createReducer(initialState, {
         isFetching: false,
         errorMessage: action.message
     }),
-    //异步获取开户需要携带的信息
-   /* ['member/account/OPENACCONT_FETCH_PENDING']:(state,action) => state.mergeDeep({
+    //异步获取调转渤海需要携带的信息
+    ['member/account/BOHAI_FETCH_PENDING']:(state,action) => state.mergeDeep({
         isFetching: true,
     }),
-    ['member/account/OPENACCONT_FETCH_FULFILLED']:(state,action) => state.mergeDeep({
+    ['member/account/BOHAI_FETCH_FULFILLED']:(state,action) => state.mergeDeep({
         isFetching: false,
         toOthersInfo:action.payload
     }),
-    ['member/account/OPENACCONT_FETCH_REJECTED']:(state,action) => state.mergeDeep({
+    ['member/account/BOHAI_FETCH_REJECTED']:(state,action) => state.mergeDeep({
         isFetching: false,
         errorMessage: action.message
-    }),*/
+    }),
     //实名认证
     ['member/account/CERTIFICATION_FETCH_PENDING']:(state,action) => state.mergeDeep({
         isPosting: true,

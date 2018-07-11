@@ -7,8 +7,8 @@ import BbhModal from "../../../../components/modal/bbh_modal";
 import {modal_config} from "../../../../utils/modal_config";
 import { Popconfirm, message, Button } from 'antd';
 import  {accountAc}  from '../../../../actions/account';
+import {authBank} from '../../../../utils/url'
 import './authInfo.less';
-import investDetailActions from "../../../../actions/invest-detail";
 
 class MyAuthInfo extends React.Component {
     constructor(props) {
@@ -151,12 +151,12 @@ class MyAuthInfo extends React.Component {
                                                         <td className="Result">未开户</td>
                                                         <td className="detail"></td>
                                                         <td className="operate">
-                                                            {(isCertification==='1'&& isSetTradepassword===`1`)?<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalBindCard`,true)}>开户</a>
-                                                                :<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalSteps`,true)}>开户</a>
-                                                                /*<Popconfirm placement="top" title={`请您先完成实名认证`} onConfirm={this.confirm} okText="确定" cancelText="取消">
-                                                                    <a href="javascript:void(0);" >开户</a>
-                                                                </Popconfirm>*/
+                                                            {
+                                                                (authBank===2)?<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalBindCardBohai`,true)}>开户</a>
+                                                                    :(isCertification==='1'&& isSetTradepassword===`1`)?<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalBindCard`,true)}>开户</a>
+                                                                    :<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalSteps`,true)}>开户</a>
                                                             }
+
                                                         </td>
                                                     </tr>
                                                     :``

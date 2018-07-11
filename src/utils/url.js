@@ -7,6 +7,8 @@ export const urls_auth ='http://172.16.1.234:8060';*/
 /*export const urls ='http://172.16.7.3:8020/web';
 export const urls_auth ='http://172.16.7.3:8020';*/
 
+export const authBank=2;  //1 富友 2 渤海
+
 
 //http://172.16.1.252:9090  //马前台
 //http://172.16.1.221:9090  //钱前台

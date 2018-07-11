@@ -58,6 +58,41 @@ export const accountAc= {
             }
         }
     },
+    //获取给渤海的信息
+    getBohaiInfo:(params)=> {
+        let url=``;
+        switch (params.type){
+            case 'OpenAccount':
+                url=`http://59.110.15.234:9030/payAccount/bohai`; //开户
+                break;
+            case 'ReOpenAccount':
+                url=url_uyouReOpenAccountInfo+`?url=my-account_bank-card`;  //换卡
+                break;
+            case 'reCharge':
+                url=url_uyouRecharge+`?url=`+params.url+'&transAmt='+params.value;
+
+                break;
+            case 'Withdrawals':
+                url=url_uyouWithdrawals+`?url=`+params.url+'&transAmt='+params.value+'&tradePwd='+params.tradePwd;
+
+                break;
+            default:
+                break;
+        }
+        return {
+            type: 'member/account/BOHAI_FETCH',
+            async payload() {
+                let  res = await cFetch(`${url}`, {method: 'GET'}, false);
+                let {code, data} = res;
+                if (code == 0) {
+                    return data;
+                }else {
+                    return res;
+                }
+
+            }
+        }
+    },
     //获取给富有的信息
     getFuyouInfo:(params)=> {
         let url=``;

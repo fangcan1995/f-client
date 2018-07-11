@@ -28,7 +28,7 @@ export default class Pagination extends Component{
         setTimeout(() => {
             document.addEventListener("click",(e) => {
                 if(e.target.id !== "pageCount"){
-                    this.state.pageCountEle.parentNode.className = "hide";
+                    //this.state.pageCountEle.parentNode.className = "hide";  //修改掉控制台报错
                 }
             },false);
         },0)

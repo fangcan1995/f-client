@@ -4,8 +4,9 @@ import PieChart from '../../../../components/charts/pie';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
-import { Modal } from 'antd';
+import { Spin,Icon  } from 'antd';
 import ModalPlan from './modalPlan';
+
 import ModalTransfer from './modalTransfer';
 import moment from "moment";
 import { connect } from 'react-redux';
@@ -15,7 +16,6 @@ import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import {modal_config} from "../../../../utils/modal_config";
 import BbhModal from "../../../../components/modal/bbh_modal";
 import './investments.less';
-import {accountAc} from "../../../../actions/account";
 
 class MyInvestments extends React.Component{
     constructor(props) {
@@ -26,6 +26,7 @@ class MyInvestments extends React.Component{
             currentModule:``,
             currentId:``,
             key:Math.random(),
+            loading: false
         }
     }
     componentDidMount () {
@@ -57,12 +58,6 @@ class MyInvestments extends React.Component{
         }
     };
 
-    /*transferCallback(){
-        let {dispatch}=this.props;
-        dispatch(actionsMyInvestments.stateModify({postResult:``}));
-        this.toggleModal('modalTransfer',false,'');
-        this.filter(2);
-    }*/
     closeModal(){
         let {onSuccess,onFail,dispatch}=this.props;
 
@@ -72,12 +67,29 @@ class MyInvestments extends React.Component{
         //重新载入数据
         this.toggleModal('bbhModal',false);
     }
+    downLoan(params){
+        this.setState({
+            loading: true
+        },()=>{
+            this.props.dispatch(memberInvestAc.downLoad(params)).then(res => {
+                this.setState({
+                    loading: false
+                })
+                let a = document.createElement('a');
+                let event = new MouseEvent('click');
+                a.download=``;
+                a.href=res.value.pactUrl;
+                a.target = "_blank";
+                a.dispatchEvent(event);
+            })
+        })
+
+    }
     render(){
-        //console.log('-------myInvestments--------');
-        //console.log(this.props);
+
         const {dispatch,memberInvestments}=this.props;
         const {myInvestments,isFetching}=memberInvestments;
-        const {myList,charts,status,modalPlan,modalTransfer,currentPro,currentId}=myInvestments;
+        const {myList,charts,status,modalPlan,modalTransfer,currentPro,currentId,pactUrl,pactsList}=myInvestments;
         let thead=[];
         thead[0]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>还款方式</th><th>投资金额(元)</th><th>投资时间</th><th>投资进度</th></tr>;
         thead[1]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>投资金额(元)</th><th>投资时间</th><th>下期回款日期</th><th>下期回款金额(元)</th><th>操作</th></tr>;
@@ -87,6 +99,7 @@ class MyInvestments extends React.Component{
         thead[5]=<tr><th>项目名称</th><th>原始项目名称</th><th>转让金额（元）</th><th>转让成功日期</th><th>操作</th></tr>;
         return(
             <div className="member__main">
+                <Spin tip="合同加载中..." wrapperClassName='skin_loading' size='large' spinning={this.state.loading}>
                 <Crumbs/>
                 {(charts=='')?``
                     :<div className="member__cbox">
@@ -195,10 +208,9 @@ class MyInvestments extends React.Component{
                                                                        disabled={l.loanRefundTranStatus=='1'}
                                                                        className={ l.loanRefundTranStatus=='1'?'disabled':'' }>
                                                                         {l.loanRefundTranStatus=='1'?`申请中`:`债权转让`}
-                                                                        
                                                                     </a>
+                                                                    <a href="javascript:void(0);"  onClick={() => { this.downLoan(l.investId)}}>投资合同</a>
 
-                                                                    <a href="">投资合同</a>
                                                                 </td>
                                                             </tr>
                                                         ) : ((status === 3) ? (
@@ -214,7 +226,7 @@ class MyInvestments extends React.Component{
                                                                 <td>{l.earnRealEarnDate ? moment(l.earnRealEarnDate).format('YYYY-MM-DD') : ''}</td>
                                                                 <td>
                                                                     <a onClick={() => this.toggleModal('ModalPlan', true, l.investId)}>回款计划</a>
-                                                                    <a href="">投资合同</a>
+                                                                    <a href="javascript:void(0);"  onClick={() => { this.downLoan(l.investId)}} >投资合同</a>
                                                                 </td>
                                                             </tr>
                                                         ) : ((status === 4) ? (
@@ -246,7 +258,7 @@ class MyInvestments extends React.Component{
                                                                 <td>{l.transAmt}</td>
                                                                 <td>{l.transferDate ? moment(l.transferDate).format('YYYY-MM-DD') : ''}</td>
                                                                 <td>
-                                                                    <a href="">投资合同</a>
+                                                                    <a onClick={() => this.toggleModal('ModalPactsList', true, l.transId)}>投资合同</a>
                                                                 </td>
                                                             </tr>
                                                         ) : (''))))))
@@ -294,7 +306,7 @@ class MyInvestments extends React.Component{
                     :``
                 }
 
-
+                </Spin>
             </div>
 
         )

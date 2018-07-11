@@ -11,9 +11,7 @@ import {modal_config} from "../../../utils/modal_config";
 import BbhModal from "../../../components/modal/bbh_modal";
 
 
-/*function callback(key) {
-    console.log(key);
-}*/
+
 class BankCard extends React.Component{
     constructor(props) {
         super(props);
@@ -79,6 +77,7 @@ class BankCard extends React.Component{
             });
         }
     };
+
     render(){
         let {account}=this.props;
         let {postResult,accountsInfo,toOthersInfo}=account;
