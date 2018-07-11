@@ -95,6 +95,7 @@ class HomePage extends Component {
   }
   render() {
     const { homePage, auth } = this.props;
+    console.log(homePage)
     return (
       <main className="main home-page" id="home-page">
         <div className="banner" >
@@ -382,7 +383,7 @@ class HomePage extends Component {
                       <div className="dynamicImg__outer">
                         <img src={small} alt="" className="news__img dynamicImg__inner" onClick={this.handleAdClick.bind(this, '')} />
                       </div>
-                      <p className="news__text"></p>
+                      <p className="news__text">巴巴金服上线</p>
                     </div>
                 }
 
@@ -390,7 +391,7 @@ class HomePage extends Component {
             </Floor>
             <Floor
               otherClassName="media"
-              tit='媒体报道'
+              tit={homePage.med.affTypeName}
             >
               <div className="media__content">
                 <div className="media__group">
@@ -422,7 +423,7 @@ class HomePage extends Component {
           </div>
           <Floor
             otherClassName="partner"
-            tit={homePage.par.affInfoName}
+            tit={homePage.par.affTypeName}
           >
             <ul className="partner__box">
               {
