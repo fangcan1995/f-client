@@ -27,10 +27,10 @@ class AccountOverview extends React.Component{
         let totalEarns=charts.chartsMonth.series_data;
         let yestEarns=charts.chartsDay.series_data;
 
-        if(totalEarns){
+        /*if(totalEarns){
             console.log('累计收益')
             console.log(totalEarns[0].data[11])
-        }
+        }*/
         return (
             <div className="member__main">
                 <Crumbs />

@@ -38,8 +38,8 @@ export const memberLoansAc={
             async payload() {
                 const res = await cFetch(`${url_loansCharts}` , {method: 'GET'}, true);
                 const {code, data} = res;
-                console.log('返回的我的借款统计数据');
-                console.log(data);
+                //console.log('返回的我的借款统计数据');
+                //console.log(data);
                 if (code == 0) {
                     let {totalLoanDto,accumulatedInterestDto}=data;
                     let charts={
