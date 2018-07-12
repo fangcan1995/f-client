@@ -10,6 +10,7 @@ import { Link, withRouter } from 'react-router-dom';
 import {formItemLayout, hasErrors, noop} from "../../../utils/formSetting";
 import PriceInput from "../../../components/price-input/price-input";
 import { Form,Input,Button  } from 'antd';
+import {authBank} from '../../../utils/url';
 import './recharge.less';
 import {hex_md5} from "../../../utils/md5";
 
@@ -44,22 +45,37 @@ class Recharge extends React.Component{
                 url: 'my-account_recharge',
                 value: form.getFieldsValue().price.number,
             }
-            dispatch(accountAc.getFuyouInfo(getInfo))
-                .then((res) => {
-                    //console.log('给富有的');
-                    //console.log(toOthersInfo);
-                    toOthersInfo = res.value;
-                    if (toOthersInfo.code == 406) {
-                    } else if (toOthersInfo != ``) {
-                        document.getElementById('webReg').submit();
-                    }
-                })
-                .catch(() => {
-                    //没获取到
-                    console.log('没获取到');
-                });
-            ;
+            if(authBank===2){
+                dispatch(accountAc.getBohaiInfo(getInfo)).then(
+                    (res) => {
+                        toOthersInfo = res.value;
+                        if (toOthersInfo.code == 406) {
 
+                        } else if (toOthersInfo != ``) {
+                            document.getElementById('form1').submit();
+                        }
+                    }
+                ).catch(
+
+                )
+            }else{
+
+                dispatch(accountAc.getFuyouInfo(getInfo))
+                    .then((res) => {
+                        //console.log('给富有的');
+                        //console.log(toOthersInfo);
+                        toOthersInfo = res.value;
+                        if (toOthersInfo.code == 406) {
+                        } else if (toOthersInfo != ``) {
+                            document.getElementById('webReg').submit();
+                        }
+                    })
+                    .catch(() => {
+                        //没获取到
+                        console.log('没获取到');
+                    });
+                ;
+            }
         });
 
 
@@ -91,6 +107,29 @@ class Recharge extends React.Component{
                     <Tab>
                         <div name="快速充值">
                             <div className="tab_content" style={{width:'400px'}}>
+                                <form name="form1" id="form1" method="post" acceptCharset="GBK" action='http://221.239.93.141:9080/bhdep/hipos/payTransaction' target='_blank'>
+                                    <input type="input" name="char_set" value={toOthersInfo.char_set} />
+                                    <input type="input" name="partner_id" value={toOthersInfo.partner_id} />
+                                    <input type="input" name="version_no" value={toOthersInfo.version_no} />
+                                    <input type="input" name="biz_type" value={toOthersInfo.biz_type} />
+                                    <input type="input" name="sign_type" value={toOthersInfo.sign_type} />
+                                    <input type="input" name="MerBillNo" value={toOthersInfo.MerBillNo} />
+                                    <input type="input" name="PlaCustId" value={toOthersInfo.PlaCustId} />
+                                    <input type="input" name="TransAmt" value={toOthersInfo.TransAmt} />
+                                    <input type="input" name="MerFeeAmt" value={toOthersInfo.MerFeeAmt} />
+                                    <input type="input" name="FeeType" value={toOthersInfo.FeeType} />
+                                    <input type="input" name="OpenType" value={toOthersInfo.OpenType} />
+                                    <input type="input" name="MobileNo" value={toOthersInfo.MobileNo} />
+                                    <input type="input" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
+                                    <input type="input" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
+                                    <input type="input" name="TransTyp" value={toOthersInfo.TransTyp} />
+                                    <input type="input" name="MerPriv" value={toOthersInfo.MerPriv} />
+                                    <input type="input" name="mac" value={toOthersInfo.mac} />
+                                    {
+                                        (toOthersInfo==`` || toOthersInfo.code==`406`)?<Button type="primary" htmlType="submit" className="pop__large" disabled={true}>渤海银行充值</Button>
+                                            :<Button type="primary" htmlType="submit" className="pop__large" onClick={()=>this.handleSubmit()}>渤海银行充值</Button>
+                                    }
+                                </form>
                                 {
                                     (isOpenAccount ===`0` ) ?
                                         <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先
@@ -133,42 +172,6 @@ class Recharge extends React.Component{
 
                                                 </Form>
 
-                                                {/*<dl className="form__bar">
-                                                    <dt><label>充值金额:</label></dt>
-                                                    <dd>
-                                                        <input  maxLength={8} type="text" className="textInput moneyInput" ref="amount" onChange={this.handleChange}　/>
-                                                        <span className="unit">元</span>
-                                                        <a href="">银行卡充值上限说明</a>
-                                                    </dd>
-                                                </dl>*/}
-
-                                                {/*<div className="form__bar">
-                                                    <p>充值后可用余额: <i id="money">1,000.00</i>元</p>
-                                                </div>*/}
-                                                {/*<div className="form__bar">
-                                                    {
-                                                        (toOthersInfo!=`` && toOthersInfo.code==406)? <div className="errorMessages">{toOthersInfo.message}</div>
-                                                            :``
-                                                    }
-                                                    {(this.state.tips!='')?
-                                                        <div className="errorMessages">
-                                                            {this.state.tips}
-                                                        </div>:``
-                                                    }
-                                                </div>*/}
-                                                {/*<div className="form__bar">
-                                                    {isPosting ?
-                                                        <Button type="primary" htmlType="submit" className='pop__large' disabled={true}>
-                                                            <Posting isShow={isPosting}/>
-                                                        </Button>
-                                                        :
-                                                        <Button type="primary" htmlType="submit" className="pop__large"
-                                                                onClick={this.recharge}
-                                                                disabled={this.state.disabled}>
-                                                            确认
-                                                        </Button>
-                                                    }
-                                                </div>*/}
                                             </div>
                                         :``
                                 }
@@ -182,6 +185,7 @@ class Recharge extends React.Component{
                                 <input type="hidden" name="back_notify_url" value={toOthersInfo.back_notify_url} />
                                 <input type="hidden" name="signature" value={toOthersInfo.signature} />
                             </form>
+
                         </div>
                     </Tab>
                 </div>

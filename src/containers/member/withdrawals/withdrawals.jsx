@@ -13,6 +13,7 @@ import investDetailActions from "../../../actions/invest-detail";
 import {Loading,NoRecord,Posting} from '../../../components/bbhAlert/bbhAlert';
 import PriceInput from "../../../components/price-input/price-input";
 import { Link, withRouter } from 'react-router-dom';
+import {authBank} from '../../../utils/url';
 const createForm = Form.create;
 const FormItem = Form.Item;
 
@@ -44,19 +45,37 @@ class Withdrawals extends React.Component{
                 value: form.getFieldsValue().price.number,
                 tradePwd: hex_md5(form.getFieldsValue().password),
             }
-            dispatch(accountAc.getFuyouInfo(getInfo))
-                .then((res) => {
-                    toOthersInfo = res.value;
-                    if (toOthersInfo.code == 406) {
-                    } else if (toOthersInfo != ``) {
-                        document.getElementById('FuiouCash').submit();
-                    }
-                })
-                .catch(() => {
-                    //没获取到
-                    console.log('没获取到');
-                });
-            ;
+            if(authBank===2){
+                dispatch(accountAc.getBohaiInfo(getInfo))
+                    .then((res) => {
+                        toOthersInfo = res.value;
+                        if (toOthersInfo.code == 406) {
+                        } else if (toOthersInfo != ``) {
+                            document.getElementById('form1').submit();
+                        }
+                    })
+                    .catch(() => {
+                        //没获取到
+                        console.log('没获取到');
+                    });
+                ;
+            }else{
+                dispatch(accountAc.getFuyouInfo(getInfo))
+                    .then((res) => {
+                        toOthersInfo = res.value;
+                        if (toOthersInfo.code == 406) {
+                        } else if (toOthersInfo != ``) {
+                            document.getElementById('FuiouCash').submit();
+                        }
+                    })
+                    .catch(() => {
+                        //没获取到
+                        console.log('没获取到');
+                    });
+                ;
+            }
+
+
 
         });
     }
@@ -92,6 +111,30 @@ class Withdrawals extends React.Component{
                     <Tab>
                         <div name="提现">
                             <div className="tab_content" style={{width:'400px'}}>
+                                <form name="form1" id="form1" method="post" acceptCharset="GBK" action='http://221.239.93.141:9080/bhdep/hipos/payTransaction' target='_blank'>
+                                    <input type="input" name="char_set" value={toOthersInfo.char_set} />
+                                    <input type="input" name="partner_id" value={toOthersInfo.partner_id} />
+                                    <input type="input" name="version_no" value={toOthersInfo.version_no} />
+                                    <input type="input" name="biz_type" value={toOthersInfo.biz_type} />
+                                    <input type="input" name="sign_type" value={toOthersInfo.sign_type} />
+                                    <input type="input" name="MerBillNo" value={toOthersInfo.MerBillNo} />
+                                    <input type="input" name="PlaCustId" value={toOthersInfo.PlaCustId} />
+                                    <input type="input" name="TransAmt" value={toOthersInfo.TransAmt} />
+                                    <input type="input" name="MerFeeAmt" value={toOthersInfo.MerFeeAmt} />
+                                    <input type="input" name="FeeType" value={toOthersInfo.FeeType} />
+                                    <input type="input" name="OpenType" value={toOthersInfo.OpenType} />
+                                    <input type="input" name="MobileNo" value={toOthersInfo.MobileNo} />
+                                    <input type="input" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
+                                    <input type="input" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
+                                    <input type="input" name="TransTyp" value={toOthersInfo.TransTyp} />
+                                    <input type="input" name="FastFlag" value={toOthersInfo.FastFlag} />
+                                    <input type="input" name="MerPriv" value={toOthersInfo.MerPriv} />
+                                    <input type="input" name="mac" value={toOthersInfo.mac} />
+                                    {
+                                        (toOthersInfo==`` || toOthersInfo.code==`406`)?<Button type="primary" htmlType="submit" className="pop__large" disabled={true}>渤海银行提现</Button>
+                                            :<Button type="primary" htmlType="submit" className="pop__large" onClick={()=>this.handleSubmit()}>渤海银行提现</Button>
+                                    }
+                                </form>
                                 {
                                     (isOpenAccount===`0`)?
                                         <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先
@@ -167,6 +210,7 @@ class Withdrawals extends React.Component{
                                                 <input type="hidden" name="back_notify_url" value={toOthersInfo.back_notify_url}/>
                                                 <input type="hidden" name="signature" value={toOthersInfo.signature} />
                                             </form>
+
                                         </div>
                                             :``
                                 }

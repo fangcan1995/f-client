@@ -69,12 +69,10 @@ export const accountAc= {
                 url=url_uyouReOpenAccountInfo+`?url=my-account_bank-card`;  //换卡
                 break;
             case 'reCharge':
-                url=url_uyouRecharge+`?url=`+params.url+'&transAmt='+params.value;
-
+                url=`http://59.110.15.234:9030/payTrans/bohai/deposit`;  //充值
                 break;
             case 'Withdrawals':
-                url=url_uyouWithdrawals+`?url=`+params.url+'&transAmt='+params.value+'&tradePwd='+params.tradePwd;
-
+                url=`http://59.110.15.234:9030/payTrans/bohai/cash`;  //提现
                 break;
             default:
                 break;
