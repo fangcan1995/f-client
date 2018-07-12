@@ -29,6 +29,12 @@ class Withdrawals extends React.Component{
     }
     componentDidMount() {
         //this.props.dispatch(accountAc.getAccountInfo());
+        let getInfo = {
+            type: 'Withdrawals',
+            url: 'my-account_withdrawals',
+            value: 1000,
+        }
+        this.props.dispatch(accountAc.getBohaiInfo(getInfo)) //渤海银行提现
     }
     handleSubmit= (e) => {
         e.preventDefault();
@@ -130,10 +136,7 @@ class Withdrawals extends React.Component{
                                     <input type="input" name="FastFlag" value={toOthersInfo.FastFlag} />
                                     <input type="input" name="MerPriv" value={toOthersInfo.MerPriv} />
                                     <input type="input" name="mac" value={toOthersInfo.mac} />
-                                    {
-                                        (toOthersInfo==`` || toOthersInfo.code==`406`)?<Button type="primary" htmlType="submit" className="pop__large" disabled={true}>渤海银行提现</Button>
-                                            :<Button type="primary" htmlType="submit" className="pop__large" onClick={()=>this.handleSubmit()}>渤海银行提现</Button>
-                                    }
+                                    <Button type="primary" htmlType="submit" className="pop__large" onClick={()=>this.handleSubmit()}>渤海银行提现</Button>
                                 </form>
                                 {
                                     (isOpenAccount===`0`)?

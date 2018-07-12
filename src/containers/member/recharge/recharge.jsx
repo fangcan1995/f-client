@@ -26,12 +26,20 @@ class Recharge extends React.Component{
         window.scrollTo(0,0);
         this.props.dispatch(accountAc.clear());
         this.props.dispatch(accountAc.getAccountInfo());  //????
+
     }
     componentDidMount() {
         //this.props.dispatch(accountAc.getAccountInfo());  //????
+        let getInfo = {
+            type: 'reCharge',
+            url: 'my-account_recharge',
+            value: 1000,
+        }
+        this.props.dispatch(accountAc.getBohaiInfo(getInfo)) //渤海银行充值
     }
 
     handleSubmit= (e) => {
+
         e.preventDefault();
         const {dispatch, form, account} = this.props;
         let {isPosting, isFetching, accountsInfo, toOthersInfo, postResult, isOpenOthers} = account;
@@ -125,10 +133,7 @@ class Recharge extends React.Component{
                                     <input type="input" name="TransTyp" value={toOthersInfo.TransTyp} />
                                     <input type="input" name="MerPriv" value={toOthersInfo.MerPriv} />
                                     <input type="input" name="mac" value={toOthersInfo.mac} />
-                                    {
-                                        (toOthersInfo==`` || toOthersInfo.code==`406`)?<Button type="primary" htmlType="submit" className="pop__large" disabled={true}>渤海银行充值</Button>
-                                            :<Button type="primary" htmlType="submit" className="pop__large" onClick={()=>this.handleSubmit()}>渤海银行充值</Button>
-                                    }
+                                    <Button type="primary" htmlType="submit" className="pop__large" onClick={()=>this.handleSubmit()}>渤海银行充值</Button>
                                 </form>
                                 {
                                     (isOpenAccount ===`0` ) ?
