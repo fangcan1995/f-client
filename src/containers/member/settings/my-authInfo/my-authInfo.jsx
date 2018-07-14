@@ -5,9 +5,8 @@ import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import BbhModal from "../../../../components/modal/bbh_modal";
 import {modal_config} from "../../../../utils/modal_config";
-import { Popconfirm, message, Button } from 'antd';
+import { message } from 'antd';
 import  {accountAc}  from '../../../../actions/account';
-import {authBank} from '../../../../utils/url'
 import './authInfo.less';
 
 class MyAuthInfo extends React.Component {
@@ -19,8 +18,8 @@ class MyAuthInfo extends React.Component {
             key:Math.random(),
             disabled:true,
         }
-        this.confirm = this.confirm.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
+        this.bindCard= this.bindCard.bind(this);
         this.changeCard= this.changeCard.bind(this);
         this.setTradePass= this.setTradePass.bind(this);
         this.changePhone= this.changePhone.bind(this);
@@ -48,9 +47,26 @@ class MyAuthInfo extends React.Component {
         this.props.dispatch(accountAc.getFuyouInfo({type:'ReOpenAccount'})); //获取换卡需携带的信息
 
     }
-    //开卡前询问是否实名认证
-    confirm() {
-        this.toggleModal(`ModalSteps`,true);
+    bindCard(){
+        let {dispatch, account} = this.props;
+        let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
+        //先获取换卡需携带的信息，正确的话提交表单
+        dispatch(accountAc.getBohaiInfo({type:'OpenAccount',url:`my-settings_my-authInfo`}))
+            .then(
+                (res)=>{
+                    toOthersInfo=res.value;
+                    if(toOthersInfo.code==406  ){
+                        this.setState({
+                            disabled:false
+                        });
+                        message.info(toOthersInfo.message);
+                    }else if(toOthersInfo!=``){
+                        document.getElementById('form1').submit();
+                        dispatch(accountAc.change_goOutState(true));
+                    }
+                }
+            )
+            .catch();
     }
     changeCard(){
         let {dispatch, account} = this.props;
@@ -138,124 +154,72 @@ class MyAuthInfo extends React.Component {
                                 (accountsInfo==``)?<div></div>
                                     :<table className="authInfo">
                                         <tbody>
-                                            {isCertification === '1' ?
-                                                <tr>
-                                                    <th><i className="iconfont icon-user"></i>真实姓名</th>
-                                                    <td className="Result">已认证</td>
-                                                    <td className="detail">{trueName}</td>
-                                                    <td className="operate">{/*不可更改*/}</td>
-                                                </tr>
-                                                :<tr className="no">
-                                                    <th><i className="iconfont icon-user"></i>真实姓名</th>
-                                                    <td className="Result">未认证</td>
-                                                    <td className="detail"></td>
-                                                    <td className="operate"><a href="javascript:void(0);"  onClick={() => this.toggleModal(`ModalCertification`,true)}>认证</a></td>
-                                                </tr>
-                                            }
-                                                <tr>
-                                                    <th><i className="iconfont icon-phone"></i>手机号</th>
-                                                    <td className="Result">已设置</td>
-                                                    <td className="detail">{phoneNumber}</td>
-                                                    <td className="operate"><a href="javascript:void(0);" onClick={this.changePhone}>更改</a></td>
-                                                </tr>
-                                            <tr>
-                                                <th><i className="iconfont no icon-card"></i>银行卡</th>
-                                                <td className="Result">已开户</td>
-                                                <td className="detail">{bankNo}</td>
-                                                <td className="operate">
+                                        <tr className={(isOpenAccount==='1')? '' : 'no'}>
+                                            <th><i className="iconfont icon-user"></i>真实姓名</th>
+                                            <td className="Result">{(isOpenAccount==='1')? '已认证' : '未认证'}</td>
+                                            <td className="detail">{(isOpenAccount==='1')? trueName : ''}</td>
+                                            <td className="operate">
+                                                {(isOpenAccount==='1')? ''
+                                                    : <a href="javascript:void(0);"  onClick={() => this.toggleModal(`ModalCertification`,true)}>认证</a>
+                                                }
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><i className="iconfont icon-phone"></i>手机号</th>
+                                            <td className="Result">已设置</td>
+                                            <td className="detail">{phoneNumber}</td>
+                                            <td className="operate"><a href="javascript:void(0);" onClick={this.changePhone}>更改</a></td>
+                                        </tr>
+                                        <tr className={(isOpenAccount==='1')? '' : 'no'}>
+                                            <th><i className="iconfont icon-user"></i>实名认证</th>
+                                            <td className="Result">{(isOpenAccount==='1')? '已认证' : '未认证'}</td>
+                                            <td className="detail">{(isOpenAccount==='1')? trueName : ''}</td>
+                                            <td className="operate">
+                                                {(isOpenAccount==='1')? ''
+                                                    : <a href="javascript:void(0);"  onClick={() => this.toggleModal(`ModalCertification`,true)}>认证</a>
+                                                }
+                                            </td>
+                                        </tr>
+                                        <tr className={(isOpenAccount==='1')? '' : 'no'}>
+                                            <th><i className="iconfont icon-card"></i>银行卡</th>
+                                            <td className="Result">{(isOpenAccount==='1')? '已开户' : '未开户'}</td>
+                                            <td className="detail">{(isOpenAccount==='1')? bankNo : ''}</td>
+                                            <td className="operate">
+                                                {(isOpenAccount==='1')? <a href="javascript:void(0);" onClick={this.changeCard}>更换</a>
+                                                    : <a href="javascript:void(0);" onClick={this.bindCard}>开户</a>
+                                                }
 
-                                                        <a href="javascript:void(0);" onClick={this.changeCard}>更换</a>
-
-
-                                                </td>
-                                            </tr>
-                                            {
-                                                isCertification === '1' ?
-                                                    <tr>
-                                                        <th><i className="iconfont icon-id"></i>实名认证</th>
-                                                        <td className="Result">已认证</td>
-                                                        <td className="detail">{idNumber}</td>
-                                                        <td className="operate">{/*不可更改*/}</td>
-                                                    </tr>
-                                                    :<tr className="no">
-                                                        <th><i className="iconfont icon-id"></i>实名认证</th>
-                                                        <td className="Result">未认证</td>
-                                                        <td className="detail"></td>
-                                                        <td className="operate"><a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalCertification`,true)}>认证</a></td>
-                                                    </tr>
-                                            }
-                                            {(isOpenAccount==='1' )?
-                                                <tr>
-                                                    <th><i className="iconfont no icon-card"></i>银行卡</th>
-                                                    <td className="Result">已开户</td>
-                                                    <td className="detail">{bankNo}</td>
-                                                    <td className="operate">
-                                                        {toOthersInfo.code==`406`? `换卡审核中`
-                                                            :<a href="javascript:void(0);" onClick={this.changeCard}>更换</a>
-                                                        }
-
-                                                    </td>
-                                                </tr>
-                                                :isOpenAccount==='0'?
-                                                    <tr className="no">
-                                                        <th><i className="iconfont no icon-card"></i>银行卡</th>
-                                                        <td className="Result">未开户</td>
-                                                        <td className="detail"></td>
-                                                        <td className="operate">
-                                                            {
-                                                                (authBank===2)?<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalBindCardBohai`,true)}>开户</a>
-                                                                    :(isCertification==='1'&& isSetTradepassword===`1`)?<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalBindCard`,true)}>开户</a>
-                                                                    :<a href="javascript:void(0);" onClick={() => this.toggleModal(`ModalSteps`,true)}>开户</a>
-                                                            }
-
-                                                        </td>
-                                                    </tr>
-                                                    :``
-                                            }
-                                            <tr>
-                                                <th><i className="iconfont icon-Pass"></i>登录密码</th>
-                                                <td className="Result">已设置</td>
-                                                <td className="detail">******</td>
-                                                <td className="operate">
-                                                    <a href="javascript:void(0);"
-                                                       onClick={
-                                                           () => this.toggleModal(`ModalLoginPassword`,true)
-                                                       }>
-                                                        修改登录密码
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            {isSetTradepassword === '1' ?
-                                                <tr >
-                                                    <th><i className="iconfont icon-Pass"></i>交易密码</th>
-                                                    <td className="Result">已设置</td>
-                                                    <td className="detail">******</td>
-                                                    <td className="operate">
-                                                        {/*<a href="javascript:void(0);"
-                                                           onClick={
-                                                               () => this.toggleModal(`ModalTradePassword`,true)
-                                                           }>
-                                                            重新设置交易密码
-                                                        </a>*/}
-                                                        <a href="javascript:void(0);" onClick={this.setTradePass}>重新设置交易密码</a>
-                                                    </td>
-                                                </tr>
-                                                :<tr  className="no">
-                                                    <th><i className="iconfont no icon-Pass"></i>交易密码</th>
-                                                    <td className="Result">未设置</td>
-                                                    <td className="detail"></td>
-                                                    <td className="operate">
-                                                        {/*<a href="javascript:void(0);"
-                                                           onClick={
-                                                               () => this.toggleModal(`ModalTradePassword`,true)
-                                                           }>
-                                                            设置交易密码
-                                                        </a>*/}
-                                                        <a href="javascript:void(0);" onClick={this.setTradePass}>设置交易密码</a>
-                                                    </td>
-                                                </tr>
-                                            }
-
+                                            </td>
+                                        </tr>
+                                        <tr className={(isOpenAccount==='1')? '' : 'no'}>
+                                            <th><i className="iconfont icon-card"></i>银行卡</th>
+                                            <td className="Result">已开户</td>
+                                            <td className="detail">123****123</td>
+                                            <td className="operate">
+                                                <a href="javascript:void(0);" onClick={this.changeCard}>更换</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><i className="iconfont icon-Pass"></i>登录密码</th>
+                                            <td className="Result">已设置</td>
+                                            <td className="detail">******</td>
+                                            <td className="operate">
+                                                <a href="javascript:void(0);"
+                                                   onClick={() => this.toggleModal(`ModalLoginPassword`,true)}>
+                                                    修改登录密码
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr className={(isOpenAccount==='1')? '' : 'no'}>
+                                            <th><i className="iconfont icon-Pass"></i>交易密码</th>
+                                            <td className="Result">{(isOpenAccount==='1')? '已设置' : '未设置'}</td>
+                                            <td className="detail">{(isOpenAccount==='1')? '******' : ''}</td>
+                                            <td className="operate">
+                                                {(isOpenAccount==='1')? <a href="javascript:void(0);" onClick={this.setTradePass}>重新设置交易密码</a>
+                                                    : <a href="javascript:void(0);" onClick={this.setTradePass}>设置交易密码</a>
+                                                }
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                             }
@@ -311,6 +275,26 @@ class MyAuthInfo extends React.Component {
                                         <input type="input" name="TransTyp" value={toOthersInfo.MerPriv} />
                                         <input type="input" name="TransTyp" value={toOthersInfo.TransTyp} />
                                         <input type="input" name="mac" value={toOthersInfo.mac} />
+                                    </form>
+                                </div>
+                            </Tab>
+                            <Tab>
+                                <div name="开户">
+                                    <form name="form1" id="form1" method="post" acceptCharset="GBK" action='http://221.239.93.141:9080/bhdep/hipos/payTransaction' target='_blank'>
+                                        <input type="input" name="char_set" value={toOthersInfo.char_set} />
+                                        <input type="input" name="partner_id" value={toOthersInfo.partner_id} />
+                                        <input type="input" name="version_no" value={toOthersInfo.version_no} />
+                                        <input type="input" name="biz_type" value={toOthersInfo.biz_type} />
+                                        <input type="input" name="sign_type" value={toOthersInfo.sign_type} />
+                                        <input type="input" name="MerBillNo" value={toOthersInfo.MerBillNo} />
+                                        <input type="input" name="OpenType" value={toOthersInfo.OpenType} />
+                                        <input type="input" name="MobileNo" value={toOthersInfo.MobileNo} />
+                                        <input type="input" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
+                                        <input type="input" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
+                                        <input type="input" name="TransTyp" value={toOthersInfo.TransTyp} />
+                                        <input type="input" name="MerPriv" value={toOthersInfo.MerPriv} />
+                                        <input type="input" name="mac" value={toOthersInfo.mac} />
+
                                     </form>
                                 </div>
                             </Tab>

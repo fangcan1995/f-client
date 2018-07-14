@@ -22,11 +22,11 @@ export const accountAc= {
                 if (code == 0) {
                     //console.log('后台返回的会员基础信息');
                     //console.log(res);
-                    /*let mock={
+                    let mock={
                         isCertification:'1',	//是否实名认证（0：未实名；1：已实名）
-                        isOpenAccount:'1',	//是否开户（0：未开户；1：已开户）
-                        isRisk:'1',	//是否风险测评（0：否；1：是）
+                        isOpenAccount:'0',	//是否开户（0：未开户；1：已开户）
                         isSetTradepassword:'1',	//是否设置交易密码（0：未设置；1：已设置）
+                        isRisk:'1',	//是否风险测评（0：否；1：是）
                         isNovice:'1',	//是否新手（0：否；1：是）
                         trueName:'张三',	//真实姓名
                         idNumber:'',	//身份证号
@@ -39,18 +39,24 @@ export const accountAc= {
                         investAmount:0,  //散标资产
                         yestEarns:0, //昨日收益
                         totalEarns:0, //累计收益
+                        bankCode:'CCB',
                         bankName:'中国建设银行',	//开户行
                         bankNo:'4367********8523',	//银行卡号
                         memberRedInfo:{number: 1, amountSum: 500},	//红包信息
                         memberCoupon:{number: 5, amountSum: 3},	//加息券信息
+                        bohaiConfig:{
+                            rechargeMin:10,
+                            rechargeMax:50000,
+                            withdrawalsMin:1,
+                            withdrawalsMax:100000000,
+                            rechargeHandFee:0,
+                            rechargeHandFeeMin:0,
+                            withdrawalsHandFee:0.2,
+                            withdrawalsHandFeeMin:0.2,
+                        } //虚拟
+                    };
+                    let data=mock;
 
-                    };*/
-                    //data=mock;
-                    /*if(data.trueName==`测试三`){
-                        data.isSetTradepassword='0'
-                    }*/
-                    //data.isSetTradepassword='0';
-                    //data.isOpenAccount='0';
                     return data;
                 } else {
                     throw data;
@@ -63,22 +69,22 @@ export const accountAc= {
         let url=``;
         switch (params.type){
             case 'OpenAccount':
-                url=`http://59.110.15.234:9030/payAccount/bohai`; //开户
+                url=`http://59.110.15.234:9030/payAccount/bohai`+`?url=`+params.url; //开户
                 break;
             case 'ReOpenAccount':
-                url=`http://59.110.15.234:9030/payAccount/bohai/changeCard`;  //换卡
+                url=`http://59.110.15.234:9030/payAccount/bohai/changeCard`+`?url=`+params.url;  //换卡
                 break;
             case 'reCharge':
-                url=`http://59.110.15.234:9030/payTrans/bohai/deposit`;  //充值
+                url=`http://59.110.15.234:9030/payTrans/bohai/deposit`+`?url=`+params.url+'&transAmt='+params.value;;  //充值
                 break;
             case 'Withdrawals':
-                url=`http://59.110.15.234:9030/payTrans/bohai/cash`;  //提现
+                url=`http://59.110.15.234:9030/payTrans/bohai/cash`+`?url=`+params.url+'&transAmt='+params.value;  //提现
                 break;
             case 'changePhone':
-                url=`http://59.110.15.234:9030/payAccount/bohai/changeMobile`;  //换手机号
+                url=`http://59.110.15.234:9030/payAccount/bohai/changeMobile`+`?url=`+params.url;  //换手机号
                 break;
             case 'changeTradePwd':
-                url=`http://59.110.15.234:9030/payAccount/bohai/changePwd`;  //设置交易密码
+                url=`http://59.110.15.234:9030/payAccount/bohai/changePwd`+`?url=`+params.url;  //设置交易密码
                 break;
             default:
                 break;

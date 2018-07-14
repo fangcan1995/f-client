@@ -18,32 +18,16 @@ const createForm = Form.create;
 const FormItem = Form.Item;
 
 class Recharge extends React.Component{
-    constructor(props) {
-        super(props);
-        this.handleSubmit= this.handleSubmit.bind(this);
-    }
     componentWillMount() {
         window.scrollTo(0,0);
         this.props.dispatch(accountAc.clear());
-        this.props.dispatch(accountAc.getAccountInfo());  //????
+        this.props.dispatch(accountAc.getAccountInfo());  //获取账户信息
 
     }
-    componentDidMount() {
-        //this.props.dispatch(accountAc.getAccountInfo());  //????
-        let getInfo = {
-            type: 'reCharge',
-            url: 'my-account_recharge',
-            value: 1000,
-        }
-        this.props.dispatch(accountAc.getBohaiInfo(getInfo)) //渤海银行充值
-    }
-
     handleSubmit= (e) => {
-
         e.preventDefault();
         const {dispatch, form, account} = this.props;
         let {isPosting, isFetching, accountsInfo, toOthersInfo, postResult, isOpenOthers} = account;
-
         form.validateFields((errors) => {
             if (errors) {
                 return false;
@@ -53,52 +37,31 @@ class Recharge extends React.Component{
                 url: 'my-account_recharge',
                 value: form.getFieldsValue().price.number,
             }
-            if(authBank===2){
-                dispatch(accountAc.getBohaiInfo(getInfo)).then(
-                    (res) => {
-                        toOthersInfo = res.value;
-                        if (toOthersInfo.code == 406) {
+            dispatch(accountAc.getBohaiInfo(getInfo)).then(
+                (res) => {
+                    toOthersInfo = res.value;
+                    if (toOthersInfo.code == 406) {
 
-                        } else if (toOthersInfo != ``) {
-                            document.getElementById('form1').submit();
-                        }
+                    } else if (toOthersInfo != ``) {
+                        document.getElementById('form1').submit();
                     }
-                ).catch(
+                }
+            ).catch(
 
-                )
-            }else{
-
-                dispatch(accountAc.getFuyouInfo(getInfo))
-                    .then((res) => {
-                        //console.log('给富有的');
-                        //console.log(toOthersInfo);
-                        toOthersInfo = res.value;
-                        if (toOthersInfo.code == 406) {
-                        } else if (toOthersInfo != ``) {
-                            document.getElementById('webReg').submit();
-                        }
-                    })
-                    .catch(() => {
-                        //没获取到
-                        console.log('没获取到');
-                    });
-                ;
-            }
+            )
         });
-
-
     }
     checkPrice = (rule, value, callback) => {
-        const {availableBalance}=this.props.account.accountsInfo;
+        const {availableBalance,bohaiConfig}=this.props.account.accountsInfo;
         this.setState({
             amount:value.number
         });
-        if(parseFloat(value.number) < 10){
-            callback('充值金额不能小于10元');
+        if(parseFloat(value.number) < parseFloat(bohaiConfig.rechargeMin)){
+            callback(`充值金额不能小于${bohaiConfig.rechargeMin}元`);
             return false;
         }
-        if(parseFloat(value.number) >= 100000000){
-            callback(`充值金额必须小于100,000,000元`);
+        if(parseFloat(value.number) >= parseFloat(bohaiConfig.rechargeMax)){
+            callback(`充值金额不能大于${bohaiConfig.rechargeMax}元`);
             return false;
         }
         callback();
@@ -106,7 +69,7 @@ class Recharge extends React.Component{
     }
     render(){
         let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult}=this.props.account;
-        let {isCertification,isOpenAccount,bankName,bankNo,availableBalance}=accountsInfo;
+        let {isCertification,isOpenAccount,bankName,bankNo,bankCode,availableBalance,bohaiConfig}=accountsInfo;
         const { getFieldDecorator,getFieldsError } = this.props.form;
         return (
             <div className="member__main recharge">
@@ -115,26 +78,6 @@ class Recharge extends React.Component{
                     <Tab>
                         <div name="快速充值">
                             <div className="tab_content" style={{width:'400px'}}>
-                                <form name="form1" id="form1" method="post" acceptCharset="GBK" action='http://221.239.93.141:9080/bhdep/hipos/payTransaction' target='_blank'>
-                                    <input type="input" name="char_set" value={toOthersInfo.char_set} />
-                                    <input type="input" name="partner_id" value={toOthersInfo.partner_id} />
-                                    <input type="input" name="version_no" value={toOthersInfo.version_no} />
-                                    <input type="input" name="biz_type" value={toOthersInfo.biz_type} />
-                                    <input type="input" name="sign_type" value={toOthersInfo.sign_type} />
-                                    <input type="input" name="MerBillNo" value={toOthersInfo.MerBillNo} />
-                                    <input type="input" name="PlaCustId" value={toOthersInfo.PlaCustId} />
-                                    <input type="input" name="TransAmt" value={toOthersInfo.TransAmt} />
-                                    <input type="input" name="MerFeeAmt" value={toOthersInfo.MerFeeAmt} />
-                                    <input type="input" name="FeeType" value={toOthersInfo.FeeType} />
-                                    <input type="input" name="OpenType" value={toOthersInfo.OpenType} />
-                                    <input type="input" name="MobileNo" value={toOthersInfo.MobileNo} />
-                                    <input type="input" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
-                                    <input type="input" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
-                                    <input type="input" name="TransTyp" value={toOthersInfo.TransTyp} />
-                                    <input type="input" name="MerPriv" value={toOthersInfo.MerPriv} />
-                                    <input type="input" name="mac" value={toOthersInfo.mac} />
-                                    <Button type="primary" htmlType="submit" className="pop__large" onClick={()=>this.handleSubmit()}>渤海银行充值</Button>
-                                </form>
                                 {
                                     (isOpenAccount ===`0` ) ?
                                         <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先
@@ -142,7 +85,11 @@ class Recharge extends React.Component{
                                         </p>
                                         : (isOpenAccount===`1`)?
                                             <div className="form__wrapper">
-                                                <Form layout="horizontal" onSubmit={this.handleSubmit}>
+                                                <Form layout="horizontal" onSubmit={this.handleSubmit.bind(this)}>
+                                                    <div className='member_card'>
+                                                        <img src={require(`../../../assets/images/bank/logo_${bankCode}.jpg`)} alt=""/>
+                                                        <span>{bankNo}</span>
+                                                    </div>
                                                     <FormItem
                                                         { ...formItemLayout }
                                                         label="可用余额"
@@ -155,7 +102,7 @@ class Recharge extends React.Component{
                                                         required
                                                     >
                                                         {getFieldDecorator('price', {
-                                                            initialValue: { number: `` },
+                                                            initialValue: { number: `0` },
                                                             rules: [{ validator: this.checkPrice }],
                                                         })(<PriceInput />)}
                                                     </FormItem>
@@ -167,12 +114,7 @@ class Recharge extends React.Component{
                                                         }
                                                     </FormItem>
                                                     <FormItem className='center'>
-                                                        {(isPosting) ? <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
-                                                                <Posting isShow={isPosting}/>
-                                                            </Button>
-                                                            :
-                                                            <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError())  }>确认</Button>
-                                                        }
+                                                        <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError())  }>确认</Button>
                                                     </FormItem>
 
                                                 </Form>
@@ -181,14 +123,24 @@ class Recharge extends React.Component{
                                         :``
                                 }
                             </div>
-                            <form name="webReg" id="webReg" method="post"  action={toOthersInfo.url}>
-                                <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />
-                                <input type="hidden" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} />
-                                <input type="hidden" name="login_id" value={toOthersInfo.login_id} />
-                                <input type="hidden" name="amt" value={toOthersInfo.amt} />
-                                <input type="hidden" name="page_notify_url" value={toOthersInfo.page_notify_url} />
-                                <input type="hidden" name="back_notify_url" value={toOthersInfo.back_notify_url} />
-                                <input type="hidden" name="signature" value={toOthersInfo.signature} />
+                            <form name="form1" id="form1" method="post" acceptCharset="GBK" action='http://221.239.93.141:9080/bhdep/hipos/payTransaction' target='_blank'>
+                                <input type="input" name="char_set" value={toOthersInfo.char_set} />
+                                <input type="input" name="partner_id" value={toOthersInfo.partner_id} />
+                                <input type="input" name="version_no" value={toOthersInfo.version_no} />
+                                <input type="input" name="biz_type" value={toOthersInfo.biz_type} />
+                                <input type="input" name="sign_type" value={toOthersInfo.sign_type} />
+                                <input type="input" name="MerBillNo" value={toOthersInfo.MerBillNo} />
+                                <input type="input" name="PlaCustId" value={toOthersInfo.PlaCustId} />
+                                <input type="input" name="TransAmt" value={toOthersInfo.TransAmt} />
+                                <input type="input" name="MerFeeAmt" value={toOthersInfo.MerFeeAmt} />
+                                <input type="input" name="FeeType" value={toOthersInfo.FeeType} />
+                                <input type="input" name="OpenType" value={toOthersInfo.OpenType} />
+                                <input type="input" name="MobileNo" value={toOthersInfo.MobileNo} />
+                                <input type="input" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
+                                <input type="input" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
+                                <input type="input" name="TransTyp" value={toOthersInfo.TransTyp} />
+                                <input type="input" name="MerPriv" value={toOthersInfo.MerPriv} />
+                                <input type="input" name="mac" value={toOthersInfo.mac} />
                             </form>
 
                         </div>
