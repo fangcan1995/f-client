@@ -22,6 +22,7 @@ class MyAuthInfo extends React.Component {
         this.confirm = this.confirm.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
         this.changeCard= this.changeCard.bind(this);
+        this.setTradePass= this.setTradePass.bind(this);
     }
 
     //模态框开启关闭
@@ -54,7 +55,7 @@ class MyAuthInfo extends React.Component {
         let {dispatch, account} = this.props;
         let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
         //先获取换卡需携带的信息，正确的话提交表单
-        dispatch(accountAc.getFuyouInfo({type:'ReOpenAccount',url:`my-settings_my-authInfo`}))
+        dispatch(accountAc.getBohaiInfo({type:'ReOpenAccount',url:`my-settings_my-authInfo`}))
             .then(
                 (res)=>{
                     toOthersInfo=res.value;
@@ -64,16 +65,36 @@ class MyAuthInfo extends React.Component {
                         });
                         message.info(toOthersInfo.message);
                     }else if(toOthersInfo!=``){
-                        document.getElementById('ChangeCard2').submit();
+                        document.getElementById('form_changeCard').submit();
                         dispatch(accountAc.change_goOutState(true));
                     }
                 }
             )
             .catch();
     }
-
     changePhone(){
-        alert('去第三方,暂不开发');
+        let {dispatch, account} = this.props;
+        let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
+        //先获取换手机号需携带的信息，正确的话提交表单
+        dispatch(accountAc.getBohaiInfo({type:'changePhone',url:`my-settings_my-authInfo`}))
+            .then(
+                (res)=>{
+                    toOthersInfo=res.value;
+                    if(toOthersInfo.code==406  ){
+                        this.setState({
+                            disabled:false
+                        });
+                        message.info(toOthersInfo.message);
+                    }else if(toOthersInfo!=``){
+                        document.getElementById('form_changePhone').submit();
+                        dispatch(accountAc.change_goOutState(true));
+                    }
+                }
+            )
+            .catch();
+    }
+    setTradePass(){
+
     }
     callback(status){
         this.props.dispatch(accountAc.clear()); //清空结果
@@ -116,7 +137,7 @@ class MyAuthInfo extends React.Component {
                                                     <th><i className="iconfont icon-phone"></i>手机号</th>
                                                     <td className="Result">已设置</td>
                                                     <td className="detail">{phoneNumber}</td>
-                                                    <td className="operate">{/*<a href="javascript:void(0);" onClick={this.changePhone}>更改</a>*/}</td>
+                                                    <td className="operate"><a href="javascript:void(0);" onClick={this.changePhone}>更改</a></td>
                                                 </tr>
                                             {
                                                 isCertification === '1' ?
@@ -180,12 +201,13 @@ class MyAuthInfo extends React.Component {
                                                     <td className="Result">已设置</td>
                                                     <td className="detail">******</td>
                                                     <td className="operate">
-                                                        <a href="javascript:void(0);"
+                                                        {/*<a href="javascript:void(0);"
                                                            onClick={
                                                                () => this.toggleModal(`ModalTradePassword`,true)
                                                            }>
                                                             重新设置交易密码
-                                                        </a>
+                                                        </a>*/}
+                                                        <a href="javascript:void(0);" onClick={this.setTradePass}>重新设置交易密码</a>
                                                     </td>
                                                 </tr>
                                                 :<tr  className="no">
@@ -193,12 +215,13 @@ class MyAuthInfo extends React.Component {
                                                     <td className="Result">未设置</td>
                                                     <td className="detail"></td>
                                                     <td className="operate">
-                                                        <a href="javascript:void(0);"
+                                                        {/*<a href="javascript:void(0);"
                                                            onClick={
                                                                () => this.toggleModal(`ModalTradePassword`,true)
                                                            }>
                                                             设置交易密码
-                                                        </a>
+                                                        </a>*/}
+                                                        <a href="javascript:void(0);" onClick={this.setTradePass}>设置交易密码</a>
                                                     </td>
                                                 </tr>
                                             }
@@ -206,14 +229,61 @@ class MyAuthInfo extends React.Component {
                                         </tbody>
                                     </table>
                             }
-
-                            <form name="ChangeCard2" id="ChangeCard2" method="post" action={toOthersInfo.url}  >
-                                <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />
-                                <input type="hidden" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} />
-                                <input type="hidden" name="login_id" value={toOthersInfo.login_id} />
-                                <input type="hidden" name="page_notify_url" value={toOthersInfo.page_notify_url} />
-                                <input type="hidden" name="signature" value={toOthersInfo.signature} />
-                            </form>
+                            {/*换手机号*/}
+                            <Tab>
+                                <div name="换手机号信息">
+                                    <form name="form_changePhone" id="form_changePhone" method="post" acceptCharset="GBK" action='http://221.239.93.141:9080/bhdep/hipos/payTransaction' target='_blank'>
+                                        <input type="input" name="char_set" value={toOthersInfo.char_set} />
+                                        <input type="input" name="partner_id" value={toOthersInfo.partner_id} />
+                                        <input type="input" name="version_no" value={toOthersInfo.version_no} />
+                                        <input type="input" name="biz_type" value={toOthersInfo.biz_type} />
+                                        <input type="input" name="sign_type" value={toOthersInfo.sign_type} />
+                                        <input type="input" name="MerBillNo" value={toOthersInfo.MerBillNo} />
+                                        <input type="input" name="PlaCustId" value={toOthersInfo.PlaCustId} />
+                                        <input type="input" name="MobileNo" value={toOthersInfo.MobileNo} />
+                                        <input type="input" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
+                                        <input type="input" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
+                                        <input type="input" name="TransTyp" value={toOthersInfo.TransTyp} />
+                                        <input type="input" name="MerPriv" value={toOthersInfo.MerPriv} />
+                                        <input type="input" name="mac" value={toOthersInfo.mac} />
+                                    </form>
+                                </div>
+                            </Tab>
+                            <Tab>
+                                <div name="找回/设置交易密码">
+                                    <form name="form_setTradeCode" id="form_setTradeCode" method="post" acceptCharset="GBK" action='http://221.239.93.141:9080/bhdep/hipos/payTransaction' target='_blank'>
+                                        <input type="input" name="char_set" value={toOthersInfo.char_set} />
+                                        <input type="input" name="partner_id" value={toOthersInfo.partner_id} />
+                                        <input type="input" name="version_no" value={toOthersInfo.version_no} />
+                                        <input type="input" name="biz_type" value={toOthersInfo.biz_type} />
+                                        <input type="input" name="sign_type" value={toOthersInfo.sign_type} />
+                                        <input type="input" name="MerBillNo" value={toOthersInfo.MerBillNo} />
+                                        <input type="input" name="PlaCustId" value={toOthersInfo.PlaCustId} />
+                                        <input type="input" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
+                                        <input type="input" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
+                                        <input type="input" name="TransTyp" value={toOthersInfo.TransTyp} />
+                                        <input type="input" name="mac" value={toOthersInfo.mac} />
+                                    </form>
+                                </div>
+                            </Tab>
+                            <Tab>
+                                <div name="修改绑定银行卡">
+                                    <form name="form_changeCard" id="form_changeCard" method="post" acceptCharset="GBK" action='http://221.239.93.141:9080/bhdep/hipos/payTransaction' target='_blank'>
+                                        <input type="input" name="char_set" value={toOthersInfo.char_set} />
+                                        <input type="input" name="partner_id" value={toOthersInfo.partner_id} />
+                                        <input type="input" name="version_no" value={toOthersInfo.version_no} />
+                                        <input type="input" name="biz_type" value={toOthersInfo.biz_type} />
+                                        <input type="input" name="sign_type" value={toOthersInfo.sign_type} />
+                                        <input type="input" name="MerBillNo" value={toOthersInfo.MerBillNo} />
+                                        <input type="input" name="PlaCustId" value={toOthersInfo.PlaCustId} />
+                                        <input type="input" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
+                                        <input type="input" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
+                                        <input type="input" name="TransTyp" value={toOthersInfo.MerPriv} />
+                                        <input type="input" name="TransTyp" value={toOthersInfo.TransTyp} />
+                                        <input type="input" name="mac" value={toOthersInfo.mac} />
+                                    </form>
+                                </div>
+                            </Tab>
                         </div>
                     </Tab>
 

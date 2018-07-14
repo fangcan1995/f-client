@@ -96,6 +96,30 @@ export default createReducer(initialState, {
     ['myLoans/repaymentPlans/MODIFY_STATE']:(state,action) => state.mergeDeep({
         repaymentPlans:action.payload
     }),
+    //异步获取借款合同
+    ['myLoans/myLoans/PACT_FETCH_PENDING']:(state,action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['myLoans/myLoans/PACT_FETCH_FULFILLED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        myLoans:action.payload
+    }),
+    ['myLoans/myLoans/PACT_FETCH_REJECTED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
+    //异步获取告知书
+    ['myLoans/myLoans/PACT_INFORM_FETCH_PENDING']:(state,action) => state.mergeDeep({
+        isFetching: true,
+    }),
+    ['myLoans/myLoans/PACT_INFORM_FETCH_FULFILLED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        myLoans:action.payload
+    }),
+    ['myLoans/myLoans/PACT_INFORM_FETCH_REJECTED']:(state,action) => state.mergeDeep({
+        isFetching: false,
+        errorMessage: action.message
+    }),
 })
 
 

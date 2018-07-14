@@ -74,6 +74,9 @@ export const accountAc= {
             case 'Withdrawals':
                 url=`http://59.110.15.234:9030/payTrans/bohai/cash`;  //提现
                 break;
+            case 'changePhone':
+                url=`http://59.110.15.234:9030/payTrans/bohai/cash`;  //提现
+                break;
             default:
                 break;
         }

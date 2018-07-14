@@ -4,8 +4,7 @@ import PieChart from '../../../../components/charts/pie';
 import Crumbs from '../../../../components/crumbs/crumbs';
 import Tab from '../../../../components/tab/tab';
 import Pagination from '../../../../components/pagination/pagination';
-import BbhModal from "../../../../components/modal/bbh_modal";
-import { Modal } from 'antd';
+import { Spin,Icon  } from 'antd';
 import ModalRepaymentApp from '../../../../components/modal/modal-repayment/modalRepaymentApp';
 import {toMoney,toNumber,addCommas} from '../../../../utils/famatData';
 import { connect } from 'react-redux';
@@ -16,6 +15,7 @@ import './my-loan.less';
 import {modal_config} from "../../../../utils/modal_config";
 import {accountAc} from "../../../../actions/account";
 import investDetailActions from "../../../../actions/invest-detail";
+import {memberInvestAc} from "../../../../actions/member-investments";
 
 class MyLoans extends React.Component {
     constructor(props) {
@@ -25,6 +25,7 @@ class MyLoans extends React.Component {
             currentModule:``,
             currentId:``,
             key:Math.random(),
+            loading:false
         }
     }
     componentDidMount () {
@@ -67,7 +68,42 @@ class MyLoans extends React.Component {
         this.props.dispatch(memberLoansAc.getList({status:3}));
         this.toggleModal('bbhModal',false);
     }
+    downLoan(params){
+        this.setState({
+            loading: true
+        },()=>{
+            this.props.dispatch(memberLoansAc.downLoad(params)).then(res => {
+                this.setState({
+                    loading: false
+                })
+                let a = document.createElement('a');
+                let event = new MouseEvent('click');
+                a.download=``;
+                a.href=res.value.pactUrl;
+                a.target = "_blank";
+                a.dispatchEvent(event);
+            })
+        })
 
+    }
+    downLoadInform(params){
+        this.setState({
+            loading: true
+        },()=>{
+            this.props.dispatch(memberLoansAc.downLoadInform(params)).then(res => {
+                this.setState({
+                    loading: false
+                })
+                let a = document.createElement('a');
+                let event = new MouseEvent('click');
+                a.download=``;
+                a.href=res.value.pactUrl;
+                a.target = "_blank";
+                a.dispatchEvent(event);
+            })
+        })
+
+    }
     render(){
         let {dispatch}=this.props;
         let {myLoans,isFetching}=this.props.memberLoans;
@@ -79,6 +115,7 @@ class MyLoans extends React.Component {
         tHead[3]=<tr><th>项目名称</th><th>借款金额(元)</th><th>借款期限</th><th>放款日期</th><th>还款本金(元)</th><th>还款利息(元)</th><th>逾期罚金(元)</th><th>逾期罚息(元)</th><th>结清日期</th><th>操作</th></tr>;
         return(
             <div className="member__main">
+                <Spin tip="合同加载中..." wrapperClassName='skin_loading' size='large' spinning={this.state.loading}>
                 <Crumbs/>
                 {(charts==='')?``
                     :<div className="member__cbox">
@@ -184,7 +221,8 @@ class MyLoans extends React.Component {
                                                                             <a onClick={() => this.toggleModal(`ModalRepaymentApp`,true,l.projectId)}>提前还款</a>
                                                                         )
                                                                 }
-                                                                <a href="">借款合同</a>
+                                                                <a href="javascript:void(0);"  onClick={() => { this.downLoan(l.projectId)}} >借款合同</a>
+                                                                <a href="javascript:void(0);"  onClick={() => { this.downLoadInform(l.projectId)}} >告知书</a>
                                                             </td>
                                                         </tr>
                                                     ) : ((status === 4) ? (
@@ -198,7 +236,10 @@ class MyLoans extends React.Component {
                                                             <td>{l.lateFine}</td>
                                                             <td>{l.lateIint}</td>
                                                             <td>{l.settleTime ? moment(l.settleTime).format('YYYY-MM-DD') : ''}</td>
-                                                            <td><a href="">借款合同</a></td>
+                                                            <td>
+                                                                <a href="javascript:void(0);"  onClick={() => { this.downLoan(l.projectId)}} >借款合同</a>
+                                                                <a href="javascript:void(0);"  onClick={() => { this.downLoadInform(l.projectId)}} >告知书</a>
+                                                            </td>
                                                         </tr>
                                                     ) : (''))))
                                                 )
@@ -232,7 +273,7 @@ class MyLoans extends React.Component {
                         </div>
                     }
                 </div>
-
+                </Spin>
                 {this.state.currentModule!=``?
                     <BbhModal
                         config={modal_config[this.state.currentModule]}
@@ -246,6 +287,7 @@ class MyLoans extends React.Component {
                     </BbhModal>
                     :``
                 }
+
             </div>
         )
     }
