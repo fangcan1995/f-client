@@ -94,7 +94,25 @@ class MyAuthInfo extends React.Component {
             .catch();
     }
     setTradePass(){
-
+        let {dispatch, account} = this.props;
+        let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
+        //先获取换卡需携带的信息，正确的话提交表单
+        dispatch(accountAc.getBohaiInfo({type:'changeTradePwd',url:`my-settings_my-authInfo`}))
+            .then(
+                (res)=>{
+                    toOthersInfo=res.value;
+                    if(toOthersInfo.code==406  ){
+                        this.setState({
+                            disabled:false
+                        });
+                        message.info(toOthersInfo.message);
+                    }else if(toOthersInfo!=``){
+                        document.getElementById('form_changeCard').submit();
+                        dispatch(accountAc.change_goOutState(true));
+                    }
+                }
+            )
+            .catch();
     }
     callback(status){
         this.props.dispatch(accountAc.clear()); //清空结果

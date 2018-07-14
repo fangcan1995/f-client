@@ -66,7 +66,7 @@ export const accountAc= {
                 url=`http://59.110.15.234:9030/payAccount/bohai`; //开户
                 break;
             case 'ReOpenAccount':
-                url=url_uyouReOpenAccountInfo+`?url=my-account_bank-card`;  //换卡
+                url=`http://59.110.15.234:9030/payAccount/bohai/changeCard`;  //换卡
                 break;
             case 'reCharge':
                 url=`http://59.110.15.234:9030/payTrans/bohai/deposit`;  //充值
@@ -75,7 +75,10 @@ export const accountAc= {
                 url=`http://59.110.15.234:9030/payTrans/bohai/cash`;  //提现
                 break;
             case 'changePhone':
-                url=`http://59.110.15.234:9030/payTrans/bohai/cash`;  //提现
+                url=`http://59.110.15.234:9030/payTrans/bohai/changeMobile`;  //换手机号
+                break;
+            case 'changeTradePwd':
+                url=`http://59.110.15.234:9030/payTrans/bohai/changePwd`;  //设置交易密码
                 break;
             default:
                 break;
