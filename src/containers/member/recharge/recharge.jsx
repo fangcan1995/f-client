@@ -77,7 +77,7 @@ class Recharge extends React.Component{
                 <div className="member__cbox">
                     <Tab>
                         <div name="快速充值">
-                            <div className="tab_content" style={{width:'400px'}}>
+                            <div className="tab_content" >
                                 {
                                     (isOpenAccount ===`0` ) ?
                                         <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先
@@ -85,11 +85,14 @@ class Recharge extends React.Component{
                                         </p>
                                         : (isOpenAccount===`1`)?
                                             <div className="form__wrapper">
-                                                <Form layout="horizontal" onSubmit={this.handleSubmit.bind(this)}>
+                                                <div className='about_bankCard'>
                                                     <div className='member_card'>
                                                         <img src={require(`../../../assets/images/bank/logo_${bankCode}.jpg`)} alt=""/>
                                                         <span>{bankNo}</span>
                                                     </div>
+                                                    <p>充值限额：单笔限额￥50000.00、每日限额￥200000.00、每月限额￥6000000.00</p>
+                                                </div>
+                                                <Form layout="horizontal" onSubmit={this.handleSubmit.bind(this)} style={{width:'400px'}}>
                                                     <FormItem
                                                         { ...formItemLayout }
                                                         label="可用余额"

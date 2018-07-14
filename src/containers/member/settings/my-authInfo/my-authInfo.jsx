@@ -272,7 +272,7 @@ class MyAuthInfo extends React.Component {
                                         <input type="input" name="PlaCustId" value={toOthersInfo.PlaCustId} />
                                         <input type="input" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
                                         <input type="input" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
-                                        <input type="input" name="TransTyp" value={toOthersInfo.MerPriv} />
+                                        <input type="input" name="MerPriv" value={toOthersInfo.MerPriv} />
                                         <input type="input" name="TransTyp" value={toOthersInfo.TransTyp} />
                                         <input type="input" name="mac" value={toOthersInfo.mac} />
                                     </form>
