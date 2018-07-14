@@ -23,6 +23,7 @@ class MyAuthInfo extends React.Component {
         this.toggleModal = this.toggleModal.bind(this);
         this.changeCard= this.changeCard.bind(this);
         this.setTradePass= this.setTradePass.bind(this);
+        this.changePhone= this.changePhone.bind(this);
     }
 
     //模态框开启关闭
@@ -157,6 +158,17 @@ class MyAuthInfo extends React.Component {
                                                     <td className="detail">{phoneNumber}</td>
                                                     <td className="operate"><a href="javascript:void(0);" onClick={this.changePhone}>更改</a></td>
                                                 </tr>
+                                            <tr>
+                                                <th><i className="iconfont no icon-card"></i>银行卡</th>
+                                                <td className="Result">已开户</td>
+                                                <td className="detail">{bankNo}</td>
+                                                <td className="operate">
+
+                                                        <a href="javascript:void(0);" onClick={this.changeCard}>更换</a>
+
+
+                                                </td>
+                                            </tr>
                                             {
                                                 isCertification === '1' ?
                                                     <tr>

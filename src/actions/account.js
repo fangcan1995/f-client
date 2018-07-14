@@ -75,10 +75,10 @@ export const accountAc= {
                 url=`http://59.110.15.234:9030/payTrans/bohai/cash`;  //提现
                 break;
             case 'changePhone':
-                url=`http://59.110.15.234:9030/payTrans/bohai/changeMobile`;  //换手机号
+                url=`http://59.110.15.234:9030/payAccount/bohai/changeMobile`;  //换手机号
                 break;
             case 'changeTradePwd':
-                url=`http://59.110.15.234:9030/payTrans/bohai/changePwd`;  //设置交易密码
+                url=`http://59.110.15.234:9030/payAccount/bohai/changePwd`;  //设置交易密码
                 break;
             default:
                 break;
