@@ -28,6 +28,7 @@ export default class Tab extends Component {
                             )
                         })
                     }
+                    <p className='tab_read'>{this.props.title||``}</p>
                 </div>
                 { /* Tab内容区域 */ }
                 <div className="tabs__content">

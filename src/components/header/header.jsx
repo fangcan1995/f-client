@@ -19,6 +19,8 @@ class Header extends Component {
   }
   render() {
     const { auth } = this.props;
+    console.log('////////////////')
+    console.log(auth);
     return (
       <header className="header">
         <div className="top">
@@ -77,8 +79,14 @@ class Header extends Component {
               <nav className="nav">
                 <ul>
                   <li><Link to="/">首页</Link></li>
-                  <li><Link to="/invest-list">我要投资</Link></li>
-                  <li><Link to="/loan-index">我要借款</Link></li>
+                    {(!auth.isAuthenticated || auth.user.remarks===`1`)?
+                        <li><Link to="/invest-list">我要投资</Link></li>
+                        :``
+                    }
+                    {(!auth.isAuthenticated || auth.user.remarks===`2`)?
+                        <li><Link to="/loan-index">我要借款</Link></li>
+                      :``
+                    }
                   <li><Link to="/about">信息披露</Link></li>
                 </ul>
               </nav>
@@ -87,11 +95,19 @@ class Header extends Component {
                   <Link to="/my-account" className="dropdown__toggle">我的账户<i className="iconfont icon-sanjiaojiantou-xia"></i></Link>
                   <div className="dropdown__menu">
                     <ul>
-                      <li><Link to="/my-investments">我的投资</Link></li>
-                      <li><Link to="/my-loan">我的借款</Link></li>
+                        {(!auth.isAuthenticated || auth.user.remarks===`1`)?
+                            <li><Link to="/my-investments">我的投资</Link></li>
+                            :``
+                        }
+                        {(!auth.isAuthenticated || auth.user.remarks === `2`) ?
+                            <li><Link to="/my-loan">我的借款</Link></li>
+                            :``
+                        }
                       <li><Link to="/my-settings">基本设置</Link></li>
-                      {/*<li><Link to="/my-reward">奖励管理</Link></li>*/}
-                      <li><Link to="/my-reward/my-redEnvelopes">我的红包</Link></li>
+                        {(!auth.isAuthenticated || auth.user.remarks === `1`) ?
+                            <li><Link to="/my-reward/my-redEnvelopes">我的红包</Link></li>
+                            : ``
+                        }
 
                     </ul>
                   </div>

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import {accountAc} from '../../../actions/account';
 import {toMoney, addCommas, getTips} from '../../../utils/famatData';
 import {formItemLayout, hasErrors, noop} from "../../../utils/formSetting";
-import { Form,Input,Button} from 'antd';
+import { Form,Input,Button,Radio } from 'antd';
 import {hex_md5} from "../../../utils/md5";
 import './withdrawals.less';
 import investDetailActions from "../../../actions/invest-detail";
@@ -16,25 +16,17 @@ import { Link, withRouter } from 'react-router-dom';
 import {authBank} from '../../../utils/url';
 const createForm = Form.create;
 const FormItem = Form.Item;
-
+const RadioGroup = Radio.Group;
 class Withdrawals extends React.Component{
-    constructor(props) {
-        super(props);
-        this.handleSubmit= this.handleSubmit.bind(this);
+    state = {
+        value: 0,
+        amount:``,
+        MerFeeAmt:``
     }
     componentWillMount() {
         window.scrollTo(0,0);
         this.props.dispatch(accountAc.clear());
         this.props.dispatch(accountAc.getAccountInfo());
-    }
-    componentDidMount() {
-        //this.props.dispatch(accountAc.getAccountInfo());
-        let getInfo = {
-            type: 'Withdrawals',
-            url: 'my-account_withdrawals',
-            value: 1000,
-        }
-        this.props.dispatch(accountAc.getBohaiInfo(getInfo)) //渤海银行提现
     }
     handleSubmit= (e) => {
         e.preventDefault();
@@ -49,67 +41,76 @@ class Withdrawals extends React.Component{
                 type: 'Withdrawals',
                 url: 'my-account_withdrawals',
                 value: form.getFieldsValue().price.number,
-                tradePwd: hex_md5(form.getFieldsValue().password),
+                FastFlag:this.state.value,  //到账方式 0:T+1 1:T+0
+                MerFeeAmt:0  //手续费
+                /*tradePwd: hex_md5(form.getFieldsValue().password),*/
             }
-            if(authBank===2){
-                dispatch(accountAc.getBohaiInfo(getInfo))
-                    .then((res) => {
-                        toOthersInfo = res.value;
-                        if (toOthersInfo.code == 406) {
-                        } else if (toOthersInfo != ``) {
-                            document.getElementById('form1').submit();
-                        }
-                    })
-                    .catch(() => {
-                        //没获取到
-                        console.log('没获取到');
-                    });
-                ;
-            }else{
-                dispatch(accountAc.getFuyouInfo(getInfo))
-                    .then((res) => {
-                        toOthersInfo = res.value;
-                        if (toOthersInfo.code == 406) {
-                        } else if (toOthersInfo != ``) {
-                            document.getElementById('FuiouCash').submit();
-                        }
-                    })
-                    .catch(() => {
-                        //没获取到
-                        console.log('没获取到');
-                    });
-                ;
-            }
+            dispatch(accountAc.getBohaiInfo(getInfo))
+                .then((res) => {
+                    toOthersInfo = res.value;
+                    if (toOthersInfo.code == 406) {
+                    } else if (toOthersInfo != ``) {
+                        document.getElementById('form1').submit();
+                    }
+                })
+                .catch(() => {
+                    //没获取到
+                    console.log('没获取到');
+                });
+            ;
 
 
 
         });
     }
     checkPrice = (rule, value, callback) => {
-        const {availableBalance}=this.props.account.accountsInfo;
+        const {availableBalance,bohaiConfig}=this.props.account.accountsInfo;
+        const { withdrawalsHandFeePer,withdrawalsHandFeeMin}=bohaiConfig;
+        let handFree=0;
+        if((value.number*withdrawalsHandFeePer*0.01)>withdrawalsHandFeeMin){
+            handFree=value.number*withdrawalsHandFeePer*0.01
+        }else{
+            handFree=withdrawalsHandFeeMin;
+        }
         this.setState({
-            amount:value.number
+            amount:value.number,
+            MerFeeAmt:handFree
         });
-        if(parseFloat(value.number) < 10){
-            callback('提现金额不能小于10元');
+        if(parseFloat(value.number) < parseFloat(bohaiConfig.withdrawalsMin)){
+            callback(`提现金额不能小于${bohaiConfig.withdrawalsMin}元`);
             return false;
         }
-        if(parseFloat(value.number) > parseFloat(availableBalance)){
-            callback(`提现金额不能超过${addCommas(availableBalance)}元`);
+        let max=0;
+        parseFloat(availableBalance)>parseFloat(bohaiConfig.withdrawalsMax)?max=parseFloat(bohaiConfig.withdrawalsMax):max=parseFloat(availableBalance)
+        if(parseFloat(value.number) > max){
+            callback(`提现金额不能超过${addCommas(max)}元`);
             return false;
         }
         callback();
         return;
     }
+    onChange = (e) => {
+        this.setState({
+            value: e.target.value,
+        });
+    }
     render(){
         let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult}=this.props.account;
-        let {isOpenAccount,availableBalance}=accountsInfo;
+        let {isOpenAccount,availableBalance,bankCode,bankNo,bohaiConfig}=accountsInfo;
         const { getFieldDecorator,getFieldsError } = this.props.form;
-        const passwordProps = getFieldDecorator('password', {
+
+        /*let { withdrawalsHandFeePer,withdrawalsHandFeeMin}=bohaiConfig;
+        if((form.getFieldsValue().price.number*withdrawalsHandFeePer*0.01)>withdrawalsHandFeeMin){
+            handFree=form.getFieldsValue().price.number*withdrawalsHandFeePer*0.01
+        }else{
+            handFree=withdrawalsHandFeeMin;
+        }*/
+
+        /*const passwordProps = getFieldDecorator('password', {
             rules: [
                 { required: true, min: 6, message: '交易密码至少为 6 个字符' }
             ]
-        });
+        });*/
         return (
             <div className="member__main withdrawals">
                 <Crumbs/>
@@ -117,27 +118,7 @@ class Withdrawals extends React.Component{
                     <Tab>
                         <div name="提现">
                             <div className="tab_content" style={{width:'400px'}}>
-                                <form name="form1" id="form1" method="post" acceptCharset="GBK" action='http://221.239.93.141:9080/bhdep/hipos/payTransaction' target='_blank'>
-                                    <input type="input" name="char_set" value={toOthersInfo.char_set} />
-                                    <input type="input" name="partner_id" value={toOthersInfo.partner_id} />
-                                    <input type="input" name="version_no" value={toOthersInfo.version_no} />
-                                    <input type="input" name="biz_type" value={toOthersInfo.biz_type} />
-                                    <input type="input" name="sign_type" value={toOthersInfo.sign_type} />
-                                    <input type="input" name="MerBillNo" value={toOthersInfo.MerBillNo} />
-                                    <input type="input" name="PlaCustId" value={toOthersInfo.PlaCustId} />
-                                    <input type="input" name="TransAmt" value={toOthersInfo.TransAmt} />
-                                    <input type="input" name="MerFeeAmt" value={toOthersInfo.MerFeeAmt} />
-                                    <input type="input" name="FeeType" value={toOthersInfo.FeeType} />
-                                    <input type="input" name="OpenType" value={toOthersInfo.OpenType} />
-                                    <input type="input" name="MobileNo" value={toOthersInfo.MobileNo} />
-                                    <input type="input" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
-                                    <input type="input" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
-                                    <input type="input" name="TransTyp" value={toOthersInfo.TransTyp} />
-                                    <input type="input" name="FastFlag" value={toOthersInfo.FastFlag} />
-                                    <input type="input" name="MerPriv" value={toOthersInfo.MerPriv} />
-                                    <input type="input" name="mac" value={toOthersInfo.mac} />
-                                    <Button type="primary" htmlType="submit" className="pop__large" onClick={()=>this.handleSubmit()}>渤海银行提现</Button>
-                                </form>
+
                                 {
                                     (isOpenAccount===`0`)?
                                         <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先
@@ -146,12 +127,24 @@ class Withdrawals extends React.Component{
                                         :
                                         (isOpenAccount===`1`)?
                                         <div className="form__wrapper">
-                                            <Form layout="horizontal" onSubmit={this.handleSubmit}>
+
+
+                                            <Form layout="horizontal" onSubmit={this.handleSubmit.bind(this)}>
+
+                                                {/*<FormItem
+                                                    { ...formItemLayout }
+                                                    label="到账银行卡"
+                                                >
+                                                    <div className='member_card'>
+                                                        <img src={require(`../../../assets/images/bank/logo_${bankCode}.jpg`)} alt=""/>
+                                                        <span>{bankNo}</span>
+                                                    </div>
+                                                </FormItem>*/}
                                                 <FormItem
                                                     { ...formItemLayout }
                                                     label="可用余额"
                                                 >
-                                                    {toMoney(availableBalance)}元
+                                                    <span className='text-primary m-text-size'>{toMoney(availableBalance)}</span> 元
                                                 </FormItem>
                                                 <FormItem className='price'
                                                     { ...formItemLayout }
@@ -159,11 +152,44 @@ class Withdrawals extends React.Component{
                                                     required
                                                 >
                                                     {getFieldDecorator('price', {
-                                                        initialValue: { number: `` },
+                                                        initialValue: { number: `0` },
                                                         rules: [{ validator: this.checkPrice }],
                                                     })(<PriceInput  />)}
                                                 </FormItem>
                                                 <FormItem
+                                                    { ...formItemLayout }
+                                                    label="提现方式"
+                                                >
+                                                    <RadioGroup onChange={this.onChange} value={this.state.value}>
+                                                        <Radio value={0}><span className='m-text-size'>普通提现 | </span>下一个工作日到账，节假日顺延 | 单笔限额300000.00元。限当日 00:10至23:00 申请</Radio>
+                                                        <Radio value={1}><span className='m-text-size'>快速提现 | </span>预计当日到账 | 当日剩余额度50000.00元。限工作日 08:00至17:00 申请</Radio>
+                                                    </RadioGroup>
+                                                </FormItem>
+                                                <FormItem
+                                                    { ...formItemLayout }
+                                                    label="待付手续费"
+                                                >
+                                                    <span className='text-primary m-text-size'>
+                                                        {
+                                                            hasErrors(getFieldsError())? `0.00`:toMoney(this.state.MerFeeAmt)
+                                                        }
+                                                        </span> 元
+                                                </FormItem>
+                                                <FormItem
+                                                    { ...formItemLayout }
+                                                    label="实际到账"
+                                                >
+                                                    <span className='text-primary m-text-size'>
+
+                                                        {
+                                                            hasErrors(getFieldsError())? `0.00` : toMoney(this.state.amount-this.state.MerFeeAmt)
+                                                        }
+                                                        </span>
+                                                    元
+                                                </FormItem>
+
+
+                                                {/*<FormItem
                                                     { ...formItemLayout }
                                                     label="交易密码"
                                                     required
@@ -178,15 +204,7 @@ class Withdrawals extends React.Component{
                                                             />
                                                         )
                                                     }
-                                                </FormItem>
-                                            {/*<dl className="form__bar">
-                                                <dt><label>提现金额:</label></dt>
-                                                <dd>
-                                                    <input  maxLength={8} type="text" className="textInput moneyInput" ref="amount" onChange={this.handleChange}　/>
-                                                    <span className="unit">元</span>
-                                                    <a href="">银行卡充值上限说明</a>
-                                                </dd>
-                                            </dl>*/}
+                                                </FormItem>*/}
                                                 <FormItem className='tips'>
                                                     {
                                                         (toOthersInfo!=`` && toOthersInfo.code==406)?
@@ -195,23 +213,29 @@ class Withdrawals extends React.Component{
                                                     }
                                                 </FormItem>
                                                 <FormItem className='center'>
-                                                    {(isPosting) ? <Button type="primary" htmlType="submit" className="pop__large" disabled={true}>
-                                                            <Posting isShow={isPosting}/>
-                                                        </Button>
-                                                        :
-                                                        <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError())  }>确认</Button>
-                                                    }
+                                                    <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError())  }>确认</Button>
                                                 </FormItem>
-
                                             </Form>
-                                            <form name="FuiouCash" id="FuiouCash" method="post" action={toOthersInfo.url} >
-                                                <input type="hidden" name="mchnt_cd" value={toOthersInfo.mchnt_cd} />
-                                                <input type="hidden" name="mchnt_txn_ssn" value={toOthersInfo.mchnt_txn_ssn} />
-                                                <input type="hidden" name="login_id" value={toOthersInfo.login_id} />
-                                                <input type="hidden" name="amt" value={toOthersInfo.amt} />
-                                                <input type="hidden" name="page_notify_url" value={toOthersInfo.page_notify_url} />
-                                                <input type="hidden" name="back_notify_url" value={toOthersInfo.back_notify_url}/>
-                                                <input type="hidden" name="signature" value={toOthersInfo.signature} />
+                                            <form name="form1" id="form1" method="post" acceptCharset="GBK" action='http://221.239.93.141:9080/bhdep/hipos/payTransaction' target='_blank'>
+                                                <input type="input" name="char_set" value={toOthersInfo.char_set} />
+                                                <input type="input" name="partner_id" value={toOthersInfo.partner_id} />
+                                                <input type="input" name="version_no" value={toOthersInfo.version_no} />
+                                                <input type="input" name="biz_type" value={toOthersInfo.biz_type} />
+                                                <input type="input" name="sign_type" value={toOthersInfo.sign_type} />
+                                                <input type="input" name="MerBillNo" value={toOthersInfo.MerBillNo} />
+                                                <input type="input" name="PlaCustId" value={toOthersInfo.PlaCustId} />
+                                                <input type="input" name="TransAmt" value={toOthersInfo.TransAmt} />
+                                                <input type="input" name="MerFeeAmt" value={toOthersInfo.MerFeeAmt} />
+                                                <input type="input" name="FeeType" value={toOthersInfo.FeeType} />
+                                                <input type="input" name="OpenType" value={toOthersInfo.OpenType} />
+                                                <input type="input" name="MobileNo" value={toOthersInfo.MobileNo} />
+                                                <input type="input" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
+                                                <input type="input" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
+                                                <input type="input" name="TransTyp" value={toOthersInfo.TransTyp} />
+                                                <input type="input" name="FastFlag" value={toOthersInfo.FastFlag} />
+                                                <input type="input" name="MerPriv" value={toOthersInfo.MerPriv} />
+                                                <input type="input" name="mac" value={toOthersInfo.mac} />
+
                                             </form>
 
                                         </div>

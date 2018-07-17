@@ -22,7 +22,6 @@ class Recharge extends React.Component{
         window.scrollTo(0,0);
         this.props.dispatch(accountAc.clear());
         this.props.dispatch(accountAc.getAccountInfo());  //获取账户信息
-
     }
     handleSubmit= (e) => {
         e.preventDefault();
@@ -85,13 +84,19 @@ class Recharge extends React.Component{
                                         </p>
                                         : (isOpenAccount===`1`)?
                                             <div className="form__wrapper">
-                                                <div className='about_bankCard'>
+                                                {/*<div className='about_bankCard'>
                                                     <div className='member_card'>
                                                         <img src={require(`../../../assets/images/bank/logo_${bankCode}.jpg`)} alt=""/>
                                                         <span>{bankNo}</span>
                                                     </div>
-                                                    <p>充值限额：单笔限额￥50000.00、每日限额￥200000.00、每月限额￥6000000.00</p>
-                                                </div>
+                                                    <div className='member_card'>
+                                                        <img src={require(`../../../assets/images/bank/logo_${bankCode}.jpg`)} alt=""/>
+                                                        <span>{bankNo}</span>
+                                                    </div>
+                                                    <p>充值限额：单笔限额<span className='text-primary'>￥50000.00</span>、
+                                                        每日限额<span className='text-primary'>￥200000.00</span>、
+                                                        每月限额<span className='text-primary'>￥6000000.00</span></p>
+                                                </div>*/}
                                                 <Form layout="horizontal" onSubmit={this.handleSubmit.bind(this)} style={{width:'400px'}}>
                                                     <FormItem
                                                         { ...formItemLayout }
@@ -145,7 +150,6 @@ class Recharge extends React.Component{
                                 <input type="input" name="MerPriv" value={toOthersInfo.MerPriv} />
                                 <input type="input" name="mac" value={toOthersInfo.mac} />
                             </form>
-
                         </div>
                     </Tab>
                 </div>

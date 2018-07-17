@@ -10,7 +10,7 @@ export const modal_config={
         height: "400px"
     },
     ModalBindCardBohai: {
-        title: "渤海开户",
+        title: "开通存管账户",
         width: "620px",
         height: "400px"
     },

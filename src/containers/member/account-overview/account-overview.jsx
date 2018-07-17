@@ -13,6 +13,12 @@ import { Tooltip, message, Button } from 'antd';
 import './account-overview.less';
 
 class AccountOverview extends React.Component{
+    componentWillMount() {
+        const {auth}=this.props;
+        if(auth.user.remarks===`2`){
+            this.props.history.push({ pathname : '/my-loan/my-loan'});//如果是借款用户自动跳转到我的借款页
+        }
+    }
     componentDidMount() {
         window.scrollTo(0,0);
         this.props.dispatch(accountAc.getAccountInfo());  //获取账户信息

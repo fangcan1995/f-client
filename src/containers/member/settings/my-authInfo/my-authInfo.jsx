@@ -142,6 +142,8 @@ class MyAuthInfo extends React.Component {
     }
     render(){
         let {dispatch,account,auth}=this.props;
+        console.log('------------auth-----------')
+        console.log(auth);
         const {isFetching,accountsInfo,toOthersInfo}=account;
         const {postResult,isCertification,isPhoneNumber,isOpenAccount,isSetTradepassword,trueName,phoneNumber,idNumber,bankNo}=accountsInfo;
         return(
@@ -194,7 +196,7 @@ class MyAuthInfo extends React.Component {
                                         <tr className={(isOpenAccount==='1')? '' : 'no'}>
                                             <th><i className="iconfont icon-card"></i>银行卡</th>
                                             <td className="Result">已开户</td>
-                                            <td className="detail">123****123</td>
+                                            <td className="detail">{bankNo}</td>
                                             <td className="operate">
                                                 <a href="javascript:void(0);" onClick={this.changeCard}>更换</a>
                                             </td>

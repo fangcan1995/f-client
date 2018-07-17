@@ -72,6 +72,12 @@
 
 }
 .form__wrapper{
+  .text-primary{
+    color:@color-primary
+  }
+  .m-text-size{
+    font-size: 14px;
+  }
   //定义验证样式
   .ant-form-item-required:before{
     color: @text-color-error
@@ -231,5 +237,20 @@
      }
    }
 
+  .member_card{
+    min-width:250px;
+    min-height: 30px;
+    display: inline-block;
+    border: 1px solid @color-secondary;
+    padding: 10px 20px;
+    margin-right: 20px;
 
+    img{
+      float:left;
+      padding-right: 20px;
+    }
+    span{
+      line-height: 30px;
+    }
+  }
 }

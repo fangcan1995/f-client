@@ -22,10 +22,10 @@ export const accountAc= {
                 if (code == 0) {
                     //console.log('后台返回的会员基础信息');
                     //console.log(res);
-                    let mock={
-                        isCertification:'1',	//是否实名认证（0：未实名；1：已实名）
+                   /* let mock={
+                        isCertification:'0',	//是否实名认证（0：未实名；1：已实名）
                         isOpenAccount:'0',	//是否开户（0：未开户；1：已开户）
-                        isSetTradepassword:'1',	//是否设置交易密码（0：未设置；1：已设置）
+                        isSetTradepassword:'0',	//是否设置交易密码（0：未设置；1：已设置）
                         isRisk:'1',	//是否风险测评（0：否；1：是）
                         isNovice:'1',	//是否新手（0：否；1：是）
                         trueName:'张三',	//真实姓名
@@ -34,28 +34,33 @@ export const accountAc= {
                         riskLevel:'',	//风险测评等级
                         surplusAmount:1000000,//剩余投资限额
                         accountBalance:100000,//账户余额
-                        availableBalance:2000,	//账户可用余额
+                        availableBalance:60000,	//账户可用余额
                         freezingAmount:0,  //冻结金额
                         investAmount:0,  //散标资产
-                        yestEarns:0, //昨日收益
-                        totalEarns:0, //累计收益
-                        bankCode:'CCB',
+
+
                         bankName:'中国建设银行',	//开户行
                         bankNo:'4367********8523',	//银行卡号
                         memberRedInfo:{number: 1, amountSum: 500},	//红包信息
                         memberCoupon:{number: 5, amountSum: 3},	//加息券信息
+                        userType:'1'   ,  //账户类型
+                        bankCode:'CCB',
                         bohaiConfig:{
                             rechargeMin:10,
                             rechargeMax:50000,
-                            withdrawalsMin:1,
+                            withdrawalsMin:5,
                             withdrawalsMax:100000000,
                             rechargeHandFee:0,
                             rechargeHandFeeMin:0,
-                            withdrawalsHandFee:0.2,
-                            withdrawalsHandFeeMin:0.2,
-                        } //虚拟
+                            withdrawalsHandFeePer:0.2,
+                            withdrawalsHandFeeMin:3,
+                        }, //虚拟
+                        bankInfo:[
+                            {bankCode:'CCB',bankName:'中国建设银行',bankNo:'4367********8523'},
+                            {bankCode:'CCB',bankName:'中国建设银行',bankNo:'4367********1324'},
+                        ]
                     };
-                    let data=mock;
+                    let data=mock;*/
 
                     return data;
                 } else {

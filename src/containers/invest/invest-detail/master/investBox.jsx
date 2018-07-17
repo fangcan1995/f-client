@@ -47,8 +47,6 @@ class MasterInvestBox extends Component {
         if(this.props.auth.isAuthenticated){
             this.props.dispatch(accountAc.getAccountInfo());  //获取会员帐户信息
         }
-        //console.log('-------this.state.investAmount----------')
-        //console.log(this.state.investAmount)
     }
     checkMoney(value){
         const {min,max,step,surplusAmount} = this.props.investInfo;
@@ -101,33 +99,24 @@ class MasterInvestBox extends Component {
         //
         let {isCertification,isOpenAccount,isSetTradepassword,isRisk,riskLevel,surplusAmount,availableBalance}=this.props.account.accountsInfo;
         let currentModule=``;
-        if(isCertification===`0`) {
-            currentModule = `ModalSteps`;   //没有实名认证
-        }else if(isCertification===`1`){
-            //完成实名认证
-            if(isOpenAccount==='0' && isSetTradepassword===`0`){
-                currentModule = `ModalSteps`;  //实名认证,未开户，未设置交易密码，跳到三步走第二部
-            }else if(isOpenAccount===`0`){
-                currentModule = `ModalBindCard`;  //去开户
-            }else if(isSetTradepassword===`0`){
-                currentModule = `ModalTradePassword`;  //去交易密码
-            }else{
-                //完成开户和设置交易密码
-                if(isRisk==='0'){
-                    currentModule = `ModalRiskAssess`;   //去测评
-                }else if(isRisk==='1'){
-                    //测评结果中剩余的可投限额不小于投资金额(暂时用1000替代)
-                    if(surplusAmount>=1000){
-                        //currentModule=`ModalInvestSteps`;  //去投资
-                        if(availableBalance<this.state.investAmount){
-                            currentModule=`ModalRecharge`//去充值
-                        }else{
-                            currentModule=`ModalInvest`;  //去投资
-                        }
-
+        if(isOpenAccount===`0`) {
+            currentModule = `ModalBindCardBohai`;   //没有实名认证
+        }else{
+            //完成开户
+            if(isRisk==='0'){
+                currentModule = `ModalRiskAssess`;   //去测评
+            }else if(isRisk==='1'){
+                //测评结果中剩余的可投限额不小于投资金额(暂时用1000替代)
+                if(surplusAmount>=1000){
+                    //currentModule=`ModalInvestSteps`;  //去投资
+                    if(availableBalance<this.state.investAmount){
+                        currentModule=`ModalRecharge`//去充值
                     }else{
-                        currentModule = `ModalRiskAssess`;   //去测评
+                        currentModule=`ModalInvest`;  //去投资
                     }
+
+                }else{
+                    currentModule = `ModalRiskAssess`;   //去测评
                 }
             }
         }
@@ -147,17 +136,11 @@ class MasterInvestBox extends Component {
 
     };
     closeModal(status){
-        console.log('弹窗关闭回调');
         const {investInfo,dispatch}=this.props;
         dispatch(accountAc.getAccountInfo());  //成功重载数据
         if(investInfo.isTransfer==`1`){
             dispatch(investDetailActions.getTransferInvestInfo(investInfo.id)).then(()=>{
                 const {investDetail}=this.props;
-                /*console.log('重新获取标的信息');
-                console.log(this.props);
-                console.log('默认金额：'+this.state.investAmount);
-                console.log('剩余金额：'+investDetail.investInfo.surplusAmount);
-                console.log('起投金额：'+investInfo.min);*/
                 let return_money;
                 if(investDetail.investInfo.surplusAmount>=this.state.investAmount){
                     return_money=this.state.investAmount

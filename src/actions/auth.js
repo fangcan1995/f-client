@@ -12,12 +12,12 @@ export const loginUser = params => {
     async payload() {
       const token = await cFetch(API_CONFIG.baseUri + API_CONFIG.auth + params, { method: 'POST', body: params, credentials: 'include' }, false);
       const { token_type, access_token } = token;
-      console.log(token)
+
       const res = await cFetch(API_CONFIG.baseUri + API_CONFIG.user, { headers: { 'Authorization': `${token_type} ${access_token}` } });
       const { code, data } = res;
-      console.log(res)
       if ( code == 0 ) {
         const { ...user } = data || {};
+        user.remarks=`1`; //临时使用，1投资户 2 融资户 3既是投资又是融资（暂不考虑）
         cookie.set('token', token);
         cookie.set('user', user);
         return user;
