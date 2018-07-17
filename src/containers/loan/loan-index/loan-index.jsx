@@ -50,6 +50,8 @@ class Loan extends Component {
     }
     render(){
         const { auth ,account} = this.props;
+        const {accountsInfo}=account;
+        const {isOpenAccount}=accountsInfo;
         return (
             <main className="main loan-index" id="loan-index">
                 <div className="banner">
@@ -94,8 +96,8 @@ class Loan extends Component {
 
                                 {
                                     (!auth.isAuthenticated) ?<Link to={`/login?redirect=%2Floan-index`}>点击申请</Link>
-                                        :(account.accountsInfo.isCertification===`0`)?
-                                        <a className="" onClick={() =>this.toggleModal('ModalCertification',true)}>点击申请</a>
+                                        :(isOpenAccount===`0`)?
+                                        <a className="" onClick={() =>this.toggleModal('ModalBindCardBohai',true)}>点击申请</a>
                                         :<a className="" onClick={() =>this.toggleModal('ModalLoanApp',true,1)}>点击申请</a>
 
                                 }
@@ -105,7 +107,7 @@ class Loan extends Component {
                                 <p>适用于公务员、事业单位、银行、<br />最高可借<br /><em>50 万</em></p>
                                 {
                                     (!auth.isAuthenticated) ?<Link to={`/login?redirect=%2Floan-index`}>点击申请</Link>
-                                        :(account.accountsInfo.isCertification===`0`)?<a className="" onClick={() =>this.toggleModal('ModalCertification',true)}>点击申请</a>
+                                        :(isOpenAccount===`0`)?<a className="" onClick={() =>this.toggleModal('ModalBindCardBohai',true)}>点击申请</a>
                                         :<a className="" onClick={() =>this.toggleModal('ModalLoanApp',true,2)}>点击申请</a>
                                 }
                             </li>
@@ -114,7 +116,7 @@ class Loan extends Component {
                                 <p>适用于公务员、事业单位、银行、<br />最高可借<br /><em>100 万</em></p>
                                 {
                                     (!auth.isAuthenticated) ?<Link to={`/login?redirect=%2Floan-index`}>点击申请</Link>
-                                        :(account.accountsInfo.isCertification===`0`)?<a className="" onClick={() =>this.toggleModal('ModalCertification',true)}>点击申请</a>
+                                        :(isOpenAccount===`0`)?<a className="" onClick={() =>this.toggleModal('ModalBindCardBohai',true)}>点击申请</a>
                                         :<a className="" onClick={() =>this.toggleModal('ModalLoanApp',true,3)}>点击申请</a>
                                 }
                             </li>

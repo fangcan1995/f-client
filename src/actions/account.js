@@ -20,8 +20,7 @@ export const accountAc= {
                 const res = await cFetch(API_CONFIG.hostWeb+API_CONFIG.getMemberInfo,{method: 'GET'}, true);
                 const {code, data} = res;
                 if (code == 0) {
-                    //console.log('后台返回的会员基础信息');
-                    //console.log(res);
+
                    /* let mock={
                         isCertification:'0',	//是否实名认证（0：未实名；1：已实名）
                         isOpenAccount:'0',	//是否开户（0：未开户；1：已开户）
@@ -61,7 +60,7 @@ export const accountAc= {
                         ]
                     };
                     let data=mock;*/
-
+                    //data.isOpenAccount=`1`;
                     return data;
                 } else {
                     throw data;
@@ -74,22 +73,23 @@ export const accountAc= {
         let url=``;
         switch (params.type){
             case 'OpenAccount':
-                url=`http://59.110.15.234:9030/payAccount/bohai`+`?url=`+params.url; //开户
+
+                url=`http://59.110.15.234:9090/payment/bohai/account`+`?url=`+params.url; //开户 OK
                 break;
             case 'ReOpenAccount':
-                url=`http://59.110.15.234:9030/payAccount/bohai/changeCard`+`?url=`+params.url;  //换卡
+                url=`http://59.110.15.234:9090/payAccount/bohai/changeCard`+`?url=`+params.url;  //换卡
                 break;
             case 'reCharge':
-                url=`http://59.110.15.234:9030/payTrans/bohai/deposit`+`?url=`+params.url+'&transAmt='+params.value;;  //充值
+                url=`http://59.110.15.234:9090/payment/bohai/deposit`+`?url=`+params.url+'&transAmt='+params.value;;  //充值 OK
                 break;
             case 'Withdrawals':
-                url=`http://59.110.15.234:9030/payTrans/bohai/cash`+`?url=`+params.url+'&transAmt='+params.value;  //提现
+                url=`http://59.110.15.234:9090/payment/bohai/cash`+`?url=`+params.url+'&transAmt='+params.value;  //提现 OK
                 break;
             case 'changePhone':
-                url=`http://59.110.15.234:9030/payAccount/bohai/changeMobile`+`?url=`+params.url;  //换手机号
+                url=`http://59.110.15.234:9090/payAccount/bohai/changeMobile`+`?url=`+params.url;  //换手机号
                 break;
             case 'changeTradePwd':
-                url=`http://59.110.15.234:9030/payAccount/bohai/changePwd`+`?url=`+params.url;  //设置交易密码
+                url=`http://59.110.15.234:9090/payAccount/bohai/changePwd`+`?url=`+params.url;  //设置交易密码
                 break;
             default:
                 break;
@@ -97,7 +97,7 @@ export const accountAc= {
         return {
             type: 'member/account/BOHAI_FETCH',
             async payload() {
-                let  res = await cFetch(`${url}`, {method: 'GET'}, false);
+                let  res = await cFetch(`${url}`, {method: 'GET'}, true);
                 let {code, data} = res;
                 if (code == 0) {
                     return data;

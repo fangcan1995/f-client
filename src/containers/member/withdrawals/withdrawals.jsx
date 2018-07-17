@@ -7,13 +7,16 @@ import {accountAc} from '../../../actions/account';
 import {toMoney, addCommas, getTips} from '../../../utils/famatData';
 import {formItemLayout, hasErrors, noop} from "../../../utils/formSetting";
 import { Form,Input,Button,Radio } from 'antd';
-import {hex_md5} from "../../../utils/md5";
-import './withdrawals.less';
-import investDetailActions from "../../../actions/invest-detail";
-import {Loading,NoRecord,Posting} from '../../../components/bbhAlert/bbhAlert';
+import BohaiInfo from '../../../components/bohai-info/bohai-info';
 import PriceInput from "../../../components/price-input/price-input";
+import './withdrawals.less';
+/*import investDetailActions from "../../../actions/invest-detail";
+import {Loading,NoRecord,Posting} from '../../../components/bbhAlert/bbhAlert';
+import {hex_md5} from "../../../utils/md5";
 import { Link, withRouter } from 'react-router-dom';
 import {authBank} from '../../../utils/url';
+import {modal_config} from "../../../utils/modal_config";*/
+
 const createForm = Form.create;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -21,8 +24,9 @@ class Withdrawals extends React.Component{
     state = {
         value: 0,
         amount:``,
-        MerFeeAmt:``
+        MerFeeAmt:``,
     }
+
     componentWillMount() {
         window.scrollTo(0,0);
         this.props.dispatch(accountAc.clear());
@@ -96,6 +100,8 @@ class Withdrawals extends React.Component{
     }
     render(){
         let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult}=this.props.account;
+        console.log('去提现需要携带的信息');
+        console.log(toOthersInfo);
         let {isOpenAccount,availableBalance,bankCode,bankNo,bohaiConfig}=accountsInfo;
         const { getFieldDecorator,getFieldsError } = this.props.form;
 
@@ -121,9 +127,9 @@ class Withdrawals extends React.Component{
 
                                 {
                                     (isOpenAccount===`0`)?
-                                        <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先
-                                            <Link to="/my-account/bank-card" style={{color: '#31aaf5'}}> 绑定银行卡！</Link>
-                                        </p>
+                                        <div className="info"><strong>提示：</strong>您还没有开通渤海银行存管账户，请先
+                                            <BohaiInfo type={`bindCard`} url={`my-account_withdrawals`}>开通存管账户</BohaiInfo>
+                                        </div>
                                         :
                                         (isOpenAccount===`1`)?
                                         <div className="form__wrapper">
@@ -216,7 +222,7 @@ class Withdrawals extends React.Component{
                                                     <Button type="primary" htmlType="submit" className="pop__large" disabled={ hasErrors(getFieldsError())  }>确认</Button>
                                                 </FormItem>
                                             </Form>
-                                            <form name="form1" id="form1" method="post" acceptCharset="GBK" action='http://221.239.93.141:9080/bhdep/hipos/payTransaction' target='_blank'>
+                                            <form name="form1" id="form1" method="post" acceptCharset="GBK" action={toOthersInfo.url} >
                                                 <input type="input" name="char_set" value={toOthersInfo.char_set} />
                                                 <input type="input" name="partner_id" value={toOthersInfo.partner_id} />
                                                 <input type="input" name="version_no" value={toOthersInfo.version_no} />
@@ -264,6 +270,7 @@ class Withdrawals extends React.Component{
                         </div>
                     </Tab>
                 </div>
+
             </div>
         );
     }

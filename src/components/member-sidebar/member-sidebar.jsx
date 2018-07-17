@@ -32,8 +32,6 @@ class MemberSidebar extends Component {
     }
     render(){
         const {account,auth,history}=this.props;
-        console.log('--------auth---------');
-        console.log(auth);
         let remarks=auth.user.remarks;
         const {accountsInfo}=account;
         const {photo,trueName,isOpenAccount,isRisk}=accountsInfo;

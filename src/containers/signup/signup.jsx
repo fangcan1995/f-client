@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
-import { Form, Input, Button, Checkbox, Row, Col, message } from 'antd';
+import { Form, Input, Button, Checkbox, Row, Col, message,Radio } from 'antd';
 import { signupUser, sendVerifyCode, getImageCode, checkUserExist, setVerifyCodeCd } from '../../actions/signup';
 import { setSignup } from '../../actions/login';
 import { loginUser } from '../../actions/auth';
@@ -15,6 +15,7 @@ import './signup.less';
 
 const createForm = Form.create;
 const FormItem = Form.Item;
+const RadioGroup = Radio.Group; //edit by lily
 // const phoneRegExp = /^1[3|4|5|7|8]\d{9}$/;
 // const passwordRegExp = /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*?_., ]).*$/;
 const params = {
@@ -35,8 +36,9 @@ class Signup extends Component {
   constructor() {
     super();
     this.state={
-      verifyCodeCd:'',
-      postResult:''
+        verifyCodeCd:'',
+        postResult:'',
+        remarks:`1`
     }
     this.verifyCodeInputRef;
   }
@@ -91,7 +93,8 @@ componentWillUnmount() {
       const { send_terminal } = params
 
       creds.password = hex_md5(creds.password);
-      const queryParams = `?${parseJson2URL({...creds, send_terminal: send_terminal, register_token: localStorage.getItem('siginVerifyCode') })}`;
+      //const queryParams = `?${parseJson2URL({...creds, send_terminal: send_terminal, register_token: localStorage.getItem('siginVerifyCode') })}`;
+        const queryParams = `?${parseJson2URL({...creds, send_terminal: send_terminal, register_token: localStorage.getItem('siginVerifyCode'),remarks:this.state.remarks })}`; //增加个remarks
       dispatch(signupUser(queryParams))
       .then(res => {
         console.log(res)
@@ -213,6 +216,11 @@ componentWillUnmount() {
     })
     clearInterval(timeInt)
   }
+  onChangeMemberType = (e) => {
+        this.setState({
+            remarks: e.target.value,
+        });
+    }
   render() {
     
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, getFieldValue } = this.props.form;
@@ -313,7 +321,18 @@ componentWillUnmount() {
             tit="注册"
             tip={ <span>已有账号？<a onClick={this.handleLoginClick.bind(this)}>立即登录</a></span> }
             >
+
+
             <Form layout="horizontal" onSubmit={this.handleSubmit}>
+                <FormItem
+                    { ...formItemLayout }
+                    label="身份"
+                >
+                    <RadioGroup onChange={this.onChangeMemberType} value={this.state.remarks}>
+                        <Radio value={`1`}>出借人</Radio>
+                        <Radio value={`2`}>借款人</Radio>
+                    </RadioGroup>
+                </FormItem>
               <FormItem
                 { ...formItemLayout }
                 label="手机号"

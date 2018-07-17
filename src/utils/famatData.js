@@ -272,7 +272,7 @@ export function getTips(messageCode){
 
 
         {
-            code:`pay_0000`,
+            code:`pay_000000`,
             message:{code: 0, message: `操作成功`, allowGoOn: true}
         },
         {
@@ -300,17 +300,13 @@ export function getTips(messageCode){
             message:{code: 0, message: `账户余额不足 `, allowGoOn: false}
         },
         {
-            code:`pay_9999`,
+            code:`pay_999999`,
             message:{code: 9999, message: `操作失败`, allowGoOn: true}
         },
         {
             code:`pay_9999_0`,
             message:{code: 99990, message: `换卡申请失败`, allowGoOn: false}
-        },
-        {
-            code:`pay_5343`,
-            message:{code: 102, message: `用户已开户`, allowGoOn: true}
-        },
+        }
 
 
     ];

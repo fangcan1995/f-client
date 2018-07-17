@@ -17,7 +17,12 @@ export const loginUser = params => {
       const { code, data } = res;
       if ( code == 0 ) {
         const { ...user } = data || {};
-        user.remarks=`1`; //临时使用，1投资户 2 融资户 3既是投资又是融资（暂不考虑）
+        if(user.createUser==`13300000001`){
+            user.remarks=`1`
+        }else{
+            user.remarks=`2`
+        }
+        //user.remarks=`1`; //临时使用，1投资户 2 融资户 3既是投资又是融资（暂不考虑）
         cookie.set('token', token);
         cookie.set('user', user);
         return user;

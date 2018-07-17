@@ -4,20 +4,24 @@ import Crumbs from '../../../components/crumbs/crumbs';
 import Tab from '../../../components/tab/tab';
 import { connect } from 'react-redux';
 import {accountAc} from '../../../actions/account';
-import {toMoney,addCommas,toNumber,getTips} from '../../../utils/famatData';
-import {Loading,NoRecord,Posting} from '../../../components/bbhAlert/bbhAlert';
-import { Link, withRouter } from 'react-router-dom';
+import {toMoney,getTips} from '../../../utils/famatData';
 import {formItemLayout, hasErrors, noop} from "../../../utils/formSetting";
 import PriceInput from "../../../components/price-input/price-input";
 import { Form,Input,Button  } from 'antd';
-import {authBank} from '../../../utils/url';
+import BohaiInfo from '../../../components/bohai-info/bohai-info';
 import './recharge.less';
-import {hex_md5} from "../../../utils/md5";
+/*import {Loading,NoRecord,Posting} from '../../../components/bbhAlert/bbhAlert';
+import { Link, withRouter } from 'react-router-dom';
+import {authBank} from '../../../utils/url';
+import {modal_config} from "../../../utils/modal_config";
+import {hex_md5} from "../../../utils/md5";*/
+
 
 const createForm = Form.create;
 const FormItem = Form.Item;
 
 class Recharge extends React.Component{
+
     componentWillMount() {
         window.scrollTo(0,0);
         this.props.dispatch(accountAc.clear());
@@ -68,6 +72,8 @@ class Recharge extends React.Component{
     }
     render(){
         let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult}=this.props.account;
+        console.log('去充值需要携带的信息');
+        console.log(toOthersInfo);
         let {isCertification,isOpenAccount,bankName,bankNo,bankCode,availableBalance,bohaiConfig}=accountsInfo;
         const { getFieldDecorator,getFieldsError } = this.props.form;
         return (
@@ -79,9 +85,9 @@ class Recharge extends React.Component{
                             <div className="tab_content" >
                                 {
                                     (isOpenAccount ===`0` ) ?
-                                        <p className="info"><strong>提示：</strong>亲爱的用户，您还没有绑定银行卡，请先
-                                            <Link to="/my-account/bank-card" style={{color: '#31aaf5'}}> 绑定银行卡！</Link>
-                                        </p>
+                                        <div className="info"><strong>提示：</strong>您还没有开通渤海银行存管账户，请先
+                                            <BohaiInfo type={`bindCard`} url={`my-account_recharge`}>开通存管账户</BohaiInfo>
+                                        </div>
                                         : (isOpenAccount===`1`)?
                                             <div className="form__wrapper">
                                                 {/*<div className='about_bankCard'>
@@ -131,24 +137,24 @@ class Recharge extends React.Component{
                                         :``
                                 }
                             </div>
-                            <form name="form1" id="form1" method="post" acceptCharset="GBK" action='http://221.239.93.141:9080/bhdep/hipos/payTransaction' target='_blank'>
-                                <input type="input" name="char_set" value={toOthersInfo.char_set} />
-                                <input type="input" name="partner_id" value={toOthersInfo.partner_id} />
-                                <input type="input" name="version_no" value={toOthersInfo.version_no} />
-                                <input type="input" name="biz_type" value={toOthersInfo.biz_type} />
-                                <input type="input" name="sign_type" value={toOthersInfo.sign_type} />
-                                <input type="input" name="MerBillNo" value={toOthersInfo.MerBillNo} />
-                                <input type="input" name="PlaCustId" value={toOthersInfo.PlaCustId} />
-                                <input type="input" name="TransAmt" value={toOthersInfo.TransAmt} />
-                                <input type="input" name="MerFeeAmt" value={toOthersInfo.MerFeeAmt} />
-                                <input type="input" name="FeeType" value={toOthersInfo.FeeType} />
-                                <input type="input" name="OpenType" value={toOthersInfo.OpenType} />
-                                <input type="input" name="MobileNo" value={toOthersInfo.MobileNo} />
-                                <input type="input" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
-                                <input type="input" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
-                                <input type="input" name="TransTyp" value={toOthersInfo.TransTyp} />
-                                <input type="input" name="MerPriv" value={toOthersInfo.MerPriv} />
-                                <input type="input" name="mac" value={toOthersInfo.mac} />
+                            <form name="form1" id="form1" method="post" acceptCharset="GBK" action={toOthersInfo.url} >
+                                <input type="hidden" name="char_set" value={toOthersInfo.char_set} />
+                                <input type="hidden" name="partner_id" value={toOthersInfo.partner_id} />
+                                <input type="hidden" name="version_no" value={toOthersInfo.version_no} />
+                                <input type="hidden" name="biz_type" value={toOthersInfo.biz_type} />
+                                <input type="hidden" name="sign_type" value={toOthersInfo.sign_type} />
+                                <input type="hidden" name="MerBillNo" value={toOthersInfo.MerBillNo} />
+                                <input type="hidden" name="PlaCustId" value={toOthersInfo.PlaCustId} />
+                                <input type="hidden" name="TransAmt" value={toOthersInfo.TransAmt} />
+                                <input type="hidden" name="MerFeeAmt" value={toOthersInfo.MerFeeAmt} />
+                                <input type="hidden" name="FeeType" value={toOthersInfo.FeeType} />
+                                <input type="hidden" name="OpenType" value={toOthersInfo.OpenType} />
+                                <input type="hidden" name="MobileNo" value={toOthersInfo.MobileNo} />
+                                <input type="hidden" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
+                                <input type="hidden" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
+                                <input type="hidden" name="TransTyp" value={toOthersInfo.TransTyp} />
+                                <input type="hidden" name="MerPriv" value={toOthersInfo.MerPriv} />
+                                <input type="hidden" name="mac" value={toOthersInfo.mac} />
                             </form>
                         </div>
                     </Tab>

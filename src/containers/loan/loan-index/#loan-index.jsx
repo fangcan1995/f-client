@@ -200,17 +200,23 @@ class Loan extends Component {
                 <li className="loanType__1">
                   <h4>车贷</h4>
                   <p>适用于公务员、事业单位、银行、<br />最高可借<br /><em>100 万</em></p>
-                  <a className="" onClick={this.showModal1.bind(this,1)}>点击申请</a>
+                    {auth.user.remarks===`2`?<a className="" onClick={this.showModal1.bind(this,1)}>点击申请</a>
+                        :<span>仅限借款用户</span>
+                    }
                 </li>
                 <li className="loanType__2">
                   <h4>房贷</h4>
                   <p>适用于公务员、事业单位、银行、<br />最高可借<br /><em>50 万</em></p>
-                  <a className="" onClick={this.showModal1.bind(this,2)}>点击申请</a>
+                    {auth.user.remarks===`2`?<a className="" onClick={this.showModal1.bind(this,2)}>点击申请</a>
+                        :<span>仅限借款用户</span>
+                    }
                 </li>
                 <li className="loanType__3">
                   <h4>信用贷</h4>
                   <p>适用于公务员、事业单位、银行、<br />最高可借<br /><em>100 万</em></p>
-                  <a className="" onClick={this.showModal1.bind(this,3)}>点击申请</a>
+                    {auth.user.remarks===`2`?<a className="" onClick={this.showModal1.bind(this,3)}>点击申请</a>
+                        :<span>仅限借款用户</span>
+                    }
                 </li>
               </ul>
             </Floor>

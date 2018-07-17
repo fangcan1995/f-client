@@ -21,8 +21,7 @@ let investDetailActions = {
         async payload() {
             const res = await cFetch(`${url_invest_projects_loan}/${id}` , {method: 'GET'}, false);
             const {code, data} = res;
-            console.log('返回的散标数据');
-            console.log(data);
+
 
             if (code == 0) {
                 return data;

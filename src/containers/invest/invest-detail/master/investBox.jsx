@@ -292,10 +292,11 @@ class MasterInvestBox extends Component {
                                     </ul>
                                     <div>
                                         {
-                                            (accountsInfo===``)?``
-                                                :(investInfo.noviceLoan=='1' && isNovice==='0')?<Button type="primary"  className="pop__wp100" disabled={true}>仅限新手</Button>
-                                                :<Button type="primary" onClick={() => this.toggleModal(`bbhModal`,true)} className="pop__wp100" disabled={isFetching || this.state.code!=100}>立即投资</Button>
-
+                                            (auth.user.remarks===`2`?<Button type="primary"  className="pop__wp100" disabled={true}>仅限投资用户</Button>
+                                                :(accountsInfo===``)?``
+                                                        :(investInfo.noviceLoan=='1' && isNovice==='0')?<Button type="primary"  className="pop__wp100" disabled={true}>仅限新手</Button>
+                                                            :<Button type="primary" onClick={() => this.toggleModal(`bbhModal`,true)} className="pop__wp100" disabled={isFetching || this.state.code!=100}>立即投资</Button>
+                                            )
                                         }
 
                                     </div>

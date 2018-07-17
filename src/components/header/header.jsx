@@ -19,8 +19,6 @@ class Header extends Component {
   }
   render() {
     const { auth } = this.props;
-    console.log('////////////////')
-    console.log(auth);
     return (
       <header className="header">
         <div className="top">
@@ -77,18 +75,12 @@ class Header extends Component {
             
             <div className="navbar__right">
               <nav className="nav">
-                <ul>
-                  <li><Link to="/">首页</Link></li>
-                    {(!auth.isAuthenticated || auth.user.remarks===`1`)?
-                        <li><Link to="/invest-list">我要投资</Link></li>
-                        :``
-                    }
-                    {(!auth.isAuthenticated || auth.user.remarks===`2`)?
-                        <li><Link to="/loan-index">我要借款</Link></li>
-                      :``
-                    }
-                  <li><Link to="/about">信息披露</Link></li>
-                </ul>
+                  <ul>
+                      <li><Link to="/">首页</Link></li>
+                      <li><Link to="/invest-list">我要投资</Link></li>
+                      <li><Link to="/loan-index">我要借款</Link></li>
+                      <li><Link to="/about">信息披露</Link></li>
+                  </ul>
               </nav>
               <div className="account">
                 <div className="dropdown">
@@ -126,7 +118,7 @@ class Header extends Component {
 function select(state) {
   const { auth } = state.toJS();
   return {
-    auth,
+    auth
   };
 }
 
