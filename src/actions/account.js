@@ -100,7 +100,7 @@ export const accountAc= {
         return {
             type: 'member/account/BOHAI_FETCH',
             async payload() {
-                let  res = await cFetch(`${url}`, {method: 'GET'}, false);
+                let  res = await cFetch(`${url}`, {method: 'GET'}, true);
                 let {code, data} = res;
                 if (code == 0) {
                     return data;
