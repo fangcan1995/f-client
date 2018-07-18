@@ -40,12 +40,12 @@ export const modal_config={
         height: "500px"
     },
     ModalInvestSteps: {
-        title: "投资",
+        title: "出借",
         width: "620px",
         height: "400px"
     },
     ModalInvest: {
-        title: "投资",
+        title: "出借",
         width: "600px",
         height: "400px"
     },

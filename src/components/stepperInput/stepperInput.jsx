@@ -103,7 +103,7 @@ export default class StepperInput extends Component{
                     return {code:3,tips: `最高可投${max}元`};
                 }else{
                     /*if((surplusAmount-value)<min && max!=value){
-                        return {code:4,tips: `投资后剩余金额不能小于起投金额，请投满剩余金额或留出最小出借金额`};
+                        return {code:4,tips: `出借后剩余金额不能小于起投金额，请投满剩余金额或留出最小出借金额`};
                     }*/
                     if(value%step!=0 && max!=value){
                         return {code:4,tips: `必须是${step}的倍数`};

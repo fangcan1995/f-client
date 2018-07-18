@@ -91,11 +91,11 @@ class MyInvestments extends React.Component{
         const {myInvestments,isFetching}=memberInvestments;
         const {myList,charts,status,modalPlan,modalTransfer,currentPro,currentId,pactUrl,pactsList}=myInvestments;
         let thead=[];
-        thead[0]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>还款方式</th><th>出借金额(元)</th><th>出借时间</th><th>投资进度</th></tr>;
-        thead[1]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>出借金额(元)</th><th>出借时间</th><th>下期回款日期</th><th>下期回款金额(元)</th><th>操作</th></tr>;
-        thead[2]=<tr><th>项目名称</th><th>投资总额(元)</th><th>锁定期限</th><th>出借金额(元)</th><th>出借时间</th><th>回款金额(元)</th><th>结清时间</th><th>操作</th></tr>;
+        thead[0]=<tr><th>项目名称</th><th>出借总额(元)</th><th>锁定期限</th><th>还款方式</th><th>出借金额(元)</th><th>出借时间</th><th>出借进度</th></tr>;
+        thead[1]=<tr><th>项目名称</th><th>出借总额(元)</th><th>锁定期限</th><th>出借金额(元)</th><th>出借时间</th><th>下期回款日期</th><th>下期回款金额(元)</th><th>操作</th></tr>;
+        thead[2]=<tr><th>项目名称</th><th>出借总额(元)</th><th>锁定期限</th><th>出借金额(元)</th><th>出借时间</th><th>回款金额(元)</th><th>结清时间</th><th>操作</th></tr>;
         thead[3]=<tr><th>项目名称</th><th>原始项目名称</th><th>出借金额（元）</th><th>转让金额（元）</th><th>手续费（元）</th><th>转让申请日期</th><th>状态</th></tr>;
-        thead[4]=<tr><th>项目名称</th><th>原始项目名称</th><th>转让金额（元）</th><th>当前投资额（元）</th><th>投资进度</th><th>转让日期</th><th>状态</th></tr>;
+        thead[4]=<tr><th>项目名称</th><th>原始项目名称</th><th>转让金额（元）</th><th>当前出借额（元）</th><th>出借进度</th><th>转让日期</th><th>状态</th></tr>;
         thead[5]=<tr><th>项目名称</th><th>原始项目名称</th><th>转让金额（元）</th><th>转让成功日期</th><th>操作</th></tr>;
         return(
             <div className="member__main">
@@ -104,21 +104,21 @@ class MyInvestments extends React.Component{
                     {(charts=='')?``
                         :<div className="member__cbox">
                             <Tab>
-                                <div name="我的投资" className="chart">
+                                <div name="我的出借" className="chart">
                                     <Tab>
-                                        <div name="投资总额">
+                                        <div name="出借总额">
                                             <PieChart
                                                 data={charts.totalInvestment.data}
                                                 style={{height: '300px', width: '930px'}}
-                                                totalTitle="投资总额"
+                                                totalTitle="出借总额"
                                             >
                                             </PieChart>
                                         </div>
-                                        <div name="累计收益">
+                                        <div name="累计回款">
                                             <PieChart
                                                 data={charts.accumulatedIncome.data}
                                                 style={{height: '300px', width: '930px'}}
-                                                totalTitle="投资总额"
+                                                totalTitle="出借总额"
                                             >
                                             </PieChart>
                                         </div>
@@ -209,7 +209,7 @@ class MyInvestments extends React.Component{
                                                                            className={ l.loanRefundTranStatus=='1'?'disabled':'' }>
                                                                             {l.loanRefundTranStatus=='1'?`申请中`:`债权转让`}
                                                                         </a>
-                                                                        <a href="javascript:void(0);"  onClick={() => { this.downLoan(l.investId)}}>投资合同</a>
+                                                                        <a href="javascript:void(0);"  onClick={() => { this.downLoan(l.investId)}}>出借合同</a>
 
                                                                     </td>
                                                                 </tr>
@@ -226,7 +226,7 @@ class MyInvestments extends React.Component{
                                                                     <td>{l.earnRealEarnDate ? moment(l.earnRealEarnDate).format('YYYY-MM-DD') : ''}</td>
                                                                     <td>
                                                                         <a onClick={() => this.toggleModal('ModalPlan', true, l.investId)}>回款计划</a>
-                                                                        <a href="javascript:void(0);"  onClick={() => { this.downLoan(l.investId)}} >投资合同</a>
+                                                                        <a href="javascript:void(0);"  onClick={() => { this.downLoan(l.investId)}} >出借合同</a>
                                                                     </td>
                                                                 </tr>
                                                             ) : ((status === 4) ? (
@@ -258,7 +258,7 @@ class MyInvestments extends React.Component{
                                                                     <td>{l.transAmt}</td>
                                                                     <td>{l.transferDate ? moment(l.transferDate).format('YYYY-MM-DD') : ''}</td>
                                                                     <td>
-                                                                        <a onClick={() => this.toggleModal('ModalPactsList', true, l.transId)}>投资合同</a>
+                                                                        <a onClick={() => this.toggleModal('ModalPactsList', true, l.transId)}>出借合同</a>
                                                                     </td>
                                                                 </tr>
                                                             ) : (''))))))

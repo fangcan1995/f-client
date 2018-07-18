@@ -88,7 +88,7 @@ export default createReducer(initialState, {
     }),
 
 
-    //投资
+    //出借
     ['investDetail/invest/POST_PENDING']: (state, action) => state.mergeDeep({
         //isFetching: true,
         isPosting:true

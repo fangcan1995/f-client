@@ -41,7 +41,7 @@ class TransferInvestRecords extends React.Component{
                                         <th>出借人</th>
                                         <th>出借金额（元）</th>
                                         <th>出借时间</th>
-                                        <th>投资方式</th>
+                                        <th>出借方式</th>
                                     </tr>
                                     </thead>
                                     <tbody>

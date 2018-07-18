@@ -58,7 +58,7 @@ class ModalInvestSteps extends React.Component {
     }
 
     ck_investApp_success(){
-        console.log('投资请求发送成功跳转');
+        console.log('出借请求发送成功跳转');
         this.setState({
             current:2
         })
@@ -79,11 +79,11 @@ class ModalInvestSteps extends React.Component {
             title: '金额确认',
             content:<ModalRecharge key={this.state.key} investAmount={value} onSuccess={() => {this.ck_recharge_success();}}  />
         }, {
-            title: '投资确认',
+            title: '出借确认',
             content: <ModalInvest key={this.state.key} investAmount={value} onSuccess={() => {this.ck_investApp_success();}}  />
         }, {
-            title: '投资完成',
-            content: <ModalInvestResult  key={this.state.key}>投资完成</ModalInvestResult>
+            title: '出借完成',
+            content: <ModalInvestResult  key={this.state.key}>出借完成</ModalInvestResult>
         }];
 
         if(postResult===``) {

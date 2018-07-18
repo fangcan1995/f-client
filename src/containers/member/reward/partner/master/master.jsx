@@ -76,7 +76,7 @@ export default class PartnerList extends React.Component {
                                 </li>
                                 <li>
                                     <p>
-                                        让好友通过你的链接<br/>注册/开户/绑卡/投资
+                                        让好友通过你的链接<br/>注册/开户/绑卡/出借
                                     </p>
                                 </li>
                                 <li>
@@ -96,7 +96,7 @@ export default class PartnerList extends React.Component {
                                 <dd>
                                     <img src={require('../../../../../assets/images/account/lcs_pt1.jpg')} className="myReward__img" />
                                     <div className="myReward__main">
-                                        <p>注册理财师邀请的好友注册成功后30天内首次投资<em>散标</em>注册理财师可获得返现红包。</p>
+                                        <p>注册理财师邀请的好友注册成功后30天内首次出借<em>散标</em>注册理财师可获得返现红包。</p>
                                         <table>
                                             <tr>
                                                 <th scope="col">好友首投 </th>

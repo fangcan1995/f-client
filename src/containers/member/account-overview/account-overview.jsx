@@ -34,7 +34,7 @@ class AccountOverview extends React.Component{
         let yestEarns=charts.chartsDay.series_data;
 
         /*if(totalEarns){
-            console.log('累计收益')
+            console.log('累计回款')
             console.log(totalEarns[0].data[11])
         }*/
         return (
@@ -51,7 +51,7 @@ class AccountOverview extends React.Component{
                                     <span className='money'>{toMoney(accountBalance)}</span>&nbsp;元
                                 <Tooltip
                                     placement="topLeft"
-                                    title="包含您可用余额及投资冻结的金额，满标划转后统一扣除"
+                                    title="包含您可用余额及出借冻结的金额，满标划转后统一扣除"
                                     arrowPointAtCenter overlayClassName='myTooltip'
                                 >
                                     <span style={{cursor:'default'}} className='readme'>?</span>

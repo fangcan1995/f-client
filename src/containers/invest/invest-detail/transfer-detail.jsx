@@ -24,9 +24,9 @@ class TransferDetail extends React.Component{
         const {dispatch}=this.props;
         dispatch(investDetailActions.clearData()); //先清空数据
         dispatch(investDetailActions.getLoanInfo(proId)); //借款人信息披露
-        dispatch(investDetailActions.getInvestRecords(proId));//投资记录
+        dispatch(investDetailActions.getInvestRecords(proId));//出借记录
         dispatch(investDetailActions.getRepayRecords(proId)); //还款记录
-        dispatch(investDetailActions.getTransferInvestRecords(transferId)); //债转投资记录
+        dispatch(investDetailActions.getTransferInvestRecords(transferId)); //债转出借记录
     }
 
     render(){

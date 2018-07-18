@@ -3,18 +3,18 @@ import {getTips} from '../utils/famatData';
 import {postContent} from '../utils/formSetting';
 import {API_CONFIG} from "../config/api";
 
-const url_invest_projects_loan=API_CONFIG.hostWeb+API_CONFIG.getProjectsLoan; //投资信息
-const url_invest_transfer_loan=API_CONFIG.hostWeb+API_CONFIG.getTransferLoan; //债转投资信息
+const url_invest_projects_loan=API_CONFIG.hostWeb+API_CONFIG.getProjectsLoan; //出借信息
+const url_invest_transfer_loan=API_CONFIG.hostWeb+API_CONFIG.getTransferLoan; //债转出借信息
 const url_projects_info=API_CONFIG.hostWeb+API_CONFIG.getProjectsInfo  ;//标的详情
-const url_projects_record=API_CONFIG.hostWeb+API_CONFIG.getProjectsRecord;   //获取散标投资记录
-const url_transfer_record=API_CONFIG.hostWeb+API_CONFIG.getTransferRecord;//获取转让标投资记录
+const url_projects_record=API_CONFIG.hostWeb+API_CONFIG.getProjectsRecord;   //获取散标出借记录
+const url_transfer_record=API_CONFIG.hostWeb+API_CONFIG.getTransferRecord;//获取转让标出借记录
 const url_rpmtplan_page=API_CONFIG.hostWeb+API_CONFIG.getRpmtplanPage;//获取还款记录
 const url_availableRewards=API_CONFIG.hostWeb+API_CONFIG.getAvailableRewards; //获取特定标的可用红包列表
-const url_postInvest=API_CONFIG.hostWeb+API_CONFIG.postInvestApp; //提交投资申请
+const url_postInvest=API_CONFIG.hostWeb+API_CONFIG.postInvestApp; //提交出借申请
 
 
 let investDetailActions = {
-    //投资信息
+    //出借信息
     getInvestInfo: (id) => {
     return {
         type: 'investDetail/investInfo/FETCH',
@@ -31,7 +31,7 @@ let investDetailActions = {
         }
     }
 },
-    //债转标投资信息
+    //债转标出借信息
     getTransferInvestInfo: (transferId) => {
         return {
             type: 'investDetail/investInfo/FETCH',
@@ -70,7 +70,7 @@ let investDetailActions = {
             }
         }
     },
-    //获取散标投资记录
+    //获取散标出借记录
     getInvestRecords: (id) => {
         return {
             type: 'investDetail/investRecords/FETCH',
@@ -87,7 +87,7 @@ let investDetailActions = {
         }
     },
 
-    //获取债转标投资记录
+    //获取债转标出借记录
     getTransferInvestRecords: (id) => {
         return {
             type: 'investDetail/investTransferRecords/FETCH',
@@ -148,7 +148,7 @@ let investDetailActions = {
         }
     },
 
-    //提交投资申请
+    //提交出借申请
     postInvest:(params,times)  => {
         return {
             type: 'investDetail/invest/POST',
@@ -177,7 +177,7 @@ let investDetailActions = {
     },
 
 
-    //修改投资信息状态
+    //修改出借信息状态
     stateInvestInfoModify: json => ({
         type: 'investDetail/investInfo/MODIFY_STATE',
         payload: json
@@ -210,13 +210,13 @@ let investDetailActions = {
         payload: json
     }),
 
-    //修改投资记录状态
+    //修改出借记录状态
     stateInvestRecordsModify: json => ({
         type: 'investDetail/investRecords/MODIFY_STATE',
         payload: json
     }),
 
-    //修改转让标投资记录状态
+    //修改转让标出借记录状态
     stateInvestTransferRecordsModify: json => ({
         type: 'investDetail/investTransferRecords/MODIFY_STATE',
         payload: json

@@ -61,7 +61,7 @@ class MasterInvestBox extends Component {
                     return {code:3,tips: `最高可投${max}元`};
                 }else{
                     /*if((surplusAmount-value)<min && max!=value){
-                        return {code:4,tips: `投资后剩余金额不能小于起投金额，请投满剩余金额或留出最小出借金额`};
+                        return {code:4,tips: `出借后剩余金额不能小于起投金额，请投满剩余金额或留出最小出借金额`};
                     }*/
                     if(value%step!=0 && max!=value){
                         return {code:4,tips: `必须是${step}的倍数`};
@@ -108,11 +108,11 @@ class MasterInvestBox extends Component {
             }else if(isRisk==='1'){
                 //测评结果中剩余的可投限额不小于出借金额(暂时用1000替代)
                 if(surplusAmount>=1000){
-                    //currentModule=`ModalInvestSteps`;  //去投资
+                    //currentModule=`ModalInvestSteps`;  //去出借
                     if(availableBalance<this.state.investAmount){
                         currentModule=`ModalRecharge`//去充值
                     }else{
-                        currentModule=`ModalInvest`;  //去投资
+                        currentModule=`ModalInvest`;  //去出借
                     }
 
                 }else{
@@ -158,8 +158,8 @@ class MasterInvestBox extends Component {
 
                 }
             );   //标的信息
-            dispatch(investDetailActions.getInvestRecords(investInfo.projectId));//投资记录
-            dispatch(investDetailActions.getTransferInvestRecords(investInfo.id)); //债转投资记录
+            dispatch(investDetailActions.getInvestRecords(investInfo.projectId));//出借记录
+            dispatch(investDetailActions.getTransferInvestRecords(investInfo.id)); //债转出借记录
         }else{
             dispatch(investDetailActions.getInvestInfo(investInfo.id)).then(()=> {
                 const {investDetail}=this.props;
@@ -186,7 +186,7 @@ class MasterInvestBox extends Component {
 
                 }
             );   //标的信息
-            dispatch(investDetailActions.getInvestRecords(investInfo.id));//投资记录
+            dispatch(investDetailActions.getInvestRecords(investInfo.id));//出借记录
         }
 
         this.toggleModal('bbhModal',false);
@@ -292,7 +292,7 @@ class MasterInvestBox extends Component {
                                     </ul>
                                     <div>
                                         {
-                                            (auth.user.remarks===`2`?<Button type="primary"  className="pop__wp100" disabled={true}>仅限投资用户</Button>
+                                            (auth.user.remarks===`2`?<Button type="primary"  className="pop__wp100" disabled={true}>仅限出借用户</Button>
                                                 :(accountsInfo===``)?``
                                                         :(investInfo.noviceLoan=='1' && isNovice==='0')?<Button type="primary"  className="pop__wp100" disabled={true}>仅限新手</Button>
                                                             :<Button type="primary" onClick={() => this.toggleModal(`bbhModal`,true)} className="pop__wp100" disabled={isFetching || this.state.code!=100}>立即出借</Button>

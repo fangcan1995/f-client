@@ -109,7 +109,7 @@ class ModalInvest extends React.Component {
                 }
 
             }
-            /*console.log('提交的投资申请');
+            /*console.log('提交的出借申请');
             console.log(appInfo);*/
             dispatch(investDetailActions.postInvest(appInfo,0));
 
@@ -124,7 +124,7 @@ class ModalInvest extends React.Component {
         const {postResult}=investDetail;
         /*if(postResult.code==0){
             dispatch(accountAc.getAccountInfo());  //成功重新获取新户信息
-            dispatch(investDetailActions.getInvestRecords(this.props.id));//成功重新获取投资记录
+            dispatch(investDetailActions.getInvestRecords(this.props.id));//成功重新获取出借记录
             dispatch(investDetailActions.getInvestInfo(this.props.id)); //成功重新获取标的信息
         }*/
 

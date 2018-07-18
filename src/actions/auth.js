@@ -22,7 +22,7 @@ export const loginUser = params => {
         }else{
             user.remarks=`2`
         }
-        //user.remarks=`1`; //临时使用，1投资户 2 融资户 3既是投资又是融资（暂不考虑）
+        //user.remarks=`1`; //临时使用，1出借户 2 融资户 3既是出借又是融资（暂不考虑）
         cookie.set('token', token);
         cookie.set('user', user);
         return user;

@@ -230,7 +230,7 @@ export default ({ location, match, history }) => {
                             </tr>
                             <tr>
                                 <td className="center">朝阳资产端</td>
-                                <td>朝阳市双塔区朝阳大街一段8-4（湖畔雅居门市房大恒投资）</td>
+                                <td>朝阳市双塔区朝阳大街一段8-4（湖畔雅居门市房大恒出借）</td>
                                 <td>0421-3992277</td>
                             </tr>
                             <tr>

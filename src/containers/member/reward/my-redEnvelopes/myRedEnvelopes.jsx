@@ -125,7 +125,7 @@ class MyRedEnvelopes extends React.Component {
                         <div name="温馨提示">
                             <div className="tab_content">
                                 <div className="m-wxts">
-                                    <p> 1. 投资时需满足红包使用规则，才可使用；<br/>
+                                    <p> 1. 出借时需满足红包使用规则，才可使用；<br/>
                                         2. 使用过程遇到问题时，请（工作日9:00-20:00）咨询客服<br/>
                                     </p>
                                 </div>

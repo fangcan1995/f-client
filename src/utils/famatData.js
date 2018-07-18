@@ -190,7 +190,7 @@ export function getTips(messageCode){
         },
         {
             code:`invest_010`,
-            message:{code: 100, message: `该项目处于不可投资状态，请刷新！`, allowGoOn: true}
+            message:{code: 100, message: `该项目处于不可出借状态，请刷新！`, allowGoOn: true}
         },
         {
             code:`invest_011`,
@@ -202,15 +202,15 @@ export function getTips(messageCode){
         },
         {
             code:`invest_013`,
-            message:{code: 100, message: `你已经投资成功过，不允许投资新手标！`, allowGoOn: true}
+            message:{code: 100, message: `你已经出借成功过，不允许出借新手标！`, allowGoOn: true}
         },
         {
             code:`invest_014`,
-            message:{code: 100, message: `你已经借款成功过，不允许投资新手标！`, allowGoOn: true}
+            message:{code: 100, message: `你已经借款成功过，不允许出借新手标！`, allowGoOn: true}
         },
         {
             code:`invest_015`,
-            message:{code: 100, message: `该项目不可重复投资！`, allowGoOn: true}
+            message:{code: 100, message: `该项目不可重复出借！`, allowGoOn: true}
         },
         {
             code:`invest_016`,
@@ -222,31 +222,31 @@ export function getTips(messageCode){
         },
         {
             code:`invest_018`,
-            message:{code: 100, message: `投资额度超过风险评估总额上限！`, allowGoOn: true}
+            message:{code: 100, message: `出借额度超过风险评估总额上限！`, allowGoOn: true}
         },
         {
             code:`invest_019`,
-            message:{code: 100, message: `标的少于起投金额时，需全部进行投资！`, allowGoOn: true}
+            message:{code: 100, message: `项目少于起借金额时，需全部进行出借！`, allowGoOn: true}
         },
         {
             code:`invest_020`,
-            message:{code: 100, message: `剩余金额少于起投金额，需全部进行投资！`, allowGoOn: true}
+            message:{code: 100, message: `剩余金额少于起借金额，需全部进行出借！`, allowGoOn: true}
         },
         {
             code:`invest_021`,
-            message:{code: 100, message: `请大于最低投资限额！`, allowGoOn: true}
+            message:{code: 100, message: `请大于最低出借限额！`, allowGoOn: true}
         },
         {
             code:`invest_022`,
-            message:{code: 100, message: `请小于最高投资限额！`, allowGoOn: true}
+            message:{code: 100, message: `请小于最高出借限额！`, allowGoOn: true}
         },
         {
             code:`invest_023`,
-            message:{code: 101, message: `当前投资用户过多，请耐心等待！`, allowGoOn: true}
+            message:{code: 101, message: `当前出借用户过多，请耐心等待！`, allowGoOn: true}
         },
         {
             code:`invest_024`,
-            message:{code: 100, message: `投资失败，借款人未开户！`, allowGoOn: true}
+            message:{code: 100, message: `出借失败，借款人未开户！`, allowGoOn: true}
         },
         {
             code:`invest_025`,

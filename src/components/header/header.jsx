@@ -88,7 +88,7 @@ class Header extends Component {
                   <div className="dropdown__menu">
                     <ul>
                         {(!auth.isAuthenticated || auth.user.remarks===`1`)?
-                            <li><Link to="/my-investments">我的投资</Link></li>
+                            <li><Link to="/my-investments">我的出借</Link></li>
                             :``
                         }
                         {(!auth.isAuthenticated || auth.user.remarks === `2`) ?

@@ -51,16 +51,16 @@ export function checkMoney(json) {
 }
 /**
  * 计算收益函数
- * @param val投资额 y_per年化收益 time type
+ * @param val出借额 y_per年化收益 time type
  * @returns 收益
  */
 export  function income(val,y_per,time,type){
-    //按月投资
+    //按月出借
     let amount=0;
     if(type=='m'){
         amount=(val * (y_per / 100)) / 12 * time;
     }
-    //按天投资
+    //按天出借
     if(type=='d'){
         amount=(val * (y_per / 100)) / 365 * time.toFixed(2);
     }

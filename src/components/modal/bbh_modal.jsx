@@ -34,7 +34,7 @@ export default class BbhModal extends Component{
         })
 
         /*dispatch(accountAc.getAccountInfo());  //成功重新获取新户信息
-        dispatch(investDetailActions.getInvestRecords(this.props.id));//成功重新获取投资记录
+        dispatch(investDetailActions.getInvestRecords(this.props.id));//成功重新获取出借记录
         dispatch(investDetailActions.getInvestInfo(this.props.id)); //成功重新获取标的信息*/
         closeFunc();
     }

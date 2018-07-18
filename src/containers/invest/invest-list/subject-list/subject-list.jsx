@@ -200,13 +200,13 @@ class SubjectList extends Component {
                                             <thead>
                                             <tr>
                                                 <th>项目名称</th>
-                                                <th>投资总额</th>
+                                                <th>出借总额</th>
                                                 <th className={`order${sort.totalrate}`} onClick={() => {this.sort('totalrate')}}>预期年化收益率<i></i></th>
-                                                <th className={`order${sort.loanExpiry}`} onClick={() => {this.sort('loanExpiry')}}>投资期限<i></i></th>
+                                                <th className={`order${sort.loanExpiry}`} onClick={() => {this.sort('loanExpiry')}}>出借期限<i></i></th>
                                                 <th className={`order${sort.putTime}`} onClick={() => {this.sort('putTime')}}>发布时间<i></i></th>
                                                 <th className={`order${sort.surplusAmount}`} onClick={() => {this.sort('surplusAmount')}}>剩余金额<i></i></th>
                                                 <th>出借人数</th>
-                                                <th className={`order${sort.investmentProgress}`} onClick={() => {this.sort('investmentProgress')}}>投资进度<i></i></th>
+                                                <th className={`order${sort.investmentProgress}`} onClick={() => {this.sort('investmentProgress')}}>出借进度<i></i></th>
                                                 <th></th>
                                             </tr>
                                             </thead>

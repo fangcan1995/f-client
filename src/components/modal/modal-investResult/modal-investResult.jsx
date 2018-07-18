@@ -32,11 +32,11 @@ class ModalInvestResult extends React.Component {
         this.setState({
             num:this.state.num+1
         },()=>{
-            console.log('提交投资申请'+this.state.num);
+            console.log('提交出借申请'+this.state.num);
         })
         let {dispatch,investAmount,id}=this.props;
         //2 提交后台
-        console.log('提交投资申请');
+        console.log('提交出借申请');
         dispatch(investDetailActions.postInvest(
             {
                 projectId:id,
@@ -56,7 +56,7 @@ class ModalInvestResult extends React.Component {
         /*let {postResult}=this.props.investDetail;
         if(postResult.code==0){
             dispatch(accountAc.getAccountInfo());  //成功重新获取新户信息
-            dispatch(investDetailActions.getInvestRecords(this.props.id));//成功重新获取投资记录
+            dispatch(investDetailActions.getInvestRecords(this.props.id));//成功重新获取出借记录
             dispatch(investDetailActions.getInvestInfo(this.props.id)); //成功重新获取标的信息
         }
         dispatch(investDetailActions.statePostResultModify(``));*/
@@ -76,7 +76,7 @@ class ModalInvestResult extends React.Component {
             return (
                 <div className="pop__invest">
                     <Spin indicator={antIcon} />
-                    正在提交您的投资申请...
+                    正在提交您的出借申请...
                 </div>
             );
         }else{
@@ -96,7 +96,7 @@ class ModalInvestResult extends React.Component {
                     return (
                         <div className="pop__invest">
                             <Spin indicator={antIcon} />
-                            第{this.state.num}次提交您的投资申请...
+                            第{this.state.num}次提交您的出借申请...
                         </div>
                     );
                 }else{

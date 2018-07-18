@@ -30,7 +30,7 @@ const initialState = Immutable.fromJS({
 });
 
 export default createReducer(initialState, {
-    //异步获取我的投资
+    //异步获取我的出借
     ['myInvest/investments/FETCH_PENDING']:(state,action) => state.mergeDeep({
         isFetching: true,
     }),
@@ -90,7 +90,7 @@ export default createReducer(initialState, {
         myReceiving:action.payload
     }),
 
-    //异步获取投资合同列表
+    //异步获取出借合同列表
     ['myInvest/investments/PACTLIST_FETCH_PENDING']:(state,action) => state.mergeDeep({
         isFetching: true,
     }),
@@ -102,7 +102,7 @@ export default createReducer(initialState, {
         isFetching: false,
         errorMessage: action.message
     }),
-    //异步获取投资合同
+    //异步获取出借合同
     ['myInvest/investments/PACT_FETCH_PENDING']:(state,action) => state.mergeDeep({
         isFetching: true,
     }),

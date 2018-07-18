@@ -335,7 +335,7 @@ class ConstantTable extends Component {
                         </div>
                         <div className="viewBlock investInfo">
                             <div className="viewTitle">
-                                <h3>投资情况</h3>
+                                <h3>出借情况</h3>
                             </div>
                             <div className="investDetails">
                                 <div className="investLine">

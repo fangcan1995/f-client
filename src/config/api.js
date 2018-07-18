@@ -29,14 +29,14 @@ export const API_CONFIG = {
     getSbList:`invest/projects/loan/page`, //获取散标列表
     getTransferlist:`invest/transfer/loan/page`, //获取债转标列表
 
-    getProjectsLoan:`invest/projects/loan`, //投资信息
-    getTransferLoan:`invest/transfer/loan`, //债转投资信息
+    getProjectsLoan:`invest/projects/loan`, //出借信息
+    getTransferLoan:`invest/transfer/loan`, //债转出借信息
     getProjectsInfo:`invest/projects/info`  ,//标的详情
-    getProjectsRecord:`invest/projects/record` ,//获取散标投资记录
-    getTransferRecord: `invest/transfer/record`,//获取转让标投资记录
+    getProjectsRecord:`invest/projects/record` ,//获取散标出借记录
+    getTransferRecord: `invest/transfer/record`,//获取转让标出借记录
     getRpmtplanPage:`invest/rpmtplan/page` ,//获取还款记录
     getAvailableRewards: `members/memberRewards/list`, //获取特定标的可用奖励列表
-    postInvestApp:`invest/invest` ,//提交投资申请
+    postInvestApp:`invest/invest` ,//提交出借申请
 
     getApplyData:`loans/apply/qualification`, //借款申请详情
     postLoanData:`loans/apply`,//借款申请
@@ -65,8 +65,8 @@ export const API_CONFIG = {
     getMyRedEnvelopes:`members/memberRedEnvelopes`, //获取红包
     getMyRateCoupons:`members/memberRateCoupons`, //获取加息券
 
-    getMyInvestCharts:`members/invest/statistics`, //我的投资统计图数据
-    getMyInvestList:`members/investments`, //我的投资统计图数据
+    getMyInvestCharts:`members/invest/statistics`, //我的出借统计图数据
+    getMyInvestList:`members/investments`, //我的出借统计图数据
     getMyPlanList:`members/investments/receiving/`, //获取回款记录
     postTransferApp:`transfer/apply`, //转让申请
     getMyTransferInfo:`transfer/apply/info`, //获取债转详情

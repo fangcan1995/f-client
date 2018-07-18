@@ -17,7 +17,7 @@ const initialState = Immutable.fromJS({
         idNumber:'',	//身份证号
         photo:'',	//头像
         riskLevel:'',	//风险测评等级
-        surplusAmount:``,//剩余投资限额
+        surplusAmount:``,//剩余出借限额
         availableBalance:``,	//账户可用余额
         bankName:'',	//开户行
         bankNo:'',	//银行卡号

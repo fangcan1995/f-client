@@ -31,7 +31,7 @@ export const accountAc= {
                         idNumber:'',	//身份证号
                         photo:'',	//头像
                         riskLevel:'',	//风险测评等级
-                        surplusAmount:1000000,//剩余投资限额
+                        surplusAmount:1000000,//剩余出借限额
                         accountBalance:100000,//账户余额
                         availableBalance:60000,	//账户可用余额
                         freezingAmount:0,  //冻结金额

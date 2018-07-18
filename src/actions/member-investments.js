@@ -7,7 +7,7 @@ import {API_CONFIG} from "../config/api";
 import {postContent} from "../utils/formSetting";
 
 const url_investCharts=API_CONFIG.hostWeb+API_CONFIG.getMyInvestCharts; //统计图数据
-const url_investList=API_CONFIG.hostWeb+API_CONFIG.getMyInvestList;//获取投资列表
+const url_investList=API_CONFIG.hostWeb+API_CONFIG.getMyInvestList;//获取出借列表
 const url_planList=API_CONFIG.hostWeb+API_CONFIG.getMyPlanList;  //获取回款记录
  const url_postTransferApp=API_CONFIG.hostWeb+API_CONFIG.postTransferApp;//转让申请
 //const url_postTransferApp=`http://172.16.1.234:9090/transfer/apply/`;
