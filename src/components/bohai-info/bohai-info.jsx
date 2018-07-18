@@ -99,6 +99,27 @@ class BohaiInfo extends Component {
             )
             .catch();
     }
+    temp(){
+        let {dispatch, account} = this.props;
+        let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult,isOpenOthers}=account;
+        //先获取换手机号需携带的信息，正确的话提交表单
+        dispatch(accountAc.getBohaiInfo({type:'aaaa',url:`my-settings_my-authInfo`}))
+            .then(
+                (res)=>{
+                    toOthersInfo=res.value;
+                    if(toOthersInfo.code==406  ){
+                        this.setState({
+                            disabled:false
+                        });
+                        message.info(toOthersInfo.message);
+                    }else if(toOthersInfo!=``){
+                        document.getElementById('form_temp').submit();
+                        dispatch(accountAc.change_goOutState(true));
+                    }
+                }
+            )
+            .catch();
+    }
     render(){
         const {account,type}=this.props;
         const {toOthersInfo}=account;
@@ -181,6 +202,26 @@ class BohaiInfo extends Component {
                                         <input type="input" name="mac" value={toOthersInfo.mac} />
                                     </form>
                                 </div>
+                                :(type=='aaaa')?
+                                    <div>
+                                        <a href="javascript:void(0);" onClick={this.temp.bind(this)}>{this.props.children}</a>
+                                        <form name="form_temp" id="form_temp" method="post" acceptCharset="GBK" action='http://221.239.93.141:9080/bhdep/hipos/payTransaction' >
+                                            <input type="text" name="char_set" value={toOthersInfo.char_set} />
+                                            <input type="text" name="partner_id" value={toOthersInfo.partner_id} />
+                                            <input type="text" name="version_no" value={toOthersInfo.version_no} />
+                                            <input type="text" name="biz_type" value={toOthersInfo.biz_type} />
+                                            <input type="text" name="sign_type" value={toOthersInfo.sign_type} />
+                                            <input type="text" name="MerBillNo" value={toOthersInfo.MerBillNo} />
+                                            <input type="text" name="TxnTyp" value={toOthersInfo.TxnTyp} />
+                                            <input type="text" name="AccountTyp" value={toOthersInfo.AccountTyp} />
+                                            <input type="text" name="AccountNo" value={toOthersInfo.AccountNo} />
+                                            <input type="text" name="AccountName" value={toOthersInfo.AccountName} />
+                                            <input type="text" name="AccountBk" value={toOthersInfo.AccountBk} />
+                                            <input type="text" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
+                                            <input type="text" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
+                                            <input type="text" name="mac" value={toOthersInfo.mac} />
+                                        </form>
+                                    </div>
                     :``
                 }
 

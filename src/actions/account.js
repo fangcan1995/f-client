@@ -91,13 +91,16 @@ export const accountAc= {
             case 'changeTradePwd':
                 url=`http://59.110.15.234:9090/payAccount/bohai/changePwd`+`?url=`+params.url;  //设置交易密码
                 break;
+            case 'aaaa':
+                url=`http://59.110.15.234:9030/payAccount/bohai/test`;
+                break;
             default:
                 break;
         }
         return {
             type: 'member/account/BOHAI_FETCH',
             async payload() {
-                let  res = await cFetch(`${url}`, {method: 'GET'}, true);
+                let  res = await cFetch(`${url}`, {method: 'GET'}, false);
                 let {code, data} = res;
                 if (code == 0) {
                     return data;

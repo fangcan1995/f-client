@@ -138,6 +138,15 @@ class MyAuthInfo extends React.Component {
                                                 }
                                             </td>
                                         </tr>
+                                        <tr className={(isOpenAccount==='1')? '' : 'no'}>
+                                            <th><i className="iconfont icon-card"></i>不知道干啥</th>
+                                            <td className="Result">{(isOpenAccount==='1')? '已开通' : '未开通'}</td>
+                                            <td className="detail"></td>
+                                            <td className="operate">
+                                                <BohaiInfo type={`aaaa`} url={`my-settings_my-authInfo`}>开通</BohaiInfo>
+
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                             }

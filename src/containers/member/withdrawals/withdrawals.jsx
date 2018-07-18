@@ -168,7 +168,7 @@ class Withdrawals extends React.Component{
                                                 >
                                                     <RadioGroup onChange={this.onChange} value={this.state.value}>
                                                         <Radio value={0}><span className='m-text-size'>普通提现 | </span>下一个工作日到账，节假日顺延 | 单笔限额300000.00元。限当日 00:10至23:00 申请</Radio>
-                                                        <Radio value={1}><span className='m-text-size'>快速提现 | </span>预计当日到账 | 当日剩余额度50000.00元。限工作日 08:00至17:00 申请</Radio>
+                                                        {/*<Radio value={1}><span className='m-text-size'>快速提现 | </span>预计当日到账 | 当日剩余额度50000.00元。限工作日 08:00至17:00 申请</Radio>*/}
                                                     </RadioGroup>
                                                 </FormItem>
                                                 <FormItem
@@ -223,24 +223,24 @@ class Withdrawals extends React.Component{
                                                 </FormItem>
                                             </Form>
                                             <form name="form1" id="form1" method="post" acceptCharset="GBK" action={toOthersInfo.url} >
-                                                <input type="input" name="char_set" value={toOthersInfo.char_set} />
-                                                <input type="input" name="partner_id" value={toOthersInfo.partner_id} />
-                                                <input type="input" name="version_no" value={toOthersInfo.version_no} />
-                                                <input type="input" name="biz_type" value={toOthersInfo.biz_type} />
-                                                <input type="input" name="sign_type" value={toOthersInfo.sign_type} />
-                                                <input type="input" name="MerBillNo" value={toOthersInfo.MerBillNo} />
-                                                <input type="input" name="PlaCustId" value={toOthersInfo.PlaCustId} />
-                                                <input type="input" name="TransAmt" value={toOthersInfo.TransAmt} />
-                                                <input type="input" name="MerFeeAmt" value={toOthersInfo.MerFeeAmt} />
-                                                <input type="input" name="FeeType" value={toOthersInfo.FeeType} />
-                                                <input type="input" name="OpenType" value={toOthersInfo.OpenType} />
-                                                <input type="input" name="MobileNo" value={toOthersInfo.MobileNo} />
-                                                <input type="input" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
-                                                <input type="input" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
-                                                <input type="input" name="TransTyp" value={toOthersInfo.TransTyp} />
-                                                <input type="input" name="FastFlag" value={toOthersInfo.FastFlag} />
-                                                <input type="input" name="MerPriv" value={toOthersInfo.MerPriv} />
-                                                <input type="input" name="mac" value={toOthersInfo.mac} />
+                                                <input type="hidden" name="char_set" value={toOthersInfo.char_set} />
+                                                <input type="hidden" name="partner_id" value={toOthersInfo.partner_id} />
+                                                <input type="hidden" name="version_no" value={toOthersInfo.version_no} />
+                                                <input type="hidden" name="biz_type" value={toOthersInfo.biz_type} />
+                                                <input type="hidden" name="sign_type" value={toOthersInfo.sign_type} />
+                                                <input type="hidden" name="MerBillNo" value={toOthersInfo.MerBillNo} />
+                                                <input type="hidden" name="PlaCustId" value={toOthersInfo.PlaCustId} />
+                                                <input type="hidden" name="TransAmt" value={toOthersInfo.TransAmt} />
+                                                <input type="hidden" name="MerFeeAmt" value={toOthersInfo.MerFeeAmt} />
+                                                <input type="hidden" name="FeeType" value={toOthersInfo.FeeType} />
+                                                <input type="hidden" name="OpenType" value={toOthersInfo.OpenType} />
+                                                <input type="hidden" name="MobileNo" value={toOthersInfo.MobileNo} />
+                                                <input type="hidden" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
+                                                <input type="hidden" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
+                                                <input type="hidden" name="TransTyp" value={toOthersInfo.TransTyp} />
+                                                <input type="hidden" name="FastFlag" value={toOthersInfo.FastFlag} />
+                                                <input type="hidden" name="MerPriv" value={toOthersInfo.MerPriv} />
+                                                <input type="hidden" name="mac" value={toOthersInfo.mac} />
 
                                             </form>
 
