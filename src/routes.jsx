@@ -88,7 +88,7 @@ export default (
                         <Switch>
                             <Redirect exact from={`${match.url}`} to={`${match.url}/account-overview`} />
                             <Route path={`${match.url}/account-overview`} component={userIsAuthenticated(AccountOverview)} />
-                            <Route path={`${match.url}/bank-card`} component={userIsAuthenticated(BankCard)} />
+                            {/*<Route path={`${match.url}/bank-card`} component={userIsAuthenticated(BankCard)} />*/}
                             <Route path={`${match.url}/recharge`} component={userIsAuthenticated(Recharge)} />
                             <Route path={`${match.url}/withdrawals`} component={userIsAuthenticated(Withdrawals)} />
                             <Route path={`${match.url}/transaction-record`} component={TransactionRecord}  />

@@ -5,6 +5,7 @@ import { Route, Link } from 'react-router-dom';
 import {accountAc} from "../../actions/account";
 import { Tooltip,Popconfirm } from 'antd';
 import MyAvatar from '../myAvatar/myAdatar';
+import BohaiInfo from '../bohai-info/bohai-info';
 import './member-sidebar.less';
 
 const ListItemLink = ({ to, ...rest }) => (
@@ -50,39 +51,57 @@ class MemberSidebar extends Component {
                                 </div>
                                 <div className="step">
                                     <Tooltip
-                                        placement="topLeft"
+                                        placement="top"
                                         title="已绑定手机号"
-                                        arrowPointAtCenter overlayClassName='myTooltip'
+                                        arrowPointAtCenter
+                                        overlayClassName='myTooltip'
                                     >
                                         <i className="iconfont icon-phone able1" ></i>
                                     </Tooltip>
+
                                     {(isOpenAccount===`1`)?
                                         <Tooltip
-                                            placement="topLeft"
+                                            placement="top"
                                             title="已开户"
-                                            arrowPointAtCenter overlayClassName='myTooltip'
+                                            arrowPointAtCenter
+                                            overlayClassName='myTooltip'
                                         >
                                             <i className='iconfont icon-card able1' ></i>
                                         </Tooltip>
-                                        :<Popconfirm placement="top" title={`尚未开户，是否开户`}  okText="确定" cancelText="取消" trigger='hover'
-                                                     onConfirm={this.handle_confirmOpen.bind(this, event, history)}
 
-                                        >
-                                            <i className='iconfont icon-card able0'></i>
-                                        </Popconfirm>
+                                        :<BohaiInfo type={`bindCard`} url={`my-account`}>
+                                            <Tooltip
+                                                placement="top"
+                                                title={`立即开通存管账户`}
+                                                arrowPointAtCenter
+                                                overlayClassName='myTooltip'
+
+                                            >
+                                                <i className='iconfont icon-card able0'></i>
+                                            </Tooltip>
+                                        </BohaiInfo>
                                     }
                                     {(isRisk===`1`)?
                                         <Tooltip
-                                            placement="topLeft"
+                                            placement="top"
                                             title="已测评"
                                             arrowPointAtCenter overlayClassName='myTooltip'
 
                                         >
                                             <i className='iconfont icon-fxcp able1' ></i>
                                         </Tooltip>
-                                        :<Popconfirm placement="top" title={`未测评，是否测评`} onConfirm={this.handle_confirmRisk.bind(this, event, history)} okText="确定" cancelText="取消" trigger='hover'>
+                                        :<Tooltip
+                                            placement="top"
+                                            title="立即风险评估"
+                                            arrowPointAtCenter
+                                            overlayClassName='myTooltip'
+
+                                        >
+                                            <a href="javascript:void(0);" onClick={this.handle_confirmRisk.bind(this, event, history)}><i className='iconfont icon-fxcp able0' ></i></a>
+                                        </Tooltip>
+                                        /*<Popconfirm placement="top" title={`未测评，是否测评`} onConfirm={this.handle_confirmRisk.bind(this, event, history)} okText="确定" cancelText="取消" trigger='hover'>
                                             <i className='iconfont icon-fxcp able0'></i>
-                                        </Popconfirm>
+                                        </Popconfirm>*/
                                     }
 
                                 </div>

@@ -96,6 +96,7 @@ class Loan extends Component {
 
                                 {
                                     (!auth.isAuthenticated) ?<Link to={`/login?redirect=%2Floan-index`}>点击申请</Link>
+                                        :(auth.user.remarks==='1')?<span>仅限借款用户</span>
                                         :(isOpenAccount===`0`)?
                                         <a className="" onClick={() =>this.toggleModal('ModalBindCardBohai',true)}>点击申请</a>
                                         :<a className="" onClick={() =>this.toggleModal('ModalLoanApp',true,1)}>点击申请</a>
@@ -107,6 +108,7 @@ class Loan extends Component {
                                 <p>适用于公务员、事业单位、银行、<br />最高可借<br /><em>50 万</em></p>
                                 {
                                     (!auth.isAuthenticated) ?<Link to={`/login?redirect=%2Floan-index`}>点击申请</Link>
+                                        :(auth.user.remarks==='1')?<span>仅限借款用户</span>
                                         :(isOpenAccount===`0`)?<a className="" onClick={() =>this.toggleModal('ModalBindCardBohai',true)}>点击申请</a>
                                         :<a className="" onClick={() =>this.toggleModal('ModalLoanApp',true,2)}>点击申请</a>
                                 }
@@ -116,6 +118,7 @@ class Loan extends Component {
                                 <p>适用于公务员、事业单位、银行、<br />最高可借<br /><em>100 万</em></p>
                                 {
                                     (!auth.isAuthenticated) ?<Link to={`/login?redirect=%2Floan-index`}>点击申请</Link>
+                                        :(auth.user.remarks==='1')?<span>仅限借款用户</span>
                                         :(isOpenAccount===`0`)?<a className="" onClick={() =>this.toggleModal('ModalBindCardBohai',true)}>点击申请</a>
                                         :<a className="" onClick={() =>this.toggleModal('ModalLoanApp',true,3)}>点击申请</a>
                                 }

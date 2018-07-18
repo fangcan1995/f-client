@@ -2,7 +2,7 @@
 
 .myTooltip{
   &.ant-tooltip{
-    &.ant-tooltip-placement-topLeft,&.ant-tooltip-placement-right{
+    &.ant-tooltip-placement-topLeft,&.ant-tooltip-placement-top,&.ant-tooltip-placement-right{
       .ant-tooltip-arrow{
         border-top-color: rgba(255, 255, 255, 1);
         &:before{
@@ -55,18 +55,23 @@
       color: #3c434c;
     }
     .step {
+      .bank-info{
+        display: inline-block;
+      }
       .iconfont {
         margin-right: 6px;
         margin-left: 6px;
         font-size: 18px;
         cursor: default;
+        &.able1{
+          color:#2aa4ea;
+        }
+        &.able0{
+          color:#cad3e0;
+          cursor: pointer;
+        }
       }
-      .able1{
-        color:#2aa4ea;
-      }
-      .able0{
-        color:#cad3e0;
-      }
+
       .abletrue{
         color:#cad3e0;
       }
