@@ -129,7 +129,7 @@ class SubjectList extends Component {
                             <div className="filter__inner">
                                 <div className="filter__row">
                                     <div className="filter__cell">
-                                        <h5 className="filter__tit">标的类型</h5>
+                                        <h5 className="filter__tit">项目类型</h5>
                                     </div>
                                     <div className="filter__cell">
                                         <p className={(noviceLoan==='')?'filter__opt filter__opt--active':'filter__opt'}
@@ -146,7 +146,7 @@ class SubjectList extends Component {
                                 </div>
                                 <div className="filter__row">
                                     <div className="filter__cell">
-                                        <h5 className="filter__tit">投资期限</h5>
+                                        <h5 className="filter__tit">借款期限</h5>
                                     </div>
                                     <div className="filter__cell">
                                         <p className={(loanExpiry==='')?'filter__opt filter__opt--active':'filter__opt'}
@@ -168,7 +168,7 @@ class SubjectList extends Component {
 
                                 <div className="filter__row">
                                     <div className="filter__cell">
-                                        <h5 className="filter__tit">预期年化收益率</h5>
+                                        <h5 className="filter__tit">预期年化利率</h5>
                                     </div>
                                     <div className="filter__cell">
                                         <p className={(rateGroup==='')?'filter__opt filter__opt--active':'filter__opt'}
@@ -205,7 +205,7 @@ class SubjectList extends Component {
                                                 <th className={`order${sort.loanExpiry}`} onClick={() => {this.sort('loanExpiry')}}>投资期限<i></i></th>
                                                 <th className={`order${sort.putTime}`} onClick={() => {this.sort('putTime')}}>发布时间<i></i></th>
                                                 <th className={`order${sort.surplusAmount}`} onClick={() => {this.sort('surplusAmount')}}>剩余金额<i></i></th>
-                                                <th>投资人数</th>
+                                                <th>出借人数</th>
                                                 <th className={`order${sort.investmentProgress}`} onClick={() => {this.sort('investmentProgress')}}>投资进度<i></i></th>
                                                 <th></th>
                                             </tr>

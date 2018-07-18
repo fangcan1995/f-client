@@ -69,14 +69,14 @@ class TransferList extends Component {
                                     <table className="tableList">
                                         <thead>
                                         <tr>
-                                            <th>项目名称</th>
-                                            <th>投资总额</th>
-                                            <th className={`order${sort.annualRate}`} onClick={() => {this.sort('annualRate')}}>预期年化收益率<i></i></th>
-                                            <th className={`order${sort.transferPeriod}`} onClick={() => {this.sort('transferPeriod')}}>投资期限<i></i></th>
+                                            <th>项目类型</th>
+                                            <th>出借总额</th>
+                                            <th className={`order${sort.annualRate}`} onClick={() => {this.sort('annualRate')}}>预期年化利率<i></i></th>
+                                            <th className={`order${sort.transferPeriod}`} onClick={() => {this.sort('transferPeriod')}}>借款期限<i></i></th>
                                             <th className={`order${sort.putDate}`} onClick={() => {this.sort('putDate')}}>发布时间<i></i></th>
                                             <th className={`order${sort.surplusAmount}`} onClick={() => {this.sort('surplusAmount')}}>剩余金额<i></i></th>
-                                            <th>投资人数</th>
-                                            <th className={`order${sort.investmentProgress}`} onClick={() => {this.sort('investmentProgress')}}>投资进度<i></i></th>
+                                            <th>出借人数</th>
+                                            <th className={`order${sort.investmentProgress}`} onClick={() => {this.sort('investmentProgress')}}>出借进度<i></i></th>
                                             <th></th>
                                         </tr>
                                         </thead>

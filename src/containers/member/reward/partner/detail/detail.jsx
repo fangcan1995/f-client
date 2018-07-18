@@ -59,7 +59,7 @@ export default class PartnerDetail extends React.Component{
                                     <tr>
                                         <th>获得时间</th>
                                         <th>注册时间</th>
-                                        <th>首次投资时间</th>
+                                        <th>首次出借时间</th>
                                     </tr>
                                     </thead>
                                     <tbody>

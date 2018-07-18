@@ -88,7 +88,7 @@ class ModalTransferApp extends React.Component {
             return false;
         }
         if(parseFloat(value.number) > parseFloat(transferInfo.canTransferMoney)){
-            callback(`转让金额不能超过投资金额`);
+            callback(`转让金额不能超过出借金额`);
             return false;
         }
         if(parseFloat(value.number)%100!=0 && parseFloat(value.number)!=parseFloat(transferInfo.canTransferMoney)){
@@ -125,7 +125,7 @@ class ModalTransferApp extends React.Component {
                             <Form layout="horizontal" onSubmit={this.handleSubmit}>
                                 <FormItem
                                     { ...formItemLayout }
-                                    label="实际投资金额"
+                                    label="实际出借金额"
                                 >
                                     {addCommas(transferInfo.canTransferMoney)} 元
                                 </FormItem>
@@ -177,7 +177,7 @@ class ModalTransferApp extends React.Component {
                                         agreementProps(
                                             <Checkbox> 我已阅读并同意</Checkbox>
                                         )
-                                    }<a href="/subject_3/11" target="_blank">《巴巴汇债权转让服务协议》</a>
+                                    }<a href="/subject_3/11" target="_blank">《巴巴汇债权转让服务协议》相关条款</a>
                                 </FormItem>
                                 <div className='tips'>{postResult.message}</div>
                                 <FormItem className='center'>

@@ -167,7 +167,7 @@ class ModalInvest extends React.Component {
                         <Form layout="horizontal" onSubmit={this.handleSubmit} id='frm'>
                             <FormItem
                                 { ...formItemLayout }
-                                label="投资金额"
+                                label="出借金额"
                             >
                                 <span id="money" className="money">{addCommas(parseFloat(value))}</span>元
                             </FormItem>
@@ -234,7 +234,7 @@ class ModalInvest extends React.Component {
                                     agreementProps(
                                         <Checkbox> 我已阅读并同意</Checkbox>
                                     )
-                                }<a href="/subject_3/4" target="_blank">《投资协议》</a>
+                                }<a href="/subject_3/4" target="_blank">《出借协议》相关条款</a>
                             </FormItem>
                             <FormItem className='tips'>
                                 {

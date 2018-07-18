@@ -31,7 +31,7 @@ export const InvestButton=({status,id,...rest})=>{
             investTitle=`待发布`;
             break;
         case 2:
-            investTitle=`立即投资`;
+            investTitle=`立即出借`;
             className=``;
             break;
         case 3:
@@ -65,7 +65,7 @@ export const TransferInvestButton=({status,id,projectId,...rest})=>{
             investTitle=`待发布`;
             break;
         case 2:
-            investTitle=`立即加入`;
+            investTitle=`立即出借`;
             className=``;
             break;
         case 3:

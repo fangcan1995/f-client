@@ -91,7 +91,7 @@ class Footer extends Component  {
                     </div>
                 </div>
                 <div className="CopyRight">
-                    <p className="CopyRight__text">辽ICP备16003552号-1增值电信业务经营许可证编号：辽B2-20160184市场有风险投资需谨慎，营造合法、诚信借贷环境</p>
+                    <p className="CopyRight__text">辽ICP备16003552号-1增值电信业务经营许可证编号：辽B2-20160184 市场有风险，出借需谨慎，营造合法、诚信借贷环境</p>
                     <div className="CopyRight__imageBlock">
                         <a href="http://www.lnga.gov.cn/" target="_blank">
                             <img src={wangjing} alt="" />

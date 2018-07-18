@@ -462,7 +462,7 @@ componentWillUnmount() {
               <FormItem className="agreement">
                 {
                   agreementProps(
-                    <Checkbox> 我已阅读并同意<Link to="subject_3/6" target="_blank">《用户注册及服务协议》</Link></Checkbox>
+                    <Checkbox> 我已阅读并同意<Link to="subject_3/6" target="_blank">《用户注册及服务协议》相关条款</Link></Checkbox>
                   )
                 }
               </FormItem>

@@ -53,10 +53,10 @@ class MyRiskAssess extends React.Component {
                                                     {result.remarks}
                                                 </p>
                                             </li>
-                                            <li><strong>投资最大额度为：</strong>
+                                            <li><strong>最大出借金额：</strong>
                                                 <p>{result.investTotal}元</p>
                                             </li>
-                                            <li><strong>剩余可投金额：</strong>
+                                            <li><strong>出借余额：</strong>
                                                 <p>{result.surplusInvestTotal}元</p>
                                             </li>
                                             <li className="form__bar">

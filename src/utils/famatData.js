@@ -174,7 +174,7 @@ export function getTips(messageCode){
         },
         {
             code:`invest_006`,
-            message:{code: 100, message: `投资金额必须是100的整数倍！`, allowGoOn: true}
+            message:{code: 100, message: `出借金额必须是100的整数倍！`, allowGoOn: true}
         },
         {
             code:`invest_007`,
@@ -194,11 +194,11 @@ export function getTips(messageCode){
         },
         {
             code:`invest_011`,
-            message:{code: 100, message: `投资金额低于使用红包的最低投资金额！`, allowGoOn: true}
+            message:{code: 100, message: `出借金额低于使用红包的最低出借金额！`, allowGoOn: true}
         },
         {
             code:`invest_012`,
-            message:{code: 100, message: `投资金额低于使用加息券的最低投资金额！`, allowGoOn: true}
+            message:{code: 100, message: `出借金额低于使用加息券的最低出借金额！`, allowGoOn: true}
         },
         {
             code:`invest_013`,
@@ -214,7 +214,7 @@ export function getTips(messageCode){
         },
         {
             code:`invest_016`,
-            message:{code: 100, message: `投资金额不能大于标的可投剩余金额！`, allowGoOn: true}
+            message:{code: 100, message: `出借金额不能大于标的可投剩余金额！`, allowGoOn: true}
         },
         {
             code:`invest_017`,

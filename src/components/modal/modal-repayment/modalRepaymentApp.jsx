@@ -160,7 +160,7 @@ class ModalRepaymentApp extends React.Component {
                                             agreementProps(
                                                 <Checkbox> 我已阅读并同意</Checkbox>
                                             )
-                                        }<a href="/subject_3/8" target="_blank">《提前还款规则》</a>
+                                        }<a href="/subject_3/8" target="_blank">《提前还款规则》相关条款</a>
                                     </FormItem>
                                     <FormItem className='tips'>
                                         {postResult.message}

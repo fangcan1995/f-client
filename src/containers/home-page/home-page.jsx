@@ -134,7 +134,7 @@ class HomePage extends Component {
               homePage.sprog.length ?
                 <div className="login" key={homePage.sprog.length}>
                   <p className="yield">
-                    新手专享年化收益率
+                    新手专享年化利率
                 <br />
                     <em><span>{homePage.sprog[0].annualRate}</span>{homePage.sprog[0].raiseRate ? `+${homePage.sprog[0].raiseRate}` : '.0'}%</em>
                   </p>
@@ -152,7 +152,7 @@ class HomePage extends Component {
                 </div> : homePage.standard.length ?
                   <div className="login" key={homePage.standard.length}>
                     <p className="yield">
-                      年化收益率
+                      年化利率
                 <br />
                       <em><span>{homePage.standard[0].annualRate}</span>{homePage.standard[0].raiseRate ? `+${homePage.standard[0].raiseRate}` : '.0'}%</em>
                     </p>
@@ -261,7 +261,7 @@ class HomePage extends Component {
                               <p>
                                 <em><span>{item.annualRate}</span>{item.raiseRate ? `+${item.raiseRate}` : '.0'}%</em>
                                 <br />
-                                预期年化收益率
+                                  预期年化利率
                         </p>
                             </div>
                             <div className="sprog__item sprog__info">
@@ -290,7 +290,7 @@ class HomePage extends Component {
             homePage.standard.length ? <Floor
               otherClassName="standard"
               tit="散标/债权"
-              tip="风险自行承担&nbsp;&nbsp;投资需谨慎"
+              tip="市场有风险&nbsp;&nbsp;出借需谨慎"
             >
               <ul className="standard__content">
                 {
@@ -301,14 +301,14 @@ class HomePage extends Component {
                         <div className="card__scroll">
                           <div className="card__header">
                             <h4 className="tit">{item.name}</h4>
-                            <p className="tip">起投金额&nbsp;<em>{item.minInvestAmount}</em>元</p>
+                            <p className="tip">起借金额&nbsp;<em>{item.minInvestAmount}</em>元</p>
                             <ul className="tags">
                               <li>{item.refundWayString}</li>
                             </ul>
                             <p className="desc"><em><span>{item.loanExpiry}</span>个月</em><br />锁定期</p>
                           </div>
                           <div className="card__body">
-                            <p className="yield"><em><span>{Math.floor(item.annualRate / 1)}</span>.{(item.annualRate + '').split('.')[1] || 0}%{item.raiseRate ? `+${item.raiseRate}%` : ''}</em><br />预期年化收益率</p>
+                            <p className="yield"><em><span>{Math.floor(item.annualRate / 1)}</span>.{(item.annualRate + '').split('.')[1] || 0}%{item.raiseRate ? `+${item.raiseRate}%` : ''}</em><br />预期年化利率</p>
                             <ul className="tags">
                               <li>最新推出</li>
                             </ul>

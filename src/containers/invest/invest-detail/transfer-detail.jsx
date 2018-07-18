@@ -45,10 +45,10 @@ class TransferDetail extends React.Component{
                             <div name="项目信息">
                                 <BorrowerInfo loanInfo={loanInfo} isFetching={isFetching} />
                             </div>
-                            <div name="转让投标记录" style={{marginBottom:'30px'}}>
+                            <div name="转让出借记录" style={{marginBottom:'30px'}}>
                                 <TransferInvestRecords pageSize={10}/>
                             </div>
-                            <div name="原项目投标记录" style={{marginBottom:'30px'}}>
+                            <div name="原项目出借记录" style={{marginBottom:'30px'}}>
                                 <InvestRecords pageSize={10}/>
                             </div>
                             <div name="还款记录" style={{marginBottom:'30px'}}>

@@ -62,7 +62,7 @@ class MemberSidebar extends Component {
                                     {(isOpenAccount===`1`)?
                                         <Tooltip
                                             placement="top"
-                                            title="已开户"
+                                            title="存管已开户"
                                             arrowPointAtCenter
                                             overlayClassName='myTooltip'
                                         >
@@ -121,9 +121,9 @@ class MemberSidebar extends Component {
                                         <ListItemLink to="/my-account/withdrawals">提现</ListItemLink>
                                         <ListItemLink to="/my-account/transaction-record" >交易记录</ListItemLink>
                                     </ul>
-                                    <h3><i className="iconfont icon-invest"></i>我的投资</h3>
+                                    <h3><i className="iconfont icon-invest"></i>我的出借</h3>
                                     <ul>
-                                        <ListItemLink to="/my-investments/my-investments">我的投资</ListItemLink>
+                                        <ListItemLink to="/my-investments/my-investments">我的出借</ListItemLink>
                                         <ListItemLink to="/my-investments/receiving">回款统计</ListItemLink>
                                     </ul>
                                     <h3><i className="iconfont icon-invitation"></i>奖励管理</h3>

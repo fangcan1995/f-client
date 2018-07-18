@@ -51,7 +51,7 @@ class MasterInvestBox extends Component {
     checkMoney(value){
         const {min,max,step,surplusAmount} = this.props.investInfo;
         if(value.length<=0){
-            return {code:0,tips:'请输入投资金额'};
+            return {code:0,tips:'请输入出借金额'};
         }else {
             let reg=/^\+?[1-9][0-9]*$/;
             if(reg.test(value)){
@@ -61,7 +61,7 @@ class MasterInvestBox extends Component {
                     return {code:3,tips: `最高可投${max}元`};
                 }else{
                     /*if((surplusAmount-value)<min && max!=value){
-                        return {code:4,tips: `投资后剩余金额不能小于起投金额，请投满剩余金额或留出最小投资金额`};
+                        return {code:4,tips: `投资后剩余金额不能小于起投金额，请投满剩余金额或留出最小出借金额`};
                     }*/
                     if(value%step!=0 && max!=value){
                         return {code:4,tips: `必须是${step}的倍数`};
@@ -106,7 +106,7 @@ class MasterInvestBox extends Component {
             if(isRisk==='0'){
                 currentModule = `ModalRiskAssess`;   //去测评
             }else if(isRisk==='1'){
-                //测评结果中剩余的可投限额不小于投资金额(暂时用1000替代)
+                //测评结果中剩余的可投限额不小于出借金额(暂时用1000替代)
                 if(surplusAmount>=1000){
                     //currentModule=`ModalInvestSteps`;  //去投资
                     if(availableBalance<this.state.investAmount){
@@ -154,7 +154,7 @@ class MasterInvestBox extends Component {
                 this.setState({
                     status:investDetail.investInfo.transStatus,
                     investAmount:return_money
-                })//修改默认投资金额
+                })//修改默认出借金额
 
                 }
             );   //标的信息
@@ -181,7 +181,7 @@ class MasterInvestBox extends Component {
                 this.setState({
                     status:investDetail.investInfo.status,
                     investAmount: return_money,
-                })//修改默认投资金额
+                })//修改默认出借金额
 
 
                 }
@@ -217,7 +217,7 @@ class MasterInvestBox extends Component {
                         :<div>
                             <ul className="m-amount">
                                 <li><strong>开放金额：</strong>{addCommas(investInfo.money)}元</li>
-                                <li><strong>可投金额：</strong>{addCommas(investInfo.surplusAmount)}元</li>
+                                <li><strong>剩余金额：</strong>{addCommas(investInfo.surplusAmount)}元</li>
                             </ul>
                             <StepperInput config = {{
                                     defaultValue:this.state.investAmount, //默认金额
@@ -295,7 +295,7 @@ class MasterInvestBox extends Component {
                                             (auth.user.remarks===`2`?<Button type="primary"  className="pop__wp100" disabled={true}>仅限投资用户</Button>
                                                 :(accountsInfo===``)?``
                                                         :(investInfo.noviceLoan=='1' && isNovice==='0')?<Button type="primary"  className="pop__wp100" disabled={true}>仅限新手</Button>
-                                                            :<Button type="primary" onClick={() => this.toggleModal(`bbhModal`,true)} className="pop__wp100" disabled={isFetching || this.state.code!=100}>立即投资</Button>
+                                                            :<Button type="primary" onClick={() => this.toggleModal(`bbhModal`,true)} className="pop__wp100" disabled={isFetching || this.state.code!=100}>立即出借</Button>
                                             )
                                         }
 

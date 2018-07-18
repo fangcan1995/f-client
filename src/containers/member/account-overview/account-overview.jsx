@@ -60,7 +60,7 @@ class AccountOverview extends React.Component{
                                 <div>可用余额:<span className='money'>{toMoney(availableBalance)}</span>&nbsp;元</div>
                             </div>
                             <div className="infoLine">
-                                <div>昨日收益:
+                                <div>昨日回款:
                                     {(yestEarns)?<span className='money'>{toMoney(yestEarns[0].data[yestEarns[0].data.length-2])}</span>
                                         :``
                                     }
@@ -69,7 +69,7 @@ class AccountOverview extends React.Component{
                                 <div>
 
 
-                                        <span style={{cursor:'default'}}>累计收益:</span>
+                                        <span style={{cursor:'default'}}>累计回款:</span>
 
 
                                     {(totalEarns)?<span className='money'>{toMoney(totalEarns[0].data[totalEarns[0].data.length-1])}</span>
@@ -143,7 +143,7 @@ class AccountOverview extends React.Component{
                     }
                 <div className="member__cbox">
                     <Tab>
-                        <div name="收益情况" className="chart">
+                        <div name="回款情况" className="chart">
                             {/*<dl className='total_income'>
                                 <dt>累计回款：
                                     <Tooltip
@@ -157,7 +157,7 @@ class AccountOverview extends React.Component{
                                 <dd>{totalEarns[0].data[11] || `0.00`}元</dd>
                             </dl>*/}
                             <Tab>
-                                <div name="累计收益">
+                                <div name="累计回款">
                                     <BarChart
                                         data={{
                                             xAxis_data:charts.chartsMonth.xAxis_data,
@@ -167,7 +167,7 @@ class AccountOverview extends React.Component{
                                     >
                                     </BarChart>
                                 </div>
-                                <div name="每日收益">
+                                <div name="每日回款">
                                     <BarChart
                                         data={{
                                             xAxis_data:charts.chartsDay.xAxis_data,

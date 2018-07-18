@@ -121,7 +121,7 @@ class TransactionRecord extends Component{
                                                 <div className="filter__cell">
                                                     <RangePicker
                                                         format={ 'YYYY-MM-DD'}
-                                                        placeholder={['开始日期', '结束日期']}
+                                                        placeholder={['开始日期', '截止日期']}
                                                         onChange={ this.dateChange }
                                                         getCalendarContainer={() => document.getElementById('area')}
                                                     />

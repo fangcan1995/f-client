@@ -11,6 +11,10 @@ import {Loading,NoRecord} from '../../../../components/bbhAlert/bbhAlert';
 import moment from "moment";
 class Receiving extends React.Component{
     componentDidMount () {
+        const {auth}=this.props;
+        if(auth.user.remarks===`2`){
+            this.props.history.push({ pathname : '/my-loan/my-loan'});//如果是借款用户自动跳转到我的借款页
+        }
         window.scrollTo(0,0);
         this.props.dispatch(memberReceivingAc.getPie());
         this.props.dispatch(memberReceivingAc.getList({
@@ -19,11 +23,9 @@ class Receiving extends React.Component{
         }));
     }
     render(){
-        let {dispatch}=this.props;
-        let {myReceiving,isFetching}=this.props.memberInvestments;
-        let {myList,charts}=myReceiving;
-        //console.log('回款记录');
-        //console.log(myList);
+        const {dispatch}=this.props;
+        const {myReceiving,isFetching}=this.props.memberInvestments;
+        const {myList,charts}=myReceiving;
         return(
             <div className="member__main receiving">
                 <Crumbs/>
@@ -64,7 +66,7 @@ class Receiving extends React.Component{
                                                 <dl key={`row-${i}`}>
                                                     <dt><p><a href={`/invest-detail/${l.proId}`}>{l.proName}</a></p><strong>{l.proStatus}</strong>
                                                     </dt>
-                                                    <dd>投资金额：{l.proMoneyEnd}元</dd>
+                                                    <dd>出借金额：{l.proMoneyEnd}元</dd>
                                                     <dd>投资日期：{l.inveCreateTime ? moment(l.inveCreateTime).format('YYYY-MM-DD') : ''}</dd>
                                                     <dd>收益率：{parseFloat(l.proAnnualRate)+parseFloat(l.proRaiseRate)}%</dd>
                                                     <dd>下期回款日：{l.earnShdEarnDate ? moment(l.earnShdEarnDate).format('YYYY-MM-DD') : ''}</dd>

@@ -95,23 +95,23 @@ class TransferDetailMaster extends React.Component {
                             </dt>
                             <dd className="content">
                                 <dl className="item1">
-                                    <dt className="subtitle">预期年化回报率</dt>
+                                    <dt className="subtitle">预期年化利率</dt>
                                     <dd>
                                         <i>{investInfo.annualRate?investInfo.annualRate+investInfo.raiseRate:``}</i>%
                                     </dd>
 
                                 </dl>
                                 <dl className="item2">
-                                    <dt className="subtitle">锁定期限</dt>
+                                    <dt className="subtitle">借款期限</dt>
                                     <dd><i>{investInfo.transferPeriod}</i>个月</dd>
                                 </dl>
                                 <dl className="item3">
-                                    <dt className="subtitle">起投金额</dt>
+                                    <dt className="subtitle">起借金额</dt>
                                     <dd><i>{investInfo.minInvestAmount}</i>元</dd>
                                 </dl>
                                 <dl className="progressbar">
                                     <dt><div className="finished" style={{ width:`${investInfo.investmentProgress}%`}}><i className="iconfont">&#xe64d;</i></div></dt>
-                                    <dd><strong>投资进度：<em>{investInfo.investmentProgress}%</em></strong></dd>
+                                    <dd><strong>出借进度：<em>{investInfo.investmentProgress}%</em></strong></dd>
                                 </dl>
                                 <ul className="safe">
                                     <li><i className="iconfont icon-star"></i>国企背景</li>
@@ -158,7 +158,7 @@ class TransferDetailMaster extends React.Component {
                         <li className="step2"><i className="iconfont icon-2"></i>
                             <dl>
                                 <dt>债转募集</dt>
-                                <dd>结束日期：{moment(investInfo.loanEndDate).format('YYYY-MM-DD')}</dd>
+                                <dd>截止日期：{moment(investInfo.loanEndDate).format('YYYY-MM-DD')}</dd>
                             </dl>
                         </li>
                         <li className="step3"><i className="iconfont icon-3"></i>

@@ -26,7 +26,7 @@ export default class StepperInput extends Component{
         surplusAmount=config.surplusAmount;
         this.setState({
             value:defaultValue
-        })//修改默认投资金额
+        })//修改默认出借金额
     }
     componentWillReceiveProps(){
         const {config}=this.props;
@@ -43,7 +43,7 @@ export default class StepperInput extends Component{
                 this.setState({
                     value:config.surplusAmount,
                     trigger:`auto`
-                })//修改默认投资金额
+                })//修改默认出借金额
             }*/
             if(config.defaultValue>config.surplusAmount  ){
                 if(config.surplusAmount>config.min){
@@ -51,13 +51,13 @@ export default class StepperInput extends Component{
                     this.setState({
                         value:config.min,
                         trigger:`auto`
-                    })//修改默认投资金额为起投金额
+                    })//修改默认出借金额为起投金额
                 }else{
                     //console.log(22);
                     this.setState({
                         value:config.surplusAmount,
                         trigger:`auto`
-                    })//修改默认投资金额为剩余可投金额
+                    })//修改默认出借金额为剩余可投金额
                 }
 
             }
@@ -93,7 +93,7 @@ export default class StepperInput extends Component{
     checkMoney(value){
         const {min,max,step,surplusAmount} = this.props.config;
         if(value.length<=0){
-            return {code:0,tips:'请输入投资金额'};
+            return {code:0,tips:'请输入出借金额'};
         }else {
             let reg=/^\+?[1-9][0-9]*$/;
             if(reg.test(value)){
@@ -103,7 +103,7 @@ export default class StepperInput extends Component{
                     return {code:3,tips: `最高可投${max}元`};
                 }else{
                     /*if((surplusAmount-value)<min && max!=value){
-                        return {code:4,tips: `投资后剩余金额不能小于起投金额，请投满剩余金额或留出最小投资金额`};
+                        return {code:4,tips: `投资后剩余金额不能小于起投金额，请投满剩余金额或留出最小出借金额`};
                     }*/
                     if(value%step!=0 && max!=value){
                         return {code:4,tips: `必须是${step}的倍数`};

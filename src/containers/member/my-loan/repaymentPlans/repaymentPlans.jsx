@@ -32,6 +32,10 @@ class RepaymentPlans extends React.Component{
         }
         this.selectProject = this.selectProject.bind(this);
         this.dateChange = this.dateChange.bind(this);
+        const {auth}=this.props;
+        if(auth.user.remarks===`1`){
+            this.props.history.push({ pathname : '/my-account'});//如果是借款用户自动跳转到我的借款页
+        }
     }
     componentDidMount () {
         window.scrollTo(0,0);
@@ -172,7 +176,7 @@ class RepaymentPlans extends React.Component{
                                             <div className="filter__cell">
                                                 <RangePicker
                                                     format={ 'YYYY-MM-DD'}
-                                                    placeholder={['开始日期', '结束日期']}
+                                                    placeholder={['开始日期', '截止日期']}
                                                     onChange={ this.dateChange }
                                                     getCalendarContainer={() => document.getElementById('area')}
                                                 />

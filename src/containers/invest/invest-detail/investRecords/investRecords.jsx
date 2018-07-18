@@ -34,9 +34,9 @@ class InvestRecords extends React.Component{
                                 <table className="tableList">
                                     <thead>
                                     <tr>
-                                        <th>投资人</th>
-                                        <th>投资金额（元）</th>
-                                        <th>投资时间</th>
+                                        <th>出借人</th>
+                                        <th>出借金额（元）</th>
+                                        <th>出借时间</th>
                                         <th>投资方式</th>
                                     </tr>
                                     </thead>

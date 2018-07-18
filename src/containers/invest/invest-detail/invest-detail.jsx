@@ -41,7 +41,7 @@ class InvestDetail extends React.Component{
                             <div name="项目信息" >
                                 <BorrowerInfo loanInfo={loanInfo} isFetching={isFetching} />
                             </div>
-                            <div name="投标记录" style={{marginBottom:'30px'}}>
+                            <div name="出借记录" style={{marginBottom:'30px'}}>
                                 <InvestRecords pageSize={10}/>
                             </div>
                             <div name="还款记录" style={{marginBottom:'30px'}}>

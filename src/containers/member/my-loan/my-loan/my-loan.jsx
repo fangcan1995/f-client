@@ -29,6 +29,10 @@ class MyLoans extends React.Component {
         }
     }
     componentDidMount () {
+        const {auth}=this.props;
+        if(auth.user.remarks===`1`){
+            this.props.history.push({ pathname : '/my-account'});//如果是借款用户自动跳转到我的借款页
+        }
         window.scrollTo(0,0);
         this.props.dispatch(memberLoansAc.stateModify({status:1,myList:``}));
         this.props.dispatch(memberLoansAc.getPie());
@@ -110,7 +114,7 @@ class MyLoans extends React.Component {
         let {myList,charts,status}=myLoans;
         let tHead=[];
         tHead[0]=<tr><th>项目名称</th><th>项目类型</th><th>借款金额(元)</th><th>借款年利率(%)</th><th>借款期限</th><th>还款方式</th><th>申请日期</th><th>状态</th></tr>;
-        tHead[1]=<tr><th>项目名称</th><th>借款总额(元)</th><th>借款期限</th><th>发布日期</th><th>当前投资金额(元)</th><th>投资进度(%)</th><th>募集结束日期</th><th>状态</th></tr>;
+        tHead[1]=<tr><th>项目名称</th><th>借款总额(元)</th><th>借款期限</th><th>发布日期</th><th>当前出借金额(元)</th><th>投资进度(%)</th><th>募集截止日期</th><th>状态</th></tr>;
         tHead[2]=<tr><th>项目名称</th><th>借款总额(元)</th><th>借款期限</th><th>放款日期</th><th>下期还款日期</th><th>下期还款金额(元)</th><th>操作</th></tr>;
         tHead[3]=<tr><th>项目名称</th><th>借款金额(元)</th><th>借款期限</th><th>放款日期</th><th>还款本金(元)</th><th>还款利息(元)</th><th>逾期罚金(元)</th><th>逾期罚息(元)</th><th>结清日期</th><th>操作</th></tr>;
         return(
