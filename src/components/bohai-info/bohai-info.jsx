@@ -123,9 +123,9 @@ class BohaiInfo extends Component {
     render(){
         const {account,type}=this.props;
         const {toOthersInfo}=account;
-        console.log(type+'操作'+'需要提交给银行的数据');
-        console.log(toOthersInfo);
-        console.log('/*');
+        //console.log(type+'操作'+'需要提交给银行的数据');
+        //console.log(toOthersInfo);
+        //console.log('/*');
         return (
             <div className='bank-info'>
                 {
@@ -189,37 +189,37 @@ class BohaiInfo extends Component {
                                 <div>
                                     <a href="javascript:void(0);" onClick={this.setTradePass.bind(this)}>{this.props.children}</a>
                                     <form name="form_setTradeCode" id="form_setTradeCode" method="post" acceptCharset="GBK" action={toOthersInfo.url} >
-                                        <input type="input" name="char_set" value={toOthersInfo.char_set} />
-                                        <input type="input" name="partner_id" value={toOthersInfo.partner_id} />
-                                        <input type="input" name="version_no" value={toOthersInfo.version_no} />
-                                        <input type="input" name="biz_type" value={toOthersInfo.biz_type} />
-                                        <input type="input" name="sign_type" value={toOthersInfo.sign_type} />
-                                        <input type="input" name="MerBillNo" value={toOthersInfo.MerBillNo} />
-                                        <input type="input" name="PlaCustId" value={toOthersInfo.PlaCustId} />
-                                        <input type="input" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
-                                        <input type="input" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
-                                        <input type="input" name="TransTyp" value={toOthersInfo.TransTyp} />
-                                        <input type="input" name="mac" value={toOthersInfo.mac} />
+                                        <input type="hidden" name="char_set" value={toOthersInfo.char_set} />
+                                        <input type="hidden" name="partner_id" value={toOthersInfo.partner_id} />
+                                        <input type="hidden" name="version_no" value={toOthersInfo.version_no} />
+                                        <input type="hidden" name="biz_type" value={toOthersInfo.biz_type} />
+                                        <input type="hidden" name="sign_type" value={toOthersInfo.sign_type} />
+                                        <input type="hidden" name="MerBillNo" value={toOthersInfo.MerBillNo} />
+                                        <input type="hidden" name="PlaCustId" value={toOthersInfo.PlaCustId} />
+                                        <input type="hidden" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
+                                        <input type="hidden" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
+                                        <input type="hidden" name="TransTyp" value={toOthersInfo.TransTyp} />
+                                        <input type="hidden" name="mac" value={toOthersInfo.mac} />
                                     </form>
                                 </div>
                                 :(type=='aaaa')?
                                     <div>
                                         <a href="javascript:void(0);" onClick={this.temp.bind(this)}>{this.props.children}</a>
                                         <form name="form_temp" id="form_temp" method="post" acceptCharset="GBK" action='http://221.239.93.141:9080/bhdep/hipos/payTransaction' >
-                                            <input type="text" name="char_set" value={toOthersInfo.char_set} />
-                                            <input type="text" name="partner_id" value={toOthersInfo.partner_id} />
-                                            <input type="text" name="version_no" value={toOthersInfo.version_no} />
-                                            <input type="text" name="biz_type" value={toOthersInfo.biz_type} />
-                                            <input type="text" name="sign_type" value={toOthersInfo.sign_type} />
-                                            <input type="text" name="MerBillNo" value={toOthersInfo.MerBillNo} />
-                                            <input type="text" name="TxnTyp" value={toOthersInfo.TxnTyp} />
-                                            <input type="text" name="AccountTyp" value={toOthersInfo.AccountTyp} />
-                                            <input type="text" name="AccountNo" value={toOthersInfo.AccountNo} />
-                                            <input type="text" name="AccountName" value={toOthersInfo.AccountName} />
-                                            <input type="text" name="AccountBk" value={toOthersInfo.AccountBk} />
-                                            <input type="text" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
-                                            <input type="text" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
-                                            <input type="text" name="mac" value={toOthersInfo.mac} />
+                                            <input type="hidden" name="char_set" value={toOthersInfo.char_set} />
+                                            <input type="hidden" name="partner_id" value={toOthersInfo.partner_id} />
+                                            <input type="hidden" name="version_no" value={toOthersInfo.version_no} />
+                                            <input type="hidden" name="biz_type" value={toOthersInfo.biz_type} />
+                                            <input type="hidden" name="sign_type" value={toOthersInfo.sign_type} />
+                                            <input type="hidden" name="MerBillNo" value={toOthersInfo.MerBillNo} />
+                                            <input type="hidden" name="TxnTyp" value={toOthersInfo.TxnTyp} />
+                                            <input type="hidden" name="AccountTyp" value={toOthersInfo.AccountTyp} />
+                                            <input type="hidden" name="AccountNo" value={toOthersInfo.AccountNo} />
+                                            <input type="hidden" name="AccountName" value={toOthersInfo.AccountName} />
+                                            <input type="hidden" name="AccountBk" value={toOthersInfo.AccountBk} />
+                                            <input type="hidden" name="PageReturnUrl" value={toOthersInfo.PageReturnUrl} />
+                                            <input type="hidden" name="BgRetUrl" value={toOthersInfo.BgRetUrl} />
+                                            <input type="hidden" name="mac" value={toOthersInfo.mac} />
                                         </form>
                                     </div>
                     :``

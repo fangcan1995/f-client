@@ -100,8 +100,7 @@ class Withdrawals extends React.Component{
     }
     render(){
         let {isPosting,isFetching,accountsInfo,toOthersInfo,postResult}=this.props.account;
-        console.log('去提现需要携带的信息');
-        console.log(toOthersInfo);
+
         let {isOpenAccount,availableBalance,bankCode,bankNo,bohaiConfig}=accountsInfo;
         const { getFieldDecorator,getFieldsError } = this.props.form;
 

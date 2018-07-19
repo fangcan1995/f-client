@@ -60,7 +60,10 @@ export const accountAc= {
                         ]
                     };
                     let data=mock;*/
-                    //data.isOpenAccount=`1`;
+
+                   if(data.phoneNumber=='130****1116'){
+                       data.isOpenAccount=`1`;
+                   }
                     return data;
                 } else {
                     throw data;
@@ -92,7 +95,7 @@ export const accountAc= {
                 url=`http://59.110.15.234:9090/payAccount/bohai/changePwd`+`?url=`+params.url;  //设置交易密码
                 break;
             case 'aaaa':
-                url=`http://59.110.15.234:9030/payAccount/bohai/test`;
+                url=`http://59.110.15.234:9090/payment/bohai/test`;
                 break;
             default:
                 break;
